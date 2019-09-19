@@ -1,1 +1,7 @@
-#term-project-fall2019-team-2
+# CMPT371 Team 2
+
+Some cool description
+
+## Installing
+
+Todo

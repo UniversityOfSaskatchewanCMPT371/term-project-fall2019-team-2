@@ -34,12 +34,12 @@ DESCRIPTION
 
 [Check off who attended]
 
-- [ ] Jansen, Camille C. (caj880)
-- [ ] Khare, Anurag (ank266)
-- [ ] Komarevich, Mesa A. (mak265)
-- [ ] Mazoka, Braunson D. (bdm642)
-- [ ] Semenoff, Evan T. (ets994)
-- [ ] van Heerde, Eileen V. (evv446)
-- [ ] Zhu, Kevin (pez395)
-- [ ] Zimolag, Amanda A. (aaz713)
-- [ ] Clinton (???)
+- [ ] Camille
+- [ ] Anurag
+- [ ] Mesa
+- [ ] Braunson
+- [ ] Evan
+- [ ] Eileen
+- [ ] Kevin
+- [ ] Amanda
+- [ ] Clinton

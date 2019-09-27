@@ -13,6 +13,10 @@ A clear and concise description of what you want to happen.
 **Stakeholder Use-case**
 A clear and concise description of the stakeholders use-case for this feature
 
+**Tasks**
+- [ ] Some
+- [ ] Tasks
+
 **Additional context**
 Add any other context or screenshots about the feature request here.
 

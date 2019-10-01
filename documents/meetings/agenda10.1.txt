@@ -1,0 +1,49 @@
+CMPT371, T2 October 1st Agenda
+
+1. Stand-ups
+
+2. Immediate Issues:
+- Requirements Document
+	- Due this Sunday (Oct 6th)
+	- Where are we at?
+	- What needs to be done?
+	- How can we split this up?
+
+- Initial source code (issue #13 on git)
+	- We should get up some skeleton stuff
+	so people can branch and mess around with
+	react prototypes
+	- this pre-requisite to some other important
+	tasks
+
+- Risk Documentation
+	- Current risks
+		- mitigation / contingency
+	- Future risks
+		- mitigation / contingency
+
+- Time tracking
+	- Make sure we can all edit the spreadsheet
+	- If not please inform asap
+
+- Formal Review
+	- We need to have at least one done
+	by ID1, what will be reviewed?
+
+- Current milestones
+	- What are they?
+	- How do we plan to break them up?
+	- Plan to achieve our next milestone
+
+3. Addendum/Open Forum/Other issues
+
+
+
+
+
+
+
+
+
+
+

@@ -6,6 +6,7 @@ import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter';
 import { OccurrenceData } from './components/OccurrenceData';
 import { Timeline } from './components/Timeline';
+import 'bootstrap/dist/css/bootstrap.css';
 
 //import './custom.css'
 

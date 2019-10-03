@@ -7,6 +7,17 @@ Meeting with Osgood for Verification of Requirements
 1. GUI Mocks
     - Which of the mocks look reasonable?
     - What is your priority of usability features?
+    - Our current priority list for design looks like this:
+        - Simplicity 5
+        - Readability 10
+        - User Control 15
+        - Conveyance/Intution 7
+        - Flexibility Between Data 11
+        - Organization 5
+        - Effectively Display Info 12
+        - Reactivity 7
+        - Consistency 5
+        - Aesthetically Pleasing 8
 
 2. General Requirements Questions
     - We've assumed this is geared towards power-users, is that correct?

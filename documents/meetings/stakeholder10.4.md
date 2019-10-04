@@ -22,11 +22,17 @@ Meeting with Osgood for Verification of Requirements
 2. General Requirements Questions
     - We've assumed this is geared towards power-users, is that correct?
     - What's the priority of the features you have listed in the ideas document?
+    - What is the target demographic?
+    - Can we get a maximum datasize upper bound?
     
 3. Implicit Requirements Questions
     - How robust does the system need to be (maybe wrt bad data)
     - How extensible does this system need to be? (Will there be interest in DB support in the future?)
-
+    
+4. Clarification from Syllabus
+    - What type of analysis is required for ID2?
+        - We currently believe this is an umbrella term for risk analysis/code reviews/testing
+    
 
 
 ## After Action Report (Minutes)

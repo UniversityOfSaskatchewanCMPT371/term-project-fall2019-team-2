@@ -34,6 +34,17 @@ var data = {
 };
 */
 
+function r50()
+{
+    return Math.floor(Math.random() * 2);
+}
+
+//50/50 chance of returning 1 or -1
+function pn()
+{
+    return (r50() == 1 ? 1 : -1);
+}
+
 function randInts(n) {
     let rets = [];
     for (let i = 0; i < n; i++) {
@@ -86,7 +97,19 @@ export class Timeline extends Component {
                 return (
                     <div>
                         <h2>Bar Example</h2>
-                        <chartjs.Bar ref="chart" data={data}/>
+                        <chartjs.Bar ref="chart" data={data} options={{scales: {
+                                xAxes: [{
+                                    barPercentage: 1.0,
+                                    categoryPercentage: 1.0,
+                                    stacked: true,
+                                    gridLines: {
+                                        offsetGridLines: false
+                                    }
+                                }],
+                                yAxes: [{
+                                    stacked: true
+                                }]
+                            }}}/>
                     </div>
                 );
                 break;
@@ -94,7 +117,14 @@ export class Timeline extends Component {
                 return (
                     <div>
                         <h2>Line Example</h2>
-                        <chartjs.Line ref="chart" data={data}/>
+                        <chartjs.Line ref="chart" data={data} options={{scales : {
+                                xAxes: [{
+                                    ticks: {
+                                        autoSkip: true,
+                                        maxTicksLimit: 20
+                                    }
+                                }]
+                            }}}/>
                     </div>
                 );
                 break;
@@ -245,11 +275,17 @@ export class Timeline extends Component {
 
         this.setState((state) => {
             let t = [];
-            for(let i = 0; i < this.state.points.length; i++)
-            {
-                t.push(this.state.points[i] * -1);
-            }
-            console.log(t);
+            // for(let i = 0; i < this.state.points.length; i++)
+            // {
+            //     t.push(this.state.points[i] * -1);
+            // }
+
+            // for(let i = 0; i < this.state.points.length; i++)
+            // {
+            //     t.push(this.state.points[i] * pn());
+            // }
+
+            //console.log(t);
             return {
                 data: {
                     labels: this.state.labels,
@@ -273,29 +309,30 @@ export class Timeline extends Component {
                             pointHoverBorderWidth: 2,
                             pointRadius: 1,
                             pointHitRadius: 10,
-                            data: this.state.points
-                        },
-                        {
-                            label: 'My Second dataset',
-                            fill: false,
-                            lineTension: 0.1,
-                            backgroundColor: 'rgba(' + dc2['r'] + ',' + dc2['g'] + ',' + dc2['b'] + ',' + 0.4 + ')',
-                            borderColor: 'rgba(' + dc2['r'] + ',' + dc2['g'] + ',' + dc2['b'] + ',' + 1 + ')',
-                            borderCapStyle: 'butt',
-                            borderDash: [],
-                            borderDashOffset: 0.0,
-                            borderJoinStyle: 'miter',
-                            pointBorderColor: 'rgba(' + dc2['r'] + ',' + dc2['g'] + ',' + dc2['b'] + ',' + 1 + ')',
-                            pointBackgroundColor: '#fff',
-                            pointBorderWidth: 1,
-                            pointHoverRadius: 5,
-                            pointHoverBackgroundColor: 'rgba(' + dc2['r'] + ',' + dc2['g'] + ',' + dc2['b'] + ',' + 1 + ')',
-                            pointHoverBorderColor: 'rgba(' + dc2['r'] + ',' + dc2['g'] + ',' + dc2['b'] + ',' + 1 + ')',
-                            pointHoverBorderWidth: 2,
-                            pointRadius: 1,
-                            pointHitRadius: 10,
-                            data: t
+                            data: this.state.labels
                         }
+                        // },
+                        // {
+                        //     label: 'My Second dataset',
+                        //     fill: false,
+                        //     lineTension: 0.1,
+                        //     backgroundColor: 'rgba(' + dc2['r'] + ',' + dc2['g'] + ',' + dc2['b'] + ',' + 0.4 + ')',
+                        //     borderColor: 'rgba(' + dc2['r'] + ',' + dc2['g'] + ',' + dc2['b'] + ',' + 1 + ')',
+                        //     borderCapStyle: 'butt',
+                        //     borderDash: [],
+                        //     borderDashOffset: 0.0,
+                        //     borderJoinStyle: 'miter',
+                        //     pointBorderColor: 'rgba(' + dc2['r'] + ',' + dc2['g'] + ',' + dc2['b'] + ',' + 1 + ')',
+                        //     pointBackgroundColor: '#fff',
+                        //     pointBorderWidth: 1,
+                        //     pointHoverRadius: 5,
+                        //     pointHoverBackgroundColor: 'rgba(' + dc2['r'] + ',' + dc2['g'] + ',' + dc2['b'] + ',' + 1 + ')',
+                        //     pointHoverBorderColor: 'rgba(' + dc2['r'] + ',' + dc2['g'] + ',' + dc2['b'] + ',' + 1 + ')',
+                        //     pointHoverBorderWidth: 2,
+                        //     pointRadius: 1,
+                        //     pointHitRadius: 10,
+                        //     data: t
+                        // }
                     ]
                 },
                 loading: false
@@ -314,11 +351,59 @@ export class Timeline extends Component {
 
         console.log(csv);
 
-        for (let i = 1; i < csv.length; i++) {
-            if (csv[i].length == 2) {
-                ps.push(csv[i][0]);
-                ls.push(csv[i][1]);
+        let len = csv.length;
+
+        let i = 1;
+        let n = 1;
+        let inc = 1000;
+        let temp = 0.0;
+        for (i = 1; i < len; ) {
+            let lsavg = 0;
+            let psavg = 0;
+
+            for(n = i; n < (i+inc) && n < len; n++)
+            {
+                //console.log(csv[n][1]);
+                temp = parseFloat(csv[n][1]);
+                lsavg += Number.isNaN(temp) ? 0.0 : temp;
+
+                //console.log("lsavg: " + lsavg);
+                if(Number.isNaN(lsavg))
+                {
+                    console.log("lsavg NaN at index: " + n);
+                    break;
+                }
+
+                temp = parseInt(csv[n][2]);
+                psavg += Number.isNaN(temp) ? 0.0 : temp;
+
+                //console.log("psavg: " + psavg);
+                if(Number.isNaN(psavg))
+                {
+                    console.log("psavg NaN at index: " + n);
+                    break;
+                }
             }
+            if(Number.isNaN(lsavg))
+            {
+                break;
+            }
+
+            if(Number.isNaN(psavg))
+            {
+                break;
+            }
+            //console.log(lsavg / n);
+            //console.log(psavg / n);
+            ls.push(lsavg / (n - i));
+            ps.push(psavg / (n - i));
+
+            i += inc;
+            //
+            // if (csv[i].length >= 2) {
+            //     ls.push(csv[i][1]);
+            //     ps.push(csv[i][2]);
+            // }
         }
         //ls = ls.filter(onlyUnique);
 

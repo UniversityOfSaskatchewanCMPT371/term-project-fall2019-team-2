@@ -96,7 +96,7 @@ Meeting with Osgood for Verification of Requirements
 [Check off who attended]
 
 - [ ] Camille
-- [ ] Mesa
-- [ ] Evan
+- [*] Mesa
+- [*] Evan
 - [ ] Amanda
-- [ ] Clinton
+- [*] Clinton

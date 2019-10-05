@@ -1,17 +1,17 @@
 Meeting Agenda (September 24, 2019)
-The primary purpose of today�s meeting is to decide the final course of action concerning the presentation on infrastructure this coming Thursday (September 26) as well as taking the first steps towards planning the next major milestone- the requirements document.
+The primary purpose of todays meeting is to decide the final course of action concerning the presentation on infrastructure this coming Thursday (September 26) as well as taking the first steps towards planning the next major milestone- the requirements document.
 Topics:
-�	Review and finalize the existing presentation document
-�	Runover of certain tools relevant to the build process
-�	Review specifications for the requirements doc
-�	Distribute roles as needed
+-	Review and finalize the existing presentation document
+- Runover of certain tools relevant to the build process
+-	Review specifications for the requirements doc
+-	Distribute roles as needed
 After Action Report:
 Duration: 1 hour (roughly)
-�	The existing presentation slides were reviewed and revised by the team
-�	There were a handful of briefings/overviews of certain tools, IDE�s, etc. that will be used throughout term
-�	Two emails were forwarded to the stakeholder: one making an inquiry into the data, another to set up a meeting time � ideally Thursday afternoon 
-�	There was a brief review of the specifications for upcoming requirements document
-�	Based off said review, roles for specific components were equally distributed, based on role and experience:
+-	The existing presentation slides were reviewed and revised by the team
+-	There were a handful of briefings/overviews of certain tools, IDE�s, etc. that will be used throughout term
+-	Two emails were forwarded to the stakeholder: one making an inquiry into the data, another to set up a meeting time � ideally Thursday afternoon 
+-	There was a brief review of the specifications for upcoming requirements document
+-	Based off said review, roles for specific components were equally distributed, based on role and experience:
 o	INITIAL SC: Braunson + Others
 o	CONTINUOUS INTEGRATION + SMOKE TESTING: Braunson
 o	MINI MILESTONES: Amanda + Camille
@@ -24,7 +24,7 @@ o	REPORTING TEST RESULTS + DEFECTS: Evan + Eileen
 o	EXISTING + PLANNED TESTS: Eileen
 o	MILESTONE PLANNING: Anurag
 o	ACTIVITY LOG: All
-�	A meetup between the individuals presenting on September 26 was organized to prepare/practice presenting
+-	A meetup between the individuals presenting on September 26 was organized to prepare/practice presenting
 Attendance:
   Camille
   Anurag

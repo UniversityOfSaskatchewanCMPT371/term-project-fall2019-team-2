@@ -1,0 +1,49 @@
+October 1st meeting minutes:
+
+Agenda Issues Discussed:
+
+- Requirements Document *IN PROGRESS*
+    - Rough draft to be completed by Friday (before our meeting
+    with Osgood at 5:30pm)
+    - This will be the item for formal review for ID1, formal
+    review to be done by Eileen and Evan on Saturday (Oct 5th)
+    
+- Initial Source Code *SOLVED*
+    - This was completed by Mesa
+
+- Risk Documentation
+    - We agreed that we will discuss our final schedule, and
+    go forward with setting up some "final dates" that we hope
+    to have our respective parts done by.
+    *TABLED*: Until final schedule comes out
+
+- Time Tracking *SOLVED*
+    - Issue resolved, the spreadsheet can now be edited by
+    anyone
+
+- Formal Review *SOLVED*
+    - As above, this will be the requirements document.
+
+- Current Milestones 
+    - Rough draft of requirements document for Friday
+    - Review of requirements on Saturday
+    - ID1 hand-in on Sunday
+    - Amanda and Camille will figure out more mini-milestones
+
+Other Issues Discussed:
+
+- Buildmaster Redundancy Plan
+    - Anurag will shadow Braunson once we begin writing code
+    to better understand the build process
+
+- GUI Mock-ups
+    - Amanda will try to develop a few GUI mock-ups to present
+    to Osgood by Friday
+    - If possible, anyone who has GUI ideas can generate additional
+    mock-ups
+
+Future Issues:
+
+- ID1 Presentation is due on Oct 8th (2 days after ID1 is due)
+    - Who will prepare it?
+    - Who will present it?

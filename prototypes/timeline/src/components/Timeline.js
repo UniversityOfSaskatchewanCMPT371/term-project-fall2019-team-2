@@ -341,7 +341,6 @@ export class Timeline extends Component {
     }
 
     async csvParse(csv) {
-        //console.log(csv[1][0]);
         let ps = [];
         let ls = [];
 
@@ -357,6 +356,7 @@ export class Timeline extends Component {
         let n = 1;
         let inc = 1000;
         let temp = 0.0;
+
         for (i = 1; i < len; ) {
             let lsavg = 0;
             let psavg = 0;
@@ -388,25 +388,15 @@ export class Timeline extends Component {
             {
                 break;
             }
-
             if(Number.isNaN(psavg))
             {
                 break;
             }
-            //console.log(lsavg / n);
-            //console.log(psavg / n);
             ls.push(lsavg / (n - i));
             ps.push(psavg / (n - i));
 
             i += inc;
-            //
-            // if (csv[i].length >= 2) {
-            //     ls.push(csv[i][1]);
-            //     ps.push(csv[i][2]);
-            // }
         }
-        //ls = ls.filter(onlyUnique);
-
         console.log(ps);
         console.log(ls);
 

@@ -120,7 +120,8 @@ export class d3test extends Component {
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function(d) {
-                return "<strong>Data Value:</strong> <span style='color:red'>" + d.Data_value + "</span>";
+                return "<strong>Data Value:</strong> <span style='color:red'>" + d.Data_value + "</span>" +
+                    "<br /><strong>Period:</strong> <span style='color:red'>" + d.Period + "</span>";
             });
 
         let svg = d3.select("body").append("svg")
@@ -155,7 +156,8 @@ export class d3test extends Component {
             .enter()
             .append("rect")
             .attr("class", "bar")
-            .attr("x", d => x(parseFloat(d.Period)))
+            //.attr("x", (d, i) => x(parseFloat(d.Period)))
+            .attr("x", (d, i) => 10 * i)
             .attr("width", 10)
             //.attr("width", x.bandwidth())
             .attr("y", d => y(parseInt(d.Data_value)))
@@ -215,7 +217,13 @@ export class d3test extends Component {
         let fileReader = new FileReader();
 
         const handleFileRead = (e) => {
-            const content = d3.csvParse(fileReader.result);
+            const content = d3.csvParse(fileReader.result, function(d) {
+                return {
+                    Period: parseFloat(d.Period),
+                    Data_value: parseInt(d.Data_value)
+                }
+            });
+
             console.log(content);
             this.setState((state) => {return {csvData: content}});
             this.drawBars();

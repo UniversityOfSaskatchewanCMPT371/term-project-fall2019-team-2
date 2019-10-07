@@ -7,6 +7,7 @@ import CSVReader from "react-csv-reader";
 import * as d3 from "d3";
 import {Container} from "reactstrap";
 import d3tip from "d3-tip";
+import d3transition from "d3-transition";
 
 function r50() {
     return Math.floor(Math.random() * 2);
@@ -96,35 +97,33 @@ export class d3test extends Component {
 
     drawBars()
     {
-        var margin = {top: 40, right: 20, bottom: 30, left: 40},
+        let data = this.state.csvData.slice(0, 1000);
+        console.log(data);
+        let margin = {top: 40, right: 20, bottom: 30, left: 40},
             width = 960 - margin.left - margin.right,
             height = 500 - margin.top - margin.bottom;
 
-        var formatPercent = d3.format(".0%");
+        let formatPercent = d3.format(".0%");
 
-        var x = d3.scaleOrdinal()
-            .rangeRoundBands([0, width], .1);
+        let x = d3.scaleBand().rangeRound([0, width]);
 
-        var y = d3.scaleLinear()
+        let y = d3.scaleLinear()
+            .domain([0, d3.max(data, function(d) {
+                return parseInt(d.Data_value);})])
             .range([height, 0]);
 
-        var xAxis = d3.svg.axis()
-            .scale(x)
-            .orient("bottom");
+        let xAxis = d3.axisBottom(x);
 
-        var yAxis = d3.svg.axis()
-            .scale(y)
-            .orient("left")
-            .tickFormat(formatPercent);
+        let yAxis = d3.axisLeft(y);
 
-        var tip = d3tip()
+        let tip = d3tip()
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function(d) {
-                return "<strong>Period:</strong> <span style='color:red'>" + d.Period + "</span>";
-            })
+                return "<strong>Data Value:</strong> <span style='color:red'>" + d.Data_value + "</span>";
+            });
 
-        var svg = d3.select("body").append("svg")
+        let svg = d3.select("body").append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
@@ -132,42 +131,58 @@ export class d3test extends Component {
 
         svg.call(tip);
 
-        d3.tsv("data.tsv", type, function(error, data) {
-            x.domain(data.map(function(d) { return d.letter; }));
-            y.domain([0, d3.max(data, function(d) { return d.frequency; })]);
+        x.domain(data.map(function(d) { return parseFloat(d.Period); }));
 
-            svg.append("g")
-                .attr("class", "x axis")
-                .attr("transform", "translate(0," + height + ")")
-                .call(xAxis);
+        svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(xAxis);
 
-            svg.append("g")
-                .attr("class", "y axis")
-                .call(yAxis)
-                .append("text")
-                .attr("transform", "rotate(-90)")
-                .attr("y", 6)
-                .attr("dy", ".71em")
-                .style("text-anchor", "end")
-                .text("Frequency");
+        svg.append("g")
+            .attr("class", "y axis")
+            .call(yAxis)
+            .append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 6)
+            .attr("dy", ".71em")
+            .style("text-anchor", "end")
+            .text("Frequency");
 
-            svg.selectAll(".bar")
-                .data(data)
-                .enter().append("rect")
-                .attr("class", "bar")
-                .attr("x", function(d) { return x(d.letter); })
-                .attr("width", x.rangeBand())
-                .attr("y", function(d) { return y(d.frequency); })
-                .attr("height", function(d) { return height - y(d.frequency); })
-                .on('mouseover', tip.show)
-                .on('mouseout', tip.hide)
+        svg.append("g")
+            .attr("id", "bars")
+            .selectAll(".bar")
+            .data(data)
+            .enter()
+            .append("rect")
+            .attr("class", "bar")
+            .attr("x", d => x(parseFloat(d.Period)))
+            .attr("width", 10)
+            //.attr("width", x.bandwidth())
+            .attr("y", d => y(parseInt(d.Data_value)))
+            .attr("height", d => (height - y(parseInt(d.Data_value))))
+            .on('mouseover', tip.show)
+            .on('mouseout', tip.hide);
 
-        });
+        console.log(y(96000));
+        console.log(y(120000));
+        console.log("Max: " + d3.max(data, function(d) {
+            return parseInt(d.Data_value);
+        }));
 
-        function type(d) {
-            d.frequency = +d.frequency;
-            return d;
-        }
+        //let transition = d3transition();
+
+        let barsX = 0;
+
+        setInterval(function () {
+            barsX -= 100;
+            d3.select("#bars")
+                .transition()
+                .duration(1000)
+                .ease(d3.easeLinear)
+                .attr("transform", (d) => {
+                    return `translate(${barsX},0)`
+                })
+        }, 1000);
     }
 
     render() {
@@ -203,7 +218,8 @@ export class d3test extends Component {
             const content = d3.csvParse(fileReader.result);
             console.log(content);
             this.setState((state) => {return {csvData: content}});
-        }
+            this.drawBars();
+        };
 
         fileReader.onloadend = handleFileRead;
         fileReader.readAsText(csvfile);

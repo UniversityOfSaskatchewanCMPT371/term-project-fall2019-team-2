@@ -7,6 +7,7 @@ import { Counter } from './components/Counter';
 import { OccurrenceData } from './components/OccurrenceData';
 import { Timeline } from './components/Timeline';
 import { d3test } from './components/d3test';
+import {CanvasTest} from "./components/CanvasTest";
 import 'bootstrap/dist/css/bootstrap.css';
 
 //import './custom.css'
@@ -23,6 +24,7 @@ export default class App extends Component {
           <Route path='/OccurrenceData' component={OccurrenceData} />
           <Route path='/Timeline' component={Timeline} />
           <Route path='/d3test' component={d3test} />
+            <Route path='/CanvasTest' component={CanvasTest} />
         </Layout>
     );
   }

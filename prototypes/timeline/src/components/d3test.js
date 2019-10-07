@@ -5,6 +5,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-grid.css';
 import CSVReader from "react-csv-reader";
 import * as d3 from "d3";
+import {Container} from "reactstrap";
+import d3tip from "d3-tip";
 
 function r50() {
     return Math.floor(Math.random() * 2);
@@ -48,20 +50,30 @@ export class d3test extends Component {
         super(props);
         this.state = {
             data: [12, 5, 6, 6, 9, 10],
-            width: 700,
-            height: 500,
+            width: 1000,
+            height: 1000,
             id: "d3test"
         };
 
         this.csvParse = this.csvParse.bind(this);
+        this.d3csv = this.d3csv.bind(this);
     }
 
     componentDidMount() {
-        this.drawChart();
+        //this.drawChart();
     }
 
     drawChart() {
-        const data = [12, 5, 6, 6, 9, 10];
+        let t0 = performance.now();
+        //const data = [12, 5, 6, 6, 9, 10];
+        const data = this.state.points;
+
+        let max = data.reduce(function(a, b) {
+            return Math.max(a, b);
+        });
+
+        let heightScale = this.state.height / max;
+        let width = Math.floor(this.state.width / data.length);
 
         const svg = d3.select("#svgtarget")
             .append("svg")
@@ -72,22 +84,129 @@ export class d3test extends Component {
             .data(data)
             .enter()
             .append("rect")
-            .attr("x", (d, i) => i * 50)
-            .attr("y", (d, i) => this.state.height - (d * 10))
-            //.attr("y", 0)
-            .attr("width", 50)
-            .attr("height", (d, i) => d * 10)
+            .attr("x", (d, i) => width * i)
+            .attr("y", (d, i) => this.state.height - (d * heightScale))
+            .attr("width", width)
+            .attr("height", (d, i) => d * heightScale)
             .attr("fill", "green");
+
+        let t1 = performance.now();
+        console.log("Call to doSomething took " + (t1 - t0) + " milliseconds.");
     }
+
+    drawBars()
+    {
+        var margin = {top: 40, right: 20, bottom: 30, left: 40},
+            width = 960 - margin.left - margin.right,
+            height = 500 - margin.top - margin.bottom;
+
+        var formatPercent = d3.format(".0%");
+
+        var x = d3.scaleOrdinal()
+            .rangeRoundBands([0, width], .1);
+
+        var y = d3.scaleLinear()
+            .range([height, 0]);
+
+        var xAxis = d3.svg.axis()
+            .scale(x)
+            .orient("bottom");
+
+        var yAxis = d3.svg.axis()
+            .scale(y)
+            .orient("left")
+            .tickFormat(formatPercent);
+
+        var tip = d3tip()
+            .attr('class', 'd3-tip')
+            .offset([-10, 0])
+            .html(function(d) {
+                return "<strong>Period:</strong> <span style='color:red'>" + d.Period + "</span>";
+            })
+
+        var svg = d3.select("body").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        svg.call(tip);
+
+        d3.tsv("data.tsv", type, function(error, data) {
+            x.domain(data.map(function(d) { return d.letter; }));
+            y.domain([0, d3.max(data, function(d) { return d.frequency; })]);
+
+            svg.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + height + ")")
+                .call(xAxis);
+
+            svg.append("g")
+                .attr("class", "y axis")
+                .call(yAxis)
+                .append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 6)
+                .attr("dy", ".71em")
+                .style("text-anchor", "end")
+                .text("Frequency");
+
+            svg.selectAll(".bar")
+                .data(data)
+                .enter().append("rect")
+                .attr("class", "bar")
+                .attr("x", function(d) { return x(d.letter); })
+                .attr("width", x.rangeBand())
+                .attr("y", function(d) { return y(d.frequency); })
+                .attr("height", function(d) { return height - y(d.frequency); })
+                .on('mouseover', tip.show)
+                .on('mouseout', tip.hide)
+
+        });
+
+        function type(d) {
+            d.frequency = +d.frequency;
+            return d;
+        }
+    }
+
     render() {
         return (
             <div>
-                <div className="row">
-                    <div id="svgtarget" className="col-12">
+                <Container>
+                    <div className="row">
+                        <div className="col-12">
+                            <CSVReader
+                                cssClass="react-csv-input"
+                                label="Select CSV "
+                                onFileLoaded={this.csvParse}
+                            />
+                        </div>
+                        <div className="col-12">
+                            <input type="file" onChange={this.d3csv} />
+                        </div>
                     </div>
+                </Container>
+
+                <div id="svgtarget">
                 </div>
             </div>
         );
+    }
+
+    async d3csv(event) {
+
+        let csvfile = event.target.files[0];
+        let fileReader = new FileReader();
+
+        const handleFileRead = (e) => {
+            const content = d3.csvParse(fileReader.result);
+            console.log(content);
+            this.setState((state) => {return {csvData: content}});
+        }
+
+        fileReader.onloadend = handleFileRead;
+        fileReader.readAsText(csvfile);
     }
 
     async csvParse(csv) {
@@ -104,7 +223,8 @@ export class d3test extends Component {
 
         let i = 1;
         let n = 1;
-        let inc = 1000;
+        //let inc = 1000;
+        let inc = Math.ceil(len / this.state.width);
         let temp = 0.0;
 
         for (i = 1; i < len; ) {
@@ -156,6 +276,6 @@ export class d3test extends Component {
             labels: ls
         });
 
-        await this.populateData();
+        this.drawChart();
     }
 }

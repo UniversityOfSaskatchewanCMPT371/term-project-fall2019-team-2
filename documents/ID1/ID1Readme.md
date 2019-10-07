@@ -8,16 +8,16 @@ implementation.
 
 # Mini-Milestones
 
-[Our current list](https://docs.google.com/document/d/1ujJ8a0qoPQweaCfs70N5yeBNBPvap-C2hYs_RHLHIz8/edit) of mini-milestones
-is held here, and our road-map for the completion of those milestones is held [here](TODO: Anurag).
+[Our current list](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/master/documents/ID1/Mini-Milestones.pdf) of mini-milestones
+is held here, and our road-map for the completion of those milestones is held [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/master/documents/ID1/Plans%20to%20achieve%20the%20ministones.pdf).
 
 # Risk Report
 
-[Our list of current risks](https://docs.google.com/document/d/1jAMMjv_vz5t0m3HDcutzHE_9z9o81z6V4ww_K7yNTQM/edit) is here.
+[Our list of current risks](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/master/documents/ID1/Risk%20Analysis.pdf) is here.
 
 # Reviews Conducted
 
-[This](TODO: FORMAL REVIEW) is the formal review conducted for ID1.  It was done for the requirements 
+[This](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/master/documents/reviews/Formal_review_doc.pdf) is the formal review conducted for ID1.  It was done for the requirements 
 document, to ensure that the team fully understood the scope and needs of the project.
 
 # Meetings With Stakeholders
@@ -29,7 +29,7 @@ document outlines our initial stakeholder meeting and the issues discussed there
 # Testing
 
 [This](https://docs.google.com/spreadsheets/d/1ZnNRrXKV4FqdfMf8I6ga-5IDUYAZFbtIXiw5_pEGHTY/edit#gid=0) is our current testing matrix.
-[This](TODO TESTABILITY INVESTMENTS DOC)
+[This](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/master/documents/ID1/Testing%20Strategy.pdf) document outlines our general strategy with respect to testing.
 
 # Timelog
 

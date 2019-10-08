@@ -168,8 +168,6 @@ export class d3test extends Component {
             .style('color', 'red')
             .text("Temp");
 
-        //console.log(y(0));
-
         //Create bars
         let plot = barsLayer.append("g")
             .attr('class', 'plot')
@@ -236,27 +234,6 @@ export class d3test extends Component {
                 .on('mouseout', tip.hide);
 
             console.log(dataIdx);
-
-            // x = d3.scaleBand()
-            //     .domain(data.map(function(d) { return d.Date; }))
-            //     .rangeRound([0, data.length * barWidth]);
-            //
-            // xAxis = d3.axisBottom(x);
-            //
-            // d3.select('xaxis')
-            //     .call(xAxis);
-            //
-            // barsLayer.append("g")
-            //     .style('color', 'red')
-            //     .attr("class", "x axis")
-            //     //.attr('y', height)
-            //     .attr("transform", "translate(0," + height + ")")
-            //     .call(xAxis)
-            //     .selectAll("text")
-            //     .style("text-anchor", "end")
-            //     .attr("dx", "-.8em")
-            //     .attr("dy", ".15em")
-            //     .attr("transform", "rotate(-90)");
         }, 1000)
 
         setInterval(function () {
@@ -269,8 +246,6 @@ export class d3test extends Component {
                     return `translate(${barsX},0)`
                 })
         }, 1000);
-
-
     }
 
     render() {
@@ -309,18 +284,6 @@ export class d3test extends Component {
                         Temp: ~~parseFloat(d['Temp (C)'])
                     }
                 });
-
-            // let content = d3.csvParse(fileReader.result, function(d) {
-            //     return {
-            //         Period: parseFloat(d.Period),
-            //         Data_value: parseInt(d.Data_value)
-            //     }
-            // });
-
-            // content = content.sort((a, b) => {
-            //     return a.Period - b.Period;
-            // });
-
             console.log(content);
             this.setState((state) => {return {csvData: content}});
             this.drawBars();

@@ -16,6 +16,7 @@ ID1 Post-Mortem and ID2 Planning
         - What are peoples time commitments coming up?
         - We have a current estimate of 280 man-hours for the next milestone
         - This means roughly 15 hours per person, per week
+        - Do we want to make a Gantt chart?
     - Where do we think we will be by Oct 22nd (due date)
     - What needs to be done first?
         - Topo sort the mini-milestones for ID2

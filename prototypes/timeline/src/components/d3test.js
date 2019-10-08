@@ -9,6 +9,8 @@ import {Container} from "reactstrap";
 import d3tip from "d3-tip";
 import d3transition from "d3-transition";
 
+
+
 function r50() {
     return Math.floor(Math.random() * 2);
 }
@@ -97,31 +99,32 @@ export class d3test extends Component {
 
     drawBars()
     {
-        let data = this.state.csvData.slice(0, 1000);
+        let barWidth = 40;
+        let csvData = this.state.csvData.slice(4500);
+        let data = csvData.slice(0, 100);
         console.log(data);
-        let margin = {top: 40, right: 20, bottom: 30, left: 40},
+        let margin = {top: 40, right: 20, bottom: 100, left: 40},
             width = 960 - margin.left - margin.right,
-            height = 500 - margin.top - margin.bottom;
+            height = 600 - margin.top - margin.bottom;
 
-        let formatPercent = d3.format(".0%");
-
-        let x = d3.scaleBand().rangeRound([0, width]);
+        let x = d3.scaleBand()
+            .domain(csvData.slice(0, 2000).map(function(d) { return d.Date; }))
+            .rangeRound([0, csvData.slice(0, 2000).length * barWidth]);
 
         let y = d3.scaleLinear()
-            .domain([0, d3.max(data, function(d) {
-                return parseInt(d.Data_value);})])
+            .domain([d3.min(csvData, (d) => {return d.Temp;}),
+                    d3.max(csvData, (d) => {return d.Temp;})])
             .range([height, 0]);
 
         let xAxis = d3.axisBottom(x);
-
         let yAxis = d3.axisLeft(y);
 
         let tip = d3tip()
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function(d) {
-                return "<strong>Data Value:</strong> <span style='color:red'>" + d.Data_value + "</span>" +
-                    "<br /><strong>Period:</strong> <span style='color:red'>" + d.Period + "</span>";
+                return "<strong>Date:</strong> <span style='color:red'>" + d.Date + "</span>" +
+                    "<br /><strong>Temp:</strong> <span style='color:red'>" + d.Temp + "</span>";
             });
 
         let svg = d3.select("body").append("svg")
@@ -132,14 +135,29 @@ export class d3test extends Component {
 
         svg.call(tip);
 
-        x.domain(data.map(function(d) { return parseFloat(d.Period); }));
+        //x.domain(data.map(function(d) { return Date.parse(d.Date); }));
 
-        svg.append("g")
-            .attr("class", "x axis")
-            .attr("transform", "translate(0," + height + ")")
-            .call(xAxis);
+        let clip = svg
+            .append('defs')
+            .append('clipPath')
+            .attr('id', 'barsBox')
+            .append('rect')
+            .attr('width', width)
+            .attr('height', height + margin.top + margin.bottom)
+            .attr('x', 0)
+            .attr('y', 0);
 
-        svg.append("g")
+        //Create layers in order so that the bars will disapear under the axis
+        let barsLayer = svg.append('g')
+            .attr("clip-path", "url(#barsBox)")
+            .append('g')
+            .attr('id', 'barsLayer');
+
+        let axisLayer = svg.append('g')
+            .attr('id', 'axisLayer');
+
+        axisLayer.append("g")
+            .style('color', 'red')
             .attr("class", "y axis")
             .call(yAxis)
             .append("text")
@@ -147,37 +165,103 @@ export class d3test extends Component {
             .attr("y", 6)
             .attr("dy", ".71em")
             .style("text-anchor", "end")
-            .text("Frequency");
+            .style('color', 'red')
+            .text("Temp");
 
-        svg.append("g")
-            .attr("id", "bars")
-            .selectAll(".bar")
-            .data(data)
-            .enter()
+        //console.log(y(0));
+
+        //Create bars
+        let plot = barsLayer.append("g")
+            .attr('class', 'plot')
+            .attr("id", "bars");
+
+        let bars = plot.selectAll(".bar")
+            .data(data);
+
+        bars.enter()
             .append("rect")
             .attr("class", "bar")
             //.attr("x", (d, i) => x(parseFloat(d.Period)))
-            .attr("x", (d, i) => 10 * i)
-            .attr("width", 10)
+            .attr("x", (d, i) => barWidth * i)
+            .attr("width", barWidth)
             //.attr("width", x.bandwidth())
-            .attr("y", d => y(parseInt(d.Data_value)))
-            .attr("height", d => (height - y(parseInt(d.Data_value))))
+            .attr("y", d => y(d.Temp))
+            .attr("height", d => (height - y(d.Temp)))
             .on('mouseover', tip.show)
             .on('mouseout', tip.hide);
 
-        console.log(y(96000));
-        console.log(y(120000));
-        console.log("Max: " + d3.max(data, function(d) {
-            return parseInt(d.Data_value);
-        }));
+        bars.exit().remove();
 
-        //let transition = d3transition();
+        barsLayer.append("g")
+            .attr('id', 'xaxis')
+            .style('color', 'red')
+            .attr("class", "x axis")
+            //.attr('y', height)
+            .attr("transform", "translate(0," + height + ")")
+            .call(xAxis)
+            .selectAll("text")
+            .style("text-anchor", "end")
+            .attr("dx", "-.8em")
+            .attr("dy", ".15em")
+            .attr("transform", "rotate(-90)");
 
         let barsX = 0;
+        let inc = 1000;
+        let dataIdx = 0;
+
+        setInterval(function(){
+            d3.selectAll('.bar').filter(function(d,i)  {
+                let x = parseInt(d3.select(this).attr('x'));
+                let result = ((x + barWidth + barsX) < 0);
+                if(result) {
+                    dataIdx++;
+                }
+                return result;
+            }).remove();
+
+            data = csvData.slice(dataIdx, 100 + dataIdx);
+
+            plot.selectAll(".bar")
+                .data(data)
+                .enter()
+                .append("rect")
+                .attr("class", "bar")
+                //.attr("x", (d, i) => x(parseFloat(d.Period)))
+                .attr("x", (d, i) => barWidth * (i + dataIdx))
+                .attr("width", barWidth)
+                //.attr("width", x.bandwidth())
+                .attr("y", d => y(d.Temp))
+                .attr("height", d => (height - y(d.Temp)))
+                .on('mouseover', tip.show)
+                .on('mouseout', tip.hide);
+
+            console.log(dataIdx);
+
+            // x = d3.scaleBand()
+            //     .domain(data.map(function(d) { return d.Date; }))
+            //     .rangeRound([0, data.length * barWidth]);
+            //
+            // xAxis = d3.axisBottom(x);
+            //
+            // d3.select('xaxis')
+            //     .call(xAxis);
+            //
+            // barsLayer.append("g")
+            //     .style('color', 'red')
+            //     .attr("class", "x axis")
+            //     //.attr('y', height)
+            //     .attr("transform", "translate(0," + height + ")")
+            //     .call(xAxis)
+            //     .selectAll("text")
+            //     .style("text-anchor", "end")
+            //     .attr("dx", "-.8em")
+            //     .attr("dy", ".15em")
+            //     .attr("transform", "rotate(-90)");
+        }, 1000)
 
         setInterval(function () {
-            barsX -= 100;
-            d3.select("#bars")
+            barsX -= inc;
+            d3.select("#barsLayer")
                 .transition()
                 .duration(1000)
                 .ease(d3.easeLinear)
@@ -185,6 +269,8 @@ export class d3test extends Component {
                     return `translate(${barsX},0)`
                 })
         }, 1000);
+
+
     }
 
     render() {
@@ -217,12 +303,23 @@ export class d3test extends Component {
         let fileReader = new FileReader();
 
         const handleFileRead = (e) => {
-            const content = d3.csvParse(fileReader.result, function(d) {
-                return {
-                    Period: parseFloat(d.Period),
-                    Data_value: parseInt(d.Data_value)
-                }
-            });
+            let content = d3.csvParse(fileReader.result , function(d) {
+                    return {
+                        Date: d['Date/Time'],
+                        Temp: ~~parseFloat(d['Temp (C)'])
+                    }
+                });
+
+            // let content = d3.csvParse(fileReader.result, function(d) {
+            //     return {
+            //         Period: parseFloat(d.Period),
+            //         Data_value: parseInt(d.Data_value)
+            //     }
+            // });
+
+            // content = content.sort((a, b) => {
+            //     return a.Period - b.Period;
+            // });
 
             console.log(content);
             this.setState((state) => {return {csvData: content}});

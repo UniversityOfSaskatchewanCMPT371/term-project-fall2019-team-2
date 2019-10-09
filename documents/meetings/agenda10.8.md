@@ -40,7 +40,7 @@ ID1 Post-Mortem and ID2 Planning
         - We need more feedback with the stakeholder
             - This will be done by weekly builds
 
-ID2 Planning:
+2. ID2 Planning:
     - We need an src directory with initial source code (this was assigned to Mesa)
     - We need to do some design work (this was assigned to Mesa, Camille)
     - We need to figure out our testing architecture (this was assigned to Eileen and Amanda)

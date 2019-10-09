@@ -251,4 +251,4 @@ _Pvt_Extensions
 **/*.pdf
 
 # JS Stuff
-public/
+build/

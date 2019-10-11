@@ -1,0 +1,32 @@
+# Meeting Agenda (October 11th, 2019)
+
+DESCRIPTION
+
+## Topics
+
+[Group members can add topics if there is something to share/bring up/solve]
+0. Review Design
+1. Stubs and Pre/Post Conditions are supposed to be done tonight
+  - Once this is done then we can begin implementation
+2. How many people are needed for implementation?
+3. How many people are needed to write tests?
+4. Are we on track? Is the current Gantt chart fair/appropriate?
+  - Is it possible to parallelize this more?
+    - Would mocks aid with this?
+5. Bug party after feature freeze?
+
+## After Action Report (Minutes)
+
+>Duration:
+
+[Check off who attended]
+
+- [ ] Camille
+- [ ] Anurag
+- [ ] Mesa
+- [ ] Braunson
+- [ ] Evan
+- [ ] Eileen
+- [ ] Kevin
+- [ ] Amanda
+- [ ] Clinton

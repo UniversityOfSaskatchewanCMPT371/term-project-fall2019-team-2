@@ -14,6 +14,7 @@ DESCRIPTION
   - Is it possible to parallelize this more?
     - Would mocks aid with this?
 5. Bug party after feature freeze?
+6. Is Trello premium worth it?
 
 ## After Action Report (Minutes)
 

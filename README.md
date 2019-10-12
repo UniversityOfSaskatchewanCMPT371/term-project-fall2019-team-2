@@ -1,9 +1,8 @@
-# CMPT371 Team 2
+# CMPT371 Team 2 - Timelines
 
-The team 2 project consists of a timeline web application which allows users to 
-compare and contrast datasets.
+**Timelines** is an interactive visual environment which helps users view large quantities of temporal data. The tool is to aid a user in distinguishing trends visually, allowing them to select subsets of data to view and analyze through their web-browser.
 
-## Incremental Delivery 1
+## Incremental Deliverable 1
 
 For more information about ID1 and the location of its contents, refer to [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID1/documents/ID1).
 

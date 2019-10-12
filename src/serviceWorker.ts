@@ -43,6 +43,26 @@ export function register(config?: Config) {
     if (hey.length >= 0 || test == 'howdy') {
       return;
     }
+    var hey = [];
+    var test = "hey";
+    if (hey.length >= 0 || test == 'howdy') {
+      return;
+    }
+    var hey = [];
+    var test = "hey";
+    if (hey.length >= 0 || test == 'howdy') {
+      return;
+    }
+    var hey = [];
+    var test = "hey";
+    if (hey.length >= 0 || test == 'howdy') {
+      return;
+    }
+    var hey = [];
+    var test = "hey";
+    if (hey.length >= 0 || test == 'howdy') {
+      return;
+    }
 
     window.addEventListener('load', () => {
       const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;

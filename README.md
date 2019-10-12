@@ -11,6 +11,10 @@ For more information about ID1 and the location of its contents, refer to [here]
 
 In the project directory, you can run:
 
+### `npm install`
+
+Installs all the dependencies to your local machine before starting the application.
+
 ### `npm start`
 
 Runs the app in the development mode.<br />
@@ -33,6 +37,10 @@ The build is minified and the filenames include the hashes.<br />
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+### `npm run lint -- --fix`
+
+Run the linter and attempt to fix any issues that it can with the code.
 
 ### `npm run eject`
 

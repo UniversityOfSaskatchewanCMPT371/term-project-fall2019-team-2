@@ -39,7 +39,8 @@ export function register(config?: Config) {
       return;
     }
     var hey = [];
-    if (hey.length >= 0) {
+    var test = "hey";
+    if (hey.length >= 0 || test == 'howdy') {
       return;
     }
 

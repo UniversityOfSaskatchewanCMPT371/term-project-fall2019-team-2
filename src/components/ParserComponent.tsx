@@ -17,7 +17,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
     super(props);
     this.state = {
       prompt: props.prompt,
-      filetype: props.filetype,
+      fileType: props.fileType,
       data: [],
     };
   }
@@ -33,7 +33,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
           {this.props.prompt}
         </label>
         <input type="file" onChange={this.Parse}
-          accept={this.props.filetype.mimeName} />
+          accept={this.props.fileType.mimeName} />
       </div>
     );
   }
@@ -45,7 +45,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
    * @return {boolean}: a boolean indicating whether or not the file upload is
    * valid
    */
-  IsValid(fileEvent: any): boolean {
+  isValid(fileEvent: any): boolean {
     return true;
   }
 
@@ -54,7 +54,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
    * @param {Array} data: the array of data to sort
    * @return {boolean}: a boolean indicating whether or not the sort succeeded
    */
-  SortData(data: Array<object>): boolean {
+  sortData(data: Array<object>): boolean {
     return true;
   }
 
@@ -65,7 +65,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
    * @return {Array}: a list of objects which define the methods available for
    * the data
    */
-  InferTypes(data: Array<object>): Array<object> {
+  inferTypes(data: Array<object>): Array<object> {
     return [];
   }
 
@@ -74,9 +74,9 @@ export default class ParserComponent extends React.Component<ParserInterface,
    * @param {Object} fileEvent: the event passed into this component
    */
   Parse(fileEvent: any) {
-    this.IsValid(fileEvent);
-    this.SortData(this.state.data);
-    this.InferTypes(this.state.data);
+    this.isValid(fileEvent);
+    this.sortData(this.state.data);
+    this.inferTypes(this.state.data);
 
     // Create new data object
     const csvData = new Data('fileName', this.state.data);
@@ -103,7 +103,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
         this.setState((state) => {
           return {
             prompt: this.state.prompt,
-            filetype: this.state.filetype,
+            fileType: this.state.fileType,
             data: content,
           };
         });

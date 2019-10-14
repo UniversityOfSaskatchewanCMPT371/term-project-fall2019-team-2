@@ -27,11 +27,11 @@ export class FileType {
 
 export default interface Parser {
     prompt: string;
-    filetype: FileType;
+    fileType: FileType;
 }
 
 export interface ParserState {
     prompt: string;
-    filetype: FileType;
+    fileType: FileType;
     data: Array<object>;
 }

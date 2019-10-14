@@ -1,15 +1,18 @@
-# CMPT371 Team 2
+# CMPT371 Team 2 - Timelines
 
-The team 2 project consists of a timeline web application which allows users to 
-compare and contrast datasets.
+**Timelines** is an interactive visual environment which helps users view large quantities of temporal data. The tool is to aid a user in distinguishing trends visually, allowing them to select subsets of data to view and analyze through their web-browser.
 
-## Incremental Delivery 1
+## Incremental Deliverable 1
 
 For more information about ID1 and the location of its contents, refer to [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID1/documents/ID1).
 
 ## Installing
 
 In the project directory, you can run:
+
+### `npm install`
+
+Installs all the dependencies to your local machine before starting the application.
 
 ### `npm start`
 
@@ -33,6 +36,10 @@ The build is minified and the filenames include the hashes.<br />
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+### `npm run lint -- --fix`
+
+Run the linter and attempt to fix any issues that it can with the code.
 
 ### `npm run eject`
 

@@ -30,6 +30,7 @@ ID2 Meeting 2
 9. Are mocks possible to get set up for ID2 to aid the developers, or is it better to just focus on getting
 some simple testing implemented and mocks will be added to the ID3 workflow?
 10. git stash overview
+11. Style-guide agreement
 
 N. Future Actions
 

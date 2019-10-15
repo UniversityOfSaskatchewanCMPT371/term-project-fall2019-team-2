@@ -35,17 +35,32 @@ some simple testing implemented and mocks will be added to the ID3 workflow?
 N. Future Actions
 
 ## After Action Report (Minutes)
+Duration: 1hr
+
+1. As of now we believe we can catch up to the dates on our Gantt chart
+  - Follow up with Anurag on Oct 16th to confirm that we're on schedule
+2. The bug party is planned for 6:00pm on the 19th of October
+3. The actual review forum needs to be updated
+4. We need a centralized document for spike prototypes
+5. The formal review is planned for 19th of October
+  - The item inspected will be the design documents
+  - The reviewers will be Clinton, Evan, and Braunson
+  - Prep starts at 1:00pm
+  - Review formal starts at 2:00pm
+6. Osgood meeting starts at 4:00pm on 19th of October
+7. We need to fix the categorization on the timelogs
+  - Some of them are redudant
 
 ## Attendance
 
 [Check off who attended]
 
-- [ ] Camille
-- [ ] Anurag
-- [ ] Mesa
-- [ ] Braunson
-- [ ] Evan
-- [ ] Eileen
-- [ ] Kevin
-- [ ] Amanda
-- [ ] Clinton
+- [x] Camille
+- [x] Anurag
+- [x] Mesa
+- [x] Braunson
+- [x] Evan
+- [x] Eileen
+- [x] Kevin
+- [x] Amanda
+- [x] Clinton

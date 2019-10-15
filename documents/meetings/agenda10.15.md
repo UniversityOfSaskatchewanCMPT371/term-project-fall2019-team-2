@@ -50,6 +50,7 @@ Duration: 1hr
 6. Osgood meeting starts at 4:00pm on 19th of October
 7. We need to fix the categorization on the timelogs
   - Some of them are redudant
+8. We've agreed that we will be using the Google JS style guide
 
 ## Attendance
 

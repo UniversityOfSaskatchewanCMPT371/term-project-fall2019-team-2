@@ -22,7 +22,7 @@ const App: React.FC = () => {
         </a>
       </header>
 
-      <ParserComponent prompt={'Select a CSV file: '} filetype={FileType.csv} />
+      <ParserComponent prompt={'Select a CSV file: '} fileType={FileType.csv} />
     </div>
   );
 };

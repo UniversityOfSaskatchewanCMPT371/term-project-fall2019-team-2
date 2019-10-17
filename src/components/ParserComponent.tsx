@@ -3,7 +3,7 @@ import ParserInterface from './ParserInterface';
 import {ParserState} from './ParserInterface';
 import * as d3 from 'd3';
 import * as d3dsv from 'd3-dsv';
-import Data from './Data';
+// import Data from './Data';
 
 /**
  * Purpose: react component responsible for receiving and parsing file data
@@ -80,7 +80,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
     this.InferTypes(this.state.data);
 
     // Create new data object
-    const csvData = new Data('fileName', this.state.data);
+    // const csvData = new Data('fileName', this.state.data);
 
   }
 
@@ -100,7 +100,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
     const handleFileRead = () => {
       if (typeof fileReader.result === 'string') {
         const content = d3.csvParse(fileReader.result);
-        const data = d3dsv.csvParse(fileReader.result);
+        // const data = d3dsv.csvParse(fileReader.result);
+        console.log(d3dsv.autoType);
 
         // set state of the parser component
         this.setState((state) => {

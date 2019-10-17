@@ -28,7 +28,8 @@ export class FileType {
 export default interface Parser {
     prompt: string;
     fileType: FileType;
-}
+// eslint-disable-next-line
+};
 
 export interface ParserState {
     prompt: string;

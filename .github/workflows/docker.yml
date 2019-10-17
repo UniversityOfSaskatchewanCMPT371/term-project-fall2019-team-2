@@ -17,6 +17,8 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Deploy a docker image
+      env:
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       run: |
         # Everything after the very last slash / for a valid tag
         docker build . --tag braunson/cmpt371:${GITHUB_REF##*/} --tag braunson/cmpt371:latest

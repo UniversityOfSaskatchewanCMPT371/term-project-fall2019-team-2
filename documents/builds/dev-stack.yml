@@ -1,0 +1,26 @@
+version: '3.7'
+
+services:
+  # Runs on port 5000
+  ucp:
+    image: braunson/cmpt371:develop
+      # Nginx stuff
+      - "VIRTUAL_HOST=dev.braunson.me,www.dev.braunson.me"
+      - "LETSENCRYPT_HOST=dev.braunson.me"
+    networks:
+      - nginx_nginx_network
+    deploy:
+      update_config:
+        failure_action: rollback
+        delay: 10s
+        monitor: 10s
+      mode: replicated
+      replicas: 3
+      placement:
+        constraints: [node.role == manager]
+
+networks:
+  nginx_nginx_network:
+    # nginx_ is prepended because it's the stack name
+    external: true
+

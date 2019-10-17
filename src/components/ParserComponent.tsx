@@ -2,8 +2,7 @@ import React from 'react';
 import ParserInterface from './ParserInterface';
 import {ParserState} from './ParserInterface';
 import * as d3 from 'd3';
-import * as d3dsv from 'd3-dsv';
-// import Data from './Data';
+import Data from './Data';
 
 /**
  * Purpose: react component responsible for receiving and parsing file data
@@ -21,15 +20,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
       fileType: props.fileType,
       data: [],
     };
-
-    this.Parse = this.Parse.bind(this);
-    this.parseCsv = this.parseCsv.bind(this);
-  }
-
-  /**
-   * called immediately after component mount
-   */
-  componentDidMount(): void {
   }
 
   /**
@@ -43,7 +33,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
           {this.props.prompt}
         </label>
         <input type="file" onChange={this.Parse}
-          accept={this.props.fileType.mimeName}/>
+          accept={this.props.fileType.mimeName} />
       </div>
     );
   }
@@ -84,19 +74,19 @@ export default class ParserComponent extends React.Component<ParserInterface,
    * @param {Object} fileEvent: the event passed into this component
    */
   Parse(fileEvent: any) {
-    // this.isValid(fileEvent);
-    // this.sortData(this.state.data);
-    // this.inferTypes(this.state.data);
-    this.parseCsv(fileEvent);
+    this.isValid(fileEvent);
+    this.sortData(this.state.data);
+    this.inferTypes(this.state.data);
+
     // Create new data object
-    // const csvData = new Data('fileName', this.state.data);
+    const csvData = new Data('fileName', this.state.data);
   }
 
   /**
-     * Purpose: to parse a csv file uploaded by the user
-     * @param {Object} fileEvent: the event passed into this component
-     */
-  async parseCsv(fileEvent: any) {
+   * Purpose: to parse a csv file uploaded by the user
+   * @param {Object} fileEvent: the event passed into this component
+   */
+  async ParseCsv(fileEvent: any) {
     console.log(fileEvent);
 
     const csvFile = fileEvent.target.files[0];
@@ -107,11 +97,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
 
     const handleFileRead = () => {
       if (typeof fileReader.result === 'string') {
-        const content = d3dsv.csvParse(fileReader.result, d3dsv.autoType);
-        // d3dsv.autoType()
-        // console.log(d3dsv.autoType);
-
-        console.log(content);
+        const content = d3.csvParse(fileReader.result);
 
         // set state of the parser component
         this.setState((state) => {
@@ -121,6 +107,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
             data: content,
           };
         });
+        console.log(content);
       }
     };
 

@@ -5,7 +5,6 @@ on:
     branches:
       - master
       - develop
-      - 'feature/**'
     tags:
       - '**'
     paths-ignore:
@@ -18,7 +17,8 @@ jobs:
     - uses: actions/checkout@v1
     - name: Deploy a docker image
       run: |
-        docker build . --tag braunson/cmpt371:${GITHUB_REF##*refs/head/} --tag braunson/cmpt371:latest
+        # Everything after the very last slash / for a valid tag
+        docker build . --tag braunson/cmpt371:${GITHUB_REF##*/} --tag braunson/cmpt371:latest
         echo ${DOCKER_PASSWORD} | docker login --username braunson --password-stdin
         docker push braunson/cmpt371:${GITHUB_REF##*refs/head/}
         docker push braunson/cmpt371:latest

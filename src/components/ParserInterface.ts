@@ -24,11 +24,11 @@ export class FileType {
     }
 }
 
-
-export default interface Parser {
+interface Parser {
     prompt: string;
     fileType: FileType;
 }
+export default Parser;
 
 export interface ParserState {
     prompt: string;

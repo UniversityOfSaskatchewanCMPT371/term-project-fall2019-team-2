@@ -1,8 +1,8 @@
 import React from 'react';
-import ParserInterface from './ParserInterface';
+import ParserInterface, {FileType} from './ParserInterface';
 import {ParserState} from './ParserInterface';
 import * as d3 from 'd3';
-import Data from './Data';
+// import Data from './Data';
 
 /**
  * Purpose: react component responsible for receiving and parsing file data
@@ -11,13 +11,14 @@ export default class ParserComponent extends React.Component<ParserInterface,
     ParserState> {
   /**
    * Purpose: ParserComponent constructor
-   * @param {ParserInterface} props: prompt and filetype passed as arguments
+   * @param {string} prompt: The prompt to display
+   * @param {FileType} fileType: The file type
    */
-  constructor(props: ParserInterface) {
-    super(props);
+  constructor(prompt: string, fileType: FileType) {
+    super({prompt, fileType} as ParserInterface);
     this.state = {
-      prompt: props.prompt,
-      fileType: props.fileType,
+      prompt: prompt,
+      fileType: fileType,
       data: [],
     };
   }
@@ -79,7 +80,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
     this.inferTypes(this.state.data);
 
     // Create new data object
-    const csvData = new Data('fileName', this.state.data);
+    // const csvData = new Data('fileName', this.state.data);
   }
 
   /**

@@ -18,9 +18,18 @@ export default class ParserComponent extends React.Component<ParserInterface,
     super(props);
     this.state = {
       prompt: props.prompt,
-      filetype: props.filetype,
+      fileType: props.fileType,
       data: [],
     };
+
+    this.Parse = this.Parse.bind(this);
+    this.parseCsv = this.parseCsv.bind(this);
+  }
+
+  /**
+   * called immediately after component mount
+   */
+  componentDidMount(): void {
   }
 
   /**
@@ -34,7 +43,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
           {this.props.prompt}
         </label>
         <input type="file" onChange={this.Parse}
-          accept={this.props.filetype.mimeName} />
+          accept={this.props.fileType.mimeName}/>
       </div>
     );
   }
@@ -46,7 +55,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
    * @return {boolean}: a boolean indicating whether or not the file upload is
    * valid
    */
-  IsValid(fileEvent: any): boolean {
+  isValid(fileEvent: any): boolean {
     return true;
   }
 
@@ -55,7 +64,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
    * @param {Array} data: the array of data to sort
    * @return {boolean}: a boolean indicating whether or not the sort succeeded
    */
-  SortData(data: Array<object>): boolean {
+  sortData(data: Array<object>): boolean {
     return true;
   }
 
@@ -66,7 +75,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
    * @return {Array}: a list of objects which define the methods available for
    * the data
    */
-  InferTypes(data: Array<object>): Array<object> {
+  inferTypes(data: Array<object>): Array<object> {
     return [];
   }
 
@@ -75,20 +84,19 @@ export default class ParserComponent extends React.Component<ParserInterface,
    * @param {Object} fileEvent: the event passed into this component
    */
   Parse(fileEvent: any) {
-    this.IsValid(fileEvent);
-    this.SortData(this.state.data);
-    this.InferTypes(this.state.data);
-
+    // this.isValid(fileEvent);
+    // this.sortData(this.state.data);
+    // this.inferTypes(this.state.data);
+    this.parseCsv(fileEvent);
     // Create new data object
     // const csvData = new Data('fileName', this.state.data);
-
   }
 
   /**
-   * Purpose: to parse a csv file uploaded by the user
-   * @param {Object} fileEvent: the event passed into this component
-   */
-  async ParseCsv(fileEvent: any) {
+     * Purpose: to parse a csv file uploaded by the user
+     * @param {Object} fileEvent: the event passed into this component
+     */
+  async parseCsv(fileEvent: any) {
     console.log(fileEvent);
 
     const csvFile = fileEvent.target.files[0];
@@ -99,19 +107,20 @@ export default class ParserComponent extends React.Component<ParserInterface,
 
     const handleFileRead = () => {
       if (typeof fileReader.result === 'string') {
-        const content = d3.csvParse(fileReader.result);
-        // const data = d3dsv.csvParse(fileReader.result);
-        console.log(d3dsv.autoType);
+        const content = d3dsv.csvParse(fileReader.result, d3dsv.autoType);
+        // d3dsv.autoType()
+        // console.log(d3dsv.autoType);
+
+        console.log(content);
 
         // set state of the parser component
         this.setState((state) => {
           return {
             prompt: this.state.prompt,
-            filetype: this.state.filetype,
+            fileType: this.state.fileType,
             data: content,
           };
         });
-        console.log(content);
       }
     };
 

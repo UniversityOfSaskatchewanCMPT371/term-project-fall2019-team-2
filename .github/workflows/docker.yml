@@ -1,0 +1,24 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+      - 'feature/**'
+    tags:
+      - '**'
+    paths-ignore:
+      - 'documents/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Deploy a docker image
+      run: |
+        docker build . --tag braunson/cmpt371:${GITHUB_REF##*refs/head/} --tag braunson/cmpt371:latest
+        echo ${DOCKER_PASSWORD} | docker login --username braunson --password-stdin
+        docker push braunson/cmpt371:${GITHUB_REF##*refs/head/}
+        docker push braunson/cmpt371:latest

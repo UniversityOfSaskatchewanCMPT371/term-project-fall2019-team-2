@@ -23,5 +23,5 @@ jobs:
         # Everything after the very last slash / for a valid tag
         docker build . --tag braunson/cmpt371:${GITHUB_REF##*/} --tag braunson/cmpt371:latest
         echo ${DOCKER_PASSWORD} | docker login --username braunson --password-stdin
-        docker push braunson/cmpt371:${GITHUB_REF##*refs/head/}
+        docker push braunson/cmpt371:${GITHUB_REF##*/}
         docker push braunson/cmpt371:latest

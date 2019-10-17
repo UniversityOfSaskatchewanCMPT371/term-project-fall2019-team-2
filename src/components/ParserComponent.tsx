@@ -89,7 +89,10 @@ export default class ParserComponent extends React.Component<ParserInterface,
     // this.isValid(fileEvent);
     // this.sortData(this.state.data);
     // this.inferTypes(this.state.data);
-    this.parseCsv(fileEvent).then(() => console.log('done'));
+    if(this.props.fileType === FileType.csv) {
+      this.parseCsv(fileEvent).then(() => console.log('done'));
+    }
+
   }
 
   /**

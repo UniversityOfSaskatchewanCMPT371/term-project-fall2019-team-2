@@ -2,8 +2,9 @@ version: '3.7'
 
 services:
   # Runs on port 5000
-  ucp:
+  test-runner:
     image: braunson/cmpt371:master
+    environment:
       # Nginx stuff
       - "VIRTUAL_HOST=test.braunson.me,www.test.braunson.me,cmpt371g2.usask.ca,www.cmpt371g2.usask.ca"
       - "LETSENCRYPT_HOST=test.braunson.me"

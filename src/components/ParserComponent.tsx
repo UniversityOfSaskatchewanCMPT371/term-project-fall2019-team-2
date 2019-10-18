@@ -111,11 +111,11 @@ export default class ParserComponent extends React.Component<ParserInterface,
       if (typeof fileReader.result === 'string') {
         const content = d3.csvParse(fileReader.result, d3dsv.autoType);
         // eslint-disable-next-line max-len
-        content.sort(function(a: { Country: { toLowerCase: { (): number; (): number; }; }; }, b: { Country: { toLowerCase: { (): number; (): number; }; }; }) {
-          if (a.Country.toLowerCase()<
-              b.Country.toLowerCase()) return -1;
-          if (a.Country.toLowerCase()>
-              b.Country.toLowerCase()) return 1;
+        content.sort(function(a: { Ship: { toLowerCase: { (): number; (): number; }; }; }, b: { Ship: { toLowerCase: { (): number; (): number; }; }; }) {
+          if (a.Ship.toLowerCase()<
+              b.Ship.toLowerCase()) return -1;
+          if (a.Ship.toLowerCase()>
+              b.Ship.toLowerCase()) return 1;
           return 0;
         });
         // set state of the parser component

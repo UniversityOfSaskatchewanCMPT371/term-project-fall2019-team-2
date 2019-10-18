@@ -110,14 +110,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
     const handleFileRead = () => {
       if (typeof fileReader.result === 'string') {
         const content = d3.csvParse(fileReader.result, d3dsv.autoType);
-        // eslint-disable-next-line max-len
-        content.sort(function(a: { Country: { toLowerCase: { (): number; (): number; }; }; }, b: { Country: { toLowerCase: { (): number; (): number; }; }; }) {
-          if (a.Country.toLowerCase()<
-              b.Country.toLowerCase()) return -1;
-          if (a.Country.toLowerCase()>
-              b.Country.toLowerCase()) return 1;
-          return 0;
-        });
         // set state of the parser component
         this.setState((state) => {
           return {
@@ -125,6 +117,12 @@ export default class ParserComponent extends React.Component<ParserInterface,
             fileType: this.state.fileType,
             data: content,
           };
+        });
+        // eslint-disable-next-line max-len
+        content.sort(function(a: { Date: string | number | Date; }, b: { Date: string | number | Date; }) {
+          if (new Date(a.Date) < new Date(b.Date)) return -1;
+          if (new Date(a.Date) > new Date(b.Date)) return 1;
+          return 0;
         });
         console.log(content);
       }

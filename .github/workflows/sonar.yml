@@ -1,7 +1,16 @@
 on:
   push:
+    branches:
+      - '**'
+    tags:
+      - '**'
+    paths-ignore:
+      - 'documents/**'
   pull_request:
     types: [opened, reopened]
+    paths-ignore:
+      - 'documents/**'
+
 name: Static Analysis
 jobs:
   sonarCloudTrigger:

@@ -6,7 +6,7 @@ import Filter from './Filter';
 export default class Data {
     public pathToData: string;
     public arrayOfData: Array<object>;
-    public filter: Filter | undefined;
+    public filter?: Filter;
 
     /**
      * Purpose: Data constructor

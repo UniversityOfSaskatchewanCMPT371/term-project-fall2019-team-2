@@ -1,6 +1,13 @@
 name: React Project
 
-on: [push]
+on:
+  push:
+    branches:
+      - '**'
+    tags:
+      - '**'
+    paths-ignore:
+      - 'documents/**'
 
 jobs:
   build:

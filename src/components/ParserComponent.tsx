@@ -2,6 +2,7 @@ import React from 'react';
 import ParserInterface, {FileType, ParserState} from './ParserInterface';
 import * as d3 from 'd3';
 import * as d3dsv from 'd3-dsv';
+import Filter from "./Filter";
 
 /**
  * Purpose: react component responsible for receiving and parsing file data

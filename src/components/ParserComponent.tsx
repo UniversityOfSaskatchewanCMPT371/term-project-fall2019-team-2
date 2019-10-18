@@ -96,7 +96,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
     }
     return [];
   }
-  // create enum with occurance, any and interval as values
 
   /**
      * Purpose: attempts to parse the file uploaded by the user.

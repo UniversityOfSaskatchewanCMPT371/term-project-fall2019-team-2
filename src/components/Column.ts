@@ -3,7 +3,9 @@
  */
 export default class Column {
     public yScale: number;
-    public definedDrawList: Array<() => void>;
+    public key: string;
+    public drawType: enumDrawType;
+    public primType: string;
 
     /**
      * Purpose: Column constructor
@@ -11,9 +13,12 @@ export default class Column {
      * @param {Array} definedDrawList: the initial list of drawing predicates
      * functions for the column
      */
-    public constructor(yScale: number, definedDrawList: Array<() => void>) {
+    // eslint-disable-next-line max-len
+    public constructor(primType: string, drawType: enumDrawType, key: string, yScale: number) {
+      this.drawType = drawType;
       this.yScale = yScale;
-      this.definedDrawList = definedDrawList;
+      this.key = key;
+      this.primType = primType;
     }
 
     /**
@@ -32,6 +37,6 @@ export default class Column {
     }
 }
 
-enum drawType {
+enum enumDrawType {
     magnitude, occurance, any,
 }

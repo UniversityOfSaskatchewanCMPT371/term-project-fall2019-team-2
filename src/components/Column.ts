@@ -31,3 +31,7 @@ export default class Column {
     public Rescale(newScale: number): void {
     }
 }
+
+enum drawType {
+    magnitude, occurance, any,
+}

@@ -71,15 +71,32 @@ export default class ParserComponent extends React.Component<ParserInterface,
   }
 
   /**
-     * Purpose: attempts to infer the types of the data in each of the columns
-     * of the csv data
-     * @param {Array} data: the array of data to infer the types for
-     * @return {Array}: a list of objects which define the methods available for
-     * the data
-     */
+   * Purpose: attempts to infer the types of the data in each of the columns
+   * of the csv data
+   * @param {Array} data: the array of pre-sorted valid data
+   * @return {Array}: a list of objects of type Column
+   * has an enum for type of data
+   */
   inferTypes(data: Array<object>): Array<object> {
+    if (this.state.data[0] != null) {
+      const firstElement = this.state.data[0];
+      // create a list of fields in object
+      const listFields = Object.keys(firstElement);
+      const returns = [];
+      // look at each field and categorize
+      for (let i = 0; listFields.length; i++) {
+        const type = typeof listFields[i];
+        if (type == 'string') {
+          // create a Column object with occurance data:
+        }
+        if (type == 'number') {
+          // interval, point, occurance (date), magnitude
+        }
+      }
+    }
     return [];
   }
+  // create enum with occurance, any and interval as values
 
   /**
      * Purpose: attempts to parse the file uploaded by the user.

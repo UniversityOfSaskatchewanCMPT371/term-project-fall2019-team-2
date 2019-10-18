@@ -6,6 +6,10 @@ on:
       - '**'
     paths-ignore:
       - 'documents/**'
+  pull_request:
+    types: [opened, reopened]
+    paths-ignore:
+      - 'documents/**'
 
 name: Static Analysis
 jobs:
@@ -16,7 +20,7 @@ jobs:
     - uses: actions/checkout@master
     - name: Install deps
       run: npm install
-    - name: SonarCloud Scan
+    - name: SonarCloud Scan (Push)
       uses: sonarsource/sonarcloud-github-action@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

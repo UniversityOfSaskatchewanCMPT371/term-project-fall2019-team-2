@@ -7,7 +7,8 @@ function log(str: string) {
   console.log(str);
 }
 
-export default class TimelineComponent extends React.Component<TimelineInterface, TimelineState> {
+export default class TimelineComponent extends
+  React.Component<TimelineInterface, TimelineState> {
   constructor(props: TimelineInterface) {
     super(props);
     this.state = {
@@ -37,8 +38,10 @@ export default class TimelineComponent extends React.Component<TimelineInterface
   }
 
   drawTimeline() {
-    const height = this.state.height - (this.state.marginBottom + this.state.marginTop);
-    const width = this.state.width - (this.state.marginLeft + this.state.marginRight);
+    const height = this.state.height -
+        (this.state.marginBottom + this.state.marginTop);
+    const width = this.state.width -
+        (this.state.marginLeft + this.state.marginRight);
     const barWidth = 50;
     const barBuffer = 1;
     const numBars = Math.floor(width / barWidth) +
@@ -71,24 +74,11 @@ export default class TimelineComponent extends React.Component<TimelineInterface
         .range([height, 0]);
 
 
-    // create a tooltip
-    let Tooltip = d3.select('#svgtarget')
-        .append('div')
-        .style('opacity', 0)
-        .attr('class', 'tooltip')
-        .attr('target', null)
-        .style('background-color', 'white')
-        .style('border', 'solid')
-        .style('border-width', '2px')
-        .style('border-radius', '5px')
-        .style('padding', '5px');
-
-    // Three function that change the tooltip when user hover / move / leave a cell
+    // Three function that change the tooltip when user hover/move/leave bar
     const ttover = function(d: any) {
-      //log(d3.event);
-
+      // log(d3.event);
       if (d3.event.buttons === 0) {
-        Tooltip = d3.select('#svgtarget')
+        const Tooltip = d3.select('#svgtarget')
             .append('div')
             .style('opacity', 0)
             .attr('class', 'tooltip')
@@ -104,7 +94,8 @@ export default class TimelineComponent extends React.Component<TimelineInterface
         const keys = Object.keys(d);
         let tooltip = '';
         keys.forEach(function(key) {
-          tooltip += '<strong>' + key + '</strong> <span style=\'color:red\'>' + d[key] + '</span>' + '<br/>';
+          tooltip += '<strong>' + key + '</strong> <span style=\'color:red\'>' +
+              d[key] + '</span>' + '<br/>';
         });
 
         Tooltip.html(tooltip)
@@ -113,17 +104,14 @@ export default class TimelineComponent extends React.Component<TimelineInterface
     };
 
     function ttUpdatePos(xPos: number, yPos: number) {
-      Tooltip.style('left', (xPos + 70) + 'px')
+      d3.selectAll('.tooltip')
+          .style('left', (xPos + 70) + 'px')
           .style('top', (yPos + 'px'));
     }
 
     const ttmove = function(d: any) {
-      // log(d3.event);
-      // log(d3.mouse(this));
       // event is a mouseEvent
       ttUpdatePos(d3.event.x, d3.event.y);
-      // Tooltip.style("left", (d3.mouse(this)[0] + 70) + "px")
-      //     .style("top", (d3.mouse(this)[1]) + "px");
     };
 
     const ttleave = function(d: any) {
@@ -148,7 +136,8 @@ export default class TimelineComponent extends React.Component<TimelineInterface
     const svg = d3.select('#svgtarget')
         .append('svg')
         .attr('width', width)
-        .attr('height', height + this.state.marginTop + this.state.marginBottom)
+        .attr('height', height + this.state.marginTop +
+            this.state.marginBottom)
     // @ts-ignore
         .call(zoom)
         .append('g')
@@ -165,7 +154,8 @@ export default class TimelineComponent extends React.Component<TimelineInterface
         .attr('id', 'barsBox')
         .append('rect')
         .attr('width', width)
-        .attr('height', height + this.state.marginTop + this.state.marginBottom)
+        .attr('height', height + this.state.marginTop +
+            this.state.marginBottom)
         .attr('x', 0)
         .attr('y', 0);
 
@@ -279,7 +269,10 @@ export default class TimelineComponent extends React.Component<TimelineInterface
           );
     }
 
-    function moveChart(this: any) {
+    /**
+     *
+     */
+    function moveChart() {
       d3.select('#barsLayer')
           .attr('transform', (d) => {
             return `translate(${deltaX},0)`;
@@ -294,33 +287,19 @@ export default class TimelineComponent extends React.Component<TimelineInterface
     }
 
     function dragstarted(this: any) {
-      // log('dragging');
-      const drag = d3.select(this);
-      drag.raise()
+      d3.select(this).raise()
           .classed('active', true);
     }
 
-    let perfTotal = 0;
-    let perfIdx = 0;
-
     function dragged() {
-      // log(d3.event);
       ttUpdatePos(d3.event.sourceEvent.x, d3.event.sourceEvent.y);
-      // ttmove(d);
-      const t1 = performance.now();
+
       deltaX += d3.event.sourceEvent.movementX;
       if (deltaX > 0) {
         deltaX = 0;
       }
 
       moveChart();
-
-      const t2 = performance.now();
-      perfTotal += (t2 - t1);
-      perfIdx++;
-      // log(x.bandwidth(barWidth));
-      console.log('Speed: ' + (perfTotal / perfIdx) + 'ms');
-      // console.log(dataIdx);
     }
 
     function dragended(this: any) {

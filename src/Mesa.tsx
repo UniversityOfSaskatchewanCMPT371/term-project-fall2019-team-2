@@ -25,7 +25,7 @@ export default class Mesa extends React.Component<{}, Interface> {
     d3.csv('/10000_Sales_Records.csv')
         .then((data: Array<object>) => {
           for (let i = 0; i < data.length; i++) {
-            let d: any = data[i];
+            const d: any = data[i];
             d['index'] = i;
             // console.log(d);
             data[i] = d;
@@ -44,7 +44,8 @@ export default class Mesa extends React.Component<{}, Interface> {
     if (this.state.loading != true) {
       return (
         <div>
-          <TimelineComponent data={new Data('path/to/file', this.state.csvData)}/>
+          <TimelineComponent
+            data={new Data('path/to/file', this.state.csvData)}/>
         </div>
       );
     }

@@ -23,7 +23,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint src/**"
+    "lint": "eslint 'src/**'",
+    "wint": "eslint src/**"
   },
   "eslintConfig": {
     "extends": "google"

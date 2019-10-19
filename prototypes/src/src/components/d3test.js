@@ -254,10 +254,10 @@ export class d3test extends Component {
             .attr('class', 'plot')
             .attr("id", "bars");
 
-        let bars = plot.selectAll(".bar")
-            .data(data, function (d) {
-                return d ? d.index : this.id;
-            });
+        // let bars = plot.selectAll(".bar")
+        //     .data(data, function (d) {
+        //         return d ? d.index : this.id;
+        //     });
 
         updateBars();
 
@@ -306,6 +306,8 @@ export class d3test extends Component {
         function updateBars() {
             plot.selectAll(".bar")
                 .data(data, function (d) {
+                    log("updateBars: ");
+                    log(d);
                     return d.index;
                 })
                 .join(

@@ -20,13 +20,13 @@ export default class Filter {
      * @param {Array} listOfPreds: an array of predicate to apply to the data
      */
     public constructor(lowerRange: number,
-                       upperRange: number,
-                       isShown: boolean,
-                       listOfPreds: Array<(...args: any[]) => boolean>) {
-        this.lowerRange = lowerRange;
-        this.upperRange = upperRange;
-        this.isShown = isShown;
-        this.listOfPreds = listOfPreds;
+        upperRange: number,
+        isShown: boolean,
+        listOfPreds: Array<(...args: any[]) => boolean>) {
+      this.lowerRange = lowerRange;
+      this.upperRange = upperRange;
+      this.isShown = isShown;
+      this.listOfPreds = listOfPreds;
     }
 
     /**
@@ -36,8 +36,8 @@ export default class Filter {
      * @constructor
      */
     public RedefineRange(newLowerRange: number, newUpperRange: number) {
-        this.lowerRange = newLowerRange;
-        this.upperRange = newUpperRange;
+      this.lowerRange = newLowerRange;
+      this.upperRange = newUpperRange;
     }
 
     /**
@@ -46,7 +46,7 @@ export default class Filter {
      * @constructor
      */
     public AddPredicate(predicate: () => boolean) {
-        this.listOfPreds.push(predicate);
+      this.listOfPreds.push(predicate);
     }
 
     /**
@@ -55,6 +55,6 @@ export default class Filter {
      * @constructor
      */
     public RemovePredicat(index: number) {
-        this.listOfPreds.splice(index, 1);
+      this.listOfPreds.splice(index, 1);
     }
 }

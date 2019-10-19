@@ -7,8 +7,7 @@ export default TimelineInterface;
 
 export interface TimelineState {
     data: Data;
-
-    //dimensions
+    // dimensions
     width: number;
     height: number;
     marginTop: number;

@@ -1,8 +1,5 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import ParserComponent from './components/ParserComponent';
-import {FileType} from './components/ParserInterface';
 import TimelineComponent from './components/TimelineComponent';
 import Data from './components/Data';
 import * as d3 from 'd3';
@@ -56,7 +53,7 @@ export default class Mesa extends React.Component<{}, Interface> {
      * @return {string}: the html to be rendered
      */
   render() {
-    if (this.state.loading != true) {
+    if (!this.state.loading) {
       return (
         <div>
           <TimelineComponent
@@ -66,7 +63,7 @@ export default class Mesa extends React.Component<{}, Interface> {
     }
 
     return (
-      <div></div>
+      <div/>
     );
   }
 }

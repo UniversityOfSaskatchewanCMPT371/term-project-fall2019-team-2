@@ -14,7 +14,7 @@ export default class Column {
      * functions for the column
      */
     // eslint-disable-next-line max-len
-    public constructor(primType: string, drawType: enumDrawType, key: string, yScale: number) {
+    public constructor(primType: string, drawType: enumDrawType, key: string, yScale: number = 1) {
       this.drawType = drawType;
       this.yScale = yScale;
       this.key = key;
@@ -37,6 +37,6 @@ export default class Column {
     }
 }
 
-enum enumDrawType {
+export enum enumDrawType {
     magnitude, occurance, any,
 }

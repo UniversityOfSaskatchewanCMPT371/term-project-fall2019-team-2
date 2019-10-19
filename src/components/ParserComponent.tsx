@@ -2,6 +2,7 @@ import React from 'react';
 import ParserInterface, {FileType, ParserState} from './ParserInterface';
 import * as d3 from 'd3';
 import * as d3dsv from 'd3-dsv';
+import Column, {enumDrawType} from './Column';
 
 /**
  * Purpose: react component responsible for receiving and parsing file data
@@ -78,19 +79,21 @@ export default class ParserComponent extends React.Component<ParserInterface,
    * has an enum for type of data
    */
   inferTypes(data: Array<object>): Array<object> {
-    if (this.state.data[0] != null) {
+    if (this.state.data.length > 0) {
       const firstElement = this.state.data[0];
       // create a list of fields in object
       const listFields = Object.keys(firstElement);
       const returns = [];
       // look at each field and categorize
       for (let i = 0; listFields.length; i++) {
-        const type = typeof listFields[i];
+        const type = typeof listFields[i]; // should be let?
         if (type == 'string') {
-          // create a Column object with occurance data:
+          // create a Column object with occurance data
+          // eslint-disable-next-line max-len
+          const newCol = new Column(type, enumDrawType.occurance, listFields[i]);
         }
         if (type == 'number') {
-          // interval, point, occurance (date), magnitude
+          // create a Column with interval, point or magnitude data
         }
       }
     }

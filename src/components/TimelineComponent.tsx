@@ -226,7 +226,8 @@ export default class TimelineComponent extends
     updateBars();
 
     // x axis
-    const xAxis = barsLayer.append('g')
+    // const xAxis = barsLayer.append('g')
+    barsLayer.append('g')
         .attr('id', 'xaxis')
         .style('color', 'red')
         .attr('class', 'x axis')
@@ -247,7 +248,7 @@ export default class TimelineComponent extends
     function updateChart() {
       // recover the new scale
       scale = d3.event.transform.k;
-      const newX = d3.event.transform.rescaleX(x);
+      // const newX = d3.event.transform.rescaleX(x);
       const newY = d3.event.transform.rescaleY(y);
       yAxis.call(d3.axisLeft(newY));
 

@@ -76,29 +76,36 @@ export default class ParserComponent extends React.Component<ParserInterface,
    * of the csv data
    * @param {Array} data: the array of pre-sorted valid data
    * @return {Array}: a list of objects of type Column
-   * has an enum for type of data
    */
   inferTypes(data: Array<object>): Array<object> {
     if (this.state.data.length > 0) {
       const firstElement = this.state.data[0];
       // create a list of fields in object
       const listFields = Object.keys(firstElement);
-      const returns = [];
+      const arrayOfColumns = Array(listFields.length);
+      let newCol;
       // look at each field and categorize
       for (let i = 0; listFields.length; i++) {
-        const type = typeof listFields[i]; // should be let?
+        const type = typeof listFields[i];
         if (type === 'string') {
           // create a Column object with occurance data
           // eslint-disable-next-line max-len
-          const newCol = new Column(type, enumDrawType.occurance, listFields[i]);
-        }
-        if (type === 'number') {
+          newCol = new Column(type, enumDrawType.occurance, listFields[i]);
+        } else if (type === 'number') {
           // create a Column with interval, point or magnitude data
-          const newCol = new Column(type, enumDrawType.any, listFields[i]);
+          newCol = new Column(type, enumDrawType.any, listFields[i]);
+        } else {
+          // throw an error here, should not reach
+          const newCol = 'error, should not have set';
         }
+        arrayOfColumns[i] = newCol;
       }
+      return arrayOfColumns;
+    } else {
+      // throw an error here, there is nothing is state data
+      // return here so program is happy
+      return Array(0);
     }
-    return [];
   }
 
   /**

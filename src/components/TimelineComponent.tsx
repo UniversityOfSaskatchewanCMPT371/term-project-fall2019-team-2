@@ -2,13 +2,23 @@ import React from 'react';
 import TimelineInterface, {TimelineState} from './TimelineInterface';
 import * as d3 from 'd3';
 
-
+/**
+ * Purpose: shorthand for console.log()
+ * @param {string} str: thing to log
+ */
 function log(str: string) {
   console.log(str);
 }
 
+/**
+ * Purpose: renders and updates a timeline to the screen
+ */
 export default class TimelineComponent extends
   React.Component<TimelineInterface, TimelineState> {
+  /**
+   * Purpose: constructor for the TimelineComponent
+   * @param {TimelineComponent} props
+   */
   constructor(props: TimelineInterface) {
     super(props);
     this.state = {
@@ -24,10 +34,18 @@ export default class TimelineComponent extends
     this.drawTimeline = this.drawTimeline.bind(this);
   }
 
+  /**
+   * Purpose: waits until the component has properly mounted before drawing the
+   * timeline
+   */
   componentDidMount(): void {
     this.drawTimeline();
   }
 
+  /**
+   * Purpose: renders the initial html
+   * @return {string}: html output to the page
+   */
   render() {
     return (
       <div>
@@ -37,6 +55,10 @@ export default class TimelineComponent extends
     );
   }
 
+  /**
+   * Purpose: draws the timeline and runs the functions and event handlers for
+   * said timeline
+   */
   drawTimeline() {
     const height = this.state.height -
         (this.state.marginBottom + this.state.marginTop);
@@ -103,12 +125,21 @@ export default class TimelineComponent extends
       }
     };
 
+    /**
+     * Purpose: updates the position of the Tooltip
+     * @param {number} xPos: the current x position of the mouse
+     * @param {number} yPos: the current y postion of the mouse
+     */
     function ttUpdatePos(xPos: number, yPos: number) {
       d3.selectAll('.tooltip')
           .style('left', (xPos + 70) + 'px')
           .style('top', (yPos + 'px'));
     }
 
+    /**
+     * Purpose: wrapper for ttUpdatePos
+     * @param {any} d: datum passed into the function
+     */
     const ttmove = function(d: any) {
       // event is a mouseEvent
       ttUpdatePos(d3.event.x, d3.event.y);
@@ -192,14 +223,6 @@ export default class TimelineComponent extends
         .attr('class', 'plot')
         .attr('id', 'bars');
 
-    // const bars = plot.selectAll('.bar')
-    //     .data(data, function(d: any) {
-    //       // eslint-disable-next-line no-invalid-this
-    //       log(this);
-    //       // @ts-ignore
-    //       return d ? d.index : this.id;
-    //     });
-
     updateBars();
 
     // x axis
@@ -218,11 +241,11 @@ export default class TimelineComponent extends
         .attr('dy', '.15em')
         .attr('transform', 'rotate(-90)');
 
+    /**
+     * Purpose: updates the state and positioning of element on the Timeline
+     */
     function updateChart() {
-      // log('updateChart');
-      // log(d3.event);
       // recover the new scale
-
       scale = d3.event.transform.k;
       const newX = d3.event.transform.rescaleX(x);
       const newY = d3.event.transform.rescaleY(y);
@@ -238,6 +261,9 @@ export default class TimelineComponent extends
       moveChart();
     }
 
+    /**
+     * Purpose: used to update which bars are being rendered to the screen
+     */
     function updateBars() {
       plot.selectAll('.bar')
           .data(data, function(d: any, i: any, group: any) {
@@ -286,11 +312,18 @@ export default class TimelineComponent extends
       updateBars();
     }
 
+    /**
+     * @this dragstarted
+     * @param {any} this
+     */
     function dragstarted(this: any) {
       d3.select(this).raise()
           .classed('active', true);
     }
 
+    /**
+     * Purpose: called when the timeline is dragged by the user
+     */
     function dragged() {
       ttUpdatePos(d3.event.sourceEvent.x, d3.event.sourceEvent.y);
 
@@ -298,10 +331,13 @@ export default class TimelineComponent extends
       if (deltaX > 0) {
         deltaX = 0;
       }
-
       moveChart();
     }
 
+    /**
+     * @this dragended
+     * @param {any} this
+     */
     function dragended(this: any) {
       d3.select(this).classed('active', false);
     }

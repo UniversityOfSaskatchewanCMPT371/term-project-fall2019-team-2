@@ -12,7 +12,14 @@ interface Interface {
     loading: boolean;
 }
 
+/**
+ * Purpose: testing class used by Mesa to mock user input
+ */
 export default class Mesa extends React.Component<{}, Interface> {
+  /**
+     * Purpose: constructor for the Mesa class
+     * @param {any} props
+     */
   constructor(props: any) {
     super(props);
     this.state = {
@@ -21,6 +28,10 @@ export default class Mesa extends React.Component<{}, Interface> {
     };
   }
 
+  /**
+     * Purpose: once the component has loaded, immediately start loading the
+     * default csv file for testing
+     */
   componentDidMount(): void {
     d3.csv('/10000_Sales_Records.csv')
         .then((data: Array<object>) => {
@@ -40,6 +51,10 @@ export default class Mesa extends React.Component<{}, Interface> {
         });
   }
 
+  /**
+     * Renders html to the screen
+     * @return {string}: the html to be rendered
+     */
   render() {
     if (this.state.loading != true) {
       return (

@@ -87,13 +87,14 @@ export default class ParserComponent extends React.Component<ParserInterface,
       // look at each field and categorize
       for (let i = 0; listFields.length; i++) {
         const type = typeof listFields[i]; // should be let?
-        if (type == 'string') {
+        if (type === 'string') {
           // create a Column object with occurance data
           // eslint-disable-next-line max-len
           const newCol = new Column(type, enumDrawType.occurance, listFields[i]);
         }
-        if (type == 'number') {
+        if (type === 'number') {
           // create a Column with interval, point or magnitude data
+          const newCol = new Column(type, enumDrawType.any, listFields[i]);
         }
       }
     }

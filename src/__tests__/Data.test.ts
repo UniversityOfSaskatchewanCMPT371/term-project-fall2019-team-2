@@ -2,7 +2,7 @@ import Data from '../components/Data';
 import Filter from '../components/Filter';
 
 // eslint-disable-next-line max-len
-test('testing Data class\'s constructor with expected input and expected output', ()=>{
+it('testing Data class\'s constructor with expected input and expected output', ()=>{
   const testString = 'testcase';
   const testArray = [{number: 1}, {number: 2}, {number: 3}];
   const t = (a: number, b: number) => {
@@ -20,7 +20,7 @@ test('testing Data class\'s constructor with expected input and expected output'
   expect(classInstance.filter).toBe(fil);
 });
 
-test('testing getData\'s expected type of output', ()=>{
+it('testing getData\'s expected type of output', ()=>{
   const testString = 'testcase';
   const testArray = [{number: 1}, {number: 2}, {number: 3}];
   const t = (a: number, b: number) => {
@@ -36,7 +36,7 @@ test('testing getData\'s expected type of output', ()=>{
   expect(classInstance.getData()).toBe(arr);
 });
 
-test('test setData() changes to the data object', ()=>{
+it('test setData() changes to the data object', ()=>{
   const testString = 'testcase';
   const testArray = [{number: 1}, {number: 2}, {number: 3}];
   const t = (a: number, b: number) => {
@@ -55,7 +55,7 @@ test('test setData() changes to the data object', ()=>{
 });
 
 
-test('test getFilter() expected output match the input', ()=>{
+it('test getFilter() expected output match the input', ()=>{
   const testString = 'testcase';
   const testArray = [{number: 1}, {number: 2}, {number: 3}];
   const t = (a: number, b: number) => {
@@ -71,10 +71,10 @@ test('test getFilter() expected output match the input', ()=>{
 });
 
 // todo
-test('test setPath() expected output', ()=>{
+it('test setPath() expected output', ()=>{
 
 });
 // todo
-test('test getPath() expected output', ()=>{
+it('test getPath() expected output', ()=>{
 
 });

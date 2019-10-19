@@ -114,10 +114,10 @@ export default class TimelineComponent extends
             .style('top', d3.event.y + 'px');
 
         const keys = Object.keys(d);
-        let tooltip = '';
+        let tooltip: string = '';
         keys.forEach(function(key) {
           tooltip += '<strong>' + key + '</strong> <span style=\'color:red\'>' +
-              d[key] + '</span>' + '<br/>';
+              d[key] + '</span><br/>';
         });
 
         Tooltip.html(tooltip)

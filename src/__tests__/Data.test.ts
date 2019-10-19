@@ -70,11 +70,36 @@ it('test getFilter() expected output match the input', ()=>{
   expect(classInstance.getFilter()).toBe(fil);
 });
 
-// todo
 it('test setPath() expected output', ()=>{
+  const testString = 'testcase';
+  const testArray = [{number: 1}, {number: 2}, {number: 3}];
+  const t = (a: number, b: number) => {
+    return (a < b);
+  };
 
+  // eslint-disable-next-line no-array-constructor
+  const arr = new Array<(...args: any[]) => boolean>();
+  arr.push(t);
+  const fil = new Filter(1, 2, true, arr);
+  const classInstance = new Data(testString, testArray, fil);
+  const path=''; // put valid path here afterward
+  classInstance.setPath(path);
+  expect(classInstance.pathToData).toBe(path);
 });
-// todo
-it('test getPath() expected output', ()=>{
 
+it('test getPath() expected output', ()=>{
+  const testString = 'testcase';
+  const testArray = [{number: 1}, {number: 2}, {number: 3}];
+  const t = (a: number, b: number) => {
+    return (a < b);
+  };
+
+  // eslint-disable-next-line no-array-constructor
+  const arr = new Array<(...args: any[]) => boolean>();
+  arr.push(t);
+  const fil = new Filter(1, 2, true, arr);
+  const classInstance = new Data(testString, testArray, fil);
+  const path=''; // put valid path here afterward
+  classInstance.pathToData=path;
+  expect(classInstance.getPath()).toBe(path);
 });

@@ -8,7 +8,7 @@ import * as d3 from 'd3';
  * Purpose: react component responsible for receiving and parsing file data
  */
 export default class ParserComponent extends React.Component<ParserInterface,
-    ParserState> {
+  ParserState> {
   /**
    * Purpose: ParserComponent constructor
    * @param {string} prompt: The prompt to display
@@ -34,7 +34,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
           {this.props.prompt}
         </label>
         <input type="file" onChange={this.Parse}
-          accept={this.props.fileType.mimeName} />
+          accept={this.props.fileType.mimeName}/>
       </div>
     );
   }

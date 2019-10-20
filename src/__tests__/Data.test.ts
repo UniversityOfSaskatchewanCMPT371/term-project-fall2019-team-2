@@ -2,7 +2,7 @@ import Data from '../components/Data';
 import Filter from '../components/Filter';
 
 // eslint-disable-next-line max-len
-it('testing Data class\'s constructor with expected input and expected output', ()=>{
+it('testing Data class\'s constructor with expected input and expected output', () => {
   const testString = 'testcase';
   const testArray = [{number: 1}, {number: 2}, {number: 3}];
   const t = (a: number, b: number) => {
@@ -20,7 +20,7 @@ it('testing Data class\'s constructor with expected input and expected output', 
   expect(classInstance.filter).toBe(fil);
 });
 
-it('testing getData\'s expected type of output', ()=>{
+it('testing getData\'s expected type of output', () => {
   const testString = 'testcase';
   const testArray = [{number: 1}, {number: 2}, {number: 3}];
   const t = (a: number, b: number) => {
@@ -36,7 +36,7 @@ it('testing getData\'s expected type of output', ()=>{
   expect(classInstance.getData()).toBe(arr);
 });
 
-it('test setData() changes to the data object', ()=>{
+it('test setData() changes to the data object', () => {
   const testString = 'testcase';
   const testArray = [{number: 1}, {number: 2}, {number: 3}];
   const t = (a: number, b: number) => {
@@ -55,7 +55,7 @@ it('test setData() changes to the data object', ()=>{
 });
 
 
-it('test getFilter() expected output match the input', ()=>{
+it('test getFilter() expected output match the input', () => {
   const testString = 'testcase';
   const testArray = [{number: 1}, {number: 2}, {number: 3}];
   const t = (a: number, b: number) => {
@@ -70,7 +70,7 @@ it('test getFilter() expected output match the input', ()=>{
   expect(classInstance.getFilter()).toBe(fil);
 });
 
-it('test setPath() expected output', ()=>{
+it('test setPath() expected output', () => {
   const testString = 'testcase';
   const testArray = [{number: 1}, {number: 2}, {number: 3}];
   const t = (a: number, b: number) => {
@@ -82,12 +82,12 @@ it('test setPath() expected output', ()=>{
   arr.push(t);
   const fil = new Filter(1, 2, true, arr);
   const classInstance = new Data(testString, testArray, fil);
-  const path=''; // put valid path here afterward
+  const path = ''; // put valid path here afterward
   classInstance.setPath(path);
   expect(classInstance.pathToData).toBe(path);
 });
 
-it('test getPath() expected output', ()=>{
+it('test getPath() expected output', () => {
   const testString = 'testcase';
   const testArray = [{number: 1}, {number: 2}, {number: 3}];
   const t = (a: number, b: number) => {
@@ -99,7 +99,7 @@ it('test getPath() expected output', ()=>{
   arr.push(t);
   const fil = new Filter(1, 2, true, arr);
   const classInstance = new Data(testString, testArray, fil);
-  const path=''; // put valid path here afterward
-  classInstance.pathToData=path;
+  const path = ''; // put valid path here afterward
+  classInstance.pathToData = path;
   expect(classInstance.getPath()).toBe(path);
 });

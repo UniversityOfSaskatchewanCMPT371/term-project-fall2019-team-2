@@ -3,35 +3,36 @@
  * accept
  */
 export class FileType {
-    static readonly csv = new FileType('csv', 'csv', '.csv,text/csv');
-    static readonly tl = new FileType('tl', 'tl', '.tl');
+  static readonly csv = new FileType('csv', 'csv', '.csv,text/csv');
+  static readonly tl = new FileType('tl', 'tl', '.tl');
 
-    public name: string;
-    public mimeName: string;
+  public name: string;
+  public mimeName: string;
 
-    /**
-     * Purpose: FileType constructor
-     * @param {string} key: the name to use to access this FileType with '.'
-     * @param {string} name: the name of the file type to display to the user
-     * @param {string} mimeName: comma delimited list of MIME types for this
-     * file type
-     */
-    private constructor(private readonly key: string,
-        name: string,
-        mimeName: string) {
-      this.name = name;
-      this.mimeName = mimeName;
-    }
+  /**
+   * Purpose: FileType constructor
+   * @param {string} key: the name to use to access this FileType with '.'
+   * @param {string} name: the name of the file type to display to the user
+   * @param {string} mimeName: comma delimited list of MIME types for this
+   * file type
+   */
+  private constructor(private readonly key: string,
+      name: string,
+      mimeName: string) {
+    this.name = name;
+    this.mimeName = mimeName;
+  }
 }
 
 interface Parser {
-    prompt: string;
-    fileType: FileType;
+  prompt: string;
+  fileType: FileType;
 }
+
 export default Parser;
 
 export interface ParserState {
-    prompt: string;
-    fileType: FileType;
-    data: Array<object>;
+  prompt: string;
+  fileType: FileType;
+  data: Array<object>;
 }

@@ -11,6 +11,9 @@ import {throws} from 'assert';
  */
 export default class ParserComponent extends React.Component<ParserInterface,
     ParserState> {
+
+  private columnTypes: Array<object> = Array(0);
+
   /**
      * Purpose: ParserComponent constructor
      * @param {ParserInterface} props: the prompt and fileType properties to
@@ -88,18 +91,16 @@ export default class ParserComponent extends React.Component<ParserInterface,
    * @return {Array}: a list of objects of type Column
    */
   inferTypes(data: Array<object>): Array<object> {
-    if (this.state.data.length > 0) {
+    if (this.state.data.length-1 > 0) {
       const listFields = Object.keys(this.state.data[0]);
       const listOfTypes: never[] | string[]= [];
       // check the n samples of the value to find if the data is consistent
       // future take the one that occurs the most frequently
       // if data is missing throws an error currently
-      [0, Math.floor(this.state.data.length/2)].forEach((element) => {
+      [0, Math.floor(this.state.data.length-1/2)].forEach((element) => {
         const row = this.state.data[element];
-        // create a list of fields in object
-        let newCol;
         // look at each field and categorize
-        for (let i = 0; listFields.length; i++) {
+        for (let i = 0; i < listFields.length; i++) {
           // @ts-ignore
           const type = typeof row[listFields[i]];
           if (type !== 'string' && type !== 'number') {
@@ -117,9 +118,9 @@ export default class ParserComponent extends React.Component<ParserInterface,
       listOfTypes.forEach((element) => {
         let newCol;
         if (element === 'string') {
-          // create a Column object with occurance data
+          // create a Column object with occurrence data
           // eslint-disable-next-line max-len
-          newCol = new Column(element, enumDrawType.occurance, listFields[indx]);
+          newCol = new Column(element, enumDrawType.occurrence, listFields[indx]);
         } else if (element === 'number') {
           // create a Column with interval, point or magnitude data
           newCol = new Column(element, enumDrawType.any, listFields[indx]);
@@ -128,24 +129,24 @@ export default class ParserComponent extends React.Component<ParserInterface,
         indx++;
       }
       );
+      console.log(arrayOfColumns);
       return arrayOfColumns;
     } else {
       throw new Error('data is empty');
     }
-    return Array(0);
   }
 
   /**
    * Purpose: attempts to parse the file uploaded by the user.
    * @param {Object} fileEvent: the event passed into this component
    */
-  parse(fileEvent: any) {
+  async parse(fileEvent: any) {
     // this.isValid(fileEvent);
     // this.sortData(this.state.data);
-    // this.inferTypes(this.state.data);
     if (this.props.fileType === FileType.csv) {
-      this.parseCsv(fileEvent).then(() => console.log('done'));
+      await this.parseCsv(fileEvent);
     }
+    this.columnTypes = this.inferTypes(this.state.data);
   }
 
   /**
@@ -161,31 +162,34 @@ export default class ParserComponent extends React.Component<ParserInterface,
     console.log(csvFile);
     console.log(typeof csvFile);
 
-    const handleFileRead = () => {
-      if (typeof fileReader.result === 'string') {
-        const content = d3.csvParse(fileReader.result, d3dsv.autoType);
-        // set state of the parser component
-        this.setState((state) => {
-          return {
-            prompt: this.state.prompt,
-            fileType: this.state.fileType,
-            data: content,
-          };
-        });
-        console.log(this.sortData(content));
-        console.log(content);
-        console.log(this.isValid(csvFile));
-        if (!this.isValid(csvFile)) {
-          try {
-            throw new Error('Wrong file type was uploaded.');
-          } catch (e) {
-            console.log(e);
-            alert('The file uploaded needs to be CSV.');
+    return new Promise((resolver, agent) => {
+      const handleFileRead = () => {
+        if (typeof fileReader.result === 'string') {
+          const content = d3.csvParse(fileReader.result, d3dsv.autoType);
+          // set state of the parser component
+          this.setState((state) => {
+            return {
+              prompt: this.state.prompt,
+              fileType: this.state.fileType,
+              data: content,
+            };
+          });
+          console.log(this.sortData(content));
+          console.log(content);
+          console.log(this.isValid(csvFile));
+          if (!this.isValid(csvFile)) {
+            try {
+              throw new Error('Wrong file type was uploaded.');
+            } catch (e) {
+              console.log(e);
+              alert('The file uploaded needs to be CSV.');
+            }
           }
         }
-      }
-    };
-    fileReader.onloadend = handleFileRead;
-    fileReader.readAsText(csvFile);
+        resolver(true);
+      };
+      fileReader.onloadend = handleFileRead;
+      fileReader.readAsText(csvFile);
+    });
   }
 }

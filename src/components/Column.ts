@@ -39,5 +39,5 @@ export default class Column {
 }
 
 export enum enumDrawType {
-    magnitude, occurance, any,
+    magnitude, occurrence, any,
 }

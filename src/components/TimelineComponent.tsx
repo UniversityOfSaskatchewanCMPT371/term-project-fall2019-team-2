@@ -1,20 +1,20 @@
 import React from 'react';
 import TimelineInterface, {TimelineState} from './TimelineInterface';
 import * as d3 from 'd3';
+import './Timeline.css';
 
 /**
  * Purpose: shorthand for console.log()
- * @param {string} str: thing to log
+ * @param {any} str: thing to log
  */
-function log(str: string) {
+function log(str: any) {
   console.log(str);
 }
 
 /**
  * Purpose: renders and updates a timeline to the screen
  */
-export default class TimelineComponent extends
-  React.Component<TimelineInterface, TimelineState> {
+export default class TimelineComponent extends React.Component<TimelineInterface, TimelineState> {
   /**
    * Purpose: constructor for the TimelineComponent
    * @param {TimelineComponent} props
@@ -61,9 +61,12 @@ export default class TimelineComponent extends
    */
   drawTimeline() {
     const height = this.state.height -
-        (this.state.marginBottom + this.state.marginTop);
+      (this.state.marginBottom + this.state.marginTop);
     const width = this.state.width -
-        (this.state.marginLeft + this.state.marginRight);
+      (this.state.marginLeft + this.state.marginRight);
+
+    const fullWidth = this.state.width;
+    const fullHeight = this.state.height;
     const barWidth = 50;
     const barBuffer = 1;
     const numBars = Math.floor(width / barWidth) +
@@ -79,78 +82,21 @@ export default class TimelineComponent extends
     // @ts-ignore
     const ordinals = data.map((d) => d[xColumn]);
 
-    const x = d3.scaleLinear()
-        .domain([0, ordinals.length])
-        .rangeRound([0, width]);
+    let x = d3.scaleLinear()
+      .domain([0, ordinals.length])
+      .rangeRound([0, width]);
 
-    const y = d3.scaleLinear()
-        .domain([d3.min(csvData,
-            (d) => {
-              // @ts-ignore
-              return d[yColumn];
-            }),
+    let y = d3.scaleLinear()
+      .domain([d3.min(csvData,
+        (d) => {
+          // @ts-ignore
+          return d[yColumn];
+        }),
         d3.max(csvData, (d) => {
           // @ts-ignore
           return d[yColumn];
         })])
-        .range([height, 0]);
-
-
-    // Three function that change the tooltip when user hover/move/leave bar
-    const ttover = function(d: any) {
-      // log(d3.event);
-      if (d3.event.buttons === 0) {
-        const Tooltip = d3.select('#svgtarget')
-            .append('div')
-            .style('opacity', 0)
-            .attr('class', 'tooltip')
-            .attr('target', null)
-            .style('background-color', 'white')
-            .style('border', 'solid')
-            .style('border-width', '2px')
-            .style('border-radius', '5px')
-            .style('padding', '5px')
-            .style('left', (d3.event.x + 70) + 'px')
-            .style('top', d3.event.y + 'px');
-
-        const keys = Object.keys(d);
-        let tooltip: string = '';
-        keys.forEach(function(key) {
-          tooltip += '<strong>' + key + '</strong> <span style=\'color:red\'>' +
-              d[key] + '</span><br/>';
-        });
-
-        Tooltip.html(tooltip)
-            .style('opacity', 1);
-      }
-    };
-
-    /**
-     * Purpose: updates the position of the Tooltip
-     * @param {number} xPos: the current x position of the mouse
-     * @param {number} yPos: the current y postion of the mouse
-     */
-    function ttUpdatePos(xPos: number, yPos: number) {
-      d3.selectAll('.tooltip')
-          .style('left', (xPos + 70) + 'px')
-          .style('top', (yPos + 'px'));
-    }
-
-    /**
-     * Purpose: wrapper for ttUpdatePos
-     * @param {any} d: datum passed into the function
-     */
-    const ttmove = function(d: any) {
-      // event is a mouseEvent
-      ttUpdatePos(d3.event.x, d3.event.y);
-    };
-
-    const ttleave = function(d: any) {
-      // delete all tooltips
-      if (d3.event.buttons === 0) {
-        d3.selectAll('.tooltip').remove();
-      }
-    };
+      .range([height, 0]);
 
     const extent: [[number, number], [number, number]] =
       [[this.state.marginLeft, this.state.marginTop],
@@ -158,89 +104,170 @@ export default class TimelineComponent extends
           height - this.state.marginTop]];
 
     const zoom = d3.zoom()
-        .scaleExtent([1, 20]) // zoom range
-        .translateExtent(extent)
-        .extent(extent)
-        .on('zoom', updateChart);
-
+      .scaleExtent([1, 20]) // zoom range
+      .translateExtent(extent)
+      .extent(extent)
+      .on('zoom', updateChart);
 
     const svg = d3.select('#svgtarget')
-        .append('svg')
-        .attr('width', width)
-        .attr('height', height + this.state.marginTop +
-            this.state.marginBottom)
-    // @ts-ignore
-        .call(zoom)
-        .append('g')
-        .attr('transform', 'translate(' + this.state.marginLeft +
+      .append('svg')
+      .attr('width', width)
+      .attr('height', height + this.state.marginTop +
+        this.state.marginBottom)
+      // @ts-ignore
+      .call(zoom)
+      .append('g')
+      .attr('transform', 'translate(' + this.state.marginLeft +
         ',' + this.state.marginTop + ')');
 
     svg.append('rect')
-        .attr('width', width)
-        .attr('height', height)
-        .style('fill', 'none');
+      .attr('width', width)
+      .attr('height', height)
+      .style('fill', 'none');
 
     svg.append('defs')
-        .append('clipPath')
-        .attr('id', 'barsBox')
-        .append('rect')
-        .attr('width', width)
-        .attr('height', height + this.state.marginTop +
-            this.state.marginBottom)
-        .attr('x', 0)
-        .attr('y', 0);
-
+      .append('clipPath')
+      .attr('id', 'barsBox')
+      .append('rect')
+      .attr('width', width)
+      .attr('height', height + this.state.marginTop +
+        this.state.marginBottom)
+      .attr('x', 0)
+      .attr('y', 0);
 
     // Create layers in order so that the bars will disapear under the axis
-    const barsLayer = svg
-        .append('g')
-        .attr('clip-path', 'url(#barsBox)')
-        .append('g')
-        .attr('id', 'barsLayer')
-        .call(d3.drag()
-            .on('start', dragstarted)
-            .on('drag', dragged)
-            .on('end', dragended));
+    const barsLayer = svg.append('g')
+      .attr('clip-path', 'url(#barsBox)')
+      .append('g')
+      .attr('id', 'barsLayer')
+      .call(d3.drag()
+        .on('start', dragstarted)
+        .on('drag', dragged)
+        .on('end', dragended));
 
     const axisLayer = svg.append('g')
-        .attr('id', 'axisLayer');
+      .attr('id', 'axisLayer');
 
     // y axis
     const yAxis = axisLayer.append('g')
-        .style('color', 'red')
-        .attr('class', 'y axis')
-        .call(d3.axisLeft(y))
-        .append('text')
-        .attr('transform', 'rotate(-90)')
-        .attr('y', 6)
-        .attr('dy', '.71em')
-        .style('text-anchor', 'end')
-        .style('color', 'red')
-        .text('yColumn');
+      .style('color', 'red')
+      .attr('class', 'y axis')
+      .call(d3.axisLeft(y))
+      .append('text')
+      .attr('transform', 'rotate(-90)')
+      .attr('y', 6)
+      .attr('dy', '.71em')
+      .style('text-anchor', 'end')
+      .style('color', 'red')
+      .text('yColumn');
 
     // Create bars
     const plot = barsLayer.append('g')
-        .attr('class', 'plot')
-        .attr('id', 'bars');
-
-    updateBars();
+      .attr('class', 'plot')
+      .attr('id', 'bars');
 
     // x axis
-    // const xAxis = barsLayer.append('g')
-    barsLayer.append('g')
-        .attr('id', 'xaxis')
-        .style('color', 'red')
-        .attr('class', 'x axis')
-        .attr('transform', 'translate(0,' + height + ')')
-        .call(d3.axisBottom(x).tickFormat(function(d) {
+    const xAxis = barsLayer.append('g')
+      .attr('id', 'xaxis')
+      .style('color', 'red')
+      .attr('class', 'x axis')
+      .attr('transform', 'translate(0,' + height + ')')
+      .call(d3.axisBottom(x).tickFormat(function (d) {
         // @ts-ignore
-          return ordinals[d];// now for 0 it will return 'a' for 1 b and so on
-        }))
-        .selectAll('text')
-        .style('text-anchor', 'end')
-        .attr('dx', '-.8em')
-        .attr('dy', '.15em')
-        .attr('transform', 'rotate(-90)');
+        return ordinals[d];// now for 0 it will return 'a' for 1 b and so on
+      }))
+      .selectAll('text')
+      .style('text-anchor', 'end')
+      .style('font-size', '1rem')
+      .attr('dx', '-.8em')
+      .attr('dy', '.15em')
+      .attr('transform', 'rotate(-90)');
+
+    // Three function that change the tooltip when user hover/move/leave bar
+    const ttover = function (d: any) {
+      if (d3.event.buttons === 0) {
+        const Tooltip = d3.select('#svgtarget')
+          .append('div')
+          .style('opacity', 0)
+          .attr('class', 'tooltip')
+          .attr('target', null)
+          .style('background-color', 'white')
+          .style('border', 'solid')
+          .style('border-width', '2px')
+          .style('border-radius', '5px')
+          .style('padding', '5px')
+          .style('left', (d3.event.x + 70) + 'px')
+          .style('top', d3.event.y + 'px');
+
+        const keys = Object.keys(d);
+        let tooltip: string = '';
+        keys.forEach(function (key) {
+          tooltip += '<strong>' + key + '</strong> <span style=\'color:red\'>' +
+            d[key] + '</span><br/>';
+        });
+
+        Tooltip.html(tooltip);
+
+        // Use ! to assert that this is not null
+        log(Tooltip.node()!.getBoundingClientRect());
+
+        let ttBox = Tooltip.node()!.getBoundingClientRect();
+
+        if ((ttBox.top + ttBox.height) > height) {
+          Tooltip.style('top', (fullHeight - ttBox.height) + 'px');
+        }
+
+        Tooltip.style('opacity', 1);
+      }
+    };
+
+    /**
+     * Purpose: updates the position of the Tooltip
+     * Timeline Scope: all elements
+     * @param {number} xPos: the current x position of the mouse
+     * @param {number} yPos: the current y postion of the mouse
+     */
+    function ttUpdatePos(xPos: number, yPos: number) {
+      const Tooltip = d3.select('.tooltip');
+
+      if (Tooltip !== null && Tooltip.node() !== null) {
+        // @ts-ignore
+        let ttBox = Tooltip.node()!.getBoundingClientRect();
+
+        Tooltip
+          .style('left', (xPos + 70) + 'px');
+
+        if ((yPos + ttBox.height) > fullHeight) {
+          yPos = (fullHeight - ttBox.height);
+        }
+        if (yPos < 0) {
+          yPos = 0;
+        }
+      }
+      Tooltip.style('top', (yPos + 'px'));
+    }
+
+    /**
+     * Purpose: wrapper for ttUpdatePos
+     * Timeline Scope: all elements
+     * @param {any} d: datum passed into the function
+     */
+    const ttmove = function (d: any) {
+      // event is a mouseEvent
+      ttUpdatePos(d3.event.x, d3.event.y);
+    };
+
+    /**
+     * Purpose: called when the cursor moves off of a bar
+     * Timeline Scope: all elements
+     * @param d
+     */
+    const ttleave = function (d: any) {
+      // delete all tooltips
+      if (d3.event.buttons === 0) {
+        d3.selectAll('.tooltip').remove();
+      }
+    };
 
     /**
      * Purpose: updates the state and positioning of element on the Timeline
@@ -248,13 +275,46 @@ export default class TimelineComponent extends
     function updateChart() {
       // recover the new scale
       scale = d3.event.transform.k;
-      // const newX = d3.event.transform.rescaleX(x);
+      const newX = d3.event.transform.rescaleX(x);
       const newY = d3.event.transform.rescaleY(y);
+
+      log("newX: " + newX(10));
+
+      d3.selectAll('#xaxis').remove();
+
+      barsLayer.append('g')
+        .attr('id', 'xaxis')
+        .style('color', 'red')
+        .attr('class', 'x axis')
+        .attr('transform', 'translate(0,' + height + ')')
+        .call(d3.axisBottom(newX).tickFormat(function (d) {
+          // @ts-ignore
+          return ordinals[d];// now for 0 it will return 'a' for 1 b and so on
+        }))
+        .selectAll('text')
+        .style('text-anchor', 'end')
+        .style('font-size', '1rem')
+        .attr('dx', '-.8em')
+        .attr('dy', '.15em')
+        .attr('transform', 'rotate(-90)');
+
       yAxis.call(d3.axisLeft(newY));
 
+      //deltaX = newX(deltaX);
+
+      //log("deltaX: " + deltaX);
+
       d3.selectAll('.bar')
-          .attr('x', (d, i) => scale * barWidth * (i + dataIdx))
-          .attr('width', scale * barWidth);
+        .attr('x', (d, i) => {
+          // log('newX(barWidth): ' + newX(barWidth));
+          // log('newX(i): ' + newX(i));
+          // log('newX(dataIdx): ' + newX(dataIdx));
+          return newX(i);//newX(barWidth) * (i + dataIdx);
+          }
+        )
+        //.attr('x', (d, i) => newX(barWidth * (i + dataIdx)))
+        //.attr('x', (d, i) => scale * barWidth * (i + dataIdx))
+        .attr('width', scale * barWidth);
 
       if (d3.event.sourceEvent.type === 'mousemove') {
         dragged();
@@ -267,33 +327,33 @@ export default class TimelineComponent extends
      */
     function updateBars() {
       plot.selectAll('.bar')
-          .data(data, function(d: any, i: any, group: any) {
-            return d.index;
-          })
-          .join(
-              (enter: any) => enter.append('rect')
-                  .attr('class', 'bar')
-                  .attr('x', (d: any, i: number) =>
-                    (scale * barWidth * (i + dataIdx)))
-                  .attr('width', scale * barWidth)
-                  .attr('y', (d: any) => y(d[yColumn]))
-                  .attr('height', (d: any) => {
-                    const newHeight = (height - y(d[yColumn]));
-                    if (newHeight < 0) {
-                      console.log('Bad height: ' + d[yColumn]);
-                      return 0;
-                    } else {
-                      return (height - y(d[yColumn]));
-                    }
-                  })
-                  .on('mouseover', ttover)
-                  .on('mousemove', ttmove)
-                  .on('mouseleave', ttleave),
+        .data(data, function (d: any, i: any, group: any) {
+          return d.index;
+        })
+        .join(
+          (enter: any) => enter.append('rect')
+            .attr('class', 'bar')
+            .attr('x', (d: any, i: number) =>
+              (scale * barWidth * (i + dataIdx)))
+            .attr('width', scale * barWidth)
+            .attr('y', (d: any) => y(d[yColumn]))
+            .attr('height', (d: any) => {
+              const newHeight = (height - y(d[yColumn]));
+              if (newHeight < 0) {
+                console.log('Bad height: ' + d[yColumn]);
+                return 0;
+              } else {
+                return (height - y(d[yColumn]));
+              }
+            })
+            .on('mouseover', ttover)
+            .on('mousemove', ttmove)
+            .on('mouseleave', ttleave),
 
-              (update: any) => update,
+          (update: any) => update,
 
-              (exit: { remove: () => void; }) => exit.remove()
-          );
+          (exit: { remove: () => void; }) => exit.remove()
+        );
     }
 
     /**
@@ -301,9 +361,9 @@ export default class TimelineComponent extends
      */
     function moveChart() {
       d3.select('#barsLayer')
-          .attr('transform', (d) => {
-            return `translate(${deltaX},0)`;
-          });
+        .attr('transform', (d) => {
+          return `translate(${deltaX},0)`;
+        });
 
       dataIdx = Math.floor(-deltaX / (scale * barWidth));
       data = csvData.slice(dataIdx, numBars + dataIdx);
@@ -319,7 +379,7 @@ export default class TimelineComponent extends
      */
     function dragstarted(this: any) {
       d3.select(this).raise()
-          .classed('active', true);
+        .classed('active', true);
     }
 
     /**
@@ -342,5 +402,7 @@ export default class TimelineComponent extends
     function dragended(this: any) {
       d3.select(this).classed('active', false);
     }
+
+    updateBars();
   }
 }

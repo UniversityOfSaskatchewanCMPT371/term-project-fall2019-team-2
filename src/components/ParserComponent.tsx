@@ -32,8 +32,10 @@ export default class ParserComponent extends React.Component<ParserInterface,
         <label>
           {this.props.prompt}
         </label>
-        <input type="file" onChange={this.Parse}
-          accept={this.props.fileType.mimeName} />
+        <input
+          type="file" onChange={this.Parse}
+          accept={this.props.fileType.mimeName}
+        />
       </div>
     );
   }

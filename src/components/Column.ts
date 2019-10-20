@@ -9,12 +9,13 @@ export default class Column {
 
     /**
      * Purpose: Column constructor
+     * @param {string} primType: the type of the data
+     * @param {enumDrawType} drawType: the type in the form of enum
+     * @param {string} key: the key value
      * @param {number} yScale: the initial y-scale
-     * @param {Array} definedDrawList: the initial list of drawing predicates
-     * functions for the column
      */
-    // eslint-disable-next-line max-len
-    public constructor(primType: string, drawType: enumDrawType, key: string, yScale: number = 1) {
+    public constructor(primType: string, drawType: enumDrawType,
+        key: string, yScale: number = 1) {
       this.drawType = drawType;
       this.yScale = yScale;
       this.key = key;

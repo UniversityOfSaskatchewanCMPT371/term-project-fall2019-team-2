@@ -22,7 +22,7 @@ export default class Filter {
     public constructor(lowerRange: number,
         upperRange: number,
         isShown: boolean,
-        listOfPreds: Array<() => boolean>) {
+        listOfPreds: Array<(...args: any[]) => boolean>) {
       this.lowerRange = lowerRange;
       this.upperRange = upperRange;
       this.isShown = isShown;

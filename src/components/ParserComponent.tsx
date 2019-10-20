@@ -58,7 +58,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * valid
      */
   isValid(fileEvent: any): boolean {
-    return true;
+    const typeOfFile = fileEvent.name.substr(fileEvent.name.length - 3);
+    return typeOfFile === 'csv';
   }
 
   /**
@@ -67,6 +68,13 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * @return {boolean}: a boolean indicating whether or not the sort succeeded
      */
   sortData(data: Array<object>): boolean {
+    // @ts-ignore
+    // eslint-disable-next-line max-len
+    data.sort(function(a: { Date: string | number | Date; }, b: { Date: string | number | Date; }) {
+      if (new Date(a.Date) < new Date(b.Date)) return -1;
+      if (new Date(a.Date) > new Date(b.Date)) return 1;
+      return 0;
+    });
     return true;
   }
 
@@ -118,13 +126,18 @@ export default class ParserComponent extends React.Component<ParserInterface,
             data: content,
           };
         });
-        // eslint-disable-next-line max-len
-        content.sort(function(a: { Date: string | number | Date; }, b: { Date: string | number | Date; }) {
-          if (new Date(a.Date) < new Date(b.Date)) return -1;
-          if (new Date(a.Date) > new Date(b.Date)) return 1;
-          return 0;
-        });
+        console.log(this.sortData(content));
         console.log(content);
+        console.log(this.isValid(csvFile));
+        if (!this.isValid(csvFile)) {
+          try {
+            throw new Error('Wrong file type was uploaded.');
+          }
+          catch (e) {
+            console.log(e);
+            alert('The file uploaded needs to be CSV.');
+          };
+        }
       }
     };
 

@@ -1,17 +1,18 @@
 import React from 'react';
-import ParserInterface from './ParserInterface';
-import {ParserState} from './ParserInterface';
+import ParserInterface, {FileType, ParserState} from './ParserInterface';
 import * as d3 from 'd3';
-import Data from './Data';
+import * as d3dsv from 'd3-dsv';
+import Filter from './Filter';
 
 /**
  * Purpose: react component responsible for receiving and parsing file data
  */
 export default class ParserComponent extends React.Component<ParserInterface,
-    ParserState> {
+  ParserState> {
   /**
    * Purpose: ParserComponent constructor
-   * @param {ParserInterface} props: prompt and filetype passed as arguments
+   * @param {ParserInterface} props: the prompt and fileType properties to
+   * pass into the constructor
    */
   constructor(props: ParserInterface) {
     super(props);
@@ -20,6 +21,18 @@ export default class ParserComponent extends React.Component<ParserInterface,
       fileType: props.fileType,
       data: [],
     };
+
+    this.isValid = this.isValid.bind(this);
+    this.sortData = this.sortData.bind(this);
+    this.inferTypes = this.inferTypes.bind(this);
+    this.parseCsv = this.parseCsv.bind(this);
+    this.parse = this.parse.bind(this);
+  }
+
+  /**
+   * Waits until component mounts
+   */
+  componentDidMount(): void {
   }
 
   /**
@@ -32,10 +45,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
         <label>
           {this.props.prompt}
         </label>
-        <input
-          type="file" onChange={this.Parse}
-          accept={this.props.fileType.mimeName}
-        />
+        <input type="file" onChange={this.parse}
+          accept={this.props.fileType.mimeName}/>
       </div>
     );
   }
@@ -61,8 +72,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
   }
 
   /**
-   * Purpose: attempts to infer the types of the data in each of the columns of
-   * the csv data
+   * Purpose: attempts to infer the types of the data in each of the columns
+   * of the csv data
    * @param {Array} data: the array of data to infer the types for
    * @return {Array}: a list of objects which define the methods available for
    * the data
@@ -75,20 +86,20 @@ export default class ParserComponent extends React.Component<ParserInterface,
    * Purpose: attempts to parse the file uploaded by the user.
    * @param {Object} fileEvent: the event passed into this component
    */
-  Parse(fileEvent: any) {
-    this.isValid(fileEvent);
-    this.sortData(this.state.data);
-    this.inferTypes(this.state.data);
-
-    // Create new data object
-    const csvData = new Data('fileName', this.state.data);
+  parse(fileEvent: any) {
+    // this.isValid(fileEvent);
+    // this.sortData(this.state.data);
+    // this.inferTypes(this.state.data);
+    if (this.props.fileType === FileType.csv) {
+      this.parseCsv(fileEvent).then(() => console.log('done'));
+    }
   }
 
   /**
    * Purpose: to parse a csv file uploaded by the user
    * @param {Object} fileEvent: the event passed into this component
    */
-  async ParseCsv(fileEvent: any) {
+  async parseCsv(fileEvent: any) {
     console.log(fileEvent);
 
     const csvFile = fileEvent.target.files[0];
@@ -99,7 +110,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
 
     const handleFileRead = () => {
       if (typeof fileReader.result === 'string') {
-        const content = d3.csvParse(fileReader.result);
+        const content = d3.csvParse(fileReader.result, d3dsv.autoType);
 
         // set state of the parser component
         this.setState((state) => {
@@ -110,6 +121,13 @@ export default class ParserComponent extends React.Component<ParserInterface,
           };
         });
         console.log(content);
+        const t = {
+          dt: content[0]['Order Date'],
+        };
+        d3.autoType(t);
+        console.log(t.dt);
+        console.log(typeof t.dt);
+        console.log(d3dsv.autoType(t));
       }
     };
 

@@ -141,9 +141,9 @@ export default class TimelineComponent extends React.Component<TimelineInterface
       .append('g')
       .attr('id', 'barsLayer')
       .call(d3.drag()
-        .on('start', dragstarted)
+        .on('start', dragStarted)
         .on('drag', dragged)
-        .on('end', dragended));
+        .on('end', dragEnded));
 
     const axisLayer = svg.append('g')
       .attr('id', 'axisLayer');
@@ -184,7 +184,7 @@ export default class TimelineComponent extends React.Component<TimelineInterface
       .attr('transform', 'rotate(-90)');
 
     // Three function that change the tooltip when user hover/move/leave bar
-    const ttover = function (d: any) {
+    function ttOver(d: any) {
       if (d3.event.buttons === 0) {
         const Tooltip = d3.select('#svgtarget')
           .append('div')
@@ -219,7 +219,7 @@ export default class TimelineComponent extends React.Component<TimelineInterface
 
         Tooltip.style('opacity', 1);
       }
-    };
+    }
 
     /**
      * Purpose: updates the position of the Tooltip
@@ -252,22 +252,22 @@ export default class TimelineComponent extends React.Component<TimelineInterface
      * Timeline Scope: all elements
      * @param {any} d: datum passed into the function
      */
-    const ttmove = function (d: any) {
+    function ttMove(d: any) {
       // event is a mouseEvent
       ttUpdatePos(d3.event.x, d3.event.y);
-    };
+    }
 
     /**
      * Purpose: called when the cursor moves off of a bar
      * Timeline Scope: all elements
      * @param d
      */
-    const ttleave = function (d: any) {
+    function ttLeave(d: any) {
       // delete all tooltips
       if (d3.event.buttons === 0) {
         d3.selectAll('.tooltip').remove();
       }
-    };
+    }
 
     /**
      * Purpose: updates the state and positioning of element on the Timeline
@@ -346,9 +346,9 @@ export default class TimelineComponent extends React.Component<TimelineInterface
                 return (height - y(d[yColumn]));
               }
             })
-            .on('mouseover', ttover)
-            .on('mousemove', ttmove)
-            .on('mouseleave', ttleave),
+            .on('mouseover', ttOver)
+            .on('mousemove', ttMove)
+            .on('mouseleave', ttLeave),
 
           (update: any) => update,
 
@@ -374,10 +374,10 @@ export default class TimelineComponent extends React.Component<TimelineInterface
     }
 
     /**
-     * @this dragstarted
+     * @this dragStarted
      * @param {any} this
      */
-    function dragstarted(this: any) {
+    function dragStarted(this: any) {
       d3.select(this).raise()
         .classed('active', true);
     }
@@ -396,10 +396,10 @@ export default class TimelineComponent extends React.Component<TimelineInterface
     }
 
     /**
-     * @this dragended
+     * @this dragEnded
      * @param {any} this
      */
-    function dragended(this: any) {
+    function dragEnded(this: any) {
       d3.select(this).classed('active', false);
     }
 

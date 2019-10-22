@@ -35,7 +35,7 @@ export default class Filter {
      * @param {number} newUpperRange: the new upper range
      * @constructor
      */
-    public RedefineRange(newLowerRange: number, newUpperRange: number) {
+    public redefineRange(newLowerRange: number, newUpperRange: number) {
       this.lowerRange = newLowerRange;
       this.upperRange = newUpperRange;
     }
@@ -45,7 +45,7 @@ export default class Filter {
      * @param {boolean} predicate: the predicate to add to the list
      * @constructor
      */
-    public AddPredicate(predicate: () => boolean) {
+    public addPredicate(predicate: () => boolean) {
       this.listOfPreds.push(predicate);
     }
 
@@ -54,7 +54,7 @@ export default class Filter {
      * @param {number} index: the index of the predicate to remove
      * @constructor
      */
-    public RemovePredicat(index: number) {
+    public removePredicate(index: number) {
       this.listOfPreds.splice(index, 1);
     }
 }

@@ -10,15 +10,14 @@ import {throws} from 'assert';
  * Purpose: react component responsible for receiving and parsing file data
  */
 export default class ParserComponent extends React.Component<ParserInterface,
-    ParserState> {
-
+  ParserState> {
   private columnTypes: Array<object> = Array(0);
 
   /**
-     * Purpose: ParserComponent constructor
-     * @param {ParserInterface} props: the prompt and fileType properties to
-     * pass into the constructor
-     */
+   * Purpose: ParserComponent constructor
+   * @param {ParserInterface} props: the prompt and fileType properties to
+   * pass into the constructor
+   */
   constructor(props: ParserInterface) {
     super(props);
     this.state = {
@@ -29,21 +28,21 @@ export default class ParserComponent extends React.Component<ParserInterface,
 
     this.isValid = this.isValid.bind(this);
     this.sortData = this.sortData.bind(this);
-    this.inferTypes = this.inferTypes.bind(this);
     this.parseCsv = this.parseCsv.bind(this);
     this.parse = this.parse.bind(this);
+    this.inferTypes = this.inferTypes.bind(this);
   }
 
   /**
-     * Waits until component mounts
-     */
+   * Waits until component mounts
+   */
   componentDidMount(): void {
   }
 
   /**
-     * Purpose: renders the HTML for this component
-     * @return {string}: valid HTML
-     */
+   * Purpose: renders the HTML for this component
+   * @return {string}: valid HTML
+   */
   render() {
     return (
       <div>
@@ -90,21 +89,28 @@ export default class ParserComponent extends React.Component<ParserInterface,
    * @param {Array} data: the array of pre-sorted valid data
    * @return {Array}: a list of objects of type Column
    */
-  inferTypes(data: Array<object>): Array<object> {
-    if (this.state.data.length-1 > 0) {
+  inferTypes(data: Array<object>): Array<Column> {
+    // console.log(this.state.data.length);
+    this.state = {
+      prompt: 'stasd',
+      fileType: FileType.csv,
+      data: data,
+    };
+
+    if (this.state.data.length > 0) {
       const listFields = Object.keys(this.state.data[0]);
-      const listOfTypes: never[] | string[]= [];
+      const listOfTypes: never[] | string[] = [];
       // check the n samples of the value to find if the data is consistent
       // future take the one that occurs the most frequently
       // if data is missing throws an error currently
-      [0, Math.floor(this.state.data.length-1/2)].forEach((element) => {
+      [0, Math.floor(this.state.data.length / 2)].forEach((element) => {
         const row = this.state.data[element];
         // look at each field and categorize
         for (let i = 0; i < listFields.length; i++) {
           // @ts-ignore
           const type = typeof row[listFields[i]];
           if (type !== 'string' && type !== 'number') {
-            throw new Error('missing data');
+            throw new Error('Bad type: ' + type);
           }
           if (listOfTypes[i] == undefined) {
             listOfTypes[i] = type;
@@ -114,25 +120,27 @@ export default class ParserComponent extends React.Component<ParserInterface,
         }
       });
       let indx = 0;
-      const arrayOfColumns = new Array(listOfTypes.length);
+      const arrayOfColumns = new Array<Column>(listOfTypes.length);
       listOfTypes.forEach((element) => {
-        let newCol;
+        let newCol: Column;
         if (element === 'string') {
           // create a Column object with occurrence data
           // eslint-disable-next-line max-len
           newCol = new Column(element, enumDrawType.occurrence, listFields[indx]);
+          arrayOfColumns[indx] = newCol;
+          indx++;
         } else if (element === 'number') {
           // create a Column with interval, point or magnitude data
           newCol = new Column(element, enumDrawType.any, listFields[indx]);
+          arrayOfColumns[indx] = newCol;
+          indx++;
         }
-        arrayOfColumns[indx] = newCol;
-        indx++;
       }
       );
       console.log(arrayOfColumns);
       return arrayOfColumns;
     } else {
-      throw new Error('data is empty');
+      throw new Error('data is empty: ' + data.length);
     }
   }
 

@@ -2,7 +2,7 @@
 
 # Source Code
 
-[Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/develop/src) is the link to the current source code for the project, and [Here](https://dev.braunson.me/) is a link to the current development build of the software.
+[Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/master/src) is the link to the current source code for the project, and [Here](https://dev.braunson.me/) is a link to the current development build of the software.
 
 
 
@@ -18,11 +18,11 @@
 
 [This](hhttps://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/master/documents/reviews/ID2FormalReview.pdf) is the formal review conducted for ID2. It was done in more depth, and more formally than the review for ID1. [Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/master/documents/meetings/agenda10.15.md) is the meeting in which the agreement was made for the design document to be the artifact that underwent formal review, and [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/master/documents/reviews/DocReview.tex) is the updated review document.  Finally [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/pull/56) is the final pull request where the document was checked over one last time to ensure that all required changes were made.
 
-## Design Document
+# Design Document
 
 [Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/master/documents/ID2/Design%20Documents(1).pdf) is the fully fleshed out design document for ID2.
 
-## Meetings With Stakeholders
+# Meetings With Stakeholders
 
 [This](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/master/documents/meetings/stakeholder19.4.md) document outlines our stakeholder meeting for ID2. 
 

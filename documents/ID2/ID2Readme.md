@@ -26,7 +26,7 @@
 
 # Continous Integration
 
-[This](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/pull/44) PR outlines all the changes made to the build pipeline, and how it is to be used.
+[This](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/pull/44) PR outlines all the changes made to the build pipeline, and how it is to be used. [Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/develop/documents/builds) is the actual commit itself. [Here] (https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/master/.github) is the pipeline configuration.  [Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/develop/Dockerfile) is the docker config file. And finally [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/actions) is the page for our git actions.
 
 # Timelog
 

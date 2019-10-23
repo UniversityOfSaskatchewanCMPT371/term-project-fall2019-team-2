@@ -68,13 +68,25 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * @return {boolean}: a boolean indicating whether or not the sort succeeded
      */
   sortData(data: Array<object>): boolean {
-    // @ts-ignore
-    // eslint-disable-next-line max-len
-    data.sort(function(a: { Date: string | number | Date; }, b: { Date: string | number | Date; }) {
-      if (new Date(a.Date) < new Date(b.Date)) return -1;
-      if (new Date(a.Date) > new Date(b.Date)) return 1;
-      return 0;
-    });
+    let doneTheWork = false;
+    /* loop goes through each key and saves the 1 with a date in first row*/
+    for (const [key, value] of Object.entries(data[0])) {
+      if (!doneTheWork) {
+        const date = Date.parse(String(value));
+        if (!isNaN(date) && isNaN(Number(value))) {
+          doneTheWork = true;
+          console.log(key);
+          /* this part sorts*/
+          // @ts-ignore
+          // eslint-disable-next-line max-len
+          data.sort(function(a: { key: string | number | key; }, b: { key: string | number | key; }) {
+            if (new Date(a.key) < new Date(b.key)) return -1;
+            if (new Date(a.key) > new Date(b.key)) return 1;
+            return 0;
+          });
+        }
+      }
+    }
     return true;
   }
 
@@ -128,12 +140,10 @@ export default class ParserComponent extends React.Component<ParserInterface,
         });
         console.log(this.sortData(content));
         console.log(content);
-        console.log(this.isValid(csvFile));
         if (!this.isValid(csvFile)) {
           try {
             throw new Error('Wrong file type was uploaded.');
-          }
-          catch (e) {
+          } catch (e) {
             console.log(e);
             alert('The file uploaded needs to be CSV.');
           };

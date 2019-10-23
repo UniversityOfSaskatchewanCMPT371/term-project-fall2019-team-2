@@ -22,7 +22,7 @@
 
 [Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/master/documents/ID2/Design%20Documents(1).pdf) is the fully fleshed out design document for ID2.
 
-# Meetings With Stakeholders
+## Meetings With Stakeholders
 
 [This](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/master/documents/meetings/stakeholder19.4.md) document outlines our stakeholder meeting for ID2. 
 

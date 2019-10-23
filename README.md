@@ -8,7 +8,7 @@ For more information about ID1 and the location of its contents, refer to [here]
 
 ## Incremental Deliverable 2
 
-For more information about ID2 and the location of its contents, refer to [here]().
+For more information about ID2 and the location of its contents, refer to [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID2/documents/ID2).
 
 ## Prototypes
 

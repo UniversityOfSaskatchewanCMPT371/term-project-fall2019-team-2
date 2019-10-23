@@ -4,17 +4,23 @@
 
 [Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/develop/src) is the link to the current source code for the project, and [Here](https://dev.braunson.me/) is a link to the current development build of the software.
 
+
+
 # Mini-Milestones
 
 [Our current list](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/master/documents/ID2/ID3%20Mini-Milestones.pdf) of mini-milestones along with the roadmap for their completion.  This document also includes a break down of how our timelogging will work in the future deliverables.  Various categories were merged as they were viewed as redundant.
 
 # Risk Report
 
-[Our list of current risks](TODO GET RISK DOC MERGED) is here. 
+[Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/master/documents/ID2/Top%2010%20Risks%20followed%20by%20mitigation%20plan%20for%20ID2.pdf) is the risk documentation and planning for ID2.
 
 # Reviews Conducted
 
 [This](hhttps://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/master/documents/reviews/ID2FormalReview.pdf) is the formal review conducted for ID2. It was done in more depth, and more formally than the review for ID1. [Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/master/documents/meetings/agenda10.15.md) is the meeting in which the agreement was made for the design document to be the artifact that underwent formal review, and [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/master/documents/reviews/DocReview.tex) is the updated review document.  Finally [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/pull/56) is the final pull request where the document was checked over one last time to ensure that all required changes were made.
+
+## Design Document
+
+[Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/master/documents/ID2/Design%20Documents(1).pdf) is the fully fleshed out design document for ID2.
 
 # Meetings With Stakeholders
 

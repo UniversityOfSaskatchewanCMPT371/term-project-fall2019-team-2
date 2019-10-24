@@ -3,5 +3,23 @@ import {shallow} from 'enzyme';
 import Filter from '../components/Filter';
 
 describe('<Filter /> renders successfully', () => {
-   // todo
+  // todo
+});
+
+describe('<Filter /> Unit Tests', () => {
+  it('constructor()', () => {
+
+  });
+
+  it('redefineRange()', () => {
+
+  });
+
+  it('addPredicate()', () => {
+
+  });
+
+  it('removePredicate()', () => {
+
+  });
 });

@@ -29,29 +29,75 @@ describe('<ParserComponent /> renders correctly', () => {
 
   it('csv input snapshot', () => {
     // eslint-disable-next-line max-len
-    const comp = shallow(<ParserComponent prompt={'Select a CSV file: '} fileType={FileType.csv}/>);
+    const comp = shallow(
+        <ParserComponent
+          prompt={'Select a CSV file: '}
+          fileType={FileType.csv}
+        />
+    );
     expect(comp.getElements()).toMatchSnapshot();
   });
 });
 
-describe('Events processed correctly', () => {
-  // work in progress :c
+describe('FileEvents processed correctly', () => {
   it('responds to file selection', () => {
-    // eslint-disable-next-line max-len
-    // const parseMock = jest.fn();
-    const testfile = new File(['data to upload'], 'empty.csv');
+    const fileUploaderMock = jest.fn();
+    const prompt = 'Select a CSV file:';
+    const fileType = FileType.csv;
+
+    const comp = shallow(
+        <ParserComponent
+          prompt={prompt}
+          fileType={fileType}
+        />
+    );
+
+    const file = {
+      name: 'test.csv',
+      type: 'text/csv',
+    } as File;
+
     const event = {
-      preventDefault() {},
-      target: {files: [testfile]},
+      target: {files: null},
     };
-    // @ts-ignore
-    // eslint-disable-next-line max-len
-    const wrapper = mount(<ParserComponent prompt="Select a CSV file: " fileType={FileType.csv}/>);
 
     // console.log('before: ' + wrapper.debug());
+    // comp.find('input').simulate('change', event);
     // wrapper.find('input').simulate('change', event);
     // expect(parseMock).toBeCalledWith(testfile);
   });
 });
 
+describe('<ParserComponent /> Unit Tests', () => {
+  it('constructor()', () => {
 
+  });
+
+  it('componentDidMount()', () => {
+
+  });
+
+  it('render()', () => {
+
+  });
+
+  it('isValid()', () => {
+
+  });
+
+  it('sortData()', () => {
+
+  });
+
+  it('inferTypes()', () => {
+
+  });
+
+  it('parse()', () => {
+
+  });
+
+  it('parseCsv()', () => {
+
+  });
+});

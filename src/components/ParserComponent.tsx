@@ -120,14 +120,14 @@ export default class ParserComponent extends React.Component<ParserInterface,
             data: content,
           };
         });
-        console.log(content);
-        const t = {
-          dt: content[0]['Order Date'],
-        };
-        d3.autoType(t);
-        console.log(t.dt);
-        console.log(typeof t.dt);
-        console.log(d3dsv.autoType(t));
+        // console.log(content);
+        // const t = {
+        //   dt: content[0]['Order Date'],
+        // };
+        // d3.autoType(t);
+        // console.log(t.dt);
+        // console.log(typeof t.dt);
+        // console.log(d3dsv.autoType(t));
       }
     };
 

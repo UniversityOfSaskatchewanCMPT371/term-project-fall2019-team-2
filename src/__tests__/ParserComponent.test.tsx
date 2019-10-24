@@ -35,6 +35,7 @@ describe('<ParserComponent /> renders correctly', () => {
 });
 
 describe('Events processed correctly', () => {
+  // work in progress :c
   it('responds to file selection', () => {
     // eslint-disable-next-line max-len
     // const parseMock = jest.fn();
@@ -47,9 +48,10 @@ describe('Events processed correctly', () => {
     // eslint-disable-next-line max-len
     const wrapper = mount(<ParserComponent prompt="Select a CSV file: " fileType={FileType.csv}/>);
 
-    console.log('before: ' + wrapper.debug());
-    wrapper.find('input').simulate('change', event);
+    // console.log('before: ' + wrapper.debug());
+    // wrapper.find('input').simulate('change', event);
     // expect(parseMock).toBeCalledWith(testfile);
-    console.log('after: ' + wrapper.debug());
   });
 });
+
+

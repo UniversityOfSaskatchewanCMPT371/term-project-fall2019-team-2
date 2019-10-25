@@ -1,27 +1,8 @@
-# CMPT371 Team 2 - Timelines
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-**Timelines** is an interactive visual environment which helps users view large quantities of temporal data. The tool is to aid a user in distinguishing trends visually, allowing them to select subsets of data to view and analyze through their web-browser.
-
-## Incremental Deliverable 1
-
-For more information about ID1 and the location of its contents, refer to [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID1/documents/ID1).
-
-## Incremental Deliverable 2
-
-For more information about ID2 and the location of its contents, refer to [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID2/documents/ID2).
-
-## Prototypes
-
-Prototypes can be found in `prototypes/` and a central description of all the prototypes 
-along with our results from them can be found in `documents/prototypes.md`
-
-## Installing
+## Available Scripts
 
 In the project directory, you can run:
-
-### `npm install`
-
-Installs all the dependencies to your local machine before starting the application.
 
 ### `npm start`
 
@@ -46,10 +27,6 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run lint -- --fix`
-
-Run the linter and attempt to fix any issues that it can with the code.
-
 ### `npm run eject`
 
 **Note: this is a one-way operation. Once you `eject`, you can’t go back!**
@@ -59,3 +36,33 @@ If you aren’t satisfied with the build tool and configuration choices, you can
 Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+
+## Learn More
+
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+
+To learn React, check out the [React documentation](https://reactjs.org/).
+
+### Code Splitting
+
+This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+
+### Analyzing the Bundle Size
+
+This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+
+### Making a Progressive Web App
+
+This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+
+### Advanced Configuration
+
+This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+
+### Deployment
+
+This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+
+### `npm run build` fails to minify
+
+This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify

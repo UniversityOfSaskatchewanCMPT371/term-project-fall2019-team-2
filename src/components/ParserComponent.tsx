@@ -91,7 +91,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
    */
   inferTypes(data: Array<object>): Array<Column> {
     // console.log(this.state.data.length);
-    this.state = {
+    this.state = { // should this stay? for testing
       prompt: 'stasd',
       fileType: FileType.csv,
       data: data,

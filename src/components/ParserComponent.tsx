@@ -4,6 +4,7 @@ import * as d3 from 'd3';
 import * as d3dsv from 'd3-dsv';
 import TimelineComponent from "./TimelineComponent";
 import Data from "./Data";
+import * as TimSort from 'timsort';
 
 /**
  * Purpose: react component responsible for receiving and parsing file data
@@ -89,27 +90,36 @@ export default class ParserComponent extends React.Component<ParserInterface,
         const date = Date.parse(String(value));
         if (!isNaN(date) && isNaN(Number(value))) {
           doneTheWork = true;
+
+          //key = 'odnum';
           console.log(key);
-          /* this part sorts*/
-          // @ts-ignore
-          // eslint-disable-next-line max-len
-          //data.sort(function (a: { key: string | number | key; }, b: { key: string | number | key; }) {
-            data.sort(function (a: { key: string }, b: { key: string }) {
-              console.log(a);
-            if (new Date(a.key) < new Date(b.key)) return -1;
-            if (new Date(a.key) > new Date(b.key)) return 1;
-            return 0;
+
+          let keyInt = key + '_num';
+          console.log(keyInt);
+
+          TimSort.sort(data,function (a: any, b: any) {
+            if(!a.hasOwnProperty(keyInt)){
+              a[keyInt] = Date.parse(a[key]);
+            }
+
+            if(!b.hasOwnProperty(keyInt)){
+              b[keyInt] = Date.parse(b[key]);
+            }
+
+            return (a[keyInt] - b[keyInt]);
           });
 
-            this.setState(() => {
-              return {
-                data: data,
-                showTimeline: true
-              };
-            })
+          this.setState(() => {
+            return {
+              data: data,
+              showTimeline: true
+            };
+          });
+          console.log(this.state.data);
         }
       }
     }
+
     return true;
   }
 
@@ -132,9 +142,13 @@ export default class ParserComponent extends React.Component<ParserInterface,
     // this.isValid(fileEvent);
     // this.sortData(this.state.data);
     // this.inferTypes(this.state.data);
+
+
     if (this.props.fileType === FileType.csv) {
       this.parseCsv(fileEvent).then(() => console.log('done'));
     }
+    //console.log(this.state.data);
+    //this.sortData(this.state.data);
   }
 
   /**
@@ -143,6 +157,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
    */
   async parseCsv(fileEvent: any) {
     console.log(fileEvent);
+    let t1 = performance.now();
 
     const csvFile = fileEvent.target.files[0];
     const fileReader = new FileReader();
@@ -159,6 +174,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
           d = d3.autoType(d);
           //must add an index to the row to be used by the Timeline
           d['index'] = i;
+
           return d;
         });
         // set state of the parser component
@@ -170,17 +186,21 @@ export default class ParserComponent extends React.Component<ParserInterface,
           };
         });
 
-        console.log(this.sortData(content));
-        console.log(content);
-        if (!this.isValid(csvFile)) {
+        if (this.isValid(csvFile)) {
+          this.sortData(content);
+        }
+        else {
           try {
             throw new Error('Wrong file type was uploaded.');
           } catch (e) {
             console.log(e);
             alert('The file uploaded needs to be CSV.');
-          }
-          ;
+          };
         }
+
+        let t2 = performance.now();
+
+        console.log("Sorting took: " + (t2 - t1));
       }
     };
 

@@ -10,7 +10,7 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <ParserComponent prompt={'Select a CSV file: '} fileType={FileType.csv} />
-     {/*<TimelineComponent data={new Data('path/to/file', [{}])} />*/}
+      {/* <TimelineComponent data={new Data('path/to/file', [{}])} />*/}
     </div>
   );
 };

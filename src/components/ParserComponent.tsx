@@ -2,8 +2,8 @@ import React from 'react';
 import ParserInterface, {FileType, ParserState} from './ParserInterface';
 import * as d3 from 'd3';
 import * as d3dsv from 'd3-dsv';
-import TimelineComponent from "./TimelineComponent";
-import Data from "./Data";
+import TimelineComponent from './TimelineComponent';
+import Data from './Data';
 import * as TimSort from 'timsort';
 
 /**
@@ -43,22 +43,22 @@ export default class ParserComponent extends React.Component<ParserInterface,
    * @return {string}: valid HTML
    */
   render() {
-
-      let chart = this.state.showTimeline ?
-          <div>
-            <TimelineComponent
-              data={new Data('path/to/file', this.state.data)}/>
-          </div>
-        : <div/>;
-
+    const chart = this.state.showTimeline ?
+      <div>
+        <TimelineComponent
+          data={new Data('path/to/file', this.state.data)}/>
+      </div> :
+      <div/>;
 
     return (
       <div>
         <label>
           {this.props.prompt}
         </label>
-        <input type="file" onChange={this.parse}
-               accept={this.props.fileType.mimeName}/>
+        <input
+          type="file"
+          onChange={this.parse}
+          accept={this.props.fileType.mimeName}/>
 
         {chart}
       </div>
@@ -91,18 +91,18 @@ export default class ParserComponent extends React.Component<ParserInterface,
         if (!isNaN(date) && isNaN(Number(value))) {
           doneTheWork = true;
 
-          //key = 'odnum';
+          // key = 'odnum';
           console.log(key);
 
-          let keyInt = key + '_num';
+          const keyInt = key + '_num';
           console.log(keyInt);
 
-          TimSort.sort(data,function (a: any, b: any) {
-            if(!a.hasOwnProperty(keyInt)){
+          TimSort.sort(data, function(a: any, b: any) {
+            if (!a.hasOwnProperty(keyInt)) {
               a[keyInt] = Date.parse(a[key]);
             }
 
-            if(!b.hasOwnProperty(keyInt)){
+            if (!b.hasOwnProperty(keyInt)) {
               b[keyInt] = Date.parse(b[key]);
             }
 
@@ -112,7 +112,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
           this.setState(() => {
             return {
               data: data,
-              showTimeline: true
+              showTimeline: true,
             };
           });
           console.log(this.state.data);
@@ -147,8 +147,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
     if (this.props.fileType === FileType.csv) {
       this.parseCsv(fileEvent).then(() => console.log('done'));
     }
-    //console.log(this.state.data);
-    //this.sortData(this.state.data);
+    // console.log(this.state.data);
+    // this.sortData(this.state.data);
   }
 
   /**
@@ -157,7 +157,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
    */
   async parseCsv(fileEvent: any) {
     console.log(fileEvent);
-    let t1 = performance.now();
+    const t1 = performance.now();
 
     const csvFile = fileEvent.target.files[0];
     const fileReader = new FileReader();
@@ -167,16 +167,16 @@ export default class ParserComponent extends React.Component<ParserInterface,
 
     const handleFileRead = () => {
       if (typeof fileReader.result === 'string') {
-        //const content = d3.csvParse(fileReader.result, d3dsv.autoType);
+        // const content = d3.csvParse(fileReader.result, d3dsv.autoType);
         const content = d3.csvParse(fileReader.result,
-          function(d: any, i: number): any {
-          //autoType the row
-          d = d3.autoType(d);
-          //must add an index to the row to be used by the Timeline
-          d['index'] = i;
+            function(d: any, i: number): any {
+            // autoType the row
+              d = d3.autoType(d);
+              // must add an index to the row to be used by the Timeline
+              d['index'] = i;
 
-          return d;
-        });
+              return d;
+            });
         // set state of the parser component
         this.setState((state) => {
           return {
@@ -188,19 +188,19 @@ export default class ParserComponent extends React.Component<ParserInterface,
 
         if (this.isValid(csvFile)) {
           this.sortData(content);
-        }
-        else {
+        } else {
           try {
             throw new Error('Wrong file type was uploaded.');
           } catch (e) {
             console.log(e);
             alert('The file uploaded needs to be CSV.');
-          };
+          }
+          ;
         }
 
-        let t2 = performance.now();
+        const t2 = performance.now();
 
-        console.log("Sorting took: " + (t2 - t1));
+        console.log('Sorting took: ' + (t2 - t1));
       }
     };
 

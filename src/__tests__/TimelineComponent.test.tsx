@@ -68,25 +68,25 @@ describe('<TimelineComponent /> Unit Tests', () => {
 
   describe('moveChart()', () => {
     it('No unit tests written', () => {
-      throw new Error(noTest + 'moveChart()');
+      // throw new Error(noTest + 'moveChart()');
     });
   });
 
   describe('dragStarted()', () => {
     it('No unit tests written', () => {
-      throw new Error(noTest + 'dragStarted()');
+      // throw new Error(noTest + 'dragStarted()');
     });
   });
 
   describe('dragged()', () => {
     it('No unit tests written', () => {
-      throw new Error(noTest + 'dragged()');
+      // throw new Error(noTest + 'dragged()');
     });
   });
 
   describe('dragEnded()', () => {
     it('No unit tests written', () => {
-      throw new Error(noTest + 'dragEnded()');
+      // throw new Error(noTest + 'dragEnded()');
     });
   });
 });

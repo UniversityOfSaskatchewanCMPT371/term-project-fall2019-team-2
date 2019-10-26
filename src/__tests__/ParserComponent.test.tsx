@@ -27,17 +27,6 @@ describe('<ParserComponent /> renders correctly', () => {
     expect(wrapper.contains(prompt)).toEqual(true);
     expect(wrapper.exists('input')).toEqual(true);
   });
-
-  /* describe('csv input snapshot', () => {
-    // eslint-disable-next-line max-len
-    const comp = shallow(
-        <ParserComponent
-          prompt={'Select a CSV file: '}
-          fileType={FileType.csv}
-        />
-    );
-    expect(comp.getElements()).toMatchSnapshot();
-  }); */
 });
 
 describe('FileEvents processed correctly', () => {
@@ -78,26 +67,38 @@ describe('<ParserComponent /> Unit Tests', () => {
   });
 
   describe('componentDidMount()', () => {
-
+    it('dummy test', () => {
+      // todo: devs need to write unit tests
+    });
   });
 
   describe('isValid()', () => {
-
+    it('dummy test', () => {
+      // todo: devs need to write unit tests
+    });
   });
 
   describe('sortData()', () => {
-
+    it('dummy test', () => {
+      // todo: devs need to write unit tests
+    });
   });
 
   describe('inferTypes()', () => {
-
+    it('dummy test', () => {
+      // todo: devs need to write unit tests
+    });
   });
 
   describe('parse()', () => {
-
+    it('dummy test', () => {
+      // todo: devs need to write unit tests
+    });
   });
 
   describe('parseCsv()', () => {
-    // todo: devs need to write unit tests
+    it('dummy test', () => {
+      // todo: devs need to write unit tests
+    });
   });
 });

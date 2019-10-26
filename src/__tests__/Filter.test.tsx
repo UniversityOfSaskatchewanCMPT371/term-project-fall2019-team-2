@@ -10,14 +10,20 @@ describe('<Filter /> Unit Tests', () => {
   });
 
   describe('redefineRange()', () => {
-
+    it('dummy test', () => {
+      // todo: devs need to write unit tests
+    });
   });
 
   describe('addPredicate()', () => {
-
+    it('dummy test', () => {
+      // todo: devs need to write unit tests
+    });
   });
 
   describe('removePredicate()', () => {
-
+    it('dummy test', () => {
+      // todo: devs need to write unit tests
+    });
   });
 });

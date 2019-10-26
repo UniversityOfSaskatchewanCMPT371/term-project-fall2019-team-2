@@ -2,9 +2,12 @@ import React from 'react';
 import ParserInterface, {FileType, ParserState} from './ParserInterface';
 import * as d3 from 'd3';
 import * as d3dsv from 'd3-dsv';
+
 import Column, {enumDrawType} from './Column';
 import Filter from './Filter';
 import {throws} from 'assert';
+import Filter from './Filter';
+
 
 /**
  * Purpose: react component responsible for receiving and parsing file data
@@ -12,7 +15,7 @@ import {throws} from 'assert';
 export default class ParserComponent extends React.Component<ParserInterface,
   ParserState> {
   private columnTypes: Array<object> = Array(0);
-
+    
   /**
    * Purpose: ParserComponent constructor
    * @param {ParserInterface} props: the prompt and fileType properties to
@@ -31,6 +34,9 @@ export default class ParserComponent extends React.Component<ParserInterface,
     this.parseCsv = this.parseCsv.bind(this);
     this.parse = this.parse.bind(this);
     this.inferTypes = this.inferTypes.bind(this);
+    this.inferTypes = this.inferTypes.bind(this);
+    this.parseCsv = this.parseCsv.bind(this);
+    this.parse = this.parse.bind(this);
   }
 
   /**
@@ -65,6 +71,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
   isValid(fileEvent: any): boolean {
     const typeOfFile = fileEvent.name.substr(fileEvent.name.length - 3);
     return typeOfFile === 'csv';
+    return true;
   }
 
   /**
@@ -141,6 +148,12 @@ export default class ParserComponent extends React.Component<ParserInterface,
     } else {
       throw new Error('data is empty: ' + data.length);
     }
+   * @param {Array} data: the array of data to infer the types for
+   * @return {Array}: a list of objects which define the methods available for
+   * the data
+   */
+  inferTypes(data: Array<object>): Array<object> {
+    return [];
   }
 
   /**
@@ -154,6 +167,13 @@ export default class ParserComponent extends React.Component<ParserInterface,
       await this.parseCsv(fileEvent);
     }
     this.columnTypes = this.inferTypes(this.state.data);
+  parse(fileEvent: any) {
+    // this.isValid(fileEvent);
+    // this.sortData(this.state.data);
+    // this.inferTypes(this.state.data);
+    if (this.props.fileType === FileType.csv) {
+      this.parseCsv(fileEvent).then(() => console.log('done'));
+    }
   }
 
   /**
@@ -198,5 +218,30 @@ export default class ParserComponent extends React.Component<ParserInterface,
       fileReader.onloadend = handleFileRead;
       fileReader.readAsText(csvFile);
     });
+    const handleFileRead = () => {
+      if (typeof fileReader.result === 'string') {
+        const content = d3.csvParse(fileReader.result, d3dsv.autoType);
+
+        // set state of the parser component
+        this.setState((state) => {
+          return {
+            prompt: this.state.prompt,
+            fileType: this.state.fileType,
+            data: content,
+          };
+        });
+        console.log(content);
+        const t = {
+          dt: content[0]['Order Date'],
+        };
+        d3.autoType(t);
+        console.log(t.dt);
+        console.log(typeof t.dt);
+        console.log(d3dsv.autoType(t));
+      }
+    };
+
+    fileReader.onloadend = handleFileRead;
+    fileReader.readAsText(csvFile);
   }
 }

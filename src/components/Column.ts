@@ -20,6 +20,17 @@ export default class Column {
       this.yScale = yScale;
       this.key = key;
       this.primType = primType;
+    public definedDrawList: Array<() => void>;
+
+    /**
+     * Purpose: Column constructor
+     * @param {number} yScale: the initial y-scale
+     * @param {Array} definedDrawList: the initial list of drawing predicates
+     * functions for the column
+     */
+    public constructor(yScale: number, definedDrawList: Array<() => void>) {
+      this.yScale = yScale;
+      this.definedDrawList = definedDrawList;
     }
 
     /**
@@ -46,3 +57,4 @@ export default class Column {
 export enum enumDrawType {
     magnitude, occurrence, any,
 }
+

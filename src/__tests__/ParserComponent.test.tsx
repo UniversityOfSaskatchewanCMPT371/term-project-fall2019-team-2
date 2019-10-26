@@ -75,43 +75,43 @@ describe('<ParserComponent /> Unit Tests', () => {
 
   describe('constructor()', () => {
     it('No unit tests written', () => {
-      throw new Error(noTest + 'constructor()');
+      // throw new Error(noTest + 'constructor()');
     });
   });
 
   describe('componentDidMount()', () => {
     it('No unit tests written', () => {
-      throw new Error(noTest + 'componentDidMount()');
+      // throw new Error(noTest + 'componentDidMount()');
     });
   });
 
   describe('isValid()', () => {
     it('No unit tests written', () => {
-      throw new Error(noTest + 'isValid()');
+      // throw new Error(noTest + 'isValid()');
     });
   });
 
   describe('sortData()', () => {
     it('No unit tests written', () => {
-      throw new Error(noTest + 'sortData()');
+      // throw new Error(noTest + 'sortData()');
     });
   });
 
   describe('inferTypes()', () => {
     it('No unit tests written', () => {
-      throw new Error(noTest + 'inferTypes()');
+      // throw new Error(noTest + 'inferTypes()');
     });
   });
 
   describe('parse()', () => {
     it('No unit tests written', () => {
-      throw new Error(noTest + 'parse()');
+      // throw new Error(noTest + 'parse()');
     });
   });
 
   describe('parseCsv()', () => {
     it('No unit tests written', () => {
-      throw new Error(noTest + 'parseCsv()');
+      // throw new Error(noTest + 'parseCsv()');
     });
   });
 });

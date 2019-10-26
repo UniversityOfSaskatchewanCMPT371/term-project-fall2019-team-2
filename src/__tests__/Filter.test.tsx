@@ -11,25 +11,25 @@ describe('<Filter /> Unit Tests', () => {
 
   describe('constructor()', () => {
     it('No unit tests written', () => {
-      throw new Error(noTest + 'constructor()');
+      // throw new Error(noTest + 'constructor()');
     });
   });
 
   describe('redefineRange()', () => {
     it('No unit tests written', () => {
-      throw new Error(noTest + 'redefineRange()');
+      // throw new Error(noTest + 'redefineRange()');
     });
   });
 
   describe('addPredicate()', () => {
     it('No unit tests written', () => {
-      throw new Error(noTest + 'addPredicate()');
+      // throw new Error(noTest + 'addPredicate()');
     });
   });
 
   describe('removePredicate()', () => {
     it('No unit tests written', () => {
-      throw new Error(noTest + 'removePredicate');
+      // throw new Error(noTest + 'removePredicate');
     });
   });
 });

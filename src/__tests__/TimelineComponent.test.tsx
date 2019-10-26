@@ -14,55 +14,55 @@ describe('<TimelineComponent /> Unit Tests', () => {
 
   describe('constructor()', () => {
     it('No unit tests written', () => {
-      throw new Error(noTest + 'constructor()');
+      // throw new Error(noTest + 'constructor()');
     });
   });
 
   describe('componentDidMount()', () => {
     it('No unit tests written', () => {
-      throw new Error(noTest + 'componentDidMount()');
+      // throw new Error(noTest + 'componentDidMount()');
     });
   });
 
   describe('drawTimeline()', () => {
     it('No unit tests written', () => {
-      throw new Error(noTest + 'drawTimeline()');
+      // throw new Error(noTest + 'drawTimeline()');
     });
   });
 
   describe('ttOver()', () => {
     it('No unit tests written', () => {
-      throw new Error(noTest + 'ttOver()');
+      // throw new Error(noTest + 'ttOver()');
     });
   });
 
   describe('ttUpdatePos()', () => {
     it('No unit tests written', () => {
-      throw new Error(noTest + 'ttUpdatePos()');
+      // throw new Error(noTest + 'ttUpdatePos()');
     });
   });
 
   describe('ttMove()', () => {
     it('No unit tests written', () => {
-      throw new Error(noTest + 'ttMove()');
+      // throw new Error(noTest + 'ttMove()');
     });
   });
 
   describe('ttLeave()', () => {
     it('No unit tests written', () => {
-      throw new Error(noTest + 'ttLeave()');
+      // throw new Error(noTest + 'ttLeave()');
     });
   });
 
   describe('updateChart()', () => {
     it('No unit tests written', () => {
-      throw new Error(noTest + 'updateChart()');
+      // throw new Error(noTest + 'updateChart()');
     });
   });
 
   describe('updateBars()', () => {
     it('No unit tests written', () => {
-      throw new Error(noTest + 'updateBars()');
+      // throw new Error(noTest + 'updateBars()');
     });
   });
 

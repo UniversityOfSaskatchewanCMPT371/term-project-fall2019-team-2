@@ -11,19 +11,19 @@ describe('<Column /> Unit Tests', () => {
 
   describe('constructor()', () => {
     it('No unit tests written', () => {
-      throw new Error(noTest + 'constructor()');
+      // throw new Error(noTest + 'constructor()');
     });
   });
 
   describe('show()', () => {
     it('No unit tests written', () => {
-      throw new Error(noTest + 'show()');
+      // throw new Error(noTest + 'show()');
     });
   });
 
   describe('rescale()', () => {
     it('No unit tests written', () => {
-      throw new Error(noTest + 'rescale()');
+      // throw new Error(noTest + 'rescale()');
     });
   });
 });

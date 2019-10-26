@@ -20,6 +20,13 @@ jobs:
     - uses: actions/checkout@master
     - name: Install deps
       run: npm install
+    - name: Create coverage report
+      run: |
+        npm run test:ci
+        # Fix paths
+        sed -i 's+/home/runner/work/term-project-fall2019-team-2/term-project-fall2019-team-2/+/github/workspace/+g' coverage/lcov.info
+      env:
+        CI: true
     - name: SonarCloud Scan (Push)
       uses: sonarsource/sonarcloud-github-action@master
       env:

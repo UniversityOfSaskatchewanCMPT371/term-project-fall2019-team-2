@@ -219,14 +219,14 @@ export default class ParserComponent extends React.Component<ParserInterface,
       const handleFileRead = () => {
         if (typeof fileReader.result === 'string') {
           const content = d3.csvParse(fileReader.result,
-            function(d: any, i: number): any {
+              function(d: any, i: number): any {
               // autoType the row
-              d = d3.autoType(d);
-              // must add an index to the row to be used by the Timeline
-              d['index'] = i;
+                d = d3.autoType(d);
+                // must add an index to the row to be used by the Timeline
+                d['index'] = i;
 
-              return d;
-            });
+                return d;
+              });
           // set state of the parser component
           this.setState((state) => {
             return {

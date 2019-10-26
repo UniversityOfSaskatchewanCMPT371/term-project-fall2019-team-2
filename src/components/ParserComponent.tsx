@@ -91,12 +91,11 @@ export default class ParserComponent extends React.Component<ParserInterface,
    */
   inferTypes(data: Array<object>): Array<Column> {
     // console.log(this.state.data.length);
-    this.state = { // should this stay? for testing
-      prompt: 'stasd',
-      fileType: FileType.csv,
-      data: data,
-    };
-
+    // this.state = { // need to run tests
+    //   prompt: 'stasd',
+    //   fileType: FileType.csv,
+    //   data: data,
+    // };
     if (this.state.data.length > 0) {
       const listFields = Object.keys(this.state.data[0]);
       const listOfTypes: never[] | string[] = [];

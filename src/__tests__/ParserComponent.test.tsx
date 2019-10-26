@@ -2,7 +2,8 @@ import React, {ReactDOM} from 'react';
 import {mount, shallow} from 'enzyme';
 import ParserComponent from '../components/ParserComponent';
 import {FileType} from '../components/ParserInterface';
-import sinon from 'sinon';
+// may need in the future, but currently not being used
+// import sinon from 'sinon';
 
 
 describe('<ParserComponent /> renders correctly', () => {

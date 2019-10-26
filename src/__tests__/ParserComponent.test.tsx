@@ -6,7 +6,7 @@ import sinon from 'sinon';
 
 
 describe('<ParserComponent /> renders correctly', () => {
-  it('renders a <ParserComponent /> to select a .csv', () => {
+  describe('renders a <ParserComponent /> to select a .csv', () => {
     // eslint-disable-next-line max-len
     const wrapper = shallow(<ParserComponent prompt={'Select a CSV file: '} fileType={FileType.csv}/>);
     const prompt = <label>Select a CSV file: </label>;
@@ -17,7 +17,7 @@ describe('<ParserComponent /> renders correctly', () => {
     expect(wrapper.exists('input')).toEqual(true);
   });
 
-  it('renders a <ParseComponent /> to select a .tl', () => {
+  describe('renders a <ParseComponent /> to select a .tl', () => {
     // eslint-disable-next-line max-len
     const wrapper = shallow(<ParserComponent prompt={'Select a TL file: '} fileType={FileType.tl}/>);
     const prompt = <label>Select a TL file: </label>;
@@ -27,7 +27,7 @@ describe('<ParserComponent /> renders correctly', () => {
     expect(wrapper.exists('input')).toEqual(true);
   });
 
-  it('csv input snapshot', () => {
+  describe('csv input snapshot', () => {
     // eslint-disable-next-line max-len
     const comp = shallow(
         <ParserComponent
@@ -40,7 +40,7 @@ describe('<ParserComponent /> renders correctly', () => {
 });
 
 describe('FileEvents processed correctly', () => {
-  it('responds to file selection', () => {
+  describe('responds to file selection', () => {
     const fileUploaderMock = jest.fn();
     const prompt = 'Select a CSV file:';
     const fileType = FileType.csv;
@@ -68,36 +68,49 @@ describe('FileEvents processed correctly', () => {
   });
 });
 
+// To be used by the developers
 describe('<ParserComponent /> Unit Tests', () => {
-  it('constructor()', () => {
+  const noTest = 'No tests written for ParserComponent ';
 
+  describe('constructor()', () => {
+    it('No unit tests written', () => {
+      throw new Error(noTest + 'constructor()');
+    });
   });
 
-  it('componentDidMount()', () => {
-
+  describe('componentDidMount()', () => {
+    it('No unit tests written', () => {
+      throw new Error(noTest + 'componentDidMount()');
+    });
   });
 
-  it('render()', () => {
-
+  describe('isValid()', () => {
+    it('No unit tests written', () => {
+      throw new Error(noTest + 'isValid()');
+    });
   });
 
-  it('isValid()', () => {
-
+  describe('sortData()', () => {
+    it('No unit tests written', () => {
+      throw new Error(noTest + 'sortData()');
+    });
   });
 
-  it('sortData()', () => {
-
+  describe('inferTypes()', () => {
+    it('No unit tests written', () => {
+      throw new Error(noTest + 'inferTypes()');
+    });
   });
 
-  it('inferTypes()', () => {
-
+  describe('parse()', () => {
+    it('No unit tests written', () => {
+      throw new Error(noTest + 'parse()');
+    });
   });
 
-  it('parse()', () => {
-
-  });
-
-  it('parseCsv()', () => {
-
+  describe('parseCsv()', () => {
+    it('No unit tests written', () => {
+      throw new Error(noTest + 'parseCsv()');
+    });
   });
 });

@@ -8,61 +8,85 @@ describe('<TimelineComponent /> renders correctly', () => {
   // todo: simple render test
 });
 
+// To be used by developers
 describe('<TimelineComponent /> Unit Tests', () => {
-  it('constructor()', () => {
+  const noTest = 'No tests written for TimelineComponent ';
 
+  describe('constructor()', () => {
+    it('No unit tests written', () => {
+      throw new Error(noTest + 'constructor()');
+    });
   });
 
-  it('componentDidMount()', () => {
-
+  describe('componentDidMount()', () => {
+    it('No unit tests written', () => {
+      throw new Error(noTest + 'componentDidMount()');
+    });
   });
 
-  // already done in test above
-  it('render()', () => {
-
+  describe('drawTimeline()', () => {
+    it('No unit tests written', () => {
+      throw new Error(noTest + 'drawTimeline()');
+    });
   });
 
-  it('drawTimeline()', () => {
-
+  describe('ttOver()', () => {
+    it('No unit tests written', () => {
+      throw new Error(noTest + 'ttOver()');
+    });
   });
 
-  it('ttOver()', () => {
-
+  describe('ttUpdatePos()', () => {
+    it('No unit tests written', () => {
+      throw new Error(noTest + 'ttUpdatePos()');
+    });
   });
 
-  it('ttUpdatePos()', () => {
-
+  describe('ttMove()', () => {
+    it('No unit tests written', () => {
+      throw new Error(noTest + 'ttMove()');
+    });
   });
 
-  it('ttMove()', () => {
-
+  describe('ttLeave()', () => {
+    it('No unit tests written', () => {
+      throw new Error(noTest + 'ttLeave()');
+    });
   });
 
-  it('ttLeave()', () => {
-
+  describe('updateChart()', () => {
+    it('No unit tests written', () => {
+      throw new Error(noTest + 'updateChart()');
+    });
   });
 
-  it('updateChart()', () => {
-
+  describe('updateBars()', () => {
+    it('No unit tests written', () => {
+      throw new Error(noTest + 'updateBars()');
+    });
   });
 
-  it('updateBars()', () => {
-
+  describe('moveChart()', () => {
+    it('No unit tests written', () => {
+      throw new Error(noTest + 'moveChart()');
+    });
   });
 
-  it('moveChart()', () => {
-
+  describe('dragStarted()', () => {
+    it('No unit tests written', () => {
+      throw new Error(noTest + 'dragStarted()');
+    });
   });
 
-  it('dragStarted()', () => {
-
+  describe('dragged()', () => {
+    it('No unit tests written', () => {
+      throw new Error(noTest + 'dragged()');
+    });
   });
 
-  it('dragged()', () => {
-
-  });
-
-  it('dragEnded()', () => {
-
+  describe('dragEnded()', () => {
+    it('No unit tests written', () => {
+      throw new Error(noTest + 'dragEnded()');
+    });
   });
 });

@@ -7,19 +7,29 @@ describe('<Filter /> renders successfully', () => {
 });
 
 describe('<Filter /> Unit Tests', () => {
-  it('constructor()', () => {
+  const noTest = 'No test written for Filter Class ';
 
+  describe('constructor()', () => {
+    it('No unit tests written', () => {
+      throw new Error(noTest + 'constructor()');
+    });
   });
 
-  it('redefineRange()', () => {
-
+  describe('redefineRange()', () => {
+    it('No unit tests written', () => {
+      throw new Error(noTest + 'redefineRange()');
+    });
   });
 
-  it('addPredicate()', () => {
-
+  describe('addPredicate()', () => {
+    it('No unit tests written', () => {
+      throw new Error(noTest + 'addPredicate()');
+    });
   });
 
-  it('removePredicate()', () => {
-
+  describe('removePredicate()', () => {
+    it('No unit tests written', () => {
+      throw new Error(noTest + 'removePredicate');
+    });
   });
 });

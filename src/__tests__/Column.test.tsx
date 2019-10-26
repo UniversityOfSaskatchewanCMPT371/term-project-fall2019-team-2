@@ -7,15 +7,23 @@ describe('<Column /> renders successfully', () => {
 });
 
 describe('<Column /> Unit Tests', () => {
-  it('constructor()', () => {
+  const noTest = 'No tests written for Column Class ';
 
+  describe('constructor()', () => {
+    it('No unit tests written', () => {
+      throw new Error(noTest + 'constructor()');
+    });
   });
 
-  it('show()', () => {
-
+  describe('show()', () => {
+    it('No unit tests written', () => {
+      throw new Error(noTest + 'show()');
+    });
   });
 
-  it('rescale()', () => {
-
+  describe('rescale()', () => {
+    it('No unit tests written', () => {
+      throw new Error(noTest + 'rescale()');
+    });
   });
 });

@@ -246,8 +246,7 @@ export default class TimelineComponent
       .attr("clip-path", "url(#clip)");
 
     // Add circles
-    scatter
-      .selectAll("rect")
+    scatter.selectAll("rect")
       .data(data)
       .enter()
       .append("rect")
@@ -264,13 +263,15 @@ export default class TimelineComponent
       .style("fill", "#61a3a9")
       .style("opacity", 0.5);
 
-    // Set the zoom and Pan features: how much you can zoom, on which part, and what to do when there is a zoom
+    // Set the zoom and Pan features: how much you can zoom, on which part,
+    // and what to do when there is a zoom
     const zoom = d3.zoom()
-      .scaleExtent([1, 20])  // This control how much you can unzoom (x0.5) and zoom (x20)
+      .scaleExtent([1, 20])
       .extent([[0, 0], [width, height]])
       .on("zoom", updateChart);
-    // This add an invisible rect on top of the chart area. This rect can recover pointer events: necessary to understand when the user zoom
 
+    // This add an invisible rect on top of the chart area.
+    // This rect can recover pointer events: necessary to understand when the user zoom
     SVG.append("rect")
       .attr("width", width)
       .attr("height", height)

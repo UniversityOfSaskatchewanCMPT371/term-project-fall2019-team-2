@@ -195,7 +195,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
             console.log(e);
             alert('The file uploaded needs to be CSV.');
           }
-          ;
         }
 
         const t2 = performance.now();

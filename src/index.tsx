@@ -1,6 +1,5 @@
 import ReactDOM from 'react-dom';
 import './index.css';
-import Mesa from './Mesa';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';

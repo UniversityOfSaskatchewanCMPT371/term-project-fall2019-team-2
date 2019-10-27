@@ -1,13 +1,10 @@
 import React from 'react';
 import ParserInterface, {FileType, ParserState} from './ParserInterface';
 import * as d3 from 'd3';
-import * as d3dsv from 'd3-dsv';
 import TimelineComponent from './TimelineComponent';
 import Data from './Data';
 import * as TimSort from 'timsort';
 import Column, {enumDrawType} from './Column';
-import Filter from './Filter';
-import {throws} from 'assert';
 
 /**
  * Purpose: react component responsible for receiving and parsing file data
@@ -156,9 +153,9 @@ export default class ParserComponent extends React.Component<ParserInterface,
           if (type !== 'string' && type !== 'number') {
             throw new Error('Bad type: ' + type);
           }
-          if (listOfTypes[i] == undefined) {
+          if (listOfTypes[i] === undefined) {
             listOfTypes[i] = type;
-          } else if (listOfTypes[i] != type) {
+          } else if (listOfTypes[i] !== type) {
             throw new Error('types inconsistent');
           }
         }

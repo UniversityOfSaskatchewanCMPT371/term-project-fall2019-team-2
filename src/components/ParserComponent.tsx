@@ -2,7 +2,6 @@ import React from 'react';
 import ParserInterface, {FileType, ParserState} from './ParserInterface';
 import * as d3 from 'd3';
 import * as d3dsv from 'd3-dsv';
-import Filter from './Filter';
 
 /**
  * Purpose: react component responsible for receiving and parsing file data
@@ -120,14 +119,14 @@ export default class ParserComponent extends React.Component<ParserInterface,
             data: content,
           };
         });
-        console.log(content);
-        const t = {
-          dt: content[0]['Order Date'],
-        };
-        d3.autoType(t);
-        console.log(t.dt);
-        console.log(typeof t.dt);
-        console.log(d3dsv.autoType(t));
+        // console.log(content);
+        // const t = {
+        //   dt: content[0]['Order Date'],
+        // };
+        // d3.autoType(t);
+        // console.log(t.dt);
+        // console.log(typeof t.dt);
+        // console.log(d3dsv.autoType(t));
       }
     };
 

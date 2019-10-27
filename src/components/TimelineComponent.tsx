@@ -73,7 +73,7 @@ export default class TimelineComponent
     const fullWidth = this.state.width;
     const fullHeight = this.state.height;
     const barWidth = 50;
-    const barBuffer = 1;
+    const barBuffer = 5;
     const numBars = Math.floor(width / barWidth) +
       barBuffer;// small pixel buffer to ensure smooth transitions
     let dataIdx = 0;
@@ -85,7 +85,7 @@ export default class TimelineComponent
     const csvData = this.state.data.arrayOfData;
     let data: Array<object> = csvData.slice(0, numBars);
     // @ts-ignore
-    const ordinals = data.map((d) => d[xColumn]);
+    let ordinals = data.map((d) => d[xColumn]);
 
     const x = d3.scaleLinear()
         .domain([0, ordinals.length])
@@ -118,8 +118,8 @@ export default class TimelineComponent
         .append('svg')
         .attr('width', width)
         .attr('height', height + this.state.marginTop +
-        this.state.marginBottom)
-    // @ts-ignore
+          this.state.marginBottom)
+        // @ts-ignore
         .call(zoom)
         .append('g')
         .attr('transform', 'translate(' + this.state.marginLeft +
@@ -140,7 +140,7 @@ export default class TimelineComponent
         .attr('x', 0)
         .attr('y', 0);
 
-    // Create layers in order so that the bars will disapear under the axis
+    // Create layers in order so that the bars will disappear under the axis
     const barsLayer = svg.append('g')
         .attr('clip-path', 'url(#barsBox)')
         .append('g')
@@ -368,10 +368,13 @@ export default class TimelineComponent
             return `translate(${deltaX},0)`;
           });
 
+      // finds starting index
       dataIdx = Math.floor(-deltaX / (scale * barWidth));
       data = csvData.slice(dataIdx, numBars + dataIdx);
+      ordinals = data.map((d: any) => d[xColumn]);
 
-      log('moveChart dataIdx: ' + dataIdx);
+      // log('moveChart dataIdx: ' + dataIdx);
+      // log('ordinals: ' + ordinals);
 
       updateBars();
     }

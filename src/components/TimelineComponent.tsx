@@ -70,7 +70,7 @@ export default class TimelineComponent
     const width = this.state.width -
       (this.state.marginLeft + this.state.marginRight);
 
-    const fullWidth = this.state.width;
+    // const fullWidth = this.state.width;
     const fullHeight = this.state.height;
     const barWidth = 50;
     const barBuffer = 5;
@@ -172,7 +172,8 @@ export default class TimelineComponent
         .attr('id', 'bars');
 
     // x axis
-    const xAxis = barsLayer.append('g')
+    // const xAxis = barsLayer.append('g')
+    barsLayer.append('g')
         .attr('id', 'xaxis')
         .style('color', 'red')
         .attr('class', 'x axis')

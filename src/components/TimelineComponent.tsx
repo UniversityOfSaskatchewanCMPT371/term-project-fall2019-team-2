@@ -45,7 +45,7 @@ export default class TimelineComponent
    * timeline
    */
   componentDidMount(): void {
-    this.drawTimeline3();
+    this.drawTimeline();
   }
 
   /**
@@ -183,21 +183,6 @@ export default class TimelineComponent
     const width = this.state.width -
       (this.state.marginLeft + this.state.marginRight);
 
-    const fullWidth = this.state.width;
-    const fullHeight = this.state.height;
-    const barWidth = 50;
-    const barBuffer = 1;
-    const numBars = Math.floor(width / barWidth) +
-      barBuffer;// small pixel buffer to ensure smooth transitions
-
-    const csvData = this.state.data.arrayOfData;
-    let data: Array<object> = csvData.slice(0, numBars);
-    log(data);
-
-    const xColumn = 'Order Date';
-    const yColumn = 'Units Sold';
-    const ordinals = data.map((d: any) => d[xColumn]);
-
     // append the SVG object to the body of the page
     const SVG = d3.select("#svgtarget")
       .append("svg")
@@ -206,122 +191,91 @@ export default class TimelineComponent
       .append("g")
       .attr("transform",
         "translate(" + margin.left + "," + margin.top + ")");
+    //Read the data
+    d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/iris.csv").then(function (data) {
+      // Add X axis
+      const x = d3.scaleLinear()
+        .domain([4, 8])
+        .range([0, width]);
+      const xAxis = SVG.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x));
 
+      // Add Y axis
+      const y = d3.scaleLinear()
+        .domain([0, 9])
+        .range([height, 0]);
+      const yAxis = SVG.append("g")
+        .call(d3.axisLeft(y));
 
-    const xScale = d3.scaleBand()
-      //.domain(data.map((d: any) => d[xColumn]))
-      .domain(data.map((d: any) => d['index']))
-      .range([0, width - margin.right])
-      //.range([margin.left, width - margin.right])
-      .padding(0);
-    // Add X axis
-    const x = d3.scaleLinear()
-      .domain([0, ordinals.length])
-      .range([0, width]);
+      // Add a clipPath: everything out of this area won't be drawn.
+      const clip = SVG.append("defs").append("SVG:clipPath")
+        .attr("id", "clip")
+        .append("SVG:rect")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("x", 0)
+        .attr("y", 0);
 
-    const xAxis = SVG.append("g")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x).tickFormat(function (d: any) {
-        return ordinals[d];
-      }));
-
-    // Add Y axis
-    const y = d3.scaleLinear()
-      .domain(
-        [d3.min(csvData, (d: any) => {return d[yColumn];}),
-         d3.max(csvData, (d: any) => {return d[yColumn];})])
-      .range([height, 0]);
-
-    const yAxis = SVG.append("g")
-      .call(d3.axisLeft(y));
-
-    // Add a clipPath: everything out of this area won't be drawn.
-    const clip = SVG.append("defs").append("SVG:clipPath")
-      .attr("id", "clip")
-      .append("SVG:rect")
-      .attr("width", width)
-      .attr("height", height)
-      .attr("x", 0)
-      .attr("y", 0);
-
-    // Create the scatter variable: where both the circles and the brush take place
-    const scatter = SVG.append('g')
-      .attr("clip-path", "url(#clip)");
-
-    // Add circles
-
-    scatter.selectAll("rect")
-      .data(data)
-      .enter()
-      .append("rect")
-      // @ts-ignore
-      .attr("x", function (d: any, i: number) {
-        //log(x(i));
-        //return x(i);
-        return xScale(d['index']);
-      })
-      .attr("y", function (d: any) {
-        log(y(d[yColumn]));
-        return y(d[yColumn]);
-      })
-      .attr("width", xScale.bandwidth())
-      .attr('height', (d: any) => y(0) - y(d[yColumn]))
-      .style("fill", "#61a3a9")
-      .style("opacity", 0.5);
-
-    // Set the zoom and Pan features: how much you can zoom, on which part,
-    // and what to do when there is a zoom
-    const zoom = d3.zoom()
-      .scaleExtent([1, 20])
-      .translateExtent([[0, 0], [width, height]])
-      .extent([[0, 0], [width, height]])
-      .on("zoom", updateChart);
-
-    // This add an invisible rect on top of the chart area.
-    // This rect can recover pointer events: necessary to understand when the user zoom
-    SVG.append("rect")
-      .attr("width", width)
-      .attr("height", height)
-      .style("fill", "none")
-      .style("pointer-events", "all")
-      .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
-      // @ts-ignore
-      .call(zoom);
-
-    // now the user can zoom and it will trigger the function called updateChart
-    // A function that updates the chart when the user zoom and thus new
-    // boundaries are available
-    function updateChart() {
-      // recover the new scale
-      const newX = d3.event.transform.rescaleX(x);
-      //const newY = d3.event.transform.rescaleY(y);
-      // update axes with these new boundaries
-      xAxis.call(d3.axisBottom(newX).tickFormat(function (d: any) {
-        return ordinals[d];
-      }));
-      //yAxis.call(d3.axisLeft(newY));
-      
-      // @ts-ignore
-      xScale.range([0, width - margin.right].map(d => d3.event.transform.applyX(d)));
-      
-      // update circle position
-
-      scatter.selectAll("rect")
-      // @ts-ignore
-        .attr('x', function (d: any, i) {
+      // Create the scatter variable: where both the circles and the brush take place
+      const scatter = SVG.append('g')
+        .attr("clip-path", "url(#clip)");
+      // Add circles
+      scatter
+        .selectAll("circle")
+        .data(data)
+        .enter()
+        .append("circle")
+        .attr("cx", function (d) {
           // @ts-ignore
-          //return newX(i);
-          return xScale(d['index']);
+          return x(d.Sepal_Length);
         })
+        .attr("cy", function (d) {
+          // @ts-ignore
+          return y(d.Petal_Length);
+        })
+        .attr("r", 8)
+        .style("fill", "#61a3a9")
+        .style("opacity", 0.5);
+
+      // Set the zoom and Pan features: how much you can zoom, on which part, and what to do when there is a zoom
+      const zoom = d3.zoom()
+        .scaleExtent([.5, 20])  // This control how much you can unzoom (x0.5) and zoom (x20)
+        .extent([[0, 0], [width, height]])
+        .on("zoom", updateChart);
+      // This add an invisible rect on top of the chart area. This rect can recover pointer events: necessary to understand when the user zoom
+
+      SVG.append("rect")
+        .attr("width", width)
+        .attr("height", height)
+        .style("fill", "none")
+        .style("pointer-events", "all")
+        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
         // @ts-ignore
-        .attr('width', function (d, i) {
-          // @ts-ignore]
-          // xScale.range([margin.left, width - margin.right]
-          //   .map(d => d3.event.transform.applyX(d)));
-          //return d3.event.transform.k * 50;
-          return xScale.bandwidth();
-        });
-    }
+        .call(zoom);
+
+      // now the user can zoom and it will trigger the function called updateChart
+      // A function that updates the chart when the user zoom and thus new boundaries are available
+      function updateChart() {
+        // recover the new scale
+        const newX = d3.event.transform.rescaleX(x);
+        const newY = d3.event.transform.rescaleY(y);
+        // update axes with these new boundaries
+        xAxis.call(d3.axisBottom(newX));
+        yAxis.call(d3.axisLeft(newY));
+        // update circle position
+        scatter
+          .selectAll("circle")
+          .attr('cx', function (d) {
+            // @ts-ignore
+            return newX(d.Sepal_Length)
+          })
+          .attr('cy', function (d) {
+            // @ts-ignore
+            return newY(d.Petal_Length)
+          });
+      }
+    });
   }
 
   /**
@@ -661,14 +615,7 @@ export default class TimelineComponent
       // log("deltaX: " + deltaX);
 
       d3.selectAll('.bar')
-        .attr('x', (d, i) => {
-          // log('newX(barWidth): ' + newX(barWidth));
-          // log('newX(i): ' + newX(i));
-          // log('newX(dataIdx): ' + newX(dataIdx));
-          return newX(i);// newX(barWidth) * (i + dataIdx);
-        })
-        // .attr('x', (d, i) => newX(barWidth * (i + dataIdx)))
-        // .attr('x', (d, i) => scale * barWidth * (i + dataIdx))
+        .attr('x', (d, i) => scale * barWidth * (i + dataIdx))
         .attr('width', scale * barWidth);
 
       if (d3.event.sourceEvent.type === 'mousemove') {

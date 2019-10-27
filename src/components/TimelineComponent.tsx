@@ -173,21 +173,21 @@ export default class TimelineComponent
 
     // x axis
     // const xAxis = barsLayer.append('g')
-    barsLayer.append('g')
-        .attr('id', 'xaxis')
-        .style('color', 'red')
-        .attr('class', 'x axis')
-        .attr('transform', 'translate(0,' + height + ')')
-        .call(d3.axisBottom(x).tickFormat(function(d) {
-        // @ts-ignore
-          return ordinals[d];// now for 0 it will return 'a' for 1 b and so on
-        }))
-        .selectAll('text')
-        .style('text-anchor', 'end')
-        .style('font-size', '1rem')
-        .attr('dx', '-.8em')
-        .attr('dy', '.15em')
-        .attr('transform', 'rotate(-90)');
+    // barsLayer.append('g')
+    //     .attr('id', 'xaxis')
+    //     .style('color', 'red')
+    //     .attr('class', 'x axis')
+    //     .attr('transform', 'translate(0,' + height + ')')
+    //     .call(d3.axisBottom(x).tickFormat(function(d) {
+    //     // @ts-ignore
+    //       return ordinals[d];// now for 0 it will return 'a' for 1 b and so on
+    //     }))
+    //     .selectAll('text')
+    //     .style('text-anchor', 'end')
+    //     .style('font-size', '1rem')
+    //     .attr('dx', '-.8em')
+    //     .attr('dy', '.15em')
+    //     .attr('transform', 'rotate(-90)');
 
     // Three function that change the tooltip when user hover/move/leave bar
     /**
@@ -294,21 +294,21 @@ export default class TimelineComponent
 
       d3.selectAll('#xaxis').remove();
 
-      barsLayer.append('g')
-          .attr('id', 'xaxis')
-          .style('color', 'red')
-          .attr('class', 'x axis')
-          .attr('transform', 'translate(0,' + height + ')')
-          .call(d3.axisBottom(newX).tickFormat(function(d) {
-          // @ts-ignore
-            return ordinals[d];// now for 0 it will return 'a' for 1 b and so on
-          }))
-          .selectAll('text')
-          .style('text-anchor', 'end')
-          .style('font-size', '1rem')
-          .attr('dx', '-.8em')
-          .attr('dy', '.15em')
-          .attr('transform', 'rotate(-90)');
+      // barsLayer.append('g')
+      //     .attr('id', 'xaxis')
+      //     .style('color', 'red')
+      //     .attr('class', 'x axis')
+      //     .attr('transform', 'translate(0,' + height + ')')
+      //     .call(d3.axisBottom(newX).tickFormat(function(d) {
+      //     // @ts-ignore
+      //       return ordinals[d];// now for 0 it will return 'a' for 1 b and so on
+      //     }))
+      //     .selectAll('text')
+      //     .style('text-anchor', 'end')
+      //     .style('font-size', '1rem')
+      //     .attr('dx', '-.8em')
+      //     .attr('dy', '.15em')
+      //     .attr('transform', 'rotate(-90)');
 
       yAxis.call(d3.axisLeft(newY));
 
@@ -352,7 +352,30 @@ export default class TimelineComponent
                   })
                   .on('mouseover', ttOver)
                   .on('mousemove', ttMove)
-                  .on('mouseleave', ttLeave),
+                  .on('mouseleave', ttLeave)
+                  .attr('hasTick', function(d: any, i: number) {
+                    let hasTick = false;
+                    if (((i + dataIdx) % 5) === 0) {
+                      hasTick = true;
+                      const tick = enter.append('g')
+                          .attr('class', 'tick')
+                          .attr('opacity', 1)
+                          // eslint-disable-next-line max-len
+                          .attr('transform', 'translate(' + ((scale * barWidth * (i + dataIdx)) + ((scale * barWidth)/2)) + ',' + height + ')');
+
+                      tick.append('line')
+                          .attr('stroke', 'blue')
+                          .attr('y2', 6);
+                      tick.append('text')
+                          .text(d['Order Date'])
+                          .style('text-anchor', 'end')
+                          .style('font-size', '1rem')
+                          .attr('dx', '-.8em')
+                          .attr('dy', '.15em')
+                          .attr('transform', 'rotate(-90)');
+                    }
+                    return hasTick;
+                  }),
 
               (update: any) => update,
 
@@ -373,6 +396,25 @@ export default class TimelineComponent
       dataIdx = Math.floor(-deltaX / (scale * barWidth));
       data = csvData.slice(dataIdx, numBars + dataIdx);
       ordinals = data.map((d: any) => d[xColumn]);
+
+      // d3.selectAll('#xaxis')
+      //     .attr('transform', 'translate(' + (scale * barWidth * dataIdx) + ',' + height + ')');
+
+      // barsLayer.append('g')
+      //   .attr('id', 'xaxis')
+      //   .style('color', 'red')
+      //   .attr('class', 'x axis')
+      //   .attr('transform', 'translate(0,' + height + ')')
+      //   .call(d3.axisBottom(newX).tickFormat(function(d) {
+      //     // @ts-ignore
+      //     return ordinals[d];// now for 0 it will return 'a' for 1 b and so on
+      //   }))
+      //   .selectAll('text')
+      //   .style('text-anchor', 'end')
+      //   .style('font-size', '1rem')
+      //   .attr('dx', '-.8em')
+      //   .attr('dy', '.15em')
+      //   .attr('transform', 'rotate(-90)');
 
       // log('moveChart dataIdx: ' + dataIdx);
       // log('ordinals: ' + ordinals);

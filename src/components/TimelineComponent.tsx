@@ -209,8 +209,11 @@ export default class TimelineComponent
 
 
     const xScale = d3.scaleBand()
-      .domain(data.map((d: any) => d[xColumn]))
-      .range([margin.left, width - margin.right]);
+      //.domain(data.map((d: any) => d[xColumn]))
+      .domain(data.map((d: any) => d['index']))
+      .range([0, width - margin.right])
+      //.range([margin.left, width - margin.right])
+      .padding(0);
     // Add X axis
     const x = d3.scaleLinear()
       .domain([0, ordinals.length])
@@ -246,19 +249,22 @@ export default class TimelineComponent
       .attr("clip-path", "url(#clip)");
 
     // Add circles
+
     scatter.selectAll("rect")
       .data(data)
       .enter()
       .append("rect")
+      // @ts-ignore
       .attr("x", function (d: any, i: number) {
-        log(x(i));
-        return x(i);
+        //log(x(i));
+        //return x(i);
+        return xScale(d['index']);
       })
       .attr("y", function (d: any) {
         log(y(d[yColumn]));
         return y(d[yColumn]);
       })
-      .attr("width", 50)
+      .attr("width", xScale.bandwidth())
       .attr('height', (d: any) => y(0) - y(d[yColumn]))
       .style("fill", "#61a3a9")
       .style("opacity", 0.5);
@@ -267,6 +273,7 @@ export default class TimelineComponent
     // and what to do when there is a zoom
     const zoom = d3.zoom()
       .scaleExtent([1, 20])
+      .translateExtent([[0, 0], [width, height]])
       .extent([[0, 0], [width, height]])
       .on("zoom", updateChart);
 
@@ -282,31 +289,37 @@ export default class TimelineComponent
       .call(zoom);
 
     // now the user can zoom and it will trigger the function called updateChart
-    // A function that updates the chart when the user zoom and thus new boundaries are available
+    // A function that updates the chart when the user zoom and thus new
+    // boundaries are available
     function updateChart() {
       // recover the new scale
       const newX = d3.event.transform.rescaleX(x);
-      const newY = d3.event.transform.rescaleY(y);
+      //const newY = d3.event.transform.rescaleY(y);
       // update axes with these new boundaries
       xAxis.call(d3.axisBottom(newX).tickFormat(function (d: any) {
         return ordinals[d];
       }));
-      yAxis.call(d3.axisLeft(newY));
+      //yAxis.call(d3.axisLeft(newY));
+      
+      // @ts-ignore
+      xScale.range([0, width - margin.right].map(d => d3.event.transform.applyX(d)));
+      
       // update circle position
-      scatter
-        .selectAll("rect")
-        .attr('x', function (d, i) {
+
+      scatter.selectAll("rect")
+      // @ts-ignore
+        .attr('x', function (d: any, i) {
           // @ts-ignore
-          return newX(i);
+          //return newX(i);
+          return xScale(d['index']);
         })
-        // .attr('y', function (d) {
-        //   // @ts-ignore
-        //   return newY(d[yColumn]);
-        // })
+        // @ts-ignore
         .attr('width', function (d, i) {
           // @ts-ignore]
-          //log('newX(' + i + '): ' + newX(i) + '\nx(' + i + '): ' + x(i));
-          return d3.event.transform.k * 50;
+          // xScale.range([margin.left, width - margin.right]
+          //   .map(d => d3.event.transform.applyX(d)));
+          //return d3.event.transform.k * 50;
+          return xScale.bandwidth();
         });
     }
   }

@@ -118,8 +118,8 @@ export default class TimelineComponent
         .append('svg')
         .attr('width', width)
         .attr('height', height + this.state.marginTop +
-          this.state.marginBottom)
-        // @ts-ignore
+        this.state.marginBottom)
+    // @ts-ignore
         .call(zoom)
         .append('g')
         .attr('transform', 'translate(' + this.state.marginLeft +
@@ -320,6 +320,11 @@ export default class TimelineComponent
           .attr('x', (d, i) => scale * barWidth * (i + dataIdx))
           .attr('width', scale * barWidth);
 
+      // d3.selectAll('.xtick')
+      //     .attr('transform', (d, i) => 'translate(' +
+      //       ((scale * barWidth * (i + dataIdx)) +
+      //         ((scale * barWidth)/2)) + ',' + height + ')');
+
       if (d3.event.sourceEvent.type === 'mousemove') {
         dragged();
       }
@@ -330,6 +335,8 @@ export default class TimelineComponent
      * Purpose: used to update which bars are being rendered to the screen
      */
     function updateBars() {
+      // @ts-ignore
+      const ticks: [any] = [];
       plot.selectAll('.bar')
           .data(data, function(d: any, i: any, group: any) {
             return d.index;
@@ -357,12 +364,17 @@ export default class TimelineComponent
                     let hasTick = false;
                     if (((i + dataIdx) % 5) === 0) {
                       hasTick = true;
+                      // ticks.push({
+                      //   id: d['index'],
+                      //   index: i,
+                      // });
                       const tick = enter.append('g')
-                          .attr('class', 'tick')
+                          .attr('class', 'xtick')
+                          .attr('id', 'xtick-' + d['index'])
                           .attr('opacity', 1)
-                          // eslint-disable-next-line max-len
-                          .attr('transform', 'translate(' + ((scale * barWidth * (i + dataIdx)) + ((scale * barWidth)/2)) + ',' + height + ')');
-
+                          .attr('transform', 'translate(' +
+                            ((scale * barWidth * (i + dataIdx)) +
+                              ((scale * barWidth) / 2)) + ',' + height + ')');
                       tick.append('line')
                           .attr('stroke', 'blue')
                           .attr('y2', 6);
@@ -379,8 +391,47 @@ export default class TimelineComponent
 
               (update: any) => update,
 
-              (exit: { remove: () => void; }) => exit.remove()
+              (exit: any) => {
+                console.log(d3.select(exit));
+                // d3.select()
+                exit.attr('removing', (d:any, i:number) => {
+                  console.log(d['index']);
+                });
+                exit.call((d: any, i: number) => {
+                  console.log(d['index']);
+                  d3.selectAll('#xaxis-' + d['index']).remove();
+                });
+                exit.remove();
+              }
           );
+
+      // plot.selectAll('.xtick')
+      //     .data(ticks, function(d: any, i: any, group: any) {
+      //       return d.id;
+      //     })
+      //     .join(
+      //         (enter: any) => enter.append('g')
+      //             .attr('class', 'xtick')
+      //             .attr('opacity', 1)
+      //         // eslint-disable-next-line max-len
+      //             .attr('transform', (d: any, i: number) =>
+      //               'translate(' +
+      //             ((scale * barWidth * (d.index + dataIdx)) +
+      //               ((scale * barWidth) / 2)) + ',' + height + ')')
+      //             .append('line')
+      //             .attr('stroke', 'blue')
+      //             .attr('y2', 6)
+      //
+      //             .append('text')
+      //             .text('meme')
+      //             .style('text-anchor', 'end')
+      //             .style('font-size', '1rem')
+      //             .attr('dx', '-.8em')
+      //             .attr('dy', '.15em')
+      //             .attr('transform', 'rotate(-90)'),
+      //         (update: any) => update,
+      //         (exit: { remove: () => void; }) => exit.remove()
+      //     );
     }
 
     /**

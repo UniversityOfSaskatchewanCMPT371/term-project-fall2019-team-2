@@ -26,10 +26,22 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: npm install, lint, build, and test
+      if: matrix.os != 'windows-latest'
       run: |
         npm install
         npm run lint
         npm run build
-        npm test
+        npm run test
+      env:
+        CI: true
+    # Use the winter!
+    - name: npm install, wint, build, and test
+      if: matrix.os == 'windows-latest'
+      shell: cmd
+      run: |
+        npm install
+        npm run wint
+        npm run build
+        set CI=true&&npm run test
       env:
         CI: true

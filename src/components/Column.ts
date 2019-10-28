@@ -31,3 +31,12 @@ export default class Column {
     public Rescale(newScale: number): void {
     }
 }
+
+/**
+ * class that categorizes data to be drawn
+ * occurence data is string
+ * any is number and magnitude
+ */
+export enum enumDrawType {
+  magnitude, occurrence, any,
+}

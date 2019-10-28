@@ -5,6 +5,7 @@ import TimelineComponent from './TimelineComponent';
 import Data from './Data';
 import * as TimSort from 'timsort';
 import Column, {enumDrawType} from './Column';
+import * as moment from 'moment';
 
 /**
  * Purpose: react component responsible for receiving and parsing file data

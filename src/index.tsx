@@ -4,8 +4,8 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
-// import Mesa
-//   from './Mesa';
+import Mesa
+  from './Mesa';
 
 
 // ReactDOM.render(<Mesa />, document.getElementById('root'));

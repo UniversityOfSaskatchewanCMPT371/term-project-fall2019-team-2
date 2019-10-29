@@ -6,6 +6,8 @@ import Data from './Data';
 import * as TimSort from 'timsort';
 import Column, {enumDrawType} from './Column';
 import * as moment from 'moment';
+import {sizeof, sizeofObj} from './Utilities';
+import osizeof from "object-sizeof";
 
 /**
  * Purpose: react component responsible for receiving and parsing file data
@@ -33,6 +35,13 @@ export default class ParserComponent extends React.Component<ParserInterface,
     this.parseCsv = this.parseCsv.bind(this);
     this.parse = this.parse.bind(this);
     this.inferTypes = this.inferTypes.bind(this);
+
+    let t: [number] = [1500000];
+    for(let i = 0; i < 1500000; i++) {
+      t[i] = i;
+    }
+
+    console.log(sizeof(t));
   }
 
   /**
@@ -94,11 +103,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
         if (!isNaN(date) && isNaN(Number(value))) {
           doneTheWork = true;
 
-          // key = 'odnum';
-          console.log(key);
-
           const keyInt = key + '_num';
-          console.log(keyInt);
+          // console.log(keyInt);
 
           TimSort.sort(data, function(a: any, b: any) {
             if (!a.hasOwnProperty(keyInt)) {
@@ -115,10 +121,9 @@ export default class ParserComponent extends React.Component<ParserInterface,
           this.setState(() => {
             return {
               data: data,
-              showTimeline: true,
             };
           });
-          console.log(this.state.data);
+          //console.log(this.state.data);
         }
       }
     }
@@ -179,7 +184,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
         }
       }
       );
-      console.log(arrayOfColumns);
+      //console.log(arrayOfColumns);
       return arrayOfColumns;
     } else {
       throw new Error('data is empty: ' + data.length);
@@ -197,6 +202,54 @@ export default class ParserComponent extends React.Component<ParserInterface,
       await this.parseCsv(fileEvent);
     }
     this.columnTypes = this.inferTypes(this.state.data);
+
+    console.log(sizeof(this.state.data));
+    //console.log(Array.from(this.state.data[0]));
+    // let temp = this.state.data;
+    // let temp2: any[] = [];
+    // let arrSize1 = osizeof(temp);
+    // let objSize1 = osizeof(temp[0]);
+    //
+    // console.log(sizeof(temp));
+    // console.log(sizeofObj(temp[0]));
+
+    // for(let i = 0; i < temp.length; i++){
+    //   let obj = temp[i];
+    //   let newObj = {};
+    //   let keys = Object.keys(obj);
+    //   for(let n = 0; n < keys.length; n++){
+    //     // @ts-ignore
+    //     newObj[n] = obj[keys[n]];
+    //   }
+    //
+    //   temp[i] = newObj;
+    // }
+
+    // for(let i = 0; i < temp.length; i++){
+    //   let obj = temp[i];
+    //   let keys = Object.keys(obj);
+    //   let tempArr: any[] = [];
+    //   for(let n = 0; n < keys.length; n++){
+    //     // @ts-ignore
+    //     tempArr.push(obj[keys[n]]);
+    //   }
+    //
+    //   temp2.push(tempArr);
+    // }
+    // let arrSize2 = osizeof(temp2);
+    // let objSize2 = osizeof(temp2[0]);
+    //
+    // console.log(sizeof(temp2));
+    // console.log(sizeofObj(temp2[0]));
+    //
+    // console.log('Array is ' + ((arrSize2/arrSize1) * 100).toFixed(2) + '% the size');
+    // console.log('Row is ' + ((objSize2/objSize1) * 100).toFixed(2) + '% the size');
+
+    this.setState(() => {
+      return {
+        showTimeline: true,
+      };
+    });
   }
 
   /**
@@ -204,14 +257,14 @@ export default class ParserComponent extends React.Component<ParserInterface,
    * @param {Object} fileEvent: the event passed into this component
    */
   async parseCsv(fileEvent: any) {
-    console.log(fileEvent);
+    //console.log(fileEvent);
     const t1 = performance.now();
 
     const csvFile = fileEvent.target.files[0];
     const fileReader = new FileReader();
 
-    console.log(csvFile);
-    console.log(typeof csvFile);
+    //console.log(csvFile);
+    //console.log(typeof csvFile);
 
     return new Promise((resolver, agent) => {
       const handleFileRead = () => {
@@ -225,6 +278,10 @@ export default class ParserComponent extends React.Component<ParserInterface,
 
                 return d;
               });
+
+          //const content = d3.csvParse(fileReader.result);
+          //console.log(sizeof(content));
+
           // set state of the parser component
           this.setState((state) => {
             return {
@@ -233,21 +290,23 @@ export default class ParserComponent extends React.Component<ParserInterface,
               data: content,
             };
           });
-          console.log(this.sortData(content));
-          console.log(content);
-          console.log(this.isValid(csvFile));
+          this.sortData(content);
+          this.isValid(csvFile);
+          //console.log(this.sortData(content));
+          //console.log(content);
+          //console.log(this.isValid(csvFile));
           if (!this.isValid(csvFile)) {
             try {
               throw new Error('Wrong file type was uploaded.');
             } catch (e) {
-              console.log(e);
+              //console.log(e);
               alert('The file uploaded needs to be CSV.');
             }
           }
 
           const t2 = performance.now();
 
-          console.log('Sorting took: ' + (t2 - t1));
+          //console.log('Sorting took: ' + (t2 - t1));
         }
         resolver(true);
       };

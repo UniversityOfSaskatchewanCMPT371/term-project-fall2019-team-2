@@ -10,7 +10,7 @@ import './Timeline.css';
  * @param {any} str: thing to log
  */
 function log(str: any) {
-  console.log(str);
+  //console.log(str);
 }
 
 /**
@@ -372,7 +372,7 @@ export default class TimelineComponent
           .attr('height', (d: any) => {
             const newHeight = (height - y(d[yColumn]));
             if (newHeight < 0) {
-              console.log('Bad height: ' + d[yColumn]);
+              //console.log('Bad height: ' + d[yColumn]);
               return 0;
             } else {
               return (height - y(d[yColumn]));
@@ -399,7 +399,7 @@ export default class TimelineComponent
           .attr('height', (d: any) => {
             const newHeight = (height - y(d[yColumn]));
             if (newHeight < 0) {
-              console.log('Bad height: ' + d[yColumn]);
+              //console.log('Bad height: ' + d[yColumn]);
               return 0;
             } else {
               return (height - y(d[yColumn]));
@@ -812,7 +812,7 @@ export default class TimelineComponent
           .attr('height', (d: any) => {
             const newHeight = (height - y(d[yColumn]));
             if (newHeight < 0) {
-              console.log('Bad height: ' + d[yColumn]);
+              //console.log('Bad height: ' + d[yColumn]);
               return 0;
             } else {
               return (height - y(d[yColumn]));
@@ -840,7 +840,7 @@ export default class TimelineComponent
           .attr('height', (d: any) => {
             const newHeight = (height - y(d[yColumn]));
             if (newHeight < 0) {
-              console.log('Bad height: ' + d[yColumn]);
+              //console.log('Bad height: ' + d[yColumn]);
               return 0;
             } else {
               return (height - y(d[yColumn]));

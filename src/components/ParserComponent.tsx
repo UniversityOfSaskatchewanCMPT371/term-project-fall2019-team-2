@@ -203,50 +203,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
     }
     this.columnTypes = this.inferTypes(this.state.data);
 
-    console.log(sizeof(this.state.data));
-    // console.log(Array.from(this.state.data[0]));
-    // let temp = this.state.data;
-    // let temp2: any[] = [];
-    // let arrSize1 = osizeof(temp);
-    // let objSize1 = osizeof(temp[0]);
-    //
-    // console.log(sizeof(temp));
-    // console.log(sizeofObj(temp[0]));
-
-    // for(let i = 0; i < temp.length; i++){
-    //   let obj = temp[i];
-    //   let newObj = {};
-    //   let keys = Object.keys(obj);
-    //   for(let n = 0; n < keys.length; n++){
-    //     // @ts-ignore
-    //     newObj[n] = obj[keys[n]];
-    //   }
-    //
-    //   temp[i] = newObj;
-    // }
-
-    // for(let i = 0; i < temp.length; i++){
-    //   let obj = temp[i];
-    //   let keys = Object.keys(obj);
-    //   let tempArr: any[] = [];
-    //   for(let n = 0; n < keys.length; n++){
-    //     // @ts-ignore
-    //     tempArr.push(obj[keys[n]]);
-    //   }
-    //
-    //   temp2.push(tempArr);
-    // }
-    // let arrSize2 = osizeof(temp2);
-    // let objSize2 = osizeof(temp2[0]);
-    //
-    // console.log(sizeof(temp2));
-    // console.log(sizeofObj(temp2[0]));
-    //
-    // console.log('Array is ' +
-    // ((arrSize2/arrSize1) * 100).toFixed(2) + '% the size');
-    // console.log('Row is ' +
-    // ((objSize2/objSize1) * 100).toFixed(2) + '% the size');
-
     this.setState(() => {
       return {
         showTimeline: true,

@@ -8,6 +8,7 @@ import Column, {enumDrawType} from './Column';
 import * as moment from 'moment';
 import {sizeof, sizeofObj} from './Utilities';
 import osizeof from 'object-sizeof';
+import * as d3dsv from 'd3-dsv';
 
 /**
  * Purpose: react component responsible for receiving and parsing file data
@@ -35,13 +36,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
     this.parseCsv = this.parseCsv.bind(this);
     this.parse = this.parse.bind(this);
     this.inferTypes = this.inferTypes.bind(this);
-
-    const t: [number] = [1500000];
-    for (let i = 0; i < 1500000; i++) {
-      t[i] = i;
-    }
-
-    console.log(sizeof(t));
   }
 
   /**

@@ -7,7 +7,7 @@ import * as TimSort from 'timsort';
 import Column, {enumDrawType} from './Column';
 import * as moment from 'moment';
 import {sizeof, sizeofObj} from './Utilities';
-import osizeof from "object-sizeof";
+import osizeof from 'object-sizeof';
 
 /**
  * Purpose: react component responsible for receiving and parsing file data
@@ -36,8 +36,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
     this.parse = this.parse.bind(this);
     this.inferTypes = this.inferTypes.bind(this);
 
-    let t: [number] = [1500000];
-    for(let i = 0; i < 1500000; i++) {
+    const t: [number] = [1500000];
+    for (let i = 0; i < 1500000; i++) {
       t[i] = i;
     }
 
@@ -123,7 +123,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
               data: data,
             };
           });
-          //console.log(this.state.data);
+          // console.log(this.state.data);
         }
       }
     }
@@ -184,7 +184,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
         }
       }
       );
-      //console.log(arrayOfColumns);
+      // console.log(arrayOfColumns);
       return arrayOfColumns;
     } else {
       throw new Error('data is empty: ' + data.length);
@@ -204,7 +204,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
     this.columnTypes = this.inferTypes(this.state.data);
 
     console.log(sizeof(this.state.data));
-    //console.log(Array.from(this.state.data[0]));
+    // console.log(Array.from(this.state.data[0]));
     // let temp = this.state.data;
     // let temp2: any[] = [];
     // let arrSize1 = osizeof(temp);
@@ -242,8 +242,10 @@ export default class ParserComponent extends React.Component<ParserInterface,
     // console.log(sizeof(temp2));
     // console.log(sizeofObj(temp2[0]));
     //
-    // console.log('Array is ' + ((arrSize2/arrSize1) * 100).toFixed(2) + '% the size');
-    // console.log('Row is ' + ((objSize2/objSize1) * 100).toFixed(2) + '% the size');
+    // console.log('Array is ' +
+    // ((arrSize2/arrSize1) * 100).toFixed(2) + '% the size');
+    // console.log('Row is ' +
+    // ((objSize2/objSize1) * 100).toFixed(2) + '% the size');
 
     this.setState(() => {
       return {
@@ -257,14 +259,14 @@ export default class ParserComponent extends React.Component<ParserInterface,
    * @param {Object} fileEvent: the event passed into this component
    */
   async parseCsv(fileEvent: any) {
-    //console.log(fileEvent);
+    // console.log(fileEvent);
     const t1 = performance.now();
 
     const csvFile = fileEvent.target.files[0];
     const fileReader = new FileReader();
 
-    //console.log(csvFile);
-    //console.log(typeof csvFile);
+    // console.log(csvFile);
+    // console.log(typeof csvFile);
 
     return new Promise((resolver, agent) => {
       const handleFileRead = () => {
@@ -279,8 +281,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
                 return d;
               });
 
-          //const content = d3.csvParse(fileReader.result);
-          //console.log(sizeof(content));
+          // const content = d3.csvParse(fileReader.result);
+          // console.log(sizeof(content));
 
           // set state of the parser component
           this.setState((state) => {
@@ -292,21 +294,21 @@ export default class ParserComponent extends React.Component<ParserInterface,
           });
           this.sortData(content);
           this.isValid(csvFile);
-          //console.log(this.sortData(content));
-          //console.log(content);
-          //console.log(this.isValid(csvFile));
+          // console.log(this.sortData(content));
+          // console.log(content);
+          // console.log(this.isValid(csvFile));
           if (!this.isValid(csvFile)) {
             try {
               throw new Error('Wrong file type was uploaded.');
             } catch (e) {
-              //console.log(e);
+              // console.log(e);
               alert('The file uploaded needs to be CSV.');
             }
           }
 
           const t2 = performance.now();
 
-          //console.log('Sorting took: ' + (t2 - t1));
+          // console.log('Sorting took: ' + (t2 - t1));
         }
         resolver(true);
       };

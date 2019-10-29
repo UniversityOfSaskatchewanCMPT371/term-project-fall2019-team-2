@@ -10,7 +10,7 @@ import './Timeline.css';
  * @param {any} str: thing to log
  */
 function log(str: any) {
-  //console.log(str);
+  // console.log(str);
 }
 
 /**
@@ -18,18 +18,21 @@ function log(str: any) {
  */
 export default class TimelineComponent
   extends React.Component<TimelineInterface, TimelineState> {
+  private toggleTimeline: number = 0;
   /**
    * Purpose: constructor for the TimelineComponent
    * @param {TimelineComponent} props
    */
   constructor(props: TimelineInterface) {
+
+
     super(props);
     this.state = {
       data: props.data,
       width: window.innerWidth,
       height: window.innerHeight,
       marginTop: 40,
-      marginBottom: 100,
+      marginBottom: 170,
       marginLeft: 40,
       marginRight: 20,
     };
@@ -66,8 +69,18 @@ export default class TimelineComponent
    *
    */
   destroyTimeline() {
-    d3.selectAll('svg').remove();
-    this.drawTimeline2();
+    if(this.toggleTimeline == 0){
+      d3.selectAll('svg').remove();
+      this.drawTimeline2();
+      this.toggleTimeline = 1;
+    }
+    else if(this.toggleTimeline > 0){
+      d3.selectAll('svg').remove();
+      this.drawTimeline();
+      this.toggleTimeline = 0;
+    }
+
+    //this.drawTimeline2();
   }
 
   /**
@@ -372,7 +385,7 @@ export default class TimelineComponent
           .attr('height', (d: any) => {
             const newHeight = (height - y(d[yColumn]));
             if (newHeight < 0) {
-              //console.log('Bad height: ' + d[yColumn]);
+              // console.log('Bad height: ' + d[yColumn]);
               return 0;
             } else {
               return (height - y(d[yColumn]));
@@ -399,7 +412,7 @@ export default class TimelineComponent
           .attr('height', (d: any) => {
             const newHeight = (height - y(d[yColumn]));
             if (newHeight < 0) {
-              //console.log('Bad height: ' + d[yColumn]);
+              // console.log('Bad height: ' + d[yColumn]);
               return 0;
             } else {
               return (height - y(d[yColumn]));
@@ -812,7 +825,7 @@ export default class TimelineComponent
           .attr('height', (d: any) => {
             const newHeight = (height - y(d[yColumn]));
             if (newHeight < 0) {
-              //console.log('Bad height: ' + d[yColumn]);
+              // console.log('Bad height: ' + d[yColumn]);
               return 0;
             } else {
               return (height - y(d[yColumn]));
@@ -840,14 +853,14 @@ export default class TimelineComponent
           .attr('height', (d: any) => {
             const newHeight = (height - y(d[yColumn]));
             if (newHeight < 0) {
-              //console.log('Bad height: ' + d[yColumn]);
+              // console.log('Bad height: ' + d[yColumn]);
               return 0;
             } else {
               return (height - y(d[yColumn]));
             }
           })
           .style('fill', '#61a3a9')
-          .style('opacity', 0.1)
+          .style('opacity', 0.2)
           .on('mouseover', ttOver)
           .on('mousemove', ttMove)
           .on('mouseleave', ttLeave);

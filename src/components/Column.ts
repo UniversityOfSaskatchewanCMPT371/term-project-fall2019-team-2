@@ -3,17 +3,23 @@
  */
 export default class Column {
     public yScale: number;
-    public definedDrawList: Array<() => void>;
+    public key: string;
+    public drawType: enumDrawType;
+    public primType: string;
 
     /**
      * Purpose: Column constructor
+     * @param {string} primType: the type of the data
+     * @param {enumDrawType} drawType: the type in the form of enum
+     * @param {string} key: the key value
      * @param {number} yScale: the initial y-scale
-     * @param {Array} definedDrawList: the initial list of drawing predicates
-     * functions for the column
      */
-    public constructor(yScale: number, definedDrawList: Array<() => void>) {
+    public constructor(primType: string, drawType: enumDrawType,
+        key: string, yScale: number = 1) {
+      this.drawType = drawType;
       this.yScale = yScale;
-      this.definedDrawList = definedDrawList;
+      this.key = key;
+      this.primType = primType;
     }
 
     /**
@@ -30,4 +36,13 @@ export default class Column {
      */
     public Rescale(newScale: number): void {
     }
+}
+
+/**
+ * class that categorizes data to be drawn
+ * occurence data is string
+ * any is number and magnitude
+ */
+export enum enumDrawType {
+    magnitude, occurrence, any,
 }

@@ -29,7 +29,37 @@ ID3 Meeting 1
 
 ## After Action Report (Minutes)
 
-> Duration:
+> Duration: 1 hour
+
+1. Where are we?
+  - We should have interval data, magnitude data, and point data implemented this deliverable
+  - We need to look into a legend, scrolling with keys, and y-axis labeling still
+  - Tests are expected to be implemented for all of these features by ID3 at the current pace
+  - Eileen will make a manual testing template for the test team, so manual testing can be formalized with reports
+  
+2. Team Policy Updates
+  - A policy for tardiness will be added
+    - 10 minutes late is acceptable, any more and there should be a sufficent reason
+    - Being repeatedly tardy may call for a yellow-card
+  - A policy for PR reviews
+    - People are expected to look at reviews once a day
+    - If an item is not reviewed by a team member within 24 hours, any member can add themselves as a 
+    reviewer and 'yoink' the review from you.  Although no formal action is taken, it reflects extremely
+    badly on you if you're always letting your reviews get yoinked by more attentive teammates
+  - A policy for responsiveness
+    - A R&U (read and understood) response is mandatory in slack for messages, if you do not respond in slack
+    with a :ladies_and_gentleman:, the PM (project manager) will PM (private message) you to ensure you've
+    read the message and understand the implications
+    
+ 3. Branches & GitFlow:
+  - We agreed that more, smaller PR's will make life more managable
+  - Last night (OCT 29TH) was the deadline for getting local branches merged and PR'd, anything not merged by
+  that point is now considered incomplete
+
+4. Trello usage
+  - Mesa pointed out that the Dev Trello board actually has the tasks broken down into subtasks
+  on the actual card itself.
+  - It appears that people are actually using Trello
 
 
 ## Attendance

@@ -4,7 +4,6 @@ import * as d3 from 'd3';
 import * as d3dsv from 'd3-dsv';
 import Column, {enumDrawType} from './Column';
 import moment from 'moment';
-import {Simulate} from 'react-dom/test-utils';
 
 /**
  * Purpose: react component responsible for receiving and parsing file data

@@ -24,8 +24,6 @@ export default class TimelineComponent
    * @param {TimelineComponent} props
    */
   constructor(props: TimelineInterface) {
-
-
     super(props);
     this.state = {
       data: props.data,
@@ -69,18 +67,17 @@ export default class TimelineComponent
    *
    */
   destroyTimeline() {
-    if(this.toggleTimeline == 0){
+    if (this.toggleTimeline == 0) {
       d3.selectAll('svg').remove();
       this.drawTimeline2();
       this.toggleTimeline = 1;
-    }
-    else if(this.toggleTimeline > 0){
+    } else if (this.toggleTimeline > 0) {
       d3.selectAll('svg').remove();
       this.drawTimeline();
       this.toggleTimeline = 0;
     }
 
-    //this.drawTimeline2();
+    // this.drawTimeline2();
   }
 
   /**

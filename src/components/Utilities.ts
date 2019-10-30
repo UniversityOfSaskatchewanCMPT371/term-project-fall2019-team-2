@@ -3,6 +3,13 @@ const kb = 1024;
 const mb = 1048576;
 const gb = 1073741824;
 
+/**
+ * Purpose: formats a number in human readable form with up to 3 decimal places
+ * of precision
+ *
+ * @param {number} size: number to be interpreted as a size of bytes
+ * @return {string}: human readable size string
+ */
 function formatSize(size: number) {
   let sizeStr: string = '';
 
@@ -19,13 +26,25 @@ function formatSize(size: number) {
   return sizeStr;
 }
 
+/**
+ * Purpose: returns the size of the given object in a human readable format
+ *
+ * @param {any} obj: the object to get the size of
+ * @return {string} returns: the human readable size string
+ */
 export function sizeof(obj: any): string {
   const size: number = osizeof(obj);
 
   return formatSize(size);
 }
 
-function maxStrLen(strs: string[]) {
+/**
+ * Purpose: returns the longest string in an array of strings.
+ *
+ * @param {string[]} strs: an array of strings
+ * @return {number}: the length of the longest string in the array
+ */
+function maxStrLen(strs: string[]): number {
   let len: number = 0;
 
   for (let i = 0; i < strs.length; i++) {
@@ -37,6 +56,14 @@ function maxStrLen(strs: string[]) {
   return len;
 }
 
+/**
+ * Purpose: returns a string with the size of each individual key-value pair on
+ * an object.
+ *
+ * @param {any} obj: the object to get the sizes for
+ * @return {string}: a string with the size of each individual key-value pair
+ * on an object.
+ */
 export function sizeofObj(obj: any): string {
   const keys: string[] = Object.keys(obj);
   let str = '';
@@ -52,12 +79,12 @@ export function sizeofObj(obj: any): string {
 
   if (typeof obj === 'object') {
     for (const key in obj) {
-      // console.log(key);
-      const size = osizeof(key) + osizeof(obj[key]);
-      // let size = osizeof(obj[key]);
-      totalSize += size;
-      sizes.push('[' + formatSize(size) + ']: ');
-      vals.push(obj[key] + '\n');
+      if (key !== null) {
+        const size = osizeof(key) + osizeof(obj[key]);
+        totalSize += size;
+        sizes.push('[' + formatSize(size) + ']: ');
+        vals.push(obj[key] + '\n');
+      }
     }
     sizeLen = maxStrLen(sizes) + 1;
 
@@ -65,7 +92,8 @@ export function sizeofObj(obj: any): string {
       str += keys[i].padEnd(keyLen) + sizes[i].padStart(sizeLen) + vals[i];
     }
 
-    str += 'total'.padEnd(keyLen) + ('[' + sizeof(obj) + '] ').padEnd(keyLen) + '\n';
+    str += 'total'.padEnd(keyLen) +
+      ('[' + sizeof(obj) + '] ').padEnd(keyLen) + '\n';
   }
 
   return str;

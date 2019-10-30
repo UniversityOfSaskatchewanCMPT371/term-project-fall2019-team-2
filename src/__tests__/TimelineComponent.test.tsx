@@ -4,7 +4,7 @@ import ParserComponent from '../components/ParserComponent';
 import TimelineComponent from '../components/TimelineComponent';
 import {TimelineState} from '../components/TimelineInterface';
 import sinon from 'sinon';
-import Data from "../components/Data";
+import Data from '../components/Data';
 
 describe('<TimelineComponent /> renders correctly', () => {
   it('renders empty component', () => {

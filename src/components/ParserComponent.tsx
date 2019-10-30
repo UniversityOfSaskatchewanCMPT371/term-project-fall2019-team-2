@@ -1,3 +1,4 @@
+
 import React from 'react';
 import ParserInterface, {FileType, ParserState} from './ParserInterface';
 import * as d3 from 'd3';

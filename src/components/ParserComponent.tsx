@@ -65,6 +65,9 @@ export default class ParserComponent extends React.Component<ParserInterface,
 
   /**
      * Purpose: sorts the array of data
+     * @precondition: dates must contain year month and date,
+   * if data does not contain year in some
+   * dates but does in some it will sort lexicographically
      * @param {Array} data: the array of data to sort
      * @return {boolean}: array of sorted data
      */

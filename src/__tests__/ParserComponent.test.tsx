@@ -107,6 +107,182 @@ describe('<ParserComponent /> Unit Tests', () => {
         {'id': 3, 'name': 'name3'}];
       expect(instance.sortData(testArray)).toThrow('No date field');
     });
+
+    // eslint-disable-next-line max-len
+    it('checks if data is sorted by the first date column when there are 2 date columns', () => {
+      // eslint-disable-next-line max-len
+      const wrapper = shallow(<ParserComponent prompt={'Select a TL file: '} fileType={FileType.tl}/>);
+      const instance = wrapper.instance() as ParserComponent;
+      const testArray: {id: number, Date: string, Date1: string}[] = [
+        {'id': 1, 'Date': '1/1/2001', 'Date1': '4/5/2010'},
+        {'id': 2, 'Date': '1/1/2003', 'Date1': '4/5/1992'},
+        {'id': 3, 'Date': '1/1/2000', 'Date1': '12/21/1992'},
+        {'id': 4, 'Date': '1/1/2002', 'Date1': '12/21/1993'}];
+      const result = instance.sortData(testArray);
+      const expectedResult: {id: number, Date: string, Date1: string}[] = [
+        {'id': 3, 'Date': '1/1/2000', 'Date1': '12/21/1992'},
+        {'id': 1, 'Date': '1/1/2001', 'Date1': '4/5/2010'},
+        {'id': 4, 'Date': '1/1/2002', 'Date1': '12/21/1993'},
+        {'id': 2, 'Date': '1/1/2003', 'Date1': '4/5/1992'}];
+      expect(result[0]).toMatchObject(expectedResult[0]);
+      expect(result[1]).toMatchObject(expectedResult[1]);
+      expect(result[2]).toMatchObject(expectedResult[2]);
+      expect(result[3]).toMatchObject(expectedResult[3]);
+    });
+
+    // eslint-disable-next-line max-len
+    it('checks if sort works when there are no dates', () => {
+      // eslint-disable-next-line max-len
+      const wrapper = shallow(<ParserComponent prompt={'Select a TL file: '} fileType={FileType.tl}/>);
+      const instance = wrapper.instance() as ParserComponent;
+      const testArray: {id: number, name: string, job: string}[] = [
+        {'id': 1, 'name': 'name1', 'job': 'job1'},
+        {'id': 2, 'name': 'name2', 'job': 'job2'},
+        {'id': 3, 'name': 'name3', 'job': 'job3'},
+        {'id': 4, 'name': 'name4', 'job': 'job4'}];
+      const result = instance.sortData(testArray);
+      const expectedResult: {id: number, name: string, job: string}[] = [
+        {'id': 1, 'name': 'name1', 'job': 'job1'},
+        {'id': 2, 'name': 'name2', 'job': 'job2'},
+        {'id': 3, 'name': 'name3', 'job': 'job3'},
+        {'id': 4, 'name': 'name4', 'job': 'job4'}];
+      expect(result[0]).toMatchObject(expectedResult[0]);
+      expect(result[1]).toMatchObject(expectedResult[1]);
+      expect(result[2]).toMatchObject(expectedResult[2]);
+      expect(result[3]).toMatchObject(expectedResult[3]);
+    });
+
+    // eslint-disable-next-line max-len
+    it('checks if sort works on data with dates like november 12, 2019', () => {
+      // eslint-disable-next-line max-len
+      const wrapper = shallow(<ParserComponent prompt={'Select a TL file: '} fileType={FileType.tl}/>);
+      const instance = wrapper.instance() as ParserComponent;
+      const testArray: {id: number, name: string, Date: string}[] = [
+        {'id': 1, 'name': 'name1', 'Date': 'November 23, 2019'},
+        {'id': 2, 'name': 'name2', 'Date': 'January 1, 2019'},
+        {'id': 3, 'name': 'name3', 'Date': 'December 31, 2019'},
+        {'id': 4, 'name': 'name4', 'Date': 'February 5, 2019'}];
+      const result = instance.sortData(testArray);
+      const expectedResult: {id: number, name: string, Date: string}[] = [
+        {'id': 2, 'name': 'name2', 'Date': 'January 1, 2019'},
+        {'id': 4, 'name': 'name4', 'Date': 'February 5, 2019'},
+        {'id': 1, 'name': 'name1', 'Date': 'November 23, 2019'},
+        {'id': 3, 'name': 'name3', 'Date': 'December 31, 2019'}];
+      expect(result[0]).toMatchObject(expectedResult[0]);
+      expect(result[1]).toMatchObject(expectedResult[1]);
+      expect(result[2]).toMatchObject(expectedResult[2]);
+      expect(result[3]).toMatchObject(expectedResult[3]);
+    });
+
+    // eslint-disable-next-line max-len
+    it('checks if sort works on data with dates like november 12 2019', () => {
+      // eslint-disable-next-line max-len
+      const wrapper = shallow(<ParserComponent prompt={'Select a TL file: '} fileType={FileType.tl}/>);
+      const instance = wrapper.instance() as ParserComponent;
+      const testArray: {id: number, name: string, Date: string}[] = [
+        {'id': 1, 'name': 'name1', 'Date': 'November 23 2019'},
+        {'id': 2, 'name': 'name2', 'Date': 'January 1 2019'},
+        {'id': 3, 'name': 'name3', 'Date': 'December 31 2019'},
+        {'id': 4, 'name': 'name4', 'Date': 'February 5 2019'}];
+      const result = instance.sortData(testArray);
+      const expectedResult: {id: number, name: string, Date: string}[] = [
+        {'id': 2, 'name': 'name2', 'Date': 'January 1 2019'},
+        {'id': 4, 'name': 'name4', 'Date': 'February 5 2019'},
+        {'id': 1, 'name': 'name1', 'Date': 'November 23 2019'},
+        {'id': 3, 'name': 'name3', 'Date': 'December 31 2019'}];
+      expect(result[0]).toMatchObject(expectedResult[0]);
+      expect(result[1]).toMatchObject(expectedResult[1]);
+      expect(result[2]).toMatchObject(expectedResult[2]);
+      expect(result[3]).toMatchObject(expectedResult[3]);
+    });
+
+    // eslint-disable-next-line max-len
+    it('checks if sort works on data with dates like 12 november 2019', () => {
+      // eslint-disable-next-line max-len
+      const wrapper = shallow(<ParserComponent prompt={'Select a TL file: '} fileType={FileType.tl}/>);
+      const instance = wrapper.instance() as ParserComponent;
+      const testArray: {id: number, name: string, Date: string}[] = [
+        {'id': 1, 'name': 'name1', 'Date': '23 november 2019'},
+        {'id': 2, 'name': 'name2', 'Date': '1 january 2019'},
+        {'id': 3, 'name': 'name3', 'Date': '31 december 2019'},
+        {'id': 4, 'name': 'name4', 'Date': '5 february 2019'}];
+      const result = instance.sortData(testArray);
+      const expectedResult: {id: number, name: string, Date: string}[] = [
+        {'id': 2, 'name': 'name2', 'Date': '1 january 2019'},
+        {'id': 4, 'name': 'name4', 'Date': '5 february 2019'},
+        {'id': 1, 'name': 'name1', 'Date': '23 november 2019'},
+        {'id': 3, 'name': 'name3', 'Date': '31 december 2019'}];
+      expect(result[0]).toMatchObject(expectedResult[0]);
+      expect(result[1]).toMatchObject(expectedResult[1]);
+      expect(result[2]).toMatchObject(expectedResult[2]);
+      expect(result[3]).toMatchObject(expectedResult[3]);
+    });
+
+    // eslint-disable-next-line max-len
+    it('checks if sort works on data with dates D/M (assumes they are same year)', () => {
+      // eslint-disable-next-line max-len
+      const wrapper = shallow(<ParserComponent prompt={'Select a TL file: '} fileType={FileType.tl}/>);
+      const instance = wrapper.instance() as ParserComponent;
+      const testArray: {id: number, name: string, Date: string}[] = [
+        {'id': 1, 'name': 'name1', 'Date': '11/23'},
+        {'id': 2, 'name': 'name2', 'Date': '1/1'},
+        {'id': 4, 'name': 'name4', 'Date': '2/5'},
+        {'id': 3, 'name': 'name3', 'Date': '12/31'}];
+      const result = instance.sortData(testArray);
+      const expectedResult: {id: number, name: string, Date: string}[] = [
+        {'id': 2, 'name': 'name2', 'Date': '1/1'},
+        {'id': 4, 'name': 'name4', 'Date': '2/5'},
+        {'id': 1, 'name': 'name1', 'Date': '11/23'},
+        {'id': 3, 'name': 'name3', 'Date': '12/31'}];
+      expect(result[0]).toMatchObject(expectedResult[0]);
+      expect(result[1]).toMatchObject(expectedResult[1]);
+      expect(result[2]).toMatchObject(expectedResult[2]);
+      expect(result[3]).toMatchObject(expectedResult[3]);
+    });
+
+    // eslint-disable-next-line max-len
+    it('checks if sort works on data with dates D/M (assumes they are same year) but there is 1 with D/M/Y', () => {
+      // eslint-disable-next-line max-len
+      const wrapper = shallow(<ParserComponent prompt={'Select a TL file: '} fileType={FileType.tl}/>);
+      const instance = wrapper.instance() as ParserComponent;
+      const testArray: {id: number, name: string, Date: string}[] = [
+        {'id': 1, 'name': 'name1', 'Date': '11/23'},
+        {'id': 2, 'name': 'name2', 'Date': '1/1'},
+        {'id': 4, 'name': 'name4', 'Date': '2/5/2018'},
+        {'id': 3, 'name': 'name3', 'Date': '12/31'}];
+      const result = instance.sortData(testArray);
+      const expectedResult: {id: number, name: string, Date: string}[] = [
+        {'id': 2, 'name': 'name2', 'Date': '1/1'},
+        {'id': 1, 'name': 'name1', 'Date': '11/23'},
+        {'id': 3, 'name': 'name3', 'Date': '12/31'},
+        {'id': 4, 'name': 'name4', 'Date': '2/5/2018'}];
+      expect(result[0]).toMatchObject(expectedResult[0]);
+      expect(result[1]).toMatchObject(expectedResult[1]);
+      expect(result[2]).toMatchObject(expectedResult[2]);
+      expect(result[3]).toMatchObject(expectedResult[3]);
+    });
+
+    // eslint-disable-next-line max-len
+    it('checks if sort works on data where dates are invalid January 64, 2019', () => {
+      // eslint-disable-next-line max-len
+      const wrapper = shallow(<ParserComponent prompt={'Select a TL file: '} fileType={FileType.tl}/>);
+      const instance = wrapper.instance() as ParserComponent;
+      const testArray: {id: number, name: string, Date: string}[] = [
+        {'id': 1, 'name': 'name1', 'Date': 'January 1, 2019'},
+        {'id': 2, 'name': 'name2', 'Date': 'January 64, 2019'},
+        {'id': 3, 'name': 'name3', 'Date': 'January 15, 2019'},
+        {'id': 4, 'name': 'name4', 'Date': 'February 5, 2019'}];
+      const result = instance.sortData(testArray);
+      const expectedResult: {id: number, name: string, Date: string}[] = [
+        {'id': 1, 'name': 'name1', 'Date': 'January 1, 2019'},
+        {'id': 3, 'name': 'name3', 'Date': 'January 15, 2019'},
+        {'id': 2, 'name': 'name2', 'Date': 'January 64, 2019'},
+        {'id': 4, 'name': 'name4', 'Date': 'February 5, 2019'}];
+      expect(result[0]).toMatchObject(expectedResult[0]);
+      expect(result[1]).toMatchObject(expectedResult[1]);
+      expect(result[2]).toMatchObject(expectedResult[2]);
+      expect(result[3]).toMatchObject(expectedResult[3]);
+    });
   });
 
   describe('inferTypes()', () => {

@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import {shallow} from 'enzyme';
 import App from './App';
 
@@ -9,3 +8,4 @@ describe('smoke test', () => {
     shallow(<App/>);
   });
 });
+

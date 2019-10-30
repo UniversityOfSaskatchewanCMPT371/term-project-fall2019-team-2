@@ -2,6 +2,7 @@ import React, {ReactDOM} from 'react';
 import {mount, shallow} from 'enzyme';
 import ParserComponent from '../components/ParserComponent';
 import {FileType} from '../components/ParserInterface';
+import * as d3 from 'd3';
 // may need in the future, but currently not being used
 // import sinon from 'sinon';
 
@@ -37,10 +38,34 @@ describe('<ParserComponent /> renders correctly', () => {
 describe('FileEvents processed correctly', () => {
   it('responds to file selection', () => {
     // todo: pray for me
-    // console.log('before: ' + wrapper.debug());
-    // comp.find('input').simulate('change', event);
-    // wrapper.find('input').simulate('change', event);
-    // expect(parseMock).toBeCalledWith(testfile);
+    const onChangeMock = jest.fn();
+    const props = {
+      prompt: 'test: ',
+      fileType: FileType.csv,
+      onChange: onChangeMock,
+    };
+
+    // todo: figure out if I can just use a normal csv file
+    const testFile: File = new File(
+        [''],
+        'multiDateTest.csv',
+        {type: '.csv,text/csv'});
+
+    const event = {target: {file: {testFile}}};
+    const comp = mount(
+        <ParserComponent
+          {...props}
+        />);
+
+    console.log(comp.state());
+    comp.find('input').simulate('change', event);
+
+    /* todo: figure out a way to figure out if onchange has been called :/
+     * I think it's not working because it's bound to parse() in
+     * ParserComponent.tsx */
+    expect(onChangeMock).toBeCalledTimes(1);
+    // expect(onChangeMock).toHaveBeenCalledWith(testFile);
+    console.log(comp.state());
   });
 });
 

@@ -14,8 +14,4 @@ export interface TimelineState {
     marginBottom: number;
     marginLeft: number;
     marginRight: number;
-
-    toggleTimeline: number;
-    // Prompt for toggle button
-    togglePrompt: string;
 }

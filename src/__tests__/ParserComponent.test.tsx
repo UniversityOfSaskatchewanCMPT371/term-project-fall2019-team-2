@@ -1,7 +1,7 @@
 import React, {ReactDOM} from 'react';
 import {mount, shallow} from 'enzyme';
-import ParserComponent from '../components/ParserComponent';
-import {FileType} from '../components/ParserInterface';
+import ParserComponent, {CountTypes} from '../components/ParserComponent';
+import ParserInterface, {FileType} from '../components/ParserInterface';
 // may need in the future, but currently not being used
 // import sinon from 'sinon';
 
@@ -60,6 +60,15 @@ describe('FileEvents processed correctly', () => {
 
 // To be used by the developers
 describe('<ParserComponent /> Unit Tests', () => {
+  beforeEach(() => {
+    const pi: ParserInterface = {prompt: 'test', fileType: FileType.csv};
+    const pc = new ParserComponent(pi);
+    // eslint-disable-next-line no-array-constructor
+    const data = new Array(
+        {money: 100, heart_attacks: '16/17/3', animals: 'dog'},
+        {money: 55, heart_attacks: '19/02/02', animals: 'cat'});
+  });
+
   describe('constructor()', () => {
     it('dummy test', () => {
       // todo: devs need to write unit tests
@@ -84,6 +93,12 @@ describe('<ParserComponent /> Unit Tests', () => {
     });
   });
 
+  describe('createCountingObjects()', () => {
+    it('instantiates a list of CountTypes', () => {
+      // const listObjects = pc.createTypeCountingObjects(4);
+    });
+  });
+
   describe('inferTypes()', () => {
     it('dummy test', () => {
       // todo: devs need to write unit tests
@@ -99,6 +114,44 @@ describe('<ParserComponent /> Unit Tests', () => {
   describe('parseCsv()', () => {
     it('dummy test', () => {
       // todo: devs need to write unit tests
+    });
+  });
+
+  describe('CountTypes constructor()', () => {
+    it('constructor assigns variables', () => {
+      const ct = new CountTypes();
+      expect(ct.numNumber).toBe(0);
+      expect(ct.numString).toBe(0);
+      expect(ct.numDate).toBe(0);
+      expect(ct.numIncongruent).toBe(0);
+    });
+  });
+
+  describe('CountTypes.Largest', () => {
+    it('largest returns largest value when equal values', () => {
+      const ct = new CountTypes();
+      ct.numIncongruent = 5;
+      ct.numNumber = 11;
+      ct.numString = 4;
+      ct.numDate = 5;
+      expect(ct.largest()).toBe('number');
+    });
+
+    it('largest works when val not explicitly set', () => {
+      const ct = new CountTypes();
+      ct.numIncongruent = 5;
+      ct.numNumber = 3;
+      ct.numString = 4;
+      expect(ct.largest()).toBe('incongruent');
+    });
+
+    it('largest returns largest value when equal values', () => {
+      const ct = new CountTypes();
+      ct.numIncongruent = 5;
+      ct.numNumber = 3;
+      ct.numString = 4;
+      ct.numDate = 5;
+      expect(ct.largest()).toBe('date');
     });
   });
 });

@@ -2,6 +2,8 @@ import React from 'react';
 import ParserInterface, {FileType, ParserState} from './ParserInterface';
 import * as d3 from 'd3';
 import * as d3dsv from 'd3-dsv';
+import Column, {enumDrawType} from './Column';
+import moment from 'moment';
 
 /**
  * Purpose: react component responsible for receiving and parsing file data
@@ -71,14 +73,86 @@ export default class ParserComponent extends React.Component<ParserInterface,
   }
 
   /**
+   * Purpose: to instantiate an empty list of objects
+   * for tracking the kinds of data in a column
+   * @param: fieldLength the number of columns of data
+   * @return: a list of objects
+   */
+  // eslint-disable-next-line max-len,require-jsdoc
+  createTypeCountingObjects(fieldLength: number) : CountTypes[] {
+    const typesForEachCol = [];
+    // instantiate object for each column
+    for (let i = 0; i < fieldLength; i++) {
+      typesForEachCol.push(new CountTypes());
+    }
+    return typesForEachCol;
+  }
+
+  /**
    * Purpose: attempts to infer the types of the data in each of the columns
    * of the csv data
-   * @param {Array} data: the array of data to infer the types for
-   * @return {Array}: a list of objects which define the methods available for
-   * the data
+   * @param {Array} data: the array of pre-sorted valid data
+   * @return {Array}: a list of objects of type Column
    */
-  inferTypes(data: Array<object>): Array<object> {
-    return [];
+  inferTypes(data: Array<object>): Array<Column> {
+    if (this.state.data.length > 0) {
+      const listFields = Object.keys(this.state.data[0]);
+      // instantiate objects to track the types of data
+      const typesForEachCol = this.createTypeCountingObjects(listFields.length);
+      // check half the values to find if the data is consistent
+      [0, Math.floor(this.state.data.length / 2)].forEach((element) => {
+        const row: object = this.state.data[element];
+        // look at each field and categorize
+        for (let i = 0; i < listFields.length; i++) {
+          const curColTypes = typesForEachCol[i];
+          if (moment('date string').isValid()) {
+            curColTypes['numDate'] += 1;
+          } else {
+            // @ts-ignore MAKE SURE TO TEST THIS LINE
+            const type = typeof row[listFields[i]];
+            if (type !== 'string' && type !== 'number') {
+              curColTypes['numIncongruent'] += 1;
+            }
+            // logs all the types that are seen
+            if (type === 'string') {
+              curColTypes['numString'] += 1;
+            } else {
+              curColTypes['numNumber'] += 1;
+            }
+          }
+        }
+      });
+      let indx = 0;
+      const arrayOfColumns = new Array<Column>(listFields.length);
+      typesForEachCol.forEach((element) => {
+        // checks the most common type and uses that
+        const mostCommonType = element.largest();
+        let newCol: Column;
+        if (mostCommonType === 'string') {
+          // create a Column object with occurrence data
+          // eslint-disable-next-line max-len
+          newCol = new Column(mostCommonType, enumDrawType.occurrence, listFields[indx]);
+          arrayOfColumns[indx] = newCol;
+          indx++;
+        } else if (mostCommonType === 'number') {
+          // create a Column with interval, point or magnitude data
+          // eslint-disable-next-line max-len
+          newCol = new Column(mostCommonType, enumDrawType.any, listFields[indx]);
+          arrayOfColumns[indx] = newCol;
+          indx++;
+        } else if (mostCommonType === 'date') {
+          // create a Column with date data
+          // eslint-disable-next-line max-len
+          newCol = new Column(mostCommonType, enumDrawType.any, listFields[indx]);
+          arrayOfColumns[indx] = newCol;
+          indx++;
+        }
+      }
+      );
+      return arrayOfColumns;
+    } else {
+      throw new Error('data is empty: ' + data.length);
+    }
   }
 
   /**
@@ -132,5 +206,47 @@ export default class ParserComponent extends React.Component<ParserInterface,
 
     fileReader.onloadend = handleFileRead;
     fileReader.readAsText(csvFile);
+  }
+}
+
+/**
+ * Purpose: assist in counting types of data in a single Column
+ */
+export class CountTypes {
+  public numNumber: number;
+  public numIncongruent: number;
+  public numString: number;
+  public numDate: number;
+  /**
+   * create an empty component to track data
+   */
+  constructor() {
+    this.numNumber = 0;
+    this.numString = 0;
+    this.numDate = 0;
+    this.numIncongruent = 0;
+  }
+
+  /**
+   * finds the largest element of the fields
+   * @return {string}: a string representing the largest field
+   */
+  largest(): string {
+    if (this.numDate >= this.numIncongruent && this.numDate >= this.numNumber) {
+      if (this.numDate >= this.numString) {
+        return 'date';
+      } else {
+        return 'string';
+      }
+    }
+    if (this.numString >= this.numNumber &&
+      this.numString >= this.numIncongruent) {
+      return 'string';
+    }
+    if (this.numNumber >= this.numIncongruent) {
+      return 'number';
+    } else {
+      return 'incongruent';
+    }
   }
 }

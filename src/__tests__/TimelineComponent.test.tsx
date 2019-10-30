@@ -1,12 +1,24 @@
 import React, {ReactDOM} from 'react';
 import {mount, shallow} from 'enzyme';
-import ParserComponent from '../components/TimelineComponent';
+import ParserComponent from '../components/ParserComponent';
+import TimelineComponent from '../components/TimelineComponent';
 import {TimelineState} from '../components/TimelineInterface';
 import sinon from 'sinon';
+import Data from "../components/Data";
 
 describe('<TimelineComponent /> renders correctly', () => {
-  it('dummy test', () => {
-    // todo: write simple render test
+  it('renders empty component', () => {
+    // stuff to fake a Data object :)
+    const arr: object[] = [];
+    const fakeData: Data = new Data('path', arr, undefined);
+    const emptyTL = <div><div id="svgtarget"/></div>;
+
+    const comp = shallow(
+        <TimelineComponent
+          data={fakeData}
+        />);
+
+    expect(comp.contains(emptyTL)).toBeTruthy();
   });
 });
 

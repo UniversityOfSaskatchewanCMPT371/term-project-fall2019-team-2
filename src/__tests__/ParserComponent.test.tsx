@@ -7,50 +7,36 @@ import {FileType} from '../components/ParserInterface';
 
 
 describe('<ParserComponent /> renders correctly', () => {
-  describe('renders a <ParserComponent /> to select a .csv', () => {
-    // eslint-disable-next-line max-len
-    const wrapper = shallow(<ParserComponent prompt={'Select a CSV file: '} fileType={FileType.csv}/>);
-    const prompt = <label>Select a CSV file: </label>;
-    const button = <input type="file" accept=".csv,text/csv"/>;
+  const prompt = <label>test: </label>;
 
+  it('renders a <ParserComponent /> to select a .csv', () => {
+    const wrapper = shallow(
+        <ParserComponent
+          prompt={'test: '}
+          fileType={FileType.csv}
+        />);
 
     expect(wrapper.contains(prompt)).toEqual(true);
     expect(wrapper.exists('input')).toEqual(true);
+    expect(wrapper.find('input').prop('accept')).toContain('.csv,text/csv');
   });
 
-  describe('renders a <ParseComponent /> to select a .tl', () => {
-    // eslint-disable-next-line max-len
-    const wrapper = shallow(<ParserComponent prompt={'Select a TL file: '} fileType={FileType.tl}/>);
-    const prompt = <label>Select a TL file: </label>;
-    const button = <input type='file' accept='.tl' ></input>;
+  it('renders a <ParseComponent /> to select a .tl', () => {
+    const wrapper = shallow(
+        <ParserComponent
+          prompt={'test: '}
+          fileType={FileType.tl}
+        />);
 
     expect(wrapper.contains(prompt)).toEqual(true);
     expect(wrapper.exists('input')).toEqual(true);
+    expect(wrapper.find('input').prop('accept')).toContain('.tl');
   });
 });
 
 describe('FileEvents processed correctly', () => {
-  describe('responds to file selection', () => {
-    const fileUploaderMock = jest.fn();
-    const prompt = 'Select a CSV file:';
-    const fileType = FileType.csv;
-
-    const comp = shallow(
-        <ParserComponent
-          prompt={prompt}
-          fileType={fileType}
-        />
-    );
-
-    const file = {
-      name: 'test.csv',
-      type: 'text/csv',
-    } as File;
-
-    const event = {
-      target: {files: null},
-    };
-
+  it('responds to file selection', () => {
+    // todo: pray for me
     // console.log('before: ' + wrapper.debug());
     // comp.find('input').simulate('change', event);
     // wrapper.find('input').simulate('change', event);

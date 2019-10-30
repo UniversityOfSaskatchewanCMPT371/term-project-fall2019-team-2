@@ -8,12 +8,12 @@ export default class Column {
     public primType: string;
 
     /**
-     * Purpose: Column constructor
-     * @param {string} primType: the type of the data
-     * @param {enumDrawType} drawType: the type in the form of enum
-     * @param {string} key: the key value
-     * @param {number} yScale: the initial y-scale
-     */
+   * Purpose: Column constructor
+   * @param {string} primType: the type of the data
+   * @param {enumDrawType} drawType: the type in the form of enum
+   * @param {string} key: the key value
+   * @param {number} yScale: the initial y-scale
+   */
     public constructor(primType: string, drawType: enumDrawType,
         key: string, yScale: number = 1) {
       this.drawType = drawType;
@@ -44,5 +44,5 @@ export default class Column {
  * any is number and magnitude
  */
 export enum enumDrawType {
-    magnitude, occurrence, any,
+  magnitude, occurrence, any,
 }

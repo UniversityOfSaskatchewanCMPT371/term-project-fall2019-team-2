@@ -74,6 +74,8 @@ describe('<ParserComponent /> Unit Tests', () => {
 
   describe('isValid()', () => {
     it('dummy test', () => {
+
+
       // todo: devs need to write unit tests
     });
   });

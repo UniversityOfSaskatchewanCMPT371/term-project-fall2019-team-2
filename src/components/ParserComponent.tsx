@@ -202,6 +202,11 @@ export default class ParserComponent extends React.Component<ParserInterface,
     }
     this.columnTypes = this.inferTypes(this.state.data);
 
+    let t = this.state.data;
+
+    t = t.slice(0, 5);
+    console.log(JSON.stringify(t));
+
     this.setState(() => {
       return {
         showTimeline: true,

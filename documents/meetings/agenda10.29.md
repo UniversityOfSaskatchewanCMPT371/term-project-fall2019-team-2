@@ -66,12 +66,12 @@ ID3 Meeting 1
 
 [Check off who attended]
 
-- [ ] Camille
-- [ ] Anurag
-- [ ] Mesa
-- [ ] Braunson
-- [ ] Evan
-- [ ] Eileen
-- [ ] Kevin
-- [ ] Amanda
-- [ ] Clinton
+- [x] Camille
+- [x] Anurag
+- [x] Mesa
+- [x] Braunson
+- [x] Evan
+- [x] Eileen
+- [x] Kevin
+- [x] Amanda
+- [x] Clinton

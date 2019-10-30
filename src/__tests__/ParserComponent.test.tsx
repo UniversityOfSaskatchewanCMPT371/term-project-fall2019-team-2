@@ -79,8 +79,33 @@ describe('<ParserComponent /> Unit Tests', () => {
   });
 
   describe('sortData()', () => {
-    it('dummy test', () => {
-      // todo: devs need to write unit tests
+    it('checks if data is sorted', () => {
+      // eslint-disable-next-line max-len
+      const wrapper = shallow(<ParserComponent prompt={'Select a TL file: '} fileType={FileType.tl}/>);
+      const instance = wrapper.instance() as ParserComponent;
+      const testArray: {id: number, name: string, Date: string}[] = [
+        {'id': 1, 'name': 'name1', 'Date': '4/5/2010'},
+        {'id': 2, 'name': 'name2', 'Date': '4/5/1992'},
+        {'id': 3, 'name': 'name3', 'Date': '12/21/1992'}];
+      const result = instance.sortData(testArray);
+      const expectedResult: {id: number, name: string, Date: string}[] = [
+        {'id': 2, 'name': 'name2', 'Date': '4/5/1992'},
+        {'id': 3, 'name': 'name3', 'Date': '12/21/1992'},
+        {'id': 1, 'name': 'name1', 'Date': '4/5/2010'}];
+      expect(result[0]).toMatchObject(expectedResult[0]);
+      expect(result[1]).toMatchObject(expectedResult[1]);
+      expect(result[2]).toMatchObject(expectedResult[2]);
+    });
+
+    it('checks if data contains date', () => {
+      // eslint-disable-next-line max-len
+      const wrapper = shallow(<ParserComponent prompt={'Select a TL file: '} fileType={FileType.tl}/>);
+      const instance = wrapper.instance() as ParserComponent;
+      const testArray: {id: number, name: string}[] = [
+        {'id': 1, 'name': 'name1'},
+        {'id': 2, 'name': 'name2'},
+        {'id': 3, 'name': 'name3'}];
+      expect(instance.sortData(testArray)).toThrow('No date field');
     });
   });
 

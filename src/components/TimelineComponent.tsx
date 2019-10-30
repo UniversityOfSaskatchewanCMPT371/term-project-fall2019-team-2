@@ -68,7 +68,7 @@ export default class TimelineComponent
    * Purpose: toggles between interval and occurrence timelines
    */
   toggleTimeline() {
-    let toggle: number = this.state.toggleTimeline;
+    const toggle: number = this.state.toggleTimeline;
     if (toggle === 0) {
       this.setState(() => ({
         toggleTimeline: 1,
@@ -77,12 +77,11 @@ export default class TimelineComponent
         d3.selectAll('svg').remove();
         this.drawTimeline();
       });
-    }
-  else {
+    } else {
       this.setState(() => ({
-          toggleTimeline: 0,
-          togglePrompt: 'Switch to Interval Timeline',
-        }), () => {
+        toggleTimeline: 0,
+        togglePrompt: 'Switch to Interval Timeline',
+      }), () => {
         d3.selectAll('svg').remove();
         this.drawTimeline();
       });
@@ -125,33 +124,33 @@ export default class TimelineComponent
 
     // @ts-ignore
     const minDate = new Date(d3.min(
-      [d3.min(csvData, (d: any) => Date.parse(d[xColumn])),
-        d3.min(csvData, (d: any) => Date.parse(d['Ship Date']))]));
+        [d3.min(csvData, (d: any) => Date.parse(d[xColumn])),
+          d3.min(csvData, (d: any) => Date.parse(d['Ship Date']))]));
 
     // @ts-ignore
     const maxDate = new Date(d3.max(
-      [d3.min(csvData, (d: any) => Date.parse(d[xColumn])),
-        d3.max(csvData, (d: any) => Date.parse(d['Ship Date']))]));
+        [d3.min(csvData, (d: any) => Date.parse(d[xColumn])),
+          d3.max(csvData, (d: any) => Date.parse(d['Ship Date']))]));
 
     const timeScale = d3.scaleTime()
-      .domain([minDate, maxDate])
-      .range([0, 50 * csvData.length]);
+        .domain([minDate, maxDate])
+        .range([0, 50 * csvData.length]);
 
     const x = d3.scaleLinear()
-      .domain([0, ordinals.length])
-      .rangeRound([0, width]);
+        .domain([0, ordinals.length])
+        .rangeRound([0, width]);
 
     const y = d3.scaleLinear()
-      .domain([d3.min(csvData,
-        (d) => {
-          // @ts-ignore
-          return d[yColumn];
-        }),
+        .domain([d3.min(csvData,
+            (d) => {
+              // @ts-ignore
+              return d[yColumn];
+            }),
         d3.max(csvData, (d) => {
           // @ts-ignore
           return d[yColumn];
         })])
-      .range([height, 0]);
+        .range([height, 0]);
 
     const extent: [[number, number], [number, number]] =
       [[this.state.marginLeft, this.state.marginTop],
@@ -159,67 +158,67 @@ export default class TimelineComponent
           height - this.state.marginTop]];
 
     const zoom = d3.zoom()
-      .scaleExtent([1, 20]) // zoom range
-      .translateExtent(extent)
-      .extent(extent)
-      .on('zoom', updateChart);
+        .scaleExtent([1, 20]) // zoom range
+        .translateExtent(extent)
+        .extent(extent)
+        .on('zoom', updateChart);
 
     const svg = d3.select('#svgtarget')
-      .append('svg')
-      .attr('width', width)
-      .attr('height', height + this.state.marginTop +
+        .append('svg')
+        .attr('width', width)
+        .attr('height', height + this.state.marginTop +
         this.state.marginBottom)
-      // @ts-ignore
-      .call(zoom)
-      .append('g')
-      .attr('transform', 'translate(' + this.state.marginLeft +
+    // @ts-ignore
+        .call(zoom)
+        .append('g')
+        .attr('transform', 'translate(' + this.state.marginLeft +
         ',' + this.state.marginTop + ')');
 
     svg.append('rect')
-      .attr('width', width)
-      .attr('height', height)
-      .style('fill', 'none');
+        .attr('width', width)
+        .attr('height', height)
+        .style('fill', 'none');
 
     svg.append('defs')
-      .append('clipPath')
-      .attr('id', 'barsBox')
-      .append('rect')
-      .attr('width', width)
-      .attr('height', height + this.state.marginTop +
+        .append('clipPath')
+        .attr('id', 'barsBox')
+        .append('rect')
+        .attr('width', width)
+        .attr('height', height + this.state.marginTop +
         this.state.marginBottom)
-      .attr('x', 0)
-      .attr('y', 0);
+        .attr('x', 0)
+        .attr('y', 0);
 
     // Create layers in order so that the bars will disappear under the axis
     const barsLayer = svg.append('g')
-      .attr('clip-path', 'url(#barsBox)')
-      .append('g')
-      .attr('id', 'barsLayer')
-      .call(d3.drag()
-        .on('start', dragStarted)
-        .on('drag', dragged)
-        .on('end', dragEnded));
+        .attr('clip-path', 'url(#barsBox)')
+        .append('g')
+        .attr('id', 'barsLayer')
+        .call(d3.drag()
+            .on('start', dragStarted)
+            .on('drag', dragged)
+            .on('end', dragEnded));
 
     const axisLayer = svg.append('g')
-      .attr('id', 'axisLayer');
+        .attr('id', 'axisLayer');
 
     // y axis
     const yAxis = axisLayer.append('g')
-      .style('color', 'red')
-      .attr('class', 'y axis')
-      .call(d3.axisLeft(y))
-      .append('text')
-      .attr('transform', 'rotate(-90)')
-      .attr('y', 6)
-      .attr('dy', '.71em')
-      .style('text-anchor', 'end')
-      .style('color', 'red')
-      .text('yColumn');
+        .style('color', 'red')
+        .attr('class', 'y axis')
+        .call(d3.axisLeft(y))
+        .append('text')
+        .attr('transform', 'rotate(-90)')
+        .attr('y', 6)
+        .attr('dy', '.71em')
+        .style('text-anchor', 'end')
+        .style('color', 'red')
+        .text('yColumn');
 
     // Create bars
     const plot = barsLayer.append('g')
-      .attr('class', 'plot')
-      .attr('id', 'bars');
+        .attr('class', 'plot')
+        .attr('id', 'bars');
 
     // Three function that change the tooltip when user hover/move/leave bar
     /**
@@ -231,21 +230,21 @@ export default class TimelineComponent
     function ttOver(d: any) {
       if (d3.event.buttons === 0) {
         const Tooltip = d3.select('#svgtarget')
-          .append('div')
-          .style('opacity', 0)
-          .attr('class', 'tooltip')
-          .attr('target', null)
-          .style('background-color', 'white')
-          .style('border', 'solid')
-          .style('border-width', '2px')
-          .style('border-radius', '5px')
-          .style('padding', '5px')
-          .style('left', (d3.event.x + 70) + 'px')
-          .style('top', d3.event.y + 'px');
+            .append('div')
+            .style('opacity', 0)
+            .attr('class', 'tooltip')
+            .attr('target', null)
+            .style('background-color', 'white')
+            .style('border', 'solid')
+            .style('border-width', '2px')
+            .style('border-radius', '5px')
+            .style('padding', '5px')
+            .style('left', (d3.event.x + 70) + 'px')
+            .style('top', d3.event.y + 'px');
 
         const keys = Object.keys(d);
         let tooltip: string = '';
-        keys.forEach(function (key) {
+        keys.forEach(function(key) {
           tooltip += '<strong>' + key + '</strong> <span style=\'color:red\'>' +
             d[key] + '</span><br/>';
         });
@@ -279,7 +278,7 @@ export default class TimelineComponent
         const ttBox = Tooltip.node()!.getBoundingClientRect();
 
         Tooltip
-          .style('left', (xPos + 70) + 'px');
+            .style('left', (xPos + 70) + 'px');
 
         if ((yPos + ttBox.height) > fullHeight) {
           yPos = (fullHeight - ttBox.height);
@@ -330,24 +329,24 @@ export default class TimelineComponent
 
       if (toggleTimeline === 0) {
         d3.selectAll('.bar')
-          .attr('x', (d, i) => scale * barWidth * (i + dataIdx))
-          .attr('width', scale * barWidth);
+            .attr('x', (d, i) => scale * barWidth * (i + dataIdx))
+            .attr('width', scale * barWidth);
 
         d3.selectAll('.xtick')
-          .attr('transform', (d: any, i) => 'translate(' +
+            .attr('transform', (d: any, i) => 'translate(' +
             ((scale * barWidth * (d['index'] + dataIdx)) +
               ((scale * barWidth) / 2)) + ',' + height + ')');
       } else {
         d3.selectAll('.bar')
-          .attr('x', (d: any, i: number) =>
-            scale * timeScale(new Date(d[xColumn])))
-          .attr('width', (d: any, i: number) =>
-            scale * (timeScale(new Date(d[xColumn2])) -
+            .attr('x', (d: any, i: number) =>
+              scale * timeScale(new Date(d[xColumn])))
+            .attr('width', (d: any, i: number) =>
+              scale * (timeScale(new Date(d[xColumn2])) -
             timeScale(new Date(d[xColumn]))));
 
         d3.selectAll('.xtick')
-          .attr('transform', (d: any, i: number) =>
-            `translate(${scale * timeScale(new Date(d.text))},${height})`);
+            .attr('transform', (d: any, i: number) =>
+              `translate(${scale * timeScale(new Date(d.text))},${height})`);
       }
 
       if (d3.event.sourceEvent.type === 'mousemove') {
@@ -362,22 +361,22 @@ export default class TimelineComponent
      */
     function drawEventMagnitude(selection: any): void {
       selection.append('rect')
-        .attr('class', 'bar')
-        .attr('x', (d: any, i: number) =>
-          (scale * barWidth * (i + dataIdx)))
-        .attr('width', scale * barWidth)
-        .attr('y', (d: any) => y(d[yColumn]))
-        .attr('height', (d: any) => {
-          const newHeight = (height - y(d[yColumn]));
-          if (newHeight < 0) {
-            return 0;
-          } else {
-            return (height - y(d[yColumn]));
-          }
-        })
-        .on('mouseover', ttOver)
-        .on('mousemove', ttMove)
-        .on('mouseleave', ttLeave);
+          .attr('class', 'bar')
+          .attr('x', (d: any, i: number) =>
+            (scale * barWidth * (i + dataIdx)))
+          .attr('width', scale * barWidth)
+          .attr('y', (d: any) => y(d[yColumn]))
+          .attr('height', (d: any) => {
+            const newHeight = (height - y(d[yColumn]));
+            if (newHeight < 0) {
+              return 0;
+            } else {
+              return (height - y(d[yColumn]));
+            }
+          })
+          .on('mouseover', ttOver)
+          .on('mousemove', ttMove)
+          .on('mouseleave', ttLeave);
     }
 
     /**
@@ -386,27 +385,27 @@ export default class TimelineComponent
      */
     function drawIntervalMagnitude(selection: any): void {
       selection.append('rect')
-        .attr('class', 'bar')
-        .attr('x', (d: any, i: number) =>
-          (scale * timeScale(new Date(d[xColumn]))))
-        // (scale * barWidth * (i + dataIdx)))
-        .attr('width', (d: any, i: number) =>
-          (timeScale(new Date(d[xColumn2])) -
+          .attr('class', 'bar')
+          .attr('x', (d: any, i: number) =>
+            (scale * timeScale(new Date(d[xColumn]))))
+      // (scale * barWidth * (i + dataIdx)))
+          .attr('width', (d: any, i: number) =>
+            (timeScale(new Date(d[xColumn2])) -
             timeScale(new Date(d[xColumn]))))
-        .attr('y', (d: any) => y(d[yColumn]))
-        .attr('height', (d: any) => {
-          const newHeight = (height - y(d[yColumn]));
-          if (newHeight < 0) {
-            return 0;
-          } else {
-            return (height - y(d[yColumn]));
-          }
-        })
-        .style('fill', '#61a3a9')
-        .style('opacity', 0.2)
-        .on('mouseover', ttOver)
-        .on('mousemove', ttMove)
-        .on('mouseleave', ttLeave);
+          .attr('y', (d: any) => y(d[yColumn]))
+          .attr('height', (d: any) => {
+            const newHeight = (height - y(d[yColumn]));
+            if (newHeight < 0) {
+              return 0;
+            } else {
+              return (height - y(d[yColumn]));
+            }
+          })
+          .style('fill', '#61a3a9')
+          .style('opacity', 0.2)
+          .on('mouseover', ttOver)
+          .on('mousemove', ttMove)
+          .on('mouseleave', ttLeave);
     }
 
     /**
@@ -416,19 +415,19 @@ export default class TimelineComponent
       // @ts-ignore
       const ticks: [any] = [];
       plot.selectAll('.bar')
-        .data(data, function (d: any, i: any, group: any) {
-          return d['index'];
-        })
-        .join(
-          (enter: any) => toggleTimeline === 0
-            ? drawEventMagnitude(enter)
-            : drawIntervalMagnitude(enter),
-          (update: any) => update,
+          .data(data, function(d: any, i: any, group: any) {
+            return d['index'];
+          })
+          .join(
+              (enter: any) => toggleTimeline === 0 ?
+            drawEventMagnitude(enter) :
+            drawIntervalMagnitude(enter),
+              (update: any) => update,
 
-          (exit: any) => exit.remove()
-        );
+              (exit: any) => exit.remove()
+          );
 
-      data.forEach(function (d: any, i: number) {
+      data.forEach(function(d: any, i: number) {
         if (((i + dataIdx) % 5) === 0) {
           ticks.push({
             id: d['index'],
@@ -439,39 +438,40 @@ export default class TimelineComponent
       });
 
       plot.selectAll('.xtick')
-        .data(ticks, function (d: any, i: any, group: any) {
-          return d.id;
-        })
-        .join(
-          (enter: any) => {
-            const tick = enter.append('g')
-              .attr('class', 'xtick')
-              .attr('opacity', 1)
-              .attr('transform', (d: any, i: number) => {
-                if (toggleTimeline === 0) {
-                  return 'translate(' +
+          .data(ticks, function(d: any, i: any, group: any) {
+            return d.id;
+          })
+          .join(
+              (enter: any) => {
+                const tick = enter.append('g')
+                    .attr('class', 'xtick')
+                    .attr('opacity', 1)
+                    .attr('transform', (d: any, i: number) => {
+                      if (toggleTimeline === 0) {
+                        return 'translate(' +
                     ((scale * barWidth * (d.index + dataIdx)) +
                       ((scale * barWidth) / 2)) + ',' + height + ')';
-                } else {
-                  return `translate(${timeScale(new Date(d.text))},${height})`;
-                }
-              });
+                      } else {
+                        return `translate(${timeScale(new Date(d.text))}
+                          ,${height})`;
+                      }
+                    });
 
-            tick.append('line')
-              .attr('stroke', 'blue')
-              .attr('y2', 6);
+                tick.append('line')
+                    .attr('stroke', 'blue')
+                    .attr('y2', 6);
 
-            tick.append('text')
-              .text((d: any) => d.text)
-              .style('text-anchor', 'end')
-              .style('font-size', '1rem')
-              .attr('dx', '-.8em')
-              .attr('dy', '.15em')
-              .attr('transform', 'rotate(-90)');
-          },
-          (update: any) => update,
-          (exit: { remove: () => void; }) => exit.remove()
-        );
+                tick.append('text')
+                    .text((d: any) => d.text)
+                    .style('text-anchor', 'end')
+                    .style('font-size', '1rem')
+                    .attr('dx', '-.8em')
+                    .attr('dy', '.15em')
+                    .attr('transform', 'rotate(-90)');
+              },
+              (update: any) => update,
+              (exit: { remove: () => void; }) => exit.remove()
+          );
     }
 
     /**
@@ -479,9 +479,9 @@ export default class TimelineComponent
      */
     function moveChart() {
       d3.select('#barsLayer')
-        .attr('transform', (d) => {
-          return `translate(${deltaX},0)`;
-        });
+          .attr('transform', (d) => {
+            return `translate(${deltaX},0)`;
+          });
 
       // finds starting index
       dataIdx = Math.floor(-deltaX / (scale * barWidth));
@@ -497,7 +497,7 @@ export default class TimelineComponent
      */
     function dragStarted(this: any) {
       d3.select(this).raise()
-        .classed('active', true);
+          .classed('active', true);
     }
 
     /**

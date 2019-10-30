@@ -1,9 +1,17 @@
-import React from 'react';
-import ParserInterface, {FileType, ParserState} from './ParserInterface';
-import * as d3 from 'd3';
-import TimelineComponent from './TimelineComponent';
-import Data from './Data';
-import * as TimSort from 'timsort';
+import React
+  from 'react';
+import ParserInterface, {
+  FileType,
+  ParserState
+} from './ParserInterface';
+import * as d3
+  from 'd3';
+import TimelineComponent
+  from './TimelineComponent';
+import Data
+  from './Data';
+import * as TimSort
+  from 'timsort';
 import Column, {enumDrawType} from './Column';
 
 
@@ -175,7 +183,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
           indx++;
         }
       });
-      
+
       return arrayOfColumns;
     } else {
       throw new Error('data is empty: ' + data.length);
@@ -206,7 +214,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
    * @param {Object} fileEvent: the event passed into this component
    */
   async parseCsv(fileEvent: any) {
-
     const csvFile = fileEvent.target.files[0];
     const fileReader = new FileReader();
 
@@ -233,7 +240,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
           });
           this.sortData(content);
           this.isValid(csvFile);
-          
+
           if (!this.isValid(csvFile)) {
             try {
               throw new Error('Wrong file type was uploaded.');

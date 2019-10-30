@@ -75,10 +75,9 @@ export default class ParserComponent extends React.Component<ParserInterface,
   /**
    * Purpose: to instantiate an empty list of objects
    * for tracking the kinds of data in a column
-   * @param: fieldLength the number of columns of data
-   * @return: a list of objects
+   * @param {number} fieldLength: the number of columns of data
+   * @return {[CountTypes]}: a list of objects
    */
-  // eslint-disable-next-line max-len,require-jsdoc
   createTypeCountingObjects(fieldLength: number) : CountTypes[] {
     const typesForEachCol = [];
     // instantiate object for each column
@@ -136,8 +135,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
         let newCol: Column;
         if (mostCommonType === 'string') {
           // create a Column object with occurrence data
-          // eslint-disable-next-line max-len
-          newCol = new Column(mostCommonType, enumDrawType.occurrence, listFields[indx]);
+          newCol = new Column(mostCommonType,
+              enumDrawType.occurrence, listFields[indx]);
           arrayOfColumns[indx] = newCol;
           indx++;
         } else if (mostCommonType === 'number') {

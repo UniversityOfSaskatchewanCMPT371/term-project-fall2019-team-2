@@ -94,18 +94,25 @@ describe('<ParserComponent /> Unit Tests', () => {
   });
 
   describe('inferTypes()', () => {
-    const pi: ParserInterface = {prompt: 'test', fileType: FileType.csv};
-    const pc = new ParserComponent(pi);
-    // eslint-disable-next-line no-array-constructor
-    const data = new Array(2);
-    data[0] = {money: 100, heart_attacks: '2016-07-03', animals: 'dog'};
-    data[1] = {money: 55, heart_attacks: '2019-02-02', animals: 'cat'};
-    it('handles regular data', () => {
-      pc.state = { // need to run tests
+    let pc: ParserComponent;
+    let data: any[] | object[] |
+      { money: string; heartAttacks: string; animals: number; }[];
+    beforeEach(() => {
+      const pi: ParserInterface = {prompt: 'test', fileType: FileType.csv};
+      pc = new ParserComponent(pi);
+      data = new Array(4);
+      data[0] = {money: 100, heartAttacks: '2016-07-03', animals: 'dog'};
+      data[1] = {money: 55, heartAttacks: '2019-02-02', animals: 'cat'};
+      data[2] = {money: 300, heartAttacks: '2013-02-02', animals: 'horse'};
+      data[3] = {money: 2, heartAttacks: '2013-03-02', animals: 'fish'};
+      pc.state = {
         prompt: 'test',
         fileType: FileType.csv,
         data: data,
       };
+    });
+
+    it('handles regular data', () => {
       const t1 = pc.inferTypes(data);
       // test string
       expect(t1[2].drawType).toBe(enumDrawType.occurrence);
@@ -116,13 +123,6 @@ describe('<ParserComponent /> Unit Tests', () => {
     });
     it('handles inconsistent data', () => {
       data[0] = {money: 'word', heart_attacks: '2016-07-03', animals: 0};
-      data[2] = {money: 300, heart_attacks: '2013-02-02', animals: 'horse'};
-      data[3] = {money: 2, heart_attacks: '2013-02-02', animals: 'horse'};
-      pc.state = { // need to run tests
-        prompt: 'test',
-        fileType: FileType.csv,
-        data: data,
-      };
       const t1 = pc.inferTypes(data);
       // test string
       expect(t1[2].drawType).toBe(enumDrawType.occurrence);

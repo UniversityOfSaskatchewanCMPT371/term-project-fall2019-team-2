@@ -4,6 +4,7 @@ import * as d3 from 'd3';
 import * as d3dsv from 'd3-dsv';
 import Column, {enumDrawType} from './Column';
 import moment from 'moment';
+import {Simulate} from 'react-dom/test-utils';
 
 /**
  * Purpose: react component responsible for receiving and parsing file data
@@ -105,10 +106,16 @@ export default class ParserComponent extends React.Component<ParserInterface,
         // look at each field and categorize
         for (let i = 0; i < listFields.length; i++) {
           const curColTypes = typesForEachCol[i];
-          if (moment('date string').isValid()) {
-            curColTypes['numDate'] += 1;
-          } else {
-            // @ts-ignore MAKE SURE TO TEST THIS LINE
+          try {
+            // @ts-ignore
+            const val = row[listfields[i]];
+            const date = moment(val, 'YYYY-MM-DD');
+            const isValid = date.isValid();
+            if (isValid) {
+              curColTypes['numDate'] += 1;
+            }
+          } catch {
+            // @ts-ignore
             const type = typeof row[listFields[i]];
             if (type !== 'string' && type !== 'number') {
               curColTypes['numIncongruent'] += 1;

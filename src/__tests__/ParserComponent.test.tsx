@@ -2,6 +2,7 @@ import React, {ReactDOM} from 'react';
 import {mount, shallow} from 'enzyme';
 import ParserComponent, {CountTypes} from '../components/ParserComponent';
 import ParserInterface, {FileType} from '../components/ParserInterface';
+import {enumDrawType} from '../components/Column';
 // may need in the future, but currently not being used
 // import sinon from 'sinon';
 
@@ -60,15 +61,6 @@ describe('FileEvents processed correctly', () => {
 
 // To be used by the developers
 describe('<ParserComponent /> Unit Tests', () => {
-  beforeEach(() => {
-    const pi: ParserInterface = {prompt: 'test', fileType: FileType.csv};
-    const pc = new ParserComponent(pi);
-    // eslint-disable-next-line no-array-constructor
-    const data = new Array(
-        {money: 100, heart_attacks: '16/17/3', animals: 'dog'},
-        {money: 55, heart_attacks: '19/02/02', animals: 'cat'});
-  });
-
   describe('constructor()', () => {
     it('dummy test', () => {
       // todo: devs need to write unit tests
@@ -94,14 +86,46 @@ describe('<ParserComponent /> Unit Tests', () => {
   });
 
   describe('createCountingObjects()', () => {
+    const pi: ParserInterface = {prompt: 'test', fileType: FileType.csv};
+    const pc = new ParserComponent(pi);
     it('instantiates a list of CountTypes', () => {
-      // const listObjects = pc.createTypeCountingObjects(4);
+      const listObjects = pc.createTypeCountingObjects(4);
     });
   });
 
   describe('inferTypes()', () => {
-    it('dummy test', () => {
-      // todo: devs need to write unit tests
+    const pi: ParserInterface = {prompt: 'test', fileType: FileType.csv};
+    const pc = new ParserComponent(pi);
+    // eslint-disable-next-line no-array-constructor
+    const data = new Array(2);
+    data[0] = {money: 100, heart_attacks: '2016-07-03', animals: 'dog'};
+    data[1] = {money: 55, heart_attacks: '2019-02-02', animals: 'cat'};
+    it('handles regular data', () => {
+      pc.state = { // need to run tests
+        prompt: 'test',
+        fileType: FileType.csv,
+        data: data,
+      };
+      const t1 = pc.inferTypes(data);
+      // test string
+      expect(t1[2].drawType).toBe(enumDrawType.occurrence);
+      // test number
+      expect(t1[0].drawType).toBe(enumDrawType.any);
+      // test date
+      // expect(t1[1].drawType).toBe(enumDrawType.any);
+    });
+    it('handles inconsistent data', () => {
+      data[0] = {money: 'word', heart_attacks: '2016-07-03', animals: 0};
+      data[2] = {money: 300, heart_attacks: '2013-02-02', animals: 'horse'};
+      data[3] = {money: 2, heart_attacks: '2013-02-02', animals: 'horse'};
+      pc.state = { // need to run tests
+        prompt: 'test',
+        fileType: FileType.csv,
+        data: data,
+      };
+      const t1 = pc.inferTypes(data);
+      // test string
+      expect(t1[2].drawType).toBe(enumDrawType.occurrence);
     });
   });
 

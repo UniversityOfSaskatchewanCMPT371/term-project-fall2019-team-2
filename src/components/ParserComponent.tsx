@@ -5,10 +5,7 @@ import TimelineComponent from './TimelineComponent';
 import Data from './Data';
 import * as TimSort from 'timsort';
 import Column, {enumDrawType} from './Column';
-import * as moment from 'moment';
-import {sizeof, sizeofObj} from './Utilities';
-import osizeof from 'object-sizeof';
-import * as d3dsv from 'd3-dsv';
+
 
 /**
  * Purpose: react component responsible for receiving and parsing file data
@@ -162,7 +159,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
       });
       let indx = 0;
       const arrayOfColumns = new Array<Column>(listOfTypes.length);
-      listOfTypes.forEach((element) => {
+      // @ts-ignore
+      listOfTypes.forEach((element: any) => {
         let newCol: Column;
         if (element === 'string') {
           // create a Column object with occurrence data
@@ -176,9 +174,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
           arrayOfColumns[indx] = newCol;
           indx++;
         }
-      }
-      );
-      // console.log(arrayOfColumns);
+      });
+      
       return arrayOfColumns;
     } else {
       throw new Error('data is empty: ' + data.length);
@@ -209,14 +206,9 @@ export default class ParserComponent extends React.Component<ParserInterface,
    * @param {Object} fileEvent: the event passed into this component
    */
   async parseCsv(fileEvent: any) {
-    // console.log(fileEvent);
-    const t1 = performance.now();
 
     const csvFile = fileEvent.target.files[0];
     const fileReader = new FileReader();
-
-    // console.log(csvFile);
-    // console.log(typeof csvFile);
 
     return new Promise((resolver, agent) => {
       const handleFileRead = () => {
@@ -231,9 +223,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
                 return d;
               });
 
-          // const content = d3.csvParse(fileReader.result);
-          // console.log(sizeof(content));
-
           // set state of the parser component
           this.setState((state) => {
             return {
@@ -244,9 +233,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
           });
           this.sortData(content);
           this.isValid(csvFile);
-          // console.log(this.sortData(content));
-          // console.log(content);
-          // console.log(this.isValid(csvFile));
+          
           if (!this.isValid(csvFile)) {
             try {
               throw new Error('Wrong file type was uploaded.');
@@ -255,10 +242,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
               alert('The file uploaded needs to be CSV.');
             }
           }
-
-          const t2 = performance.now();
-
-          // console.log('Sorting took: ' + (t2 - t1));
         }
         resolver(true);
       };

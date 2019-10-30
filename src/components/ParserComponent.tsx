@@ -104,8 +104,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
     const csvFile = fileEvent.target.files[0];
     const fileReader = new FileReader();
 
-    // console.log(csvFile);
-    // console.log(typeof csvFile);
+    console.log(csvFile);
+    console.log(typeof csvFile);
 
     const handleFileRead = () => {
       if (typeof fileReader.result === 'string') {

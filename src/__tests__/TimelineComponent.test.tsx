@@ -14,6 +14,9 @@ describe('<TimelineComponent /> Unit Tests', () => {
   let data: any;
   let wrapper: any;
   let drawTimelineSpy: any;
+  let toggleTimelineSpy: any;
+  let initTimelineSpy: any;
+  let updateBarsSpy: any;
 
   // run to initialize the Timeline component for testing
   beforeEach(() => {
@@ -64,12 +67,19 @@ describe('<TimelineComponent /> Unit Tests', () => {
 
     drawTimelineSpy =
         jest.spyOn(TimelineComponent.prototype, 'drawTimeline');
+    toggleTimelineSpy =
+        jest.spyOn(TimelineComponent.prototype, 'toggleTimeline');
+    initTimelineSpy =
+        jest.spyOn(TimelineComponent.prototype, 'initTimeline');
+    updateBarsSpy =
+         jest.spyOn(TimelineComponent.prototype, 'updateBars');
+
 
     wrapper = mount(<TimelineComponent data={data} />);
   });
 
   describe('<TimelineComponent /> renders correctly', () => {
-    it('dummy test', () => {
+    it('checks that the timeline component renders correctly', () => {
       const button = <button>Switch to Interval Timeline</button>;
       // eslint-disable-next-line max-len
       expect(wrapper.containsMatchingElement(<button>Switch to Interval Timeline</button>))
@@ -79,8 +89,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
   });
 
   describe('constructor()', () => {
-    it('dummy test', () => {
-      // const wrapper = mount(<TimelineComponent data={data} />);
+    it('checks that the constructor correctly sets the component state', () => {
       expect(wrapper.state('data')).toEqual(data);
       expect(wrapper.state('width')).toEqual(window.innerWidth);
       expect(wrapper.state('height')).toEqual(window.innerHeight);
@@ -95,8 +104,40 @@ describe('<TimelineComponent /> Unit Tests', () => {
   });
 
   describe('componentDidMount()', () => {
-    it('dummy test', () => {
+    it('checks if drawTimeline is called', () => {
       expect(drawTimelineSpy).toHaveBeenCalled();
+    });
+  });
+
+  describe('toggleTimeline()', () => {
+    it('checks that the toggleTimeline function correctly sets the state ' +
+        'of the component', () => {
+      const button = wrapper.find('button');
+
+      button.simulate('click');
+
+      expect(toggleTimelineSpy).toHaveBeenCalled();
+      // check that the state is set properly
+      expect(wrapper.state('toggleTimeline')).toEqual(1);
+      expect(wrapper.state('togglePrompt'))
+          .toEqual('Switch to Occurrence Timeline');
+      expect(drawTimelineSpy).toHaveBeenCalled();
+
+      button.simulate('click');
+
+      expect(toggleTimelineSpy).toHaveBeenCalled();
+      // check that the state is set properly
+      expect(wrapper.state('toggleTimeline')).toEqual(0);
+      expect(wrapper.state('togglePrompt'))
+          .toEqual('Switch to Interval Timeline');
+      expect(drawTimelineSpy).toHaveBeenCalled();
+    });
+  });
+
+
+  describe('initTimeline()', () => {
+    it('checks that values are set correctly', () => {
+      // todo: devs need to write unit tests
     });
   });
 
@@ -124,7 +165,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
     });
   });
 
-  describe('ttLeave()', () => {
+  describe('ttMove()', () => {
     it('dummy test', () => {
       // todo: devs need to write unit tests
     });

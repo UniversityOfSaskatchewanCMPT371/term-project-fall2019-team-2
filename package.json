@@ -14,12 +14,11 @@
     "@types/sinon": "^7.5.0",
     "bootstrap": "^4.3.1",
     "d3": "^5.12.0",
-    "d3-dsv": "^1.1.1",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",
     "enzyme-to-json": "^3.4.2",
     "jest": "^24.9.0",
-    "moment": "^2.24.0",
+    "d3-dsv": "^1.1.1",
     "react": "^16.10.2",
     "react-bootstrap": "^1.0.0-beta.14",
     "react-dom": "^16.10.2",
@@ -35,7 +34,9 @@
     "test": "react-scripts test",
     "test:ci": "react-scripts test --coverage --testResultsProcessor ./node_modules/jest-sonar-reporter",
     "eject": "react-scripts eject",
-    "lint": "eslint 'src/**'"
+    "wint": "eslint src/**",
+    "lint": "eslint 'src/**'",
+    "test:debug": "react-scripts --inspect-brk test --runInBand --no-cache"
   },
   "eslintConfig": {
     "extends": "google"

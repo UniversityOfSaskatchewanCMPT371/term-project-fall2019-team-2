@@ -416,7 +416,7 @@ export default class TimelineComponent
           .attr('transform', (d: any, i: number) =>
             `translate(${scale * timeScale(new Date(d.text))},${height})`);
     }
-    console.warn(d3.selectAll('.bar'));
+    // console.warn(d3.selectAll('.bar').size());
 
     if (d3.event !== null && d3.event.sourceEvent.type === 'mousemove') {
       this.dragged();

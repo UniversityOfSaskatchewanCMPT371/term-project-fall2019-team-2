@@ -1,8 +1,14 @@
 import React, {ReactDOM} from 'react';
-import {mount, shallow, render} from 'enzyme';
-import ParserComponent from '../components/TimelineComponent';
+import {
+  mount,
+  shallow,
+  render
+} from 'enzyme';
+import ParserComponent
+  from '../components/TimelineComponent';
 import {TimelineState} from '../components/TimelineInterface';
-import sinon from 'sinon';
+import sinon
+  from 'sinon';
 import TimelineComponent
   from '../components/TimelineComponent';
 import Data
@@ -40,49 +46,96 @@ describe('<TimelineComponent /> Unit Tests', () => {
     console.warn = mockedWarn;
 
     data = new Data('path/to/file', [
-      {'Region': 'Sub-Saharan Africa', 'Country': 'Central African Republic',
-        'Item Type': 'Vegetables', 'Sales Channel': 'Online',
-        'Order Priority': 'H', 'Order Date': '1/1/2010',
+      {
+        'Region': 'Sub-Saharan Africa',
+        'Country': 'Central African Republic',
+        'Item Type': 'Vegetables',
+        'Sales Channel': 'Online',
+        'Order Priority': 'H',
+        'Order Date': '1/1/2010',
         'Order ID': 506209075,
         'Ship Date': '2/4/2010',
-        'Units Sold': 7369, 'Unit Price': 154.06, 'Unit Cost': 90.93,
-        'Total Revenue': 1135268.14, 'Total Cost': 670063.17,
-        'Total Profit': 465204.97, 'index': 4535,
-        'Order Date_num': 1262325600000},
-      {'Region': 'Asia', 'Country': 'China', 'Item Type': 'Cereal',
-        'Sales Channel': 'Online', 'Order Priority': 'C',
+        'Units Sold': 7369,
+        'Unit Price': 154.06,
+        'Unit Cost': 90.93,
+        'Total Revenue': 1135268.14,
+        'Total Cost': 670063.17,
+        'Total Profit': 465204.97,
+        'index': 4535,
+        'Order Date_num': 1262325600000
+      },
+      {
+        'Region': 'Asia',
+        'Country': 'China',
+        'Item Type': 'Cereal',
+        'Sales Channel': 'Online',
+        'Order Priority': 'C',
         'Order Date': '1/1/2010',
-        'Order ID': 863776719, 'Ship Date': '2/10/2010', 'Units Sold': 9581,
-        'Unit Price': 205.7, 'Unit Cost': 117.11, 'Total Revenue': 1970811.7,
-        'Total Cost': 1122030.91, 'Total Profit': 848780.79, 'index': 5104,
-        'Order Date_num': 1262325600000},
-      {'Region': 'Europe', 'Country': 'Sweden',
-        'Item Type': 'Clothes', 'Sales Channel': 'Online',
+        'Order ID': 863776719,
+        'Ship Date': '2/10/2010',
+        'Units Sold': 9581,
+        'Unit Price': 205.7,
+        'Unit Cost': 117.11,
+        'Total Revenue': 1970811.7,
+        'Total Cost': 1122030.91,
+        'Total Profit': 848780.79,
+        'index': 5104,
+        'Order Date_num': 1262325600000
+      },
+      {
+        'Region': 'Europe',
+        'Country': 'Sweden',
+        'Item Type': 'Clothes',
+        'Sales Channel': 'Online',
         'Order Priority': 'H',
-        'Order Date': '1/2/2010', 'Order ID': 907228076,
+        'Order Date': '1/2/2010',
+        'Order ID': 907228076,
         'Ship Date': '2/21/2010',
-        'Units Sold': 7803, 'Unit Price': 109.28, 'Unit Cost': 35.84,
-        'Total Revenue': 852711.84, 'Total Cost': 279659.52,
+        'Units Sold': 7803,
+        'Unit Price': 109.28,
+        'Unit Cost': 35.84,
+        'Total Revenue': 852711.84,
+        'Total Cost': 279659.52,
         'Total Profit': 573052.32,
-        'index': 4193, 'Order Date_num': 1262412000000},
-      {'Region': 'Sub-Saharan Africa', 'Country': 'Equatorial Guinea',
-        'Item Type': 'Snacks', 'Sales Channel': 'Offline',
-        'Order Priority': 'M',
-        'Order Date': '1/2/2010', 'Order ID': 335552775,
-        'Ship Date': '2/12/2010',
-        'Units Sold': 6378, 'Unit Price': 152.58, 'Unit Cost': 97.44,
-        'Total Revenue': 973155.24, 'Total Cost': 621472.32,
-        'Total Profit': 351682.92,
-        'index': 7005, 'Order Date_num': 1262412000000},
-      {'Region': 'Asia',
-        'Country': 'Mongolia', 'Item Type': 'Cosmetics',
+        'index': 4193,
+        'Order Date_num': 1262412000000
+      },
+      {
+        'Region': 'Sub-Saharan Africa',
+        'Country': 'Equatorial Guinea',
+        'Item Type': 'Snacks',
         'Sales Channel': 'Offline',
-        'Order Priority': 'C', 'Order Date': '1/2/2010', 'Order ID': 695167052,
-        'Ship Date': '1/22/2010', 'Units Sold': 4234, 'Unit Price': 437.2,
-        'Unit Cost': 263.33, 'Total Revenue': 1851104.8,
+        'Order Priority': 'M',
+        'Order Date': '1/2/2010',
+        'Order ID': 335552775,
+        'Ship Date': '2/12/2010',
+        'Units Sold': 6378,
+        'Unit Price': 152.58,
+        'Unit Cost': 97.44,
+        'Total Revenue': 973155.24,
+        'Total Cost': 621472.32,
+        'Total Profit': 351682.92,
+        'index': 7005,
+        'Order Date_num': 1262412000000
+      },
+      {
+        'Region': 'Asia',
+        'Country': 'Mongolia',
+        'Item Type': 'Cosmetics',
+        'Sales Channel': 'Offline',
+        'Order Priority': 'C',
+        'Order Date': '1/2/2010',
+        'Order ID': 695167052,
+        'Ship Date': '1/22/2010',
+        'Units Sold': 4234,
+        'Unit Price': 437.2,
+        'Unit Cost': 263.33,
+        'Total Revenue': 1851104.8,
         'Total Cost': 1114939.22,
-        'Total Profit': 736165.58, 'index': 9127,
-        'Order Date_num': 1262412000000}]);
+        'Total Profit': 736165.58,
+        'index': 9127,
+        'Order Date_num': 1262412000000
+      }]);
 
     drawTimelineSpy =
         jest.spyOn(TimelineComponent.prototype, 'drawTimeline');
@@ -91,7 +144,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
     initTimelineSpy =
         jest.spyOn(TimelineComponent.prototype, 'initTimeline');
     updateBarsSpy =
-         jest.spyOn(TimelineComponent.prototype, 'updateBars');
+        jest.spyOn(TimelineComponent.prototype, 'updateBars');
     ttOverHelperSpy =
         jest.spyOn(TimelineComponent.prototype, 'ttOverHelper');
     ttOverSpy =
@@ -101,10 +154,12 @@ describe('<TimelineComponent /> Unit Tests', () => {
     ttLeaveSpy =
         jest.spyOn(TimelineComponent.prototype, 'ttLeave');
 
-    wrapper = mount(<TimelineComponent data={data} />);
+    wrapper = mount(
+        <TimelineComponent
+          data={data}/>);
   });
 
-  afterEach(() =>{
+  afterEach(() => {
     // reset consoleOutput and console.warn definition
     consoleOutput = [];
     console.warn = originalWarn;
@@ -112,9 +167,17 @@ describe('<TimelineComponent /> Unit Tests', () => {
 
   describe('<TimelineComponent /> renders correctly', () => {
     it('checks that the timeline component renders correctly', () => {
-      const button = <button>Switch to Interval Timeline</button>;
+      const button =
+          <button>Switch
+            to
+            Interval
+            Timeline</button>;
       // eslint-disable-next-line max-len
-      expect(wrapper.containsMatchingElement(<button>Switch to Interval Timeline</button>))
+      expect(wrapper.containsMatchingElement(
+          <button>Switch
+            to
+            Interval
+            Timeline</button>))
           .toEqual(true);
       expect(wrapper.exists('#svgtarget')).toEqual(true);
     });
@@ -225,12 +288,26 @@ describe('<TimelineComponent /> Unit Tests', () => {
   });
 
   describe('updateChart()', () => {
-    it('dummy test', () => {
-      wrapper.instance().updateChart();
-      expect(consoleOutput[0]).toEqual('d3.event was null');
-      console.log(consoleOutput[0]);
-      // todo: devs need to write unit tests
-    });
+    it('checks to see if the updateChart function is working as expected',
+        async () => {
+          await new Promise((res) => setTimeout(() => {
+            wrapper.update();
+            console.log(wrapper.html());
+            expect(initTimelineSpy).toHaveBeenCalled();
+            wrapper.instance().updateChart();
+            expect(consoleOutput[0]).toEqual('d3.event was null');
+
+            wrapper.setState({toggleTimeline: 1});
+            expect(wrapper.state('toggleTimeline')).toBe(1);
+            wrapper.instance().updateChart();
+            expect(consoleOutput[1]).toEqual('d3.event was null');
+
+            console.log(consoleOutput[0]);
+            res(true);
+          }, 1000));
+
+          // todo: devs need to write unit tests
+        });
   });
 
   describe('updateBars()', () => {

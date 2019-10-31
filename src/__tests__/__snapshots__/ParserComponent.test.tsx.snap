@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ParserComponent /> renders correctly csv input snapshot 1`] = `
+Array [
+  <div>
+    <label>
+      Select a CSV file: 
+    </label>
+    <input
+      accept=".csv,text/csv"
+      onChange={[Function]}
+      type="file"
+    />
+  </div>,
+]
+`;

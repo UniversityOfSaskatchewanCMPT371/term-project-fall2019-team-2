@@ -31,6 +31,8 @@ describe('<TimelineComponent /> Unit Tests', () => {
   let ttOverSpy: any;
   let ttUpdatePosSpy: any;
   let ttLeaveSpy: any;
+  let drawEventMagnitudeSpy: any;
+  let drawIntervalMagnitudeSpy: any;
 
   // store original console.warn
   const originalWarn = console.warn;
@@ -153,6 +155,11 @@ describe('<TimelineComponent /> Unit Tests', () => {
         jest.spyOn(TimelineComponent.prototype, 'ttUpdatePos');
     ttLeaveSpy =
         jest.spyOn(TimelineComponent.prototype, 'ttLeave');
+    drawEventMagnitudeSpy =
+      jest.spyOn(TimelineComponent.prototype, 'drawEventMagnitude');
+    drawIntervalMagnitudeSpy =
+      jest.spyOn(TimelineComponent.prototype, 'drawIntervalMagnitude');
+
 
     document.body.innerHTML = '<div><button>Switch to Interval Timeline' +
       '</button><div id="svgtarget"></div></div>';
@@ -228,6 +235,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
           .toEqual('Switch to Occurrence Timeline');
       expect(initTimelineSpy).toHaveBeenCalled();
       expect(drawTimelineSpy).toHaveBeenCalled();
+      expect(drawEventMagnitudeSpy).toHaveBeenCalled();
 
       button.simulate('click');
 
@@ -238,19 +246,20 @@ describe('<TimelineComponent /> Unit Tests', () => {
           .toEqual('Switch to Interval Timeline');
       expect(initTimelineSpy).toHaveBeenCalled();
       expect(drawTimelineSpy).toHaveBeenCalled();
+      expect(drawIntervalMagnitudeSpy).toHaveBeenCalled();
     });
   });
 
 
   describe('initTimeline()', () => {
     it('checks that values are set correctly', () => {
-      // todo: devs need to write unit tests
+      expect(initTimelineSpy).toHaveBeenCalled();
     });
   });
 
   describe('drawTimeline()', () => {
     it('dummy test', () => {
-      // todo: devs need to write unit tests
+      expect(drawTimelineSpy).toHaveBeenCalled();
     });
   });
 
@@ -262,9 +271,6 @@ describe('<TimelineComponent /> Unit Tests', () => {
       }, 100, 100);
       expect(ttOverHelperSpy).toHaveBeenCalled();
 
-      // @ts-ignore
-      // let dom = render(document.body.innerHTML);
-      // no tooltip should be generated here
       expect(!d3.selectAll('.tooltip').empty()).toEqual(true);
 
       // expect(consoleOutput[0])
@@ -285,6 +291,14 @@ describe('<TimelineComponent /> Unit Tests', () => {
   describe('ttUpdatePos()', () => {
     it('checks that ttUpdatePos does not break when no tooltip exists'
         , () => {
+          wrapper.instance().ttOverHelper({
+            str: 'test',
+            num: 123,
+          }, 100, 100);
+          expect(ttOverHelperSpy).toHaveBeenCalled();
+
+          expect(!d3.selectAll('.tooltip').empty()).toEqual(true);
+
           wrapper.instance().ttUpdatePos(100, 100);
           expect(ttUpdatePosSpy).toHaveBeenCalled();
         });
@@ -325,10 +339,23 @@ describe('<TimelineComponent /> Unit Tests', () => {
           // todo: devs need to write unit tests
         });
   });
+  describe('drawEventMagnitude()', () => {
+    it('dummy test', () => {
+
+      wrapper.instance().drawEventMagnitude(d3.selectAll('.bar'));
+      expect(drawEventMagnitudeSpy).toHaveBeenCalled();
+    });
+  });
+  describe('updateBars()', () => {
+    it('dummy test', () => {
+      wrapper.instance().drawIntervalMagnitude(d3.selectAll('.bar'));
+      expect(drawIntervalMagnitudeSpy).toHaveBeenCalled();
+    });
+  });
 
   describe('updateBars()', () => {
     it('dummy test', () => {
-      // todo: devs need to write unit tests
+      expect(updateBarsSpy).toHaveBeenCalled();
     });
   });
 

@@ -41,8 +41,8 @@ export default class Column {
 /**
  * class that categorizes data to be drawn
  * occurence data is string
- * any is number and magnitude
+ * any is number, date and magnitude
  */
 export enum enumDrawType {
-  magnitude, occurrence, any,
+  magnitude, occurrence, any
 }

@@ -6,11 +6,6 @@ import * as d3
 import './Timeline.css';
 import Data
   from './Data';
-// import {
-//   init,
-//   draw,
-//   changeTimeline
-// } from './TimelineRenderer';
 
 
 const marginTop: number = 40;
@@ -60,7 +55,7 @@ let plot: any;
  * @param {any} str: thing to log
  */
 function log(str: any) {
-  // console.log(str);
+  console.log(str);
 }
 
 /**

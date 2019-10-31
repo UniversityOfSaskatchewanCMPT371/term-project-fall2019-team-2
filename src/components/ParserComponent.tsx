@@ -1,15 +1,8 @@
 import React from 'react';
 import ParserInterface, {FileType, ParserState} from './ParserInterface';
-import * as d3 from 'd3';
 import * as d3dsv from 'd3-dsv';
 import Column, {enumDrawType} from './Column';
 import moment from 'moment';
-import React
-  from 'react';
-import ParserInterface, {
-  FileType,
-  ParserState
-} from './ParserInterface';
 import * as d3
   from 'd3';
 import TimelineComponent
@@ -18,7 +11,6 @@ import Data
   from './Data';
 import * as TimSort
   from 'timsort';
-import Column, {enumDrawType} from './Column';
 
 
 /**

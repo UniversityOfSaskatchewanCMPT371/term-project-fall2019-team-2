@@ -1,27 +1,8 @@
 import osizeof from 'object-sizeof';
-import * as d3
-  from 'd3';
-import * as TimSort
-  from 'timsort';
+
 const kb = 1024;
 const mb = 1048576;
 const gb = 1073741824;
-
-/**
- * Purpose: shorthand for console.log/warn/error - I'm lazy
- */
-
-// export let log: (message?: any, ...optionalParams: any[]) => void;
-// // eslint-disable-next-line prefer-const
-// log = console.log;
-//
-// export let warn: (message?: any, ...optionalParams: any[]) => void;
-// // eslint-disable-next-line prefer-const
-// warn = console.warn;
-//
-// export let error: (message?: any, ...optionalParams: any[]) => void;
-// // eslint-disable-next-line prefer-const
-// error = console.error;
 
 /**
  * Purpose: formats a number in human readable form with up to 3 decimal places

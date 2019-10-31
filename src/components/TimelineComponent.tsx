@@ -46,8 +46,6 @@ function log(str: any) {
   console.log(str);
 }
 
-// const warn = console.warn;
-
 /**
  * Purpose: renders and updates a timeline to the screen
  */
@@ -314,7 +312,6 @@ export default class TimelineComponent
     } else {
       Tooltip.remove();
       console.warn('Error adding Tooltip to the DOM');
-      // console.warn('Error adding Tooltip to the DOM');
     }
   }
 
@@ -419,6 +416,7 @@ export default class TimelineComponent
           .attr('transform', (d: any, i: number) =>
             `translate(${scale * timeScale(new Date(d.text))},${height})`);
     }
+    console.warn(d3.selectAll('.bar'));
 
     if (d3.event !== null && d3.event.sourceEvent.type === 'mousemove') {
       this.dragged();

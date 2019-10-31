@@ -1,3 +1,9 @@
+import React from 'react';
+import ParserInterface, {FileType, ParserState} from './ParserInterface';
+import * as d3 from 'd3';
+import * as d3dsv from 'd3-dsv';
+import Column, {enumDrawType} from './Column';
+import moment from 'moment';
 import React
   from 'react';
 import ParserInterface, {
@@ -131,59 +137,87 @@ export default class ParserComponent extends React.Component<ParserInterface,
   }
 
   /**
+   * Purpose: to instantiate an empty list of objects
+   * for tracking the kinds of data in a column
+   * @param {number} fieldLength: the number of columns of data
+   * @return {[CountTypes]}: a list of objects
+   */
+  createTypeCountingObjects(fieldLength: number) : CountTypes[] {
+    const typesForEachCol = [];
+    // instantiate object for each column
+    for (let i = 0; i < fieldLength; i++) {
+      typesForEachCol.push(new CountTypes());
+    }
+    return typesForEachCol;
+  }
+
+  /**
    * Purpose: attempts to infer the types of the data in each of the columns
    * of the csv data
    * @param {Array} data: the array of pre-sorted valid data
    * @return {Array}: a list of objects of type Column
    */
   inferTypes(data: Array<object>): Array<Column> {
-    // console.log(this.state.data.length);
-    // this.state = { // need to run tests
-    //   prompt: 'stasd',
-    //   fileType: FileType.csv,
-    //   data: data,
-    // };
     if (this.state.data.length > 0) {
       const listFields = Object.keys(this.state.data[0]);
-      const listOfTypes: never[] | string[] = [];
-      // check the n samples of the value to find if the data is consistent
-      // future take the one that occurs the most frequently
-      // if data is missing throws an error currently
+      // instantiate objects to track the types of data
+      const typesForEachCol = this.createTypeCountingObjects(listFields.length);
+      // check half the values to find if the data is consistent
       [0, Math.floor(this.state.data.length / 2)].forEach((element) => {
-        const row = this.state.data[element];
+        const row: object = this.state.data[element];
         // look at each field and categorize
         for (let i = 0; i < listFields.length; i++) {
-          // @ts-ignore
-          const type = typeof row[listFields[i]];
-          if (type !== 'string' && type !== 'number') {
-            throw new Error('Bad type: ' + type);
-          }
-          if (listOfTypes[i] === undefined) {
-            listOfTypes[i] = type;
-          } else if (listOfTypes[i] !== type) {
-            throw new Error('types inconsistent');
+          const curColTypes = typesForEachCol[i];
+          try {
+            // @ts-ignore
+            const val = row[listfields[i]];
+            const date = moment(val, 'YYYY-MM-DD');
+            const isValid = date.isValid();
+            if (isValid) {
+              curColTypes['numDate'] += 1;
+            }
+          } catch {
+            // @ts-ignore
+            const type = typeof row[listFields[i]];
+            if (type !== 'string' && type !== 'number') {
+              curColTypes['numIncongruent'] += 1;
+            }
+            // logs all the types that are seen
+            if (type === 'string') {
+              curColTypes['numString'] += 1;
+            } else {
+              curColTypes['numNumber'] += 1;
+            }
           }
         }
       });
       let indx = 0;
-      const arrayOfColumns = new Array<Column>(listOfTypes.length);
-      // @ts-ignore
-      listOfTypes.forEach((element: any) => {
+      const arrayOfColumns = new Array<Column>(listFields.length);
+      typesForEachCol.forEach((element) => {
+        // checks the most common type and uses that
+        const mostCommonType = element.largest();
         let newCol: Column;
-        if (element === 'string') {
+        if (mostCommonType === 'string') {
           // create a Column object with occurrence data
-          // eslint-disable-next-line max-len
-          newCol = new Column(element, enumDrawType.occurrence, listFields[indx]);
+          newCol = new Column(mostCommonType,
+              enumDrawType.occurrence, listFields[indx]);
           arrayOfColumns[indx] = newCol;
           indx++;
-        } else if (element === 'number') {
+        } else if (mostCommonType === 'number') {
           // create a Column with interval, point or magnitude data
-          newCol = new Column(element, enumDrawType.any, listFields[indx]);
+          // eslint-disable-next-line max-len
+          newCol = new Column(mostCommonType, enumDrawType.any, listFields[indx]);
+          arrayOfColumns[indx] = newCol;
+          indx++;
+        } else if (mostCommonType === 'date') {
+          // create a Column with date data
+          // eslint-disable-next-line max-len
+          newCol = new Column(mostCommonType, enumDrawType.any, listFields[indx]);
           arrayOfColumns[indx] = newCol;
           indx++;
         }
-      });
-
+      }
+      );
       return arrayOfColumns;
     } else {
       throw new Error('data is empty: ' + data.length);
@@ -197,6 +231,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
   async parse(fileEvent: any) {
     // this.isValid(fileEvent);
     // this.sortData(this.state.data);
+    // this.inferTypes(this.state.data);
     if (this.props.fileType === FileType.csv) {
       await this.parseCsv(fileEvent);
     }
@@ -260,5 +295,47 @@ export default class ParserComponent extends React.Component<ParserInterface,
       fileReader.onloadend = handleFileRead;
       fileReader.readAsText(csvFile);
     });
+  }
+}
+
+/**
+ * Purpose: assist in counting types of data in a single Column
+ */
+export class CountTypes {
+  public numNumber: number;
+  public numIncongruent: number;
+  public numString: number;
+  public numDate: number;
+  /**
+   * create an empty component to track data
+   */
+  constructor() {
+    this.numNumber = 0;
+    this.numString = 0;
+    this.numDate = 0;
+    this.numIncongruent = 0;
+  }
+
+  /**
+   * finds the largest element of the fields
+   * @return {string}: a string representing the largest field
+   */
+  largest(): string {
+    if (this.numDate >= this.numIncongruent && this.numDate >= this.numNumber) {
+      if (this.numDate >= this.numString) {
+        return 'date';
+      } else {
+        return 'string';
+      }
+    }
+    if (this.numString >= this.numNumber &&
+      this.numString >= this.numIncongruent) {
+      return 'string';
+    }
+    if (this.numNumber >= this.numIncongruent) {
+      return 'number';
+    } else {
+      return 'incongruent';
+    }
   }
 }

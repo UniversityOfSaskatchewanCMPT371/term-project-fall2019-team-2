@@ -49,7 +49,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
 
     data = new Data('path/to/file', [
       {
-        'Region': 'Sub-Saharan Africa',
+        'Region': 'North America',
         'Country': 'Central African Republic',
         'Item Type': 'Vegetables',
         'Sales Channel': 'Online',
@@ -67,7 +67,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
         'Order Date_num': 1262325600000
       },
       {
-        'Region': 'Asia',
+        'Region': 'North America',
         'Country': 'China',
         'Item Type': 'Cereal',
         'Sales Channel': 'Online',
@@ -85,7 +85,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
         'Order Date_num': 1262325600000
       },
       {
-        'Region': 'Europe',
+        'Region': 'North America',
         'Country': 'Sweden',
         'Item Type': 'Clothes',
         'Sales Channel': 'Online',
@@ -103,7 +103,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
         'Order Date_num': 1262412000000
       },
       {
-        'Region': 'Sub-Saharan Africa',
+        'Region': 'North America',
         'Country': 'Equatorial Guinea',
         'Item Type': 'Snacks',
         'Sales Channel': 'Offline',
@@ -121,7 +121,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
         'Order Date_num': 1262412000000
       },
       {
-        'Region': 'Asia',
+        'Region': 'North America',
         'Country': 'Mongolia',
         'Item Type': 'Cosmetics',
         'Sales Channel': 'Offline',
@@ -348,8 +348,11 @@ describe('<TimelineComponent /> Unit Tests', () => {
   });
   describe('updateBars()', () => {
     it('dummy test', () => {
+      //console.log(wrapper.)
+      expect(d3.selectAll('.bar').size()).toBe(5);
       wrapper.instance().drawIntervalMagnitude(d3.selectAll('.bar'));
       expect(drawIntervalMagnitudeSpy).toHaveBeenCalled();
+      console.log(document.body.innerHTML);
     });
   });
 

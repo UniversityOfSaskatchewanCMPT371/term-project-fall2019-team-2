@@ -225,6 +225,9 @@ export default class TimelineComponent
         .attr('transform', 'translate(' + marginLeft +
             ',' + marginTop + ')');
 
+    // console.warn(d3.select('#svgtarget').node());
+    // console.log(document.body.innerHTML);
+
     svg.append('rect')
         .attr('width', width)
         .attr('height', height)
@@ -298,6 +301,8 @@ export default class TimelineComponent
       tooltip += '<strong>' + key + '</strong> <span style=\'color:red\'>' +
           d[key] + '</span><br/>';
     });
+
+    // console.log(document.body.innerHTML);
 
     Tooltip.html(tooltip);
 

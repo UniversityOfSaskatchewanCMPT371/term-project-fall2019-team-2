@@ -10,7 +10,7 @@ describe('FileEvents processed correctly', () => {
     const fileType = FileType.csv;
 
 
-    const comp = shallow(
+    const comp = mount(
         <ParserComponent
           prompt={prompt}
           fileType={fileType}
@@ -22,19 +22,11 @@ describe('FileEvents processed correctly', () => {
     // type: 'text/csv',
     // } as File;
 
-    const event = {
-      target: {files: null},
-      /*
-     );
-     it('File csv', (fileType) => {
-       fileType(true);
-       expect({fileType});
-       }
-     );
-     const event = {
-       target: {files: fileType}
 
-     */
+    ;
+    const event = {
+      target: {files: fileType}
+
 
     };
   });

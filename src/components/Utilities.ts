@@ -1,4 +1,8 @@
 import osizeof from 'object-sizeof';
+import * as d3
+  from 'd3';
+import * as TimSort
+  from 'timsort';
 const kb = 1024;
 const mb = 1048576;
 const gb = 1073741824;

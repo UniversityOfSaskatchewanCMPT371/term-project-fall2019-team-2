@@ -7,6 +7,10 @@ import TimelineComponent
   from '../components/TimelineComponent';
 import Data
   from '../components/Data';
+import * as d3
+  from 'd3';
+import * as TimSort
+  from 'timsort';
 
 
 // To be used by developers
@@ -17,9 +21,14 @@ describe('<TimelineComponent /> Unit Tests', () => {
   let toggleTimelineSpy: any;
   let initTimelineSpy: any;
   let updateBarsSpy: any;
+  let ttOverSpy: any;
+  let ttUpdatePosSpy: any;
+  let ttLeaveSpy: any;
 
   // run to initialize the Timeline component for testing
   beforeEach(() => {
+    // console.log(data);
+    // //
     data = new Data('path/to/file', [
       {'Region': 'Sub-Saharan Africa', 'Country': 'Central African Republic',
         'Item Type': 'Vegetables', 'Sales Channel': 'Online',
@@ -73,7 +82,12 @@ describe('<TimelineComponent /> Unit Tests', () => {
         jest.spyOn(TimelineComponent.prototype, 'initTimeline');
     updateBarsSpy =
          jest.spyOn(TimelineComponent.prototype, 'updateBars');
-
+    ttOverSpy =
+        jest.spyOn(TimelineComponent.prototype, 'ttOver');
+    ttUpdatePosSpy =
+        jest.spyOn(TimelineComponent.prototype, 'ttUpdatePos');
+    ttLeaveSpy =
+        jest.spyOn(TimelineComponent.prototype, 'ttLeave');
 
     wrapper = mount(<TimelineComponent data={data} />);
   });
@@ -121,6 +135,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
       expect(wrapper.state('toggleTimeline')).toEqual(1);
       expect(wrapper.state('togglePrompt'))
           .toEqual('Switch to Occurrence Timeline');
+      expect(initTimelineSpy).toHaveBeenCalled();
       expect(drawTimelineSpy).toHaveBeenCalled();
 
       button.simulate('click');
@@ -130,6 +145,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
       expect(wrapper.state('toggleTimeline')).toEqual(0);
       expect(wrapper.state('togglePrompt'))
           .toEqual('Switch to Interval Timeline');
+      expect(initTimelineSpy).toHaveBeenCalled();
       expect(drawTimelineSpy).toHaveBeenCalled();
     });
   });
@@ -148,15 +164,21 @@ describe('<TimelineComponent /> Unit Tests', () => {
   });
 
   describe('ttOver()', () => {
-    it('dummy test', () => {
-      // todo: devs need to write unit tests
+    it('checks that ttOver throws an error if it is called on the ' +
+        'incorrect type of event', () => {
+      expect(() => {
+        wrapper.instance().ttOver(null);
+      }).toThrow();
+      expect(ttOverSpy).toHaveBeenCalled();
     });
   });
 
   describe('ttUpdatePos()', () => {
-    it('dummy test', () => {
-      // todo: devs need to write unit tests
-    });
+    it('checks that ttUpdatePos does not break when no tooltip exists'
+        , () => {
+          wrapper.instance().ttUpdatePos(100, 100);
+          expect(ttUpdatePosSpy).toHaveBeenCalled();
+        });
   });
 
   describe('ttMove()', () => {
@@ -165,9 +187,10 @@ describe('<TimelineComponent /> Unit Tests', () => {
     });
   });
 
-  describe('ttMove()', () => {
+  describe('ttLeave()', () => {
     it('dummy test', () => {
-      // todo: devs need to write unit tests
+      wrapper.instance().ttLeave();
+      expect(ttLeaveSpy).toHaveBeenCalled();
     });
   });
 

@@ -11,7 +11,7 @@ import Data
   from './Data';
 import * as TimSort
   from 'timsort';
-
+import {readCsv} from './Utilities';
 
 /**
  * Purpose: react component responsible for receiving and parsing file data
@@ -221,18 +221,11 @@ export default class ParserComponent extends React.Component<ParserInterface,
    * @param {Object} fileEvent: the event passed into this component
    */
   async parse(fileEvent: any) {
-    // this.isValid(fileEvent);
-    // this.sortData(this.state.data);
-    // this.inferTypes(this.state.data);
+    // console.log(await readCsv());
     if (this.props.fileType === FileType.csv) {
       await this.parseCsv(fileEvent);
     }
     this.columnTypes = this.inferTypes(this.state.data);
-
-    let t = this.state.data;
-
-    t = t.slice(0, 5);
-    console.log(JSON.stringify(t));
 
     this.setState(() => {
       return {

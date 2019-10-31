@@ -15,6 +15,7 @@ describe('<ParserComponent /> renders correctly', () => {
         <ParserComponent
           prompt={'test: '}
           fileType={FileType.csv}
+          onChange={jest.fn()}
         />);
 
     expect(wrapper.contains(prompt)).toEqual(true);
@@ -27,7 +28,10 @@ describe('<ParserComponent /> renders correctly', () => {
         <ParserComponent
           prompt={'test: '}
           fileType={FileType.tl}
+          onChange={jest.fn}
         />);
+
+    console.log(wrapper.debug());
 
     expect(wrapper.contains(prompt)).toEqual(true);
     expect(wrapper.exists('input')).toEqual(true);
@@ -36,38 +40,33 @@ describe('<ParserComponent /> renders correctly', () => {
 });
 
 describe('FileEvents processed correctly', () => {
-  it('responds to file selection', () => {
+  it('file input event calls onChange and passes in correct file', async () => {
     // todo: pray for me
     const onChangeMock = jest.fn();
     const testFile: File = new File(
-        ['Date;Region;Yes\n' +
-                'Monday, July 21st, 1875;Australia;Broad-faced potoroo\n'],
-        'multiDateTest.csv',
+        [''],
+        'test.csv',
         {type: '.csv,text/csv'},);
     const props = {
       prompt: 'test: ',
       fileType: FileType.csv,
-      // This isn't working :/ parse() is still being called
-      // onChange: onChangeMock,
     };
-    const event = {target: {files: testFile}};
+    const event = {target: {files: [testFile]}};
+
     const comp = mount(
-        // @ts-ignore
         <ParserComponent
           {...props}
           onChange={onChangeMock}
         />);
-    console.log(comp.state());
-    // @ts-ignore
 
-    console.log(comp.props());
+    // console.log(comp.state());
+    // console.log(comp.find('input').prop('onChange'));
+    // console.log(comp.props());
     comp.find('input').simulate('change', event);
+    console.log(comp.debug());
 
-    /* todo: figure out a way to figure out if onchange has been called :/
-     * I think it's not working because it's bound to parse() in
-     * ParserComponent.tsx */
-    // expect(onChangeMock).toBeCalledTimes(1);
-    // expect(onChangeMock).toHaveBeenCalledWith(testFile);
+    expect(onChangeMock).toHaveBeenCalledTimes(1);
+    expect(onChangeMock).toHaveBeenCalledWith(testFile);
     console.log(comp.state());
   });
 });

@@ -39,9 +39,9 @@ describe('FileEvents processed correctly', () => {
     };
   });
 });
-/*
+
 describe('isValid()', () => {
   it('dummy test', () => {
-*/
-// });
-// });
+
+  });
+});

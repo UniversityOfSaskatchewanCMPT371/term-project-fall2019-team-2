@@ -21,14 +21,24 @@ describe('<TimelineComponent /> Unit Tests', () => {
   let toggleTimelineSpy: any;
   let initTimelineSpy: any;
   let updateBarsSpy: any;
+  let ttOverHelperSpy: any;
   let ttOverSpy: any;
   let ttUpdatePosSpy: any;
   let ttLeaveSpy: any;
 
+  // store original console.warn
+  const originalWarn = console.warn;
+
+  // array to store console output
+  let consoleOutput: any[] = [];
+
+  // function to receive console.warn output
+  const mockedWarn = (output: any) => consoleOutput.push(output);
+
   // run to initialize the Timeline component for testing
   beforeEach(() => {
-    // console.log(data);
-    // //
+    console.warn = mockedWarn;
+
     data = new Data('path/to/file', [
       {'Region': 'Sub-Saharan Africa', 'Country': 'Central African Republic',
         'Item Type': 'Vegetables', 'Sales Channel': 'Online',
@@ -82,6 +92,8 @@ describe('<TimelineComponent /> Unit Tests', () => {
         jest.spyOn(TimelineComponent.prototype, 'initTimeline');
     updateBarsSpy =
          jest.spyOn(TimelineComponent.prototype, 'updateBars');
+    ttOverHelperSpy =
+        jest.spyOn(TimelineComponent.prototype, 'ttOverHelper');
     ttOverSpy =
         jest.spyOn(TimelineComponent.prototype, 'ttOver');
     ttUpdatePosSpy =
@@ -90,6 +102,12 @@ describe('<TimelineComponent /> Unit Tests', () => {
         jest.spyOn(TimelineComponent.prototype, 'ttLeave');
 
     wrapper = mount(<TimelineComponent data={data} />);
+  });
+
+  afterEach(() =>{
+    // reset consoleOutput and console.warn definition
+    consoleOutput = [];
+    console.warn = originalWarn;
   });
 
   describe('<TimelineComponent /> renders correctly', () => {
@@ -163,6 +181,18 @@ describe('<TimelineComponent /> Unit Tests', () => {
     });
   });
 
+  describe('ttOverHelper()', () => {
+    it('checks that ttOverHelper renders a tooltip', () => {
+      wrapper.instance().ttOverHelper({}, 100, 100);
+      expect(ttOverHelperSpy).toHaveBeenCalled();
+      // no tooltip should be generated here
+      expect(wrapper.exists('.tooltip')).toEqual(false);
+
+      expect(consoleOutput[0])
+          .toEqual('Error adding Tooltip to the DOM');
+    });
+  });
+
   describe('ttOver()', () => {
     it('checks that ttOver throws an error if it is called on the ' +
         'incorrect type of event', () => {
@@ -196,6 +226,9 @@ describe('<TimelineComponent /> Unit Tests', () => {
 
   describe('updateChart()', () => {
     it('dummy test', () => {
+      wrapper.instance().updateChart();
+      expect(consoleOutput[0]).toEqual('d3.event was null');
+      console.log(consoleOutput[0]);
       // todo: devs need to write unit tests
     });
   });

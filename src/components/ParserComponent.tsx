@@ -11,7 +11,6 @@ import Data
   from './Data';
 import * as TimSort
   from 'timsort';
-import {readCsv} from './Utilities';
 
 /**
  * Purpose: react component responsible for receiving and parsing file data

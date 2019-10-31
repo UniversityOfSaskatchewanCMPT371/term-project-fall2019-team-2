@@ -105,6 +105,7 @@ describe('<ParserComponent /> Unit Tests', () => {
       data[1] = {money: 55, heartAttacks: '2019-02-02', animals: 'cat'};
       data[2] = {money: 300, heartAttacks: '2013-02-02', animals: 'horse'};
       data[3] = {money: 2, heartAttacks: '2013-03-02', animals: 'fish'};
+      // @ts-ignore
       pc.state = {
         prompt: 'test',
         fileType: FileType.csv,

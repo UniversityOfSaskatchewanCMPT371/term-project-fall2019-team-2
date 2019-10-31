@@ -4,9 +4,6 @@ import TimelineInterface, {TimelineState} from './TimelineInterface';
 import * as d3
   from 'd3';
 import './Timeline.css';
-import Data
-  from './Data';
-
 
 const marginTop: number = 40;
 const marginBottom: number = 170;
@@ -49,6 +46,8 @@ function log(str: any) {
   console.log(str);
 }
 
+// const warn = console.warn;
+
 /**
  * Purpose: renders and updates a timeline to the screen
  */
@@ -75,6 +74,7 @@ export default class TimelineComponent
     this.drawTimeline = this.drawTimeline.bind(this);
     this.toggleTimeline = this.toggleTimeline.bind(this);
     this.initTimeline = this.initTimeline.bind(this);
+    this.ttOverHelper = this.ttOverHelper.bind(this);
     this.ttOver = this.ttOver.bind(this);
     this.ttUpdatePos = this.ttUpdatePos.bind(this);
     this.ttMove = this.ttMove.bind(this);
@@ -273,7 +273,51 @@ export default class TimelineComponent
     this.updateBars();
   }
 
-  // Three function that change the tooltip when user hover/move/leave bar
+  /**
+   * Purpose: this function exists explicitly so the core functionality of
+   * ttOver cna be tested, as testing d3 events is quite difficult
+   * @param {any} d
+   * @param {number} x
+   * @param {number} y
+   */
+  ttOverHelper(d: any, x: number, y: number) {
+    const Tooltip = d3.select('#svgtarget')
+        .append('div')
+        .style('opacity', 0)
+        .attr('class', 'tooltip')
+        .attr('target', null)
+        .style('background-color', 'white')
+        .style('border', 'solid')
+        .style('border-width', '2px')
+        .style('border-radius', '5px')
+        .style('padding', '5px')
+        .style('left', (x + 70) + 'px')
+        .style('top', y + 'px');
+
+    const keys = Object.keys(d);
+    let tooltip: string = '';
+    keys.forEach(function(key) {
+      tooltip += '<strong>' + key + '</strong> <span style=\'color:red\'>' +
+          d[key] + '</span><br/>';
+    });
+
+    Tooltip.html(tooltip);
+
+    if (Tooltip.node() !== null) {
+      const ttBox = Tooltip.node()!.getBoundingClientRect();
+
+      if ((ttBox.top + ttBox.height) > height) {
+        Tooltip.style('top', (fullHeight - ttBox.height) + 'px');
+      }
+
+      Tooltip.style('opacity', 1);
+    } else {
+      Tooltip.remove();
+      console.warn('Error adding Tooltip to the DOM');
+      // console.warn('Error adding Tooltip to the DOM');
+    }
+  }
+
   /**
    * Purpose: adds the tooltip to the canvas when the user mouses over a piece
    * of timeline data.
@@ -283,38 +327,7 @@ export default class TimelineComponent
   ttOver(d: any) {
     try {
       if (d3.event.buttons === 0) {
-        const Tooltip = d3.select('#svgtarget')
-            .append('div')
-            .style('opacity', 0)
-            .attr('class', 'tooltip')
-            .attr('target', null)
-            .style('background-color', 'white')
-            .style('border', 'solid')
-            .style('border-width', '2px')
-            .style('border-radius', '5px')
-            .style('padding', '5px')
-            .style('left', (d3.event.x + 70) + 'px')
-            .style('top', d3.event.y + 'px');
-
-        const keys = Object.keys(d);
-        let tooltip: string = '';
-        keys.forEach(function(key) {
-          tooltip += '<strong>' + key + '</strong> <span style=\'color:red\'>' +
-              d[key] + '</span><br/>';
-        });
-
-        Tooltip.html(tooltip);
-
-        // Use ! to assert that this is not null
-        log(Tooltip.node()!.getBoundingClientRect());
-
-        const ttBox = Tooltip.node()!.getBoundingClientRect();
-
-        if ((ttBox.top + ttBox.height) > height) {
-          Tooltip.style('top', (fullHeight - ttBox.height) + 'px');
-        }
-
-        Tooltip.style('opacity', 1);
+        this.ttOverHelper(d, d3.event.x, d3.event.y);
       }
     } catch (e) {
       throw e;
@@ -374,15 +387,16 @@ export default class TimelineComponent
    */
   updateChart() {
     // recover the new scale
-    scale = d3.event.transform.k;
-    const newX = d3.event.transform.rescaleX(x);
-    const newY = d3.event.transform.rescaleY(y);
+    if (d3.event !== null) {
+      scale = d3.event.transform.k;
+    } else {
+      console.warn('d3.event was null');
+    }
 
-    log('newX: ' + newX(10));
+    // const newX = d3.event.transform.rescaleX(x);
+    // const newY = d3.event.transform.rescaleY(y);
 
-    d3.selectAll('#xaxis').remove();
-
-    // yAxis.call(d3.axisLeft(newY));
+    // d3.selectAll('#xaxis').remove();
 
     if (this.state.toggleTimeline === 0) {
       d3.selectAll('.bar')
@@ -406,7 +420,7 @@ export default class TimelineComponent
             `translate(${scale * timeScale(new Date(d.text))},${height})`);
     }
 
-    if (d3.event.sourceEvent.type === 'mousemove') {
+    if (d3.event !== null && d3.event.sourceEvent.type === 'mousemove') {
       this.dragged();
     }
     this.moveChart();

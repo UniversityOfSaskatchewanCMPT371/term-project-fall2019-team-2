@@ -2,59 +2,72 @@ import React, {ReactDOM} from 'react';
 import {mount, shallow} from 'enzyme';
 import ParserComponent from '../components/ParserComponent';
 import {FileType} from '../components/ParserInterface';
+import fs from 'fs';
 // may need in the future, but currently not being used
 // import sinon from 'sinon';
 
 
 describe('<ParserComponent /> renders correctly', () => {
-  describe('renders a <ParserComponent /> to select a .csv', () => {
-    // eslint-disable-next-line max-len
-    const wrapper = shallow(<ParserComponent prompt={'Select a CSV file: '} fileType={FileType.csv}/>);
-    const prompt = <label>Select a CSV file: </label>;
-    const button = <input type="file" accept=".csv,text/csv"/>;
+  const prompt = <label>test: </label>;
 
+  it('renders a <ParserComponent /> to select a .csv', () => {
+    const wrapper = shallow(
+        <ParserComponent
+          prompt={'test: '}
+          fileType={FileType.csv}
+          onChange={jest.fn()}
+        />);
 
     expect(wrapper.contains(prompt)).toEqual(true);
     expect(wrapper.exists('input')).toEqual(true);
+    expect(wrapper.find('input').prop('accept')).toContain('.csv,text/csv');
   });
 
-  describe('renders a <ParseComponent /> to select a .tl', () => {
-    // eslint-disable-next-line max-len
-    const wrapper = shallow(<ParserComponent prompt={'Select a TL file: '} fileType={FileType.tl}/>);
-    const prompt = <label>Select a TL file: </label>;
-    const button = <input type='file' accept='.tl' ></input>;
+  it('renders a <ParseComponent /> to select a .tl', () => {
+    const wrapper = shallow(
+        <ParserComponent
+          prompt={'test: '}
+          fileType={FileType.tl}
+          onChange={jest.fn}
+        />);
+
+    console.log(wrapper.debug());
 
     expect(wrapper.contains(prompt)).toEqual(true);
     expect(wrapper.exists('input')).toEqual(true);
+    expect(wrapper.find('input').prop('accept')).toContain('.tl');
   });
 });
 
 describe('FileEvents processed correctly', () => {
-  describe('responds to file selection', () => {
-    const fileUploaderMock = jest.fn();
-    const prompt = 'Select a CSV file:';
-    const fileType = FileType.csv;
-
-    const comp = shallow(
-        <ParserComponent
-          prompt={prompt}
-          fileType={fileType}
-        />
-    );
-
-    const file = {
-      name: 'test.csv',
-      type: 'text/csv',
-    } as File;
-
-    const event = {
-      target: {files: null},
+  it('file input event calls onChange and passes in correct file', async () => {
+    // todo: pray for me
+    const onChangeMock = jest.fn();
+    const testFile: File = new File(
+        [''],
+        'test.csv',
+        {type: '.csv,text/csv'},);
+    const props = {
+      prompt: 'test: ',
+      fileType: FileType.csv,
     };
+    const event = {target: {files: [testFile]}};
 
-    // console.log('before: ' + wrapper.debug());
-    // comp.find('input').simulate('change', event);
-    // wrapper.find('input').simulate('change', event);
-    // expect(parseMock).toBeCalledWith(testfile);
+    const comp = mount(
+        <ParserComponent
+          {...props}
+          onChange={onChangeMock}
+        />);
+
+    // console.log(comp.state());
+    // console.log(comp.find('input').prop('onChange'));
+    // console.log(comp.props());
+    comp.find('input').simulate('change', event);
+    console.log(comp.debug());
+
+    expect(onChangeMock).toHaveBeenCalledTimes(1);
+    expect(onChangeMock).toHaveBeenCalledWith(testFile);
+    console.log(comp.state());
   });
 });
 

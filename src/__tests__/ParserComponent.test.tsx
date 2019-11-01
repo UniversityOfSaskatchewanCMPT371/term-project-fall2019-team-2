@@ -136,17 +136,26 @@ describe('<ParserComponent /> Unit Tests', () => {
   describe('parse()', () => {
     const pi: ParserInterface = {prompt: 'test', fileType: FileType.csv};
     const pc = new ParserComponent(pi);
+    // will fail currently, should pass in mesa's code
     it('infertypes is called', () => {
       expect(pc.inferTypes([])).toBeCalledTimes(1);
     });
     it('timeline is set to true', () => {
+      // TODO: timeline var does not exist yet
     });
   });
 
   describe('parseCsv()', () => {
-    it('dummy test', () => {
-      // check to see if functions are called
-      // and if state is set
+    const pi: ParserInterface = {prompt: 'test', fileType: FileType.csv};
+    const pc = new ParserComponent(pi);
+    it('check functions are called within method', () => {
+      // check sortDate is called
+      expect(pc.sortData([])).toBeCalledTimes(1);
+      // check isValid is called
+      expect(pc.isValid([])).toBeCalledTimes(1);
+    });
+    it('this.state is set', () => {
+      expect(pc.state.fileType).toBe(FileType.csv);
     });
   });
 

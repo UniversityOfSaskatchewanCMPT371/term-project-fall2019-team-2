@@ -141,7 +141,8 @@ describe('<ParserComponent /> Unit Tests', () => {
       expect(pc.inferTypes([])).toBeCalledTimes(1);
     });
     it('timeline is set to true', () => {
-      // TODO: timeline var does not exist yet
+      // TODO: written for Mesa's code. does not work untill he merges
+      // expect(pc.state.timeline).toBeTruthy();
     });
   });
 

@@ -59,8 +59,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * valid
      */
   isValid(fileEvent: any): boolean {
-    const typeOfFile = fileEvent.name.substr(fileEvent.name.length - 3);
-    return typeOfFile === 'csv';
+    const typeOfFile = fileEvent.name.substr(fileEvent.name.length - 4);
+    return typeOfFile === '.csv';
   }
 
   /**
@@ -71,7 +71,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * @param {Array} data: the array of data to sort
      * @return {boolean}: array of sorted data
      */
-  sortData(data: Array<object>): Array<object> {
+  sortData(data: Array<object>): Boolean {
     let doneTheWork = false;
     /* loop goes through each key and saves the 1 with a date in first row */
     for (const [key, value] of Object.entries(data[0])) {
@@ -104,8 +104,11 @@ export default class ParserComponent extends React.Component<ParserInterface,
         }
       }
     }
-
-    return data;
+    if (!doneTheWork) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   /**
@@ -164,6 +167,14 @@ export default class ParserComponent extends React.Component<ParserInterface,
           } catch (e) {
             console.log(e);
             alert('The file uploaded needs to be CSV.');
+          };
+        }
+        if (!this.sortData(content)) {
+          try {
+            throw new Error('No dates found');
+          } catch (e) {
+            console.log(e);
+            alert('The file uploaded has no dates.');
           };
         }
       }

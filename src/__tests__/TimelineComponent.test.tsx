@@ -3,7 +3,6 @@ import {mount, shallow} from 'enzyme';
 import ParserComponent from '../components/ParserComponent';
 import TimelineComponent from '../components/TimelineComponent';
 import {TimelineState} from '../components/TimelineInterface';
-import sinon from 'sinon';
 import Data from '../components/Data';
 
 describe('<TimelineComponent /> renders correctly', () => {
@@ -19,6 +18,7 @@ describe('<TimelineComponent /> renders correctly', () => {
         />);
 
     expect(comp.contains(emptyTL)).toBeTruthy();
+    console.log(comp.debug());
   });
 });
 

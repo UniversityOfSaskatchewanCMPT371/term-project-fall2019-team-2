@@ -40,34 +40,28 @@ describe('<ParserComponent /> renders correctly', () => {
 });
 
 describe('FileEvents processed correctly', () => {
-  it('file input event calls onChange and passes in correct file', async () => {
+  it('file input event calls onChange with selected file', async () => {
     // todo: pray for me
-    const onChangeMock = jest.fn();
+    const onChangeMock = jest.fn((x: File) => x.name);
     const testFile: File = new File(
-        [''],
+        ['asafsa'],
         'test.csv',
         {type: '.csv,text/csv'},);
+
     const props = {
       prompt: 'test: ',
       fileType: FileType.csv,
     };
     const event = {target: {files: [testFile]}};
-
     const comp = mount(
         <ParserComponent
           {...props}
           onChange={onChangeMock}
         />);
 
-    // console.log(comp.state());
-    // console.log(comp.find('input').prop('onChange'));
-    // console.log(comp.props());
     comp.find('input').simulate('change', event);
-    console.log(comp.debug());
-
+    expect(onChangeMock).toHaveReturnedWith(testFile.name);
     expect(onChangeMock).toHaveBeenCalledTimes(1);
-    expect(onChangeMock).toHaveBeenCalledWith(testFile);
-    console.log(comp.state());
   });
 });
 

@@ -73,7 +73,7 @@ describe('<ParserComponent /> Unit Tests', () => {
 
   describe('componentDidMount()', () => {
     it('dummy test', () => {
-      // todo: devs need to write unit tests
+      // test that it is called
     });
   });
 
@@ -134,14 +134,19 @@ describe('<ParserComponent /> Unit Tests', () => {
   });
 
   describe('parse()', () => {
-    it('dummy test', () => {
-      // todo: devs need to write unit tests
+    const pi: ParserInterface = {prompt: 'test', fileType: FileType.csv};
+    const pc = new ParserComponent(pi);
+    it('infertypes is called', () => {
+      expect(pc.inferTypes([])).toBeCalledTimes(1);
+    });
+    it('timeline is set to true', () => {
     });
   });
 
   describe('parseCsv()', () => {
     it('dummy test', () => {
-      // todo: devs need to write unit tests
+      // check to see if functions are called
+      // and if state is set
     });
   });
 

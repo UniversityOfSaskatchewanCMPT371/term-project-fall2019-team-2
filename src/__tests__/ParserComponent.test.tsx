@@ -11,27 +11,27 @@ describe('<ParserComponent /> renders correctly', () => {
   };
 
   it('renders a <ParserComponent /> to select a .csv', () => {
-    const wrapper = shallow(
+    const comp = shallow(
         <ParserComponent
           {...props}
           fileType={FileType.csv}
         />);
 
-    expect(wrapper.contains(prompt)).toBeTruthy();
-    expect(wrapper.exists('input')).toBeTruthy();
-    expect(wrapper.find('input').prop('accept')).toContain('.csv,text/csv');
+    expect(comp.contains(prompt)).toBeTruthy();
+    expect(comp.exists('input')).toBeTruthy();
+    expect(comp.find('input').prop('accept')).toContain('.csv,text/csv');
   });
 
   it('renders a <ParseComponent /> to select a .tl', () => {
-    const wrapper = shallow(
+    const comp = shallow(
         <ParserComponent
           {...props}
           fileType={FileType.tl}
         />);
 
-    expect(wrapper.contains(prompt)).toBeTruthy();
-    expect(wrapper.exists('input')).toBeTruthy();
-    expect(wrapper.find('input').prop('accept')).toContain('.tl');
+    expect(comp.contains(prompt)).toBeTruthy();
+    expect(comp.exists('input')).toBeTruthy();
+    expect(comp.find('input').prop('accept')).toContain('.tl');
   });
 });
 

@@ -62,8 +62,12 @@ describe('FileEvents processed correctly', () => {
 // To be used by the developers
 describe('<ParserComponent /> Unit Tests', () => {
   describe('constructor()', () => {
-    it('dummy test', () => {
-      // todo: devs need to write unit tests
+    it('constructor sets variables', () => {
+      const pi: ParserInterface = {prompt: 'test', fileType: FileType.csv};
+      const pc = new ParserComponent(pi);
+      expect(pc.state.prompt).toBe('test');
+      expect(pc.state.fileType).toBe(FileType.csv);
+      expect(pc.state.data).toStrictEqual([]);
     });
   });
 

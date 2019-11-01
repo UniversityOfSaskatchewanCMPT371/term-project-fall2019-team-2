@@ -59,15 +59,37 @@ describe('FileEvents processed correctly', () => {
           onChange={onChangeMock}
         />);
 
-    // console.log(comp.state());
-    // console.log(comp.find('input').prop('onChange'));
-    // console.log(comp.props());
+    console.log('state' + comp.state());
+    console.log('debug' + comp.debug());
+    console.log(comp.find('input').prop('onChange'));
+    console.log(comp.props());
     comp.find('input').simulate('change', event);
     console.log(comp.debug());
 
     expect(onChangeMock).toHaveBeenCalledTimes(1);
     expect(onChangeMock).toHaveBeenCalledWith(testFile);
     console.log(comp.state());
+  });
+});
+
+describe('Passing CSV files with no heads on the first row', ()=>{
+  it('should thrown an error if no headers', ()=>{
+    const onChangeMock = jest.fn();
+    const testFile= fs.readFileSync('.\\src\\__tests__\\testfiles' +
+      '\\noHeader.csv', 'utf8');
+    console.log(testFile.substring(0, 140));
+    // todo : let class read the file and check if it throw errors
+    const props = {
+      prompt: 'test: ',
+      fileType: FileType.csv,
+    };
+    const event = {target: {files: [testFile]}};
+
+    const comp = mount(
+        <ParserComponent
+          {...props}
+          onChange={onChangeMock}
+        />);
   });
 });
 

@@ -63,7 +63,12 @@ describe('FileEvents processed correctly', () => {
     expect(onChangeMock).toHaveReturnedWith(testFile.name);
     expect(onChangeMock).toHaveBeenCalledTimes(1);
   });
+
+  it('...',async => { //placeholder
+    //TODO: god help me
+  })
 });
+
 
 // To be used by the developers
 describe('<ParserComponent /> Unit Tests', () => {

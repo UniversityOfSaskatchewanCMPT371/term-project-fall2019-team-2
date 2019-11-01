@@ -1,8 +1,6 @@
 import React, {ReactDOM} from 'react';
 import {mount, shallow} from 'enzyme';
-import ParserComponent from '../components/ParserComponent';
 import TimelineComponent from '../components/TimelineComponent';
-import {TimelineState} from '../components/TimelineInterface';
 import Data from '../components/Data';
 
 describe('<TimelineComponent /> renders correctly', () => {

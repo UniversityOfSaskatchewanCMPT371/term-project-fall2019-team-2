@@ -90,6 +90,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
     // this.sortData(this.state.data);
     // this.inferTypes(this.state.data);
     if (this.props.fileType === FileType.csv) {
+      // eslint-disable-next-line max-len
       this.parseCsv(fileEvent).then(() => console.log('done'));
     }
   }
@@ -99,9 +100,13 @@ export default class ParserComponent extends React.Component<ParserInterface,
    * @param {Object} fileEvent: the event passed into this component
    */
   async parseCsv(fileEvent: any) {
-    console.log(fileEvent);
+    // console.log(fileEvent);
 
     const csvFile = fileEvent.target.files[0];
+
+    // for testing
+    this.props.onChange(fileEvent.target.files[0]);
+
     const fileReader = new FileReader();
 
     console.log(csvFile);

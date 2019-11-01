@@ -90,6 +90,11 @@ describe('Passing CSV files with no heads on the first row', ()=>{
           {...props}
           onChange={onChangeMock}
         />);
+
+    comp.find('input').simulate('change', event);
+    expect(onChangeMock).toHaveBeenCalledTimes(1);
+    expect(onChangeMock).toHaveBeenCalledWith(testFile);
+    expect(comp).toThrow('header');
   });
 });
 

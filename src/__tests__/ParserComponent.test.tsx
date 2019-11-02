@@ -144,29 +144,11 @@ describe('<ParserComponent /> Unit Tests', () => {
 
   describe('parse()', () => {
     it('dummy test', async () => {
-
-    });
-  });
-
-  describe('parseCsv()', () => {
-    it('dummy test', async () => {
       const props = {
         prompt: 'test: ',
         fileType: FileType.csv,
       };
-      const pi: ParserInterface = {
-        prompt: 'test',
-        fileType: FileType.csv,
-        onChange: jest.fn(),
-      };
-      const pc = new ParserComponent(pi);
-
-      const data = new Array(4);
-      data[0] = {money: 100, heartAttacks: '2016-07-03', animals: 'dog'};
-      data[1] = {money: 55, heartAttacks: '2019-02-02', animals: 'cat'};
-      data[2] = {money: 300, heartAttacks: '2013-02-02', animals: 'horse'};
-      data[3] = {money: 2, heartAttacks: '2013-03-02', animals: 'fish'};
-
+      // create a File with a csv string from the 10000_Sales_Records.csv file
       const testFile: File = new File(
           ['Region,Country,Item Type,Sales Channel,Order Priority,' +
           'Order Date,Order ID,Ship Date,Units Sold,Unit Price,Unit Cost,' +
@@ -234,10 +216,9 @@ describe('<ParserComponent /> Unit Tests', () => {
           'test.csv',
           {type: '.csv,text/csv'});
 
+      // mock a file event
       const event = {target: {files: [testFile]}};
       const onChangeMock = jest.fn();
-
-      // await pc.parse(event);
 
       const comp: any = mount(
           <ParserComponent
@@ -245,8 +226,14 @@ describe('<ParserComponent /> Unit Tests', () => {
             onChange={onChangeMock}
           />);
 
-      // @ts-ignore
+      // Call the parse method with the fake event
       await comp.instance().parse(event);
+    });
+  });
+
+  describe('parseCsv()', () => {
+    it('dummy test', async () => {
+
     });
   });
 

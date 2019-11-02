@@ -40,6 +40,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
   beforeEach(() => {
     console.warn = mockedWarn;
 
+    // data array
     data = new Data('path/to/file', [
       {
         'Region': 'North America',
@@ -149,6 +150,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
       new Column('number', 2, 'index', 1),
       new Column('number', 2, 'Order Date_num', 1)]);
 
+    // Create spies
     drawTimelineSpy =
         jest.spyOn(TimelineComponent.prototype, 'drawTimeline');
     toggleTimelineSpy =
@@ -171,12 +173,19 @@ describe('<TimelineComponent /> Unit Tests', () => {
         jest.spyOn(TimelineComponent.prototype, 'drawIntervalMagnitude');
 
 
-    document.body.innerHTML = '<div><button>Switch to Interval Timeline' +
-        '</button><div id="svgtarget"></div></div>';
+    // We have to mount the wrapper once to get the html it will generate in
+    // it's render method
+    wrapper = mount(
+        <TimelineComponent
+          data={data}/>);
 
-    // wrapper = render(
-    //   <TimelineComponent
-    //     data={data}/>);
+    // Because d3 needs to manipulate the DOM, we need to bind the html produced
+    // by the TimelineComponent to the current browser window so that the d3
+    // functions have something to manipulate.
+    document.body.innerHTML = wrapper.html();
+
+    // Unforuntately, the wrapper must be mounted again so that the test cases
+    // will have a blank slate to work with.
     wrapper = mount(
         <TimelineComponent
           data={data}/>);
@@ -208,6 +217,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
 
   describe('constructor()', () => {
     it('checks that the constructor correctly sets the component state', () => {
+      // Check that the component state is set correctly.
       expect(wrapper.state('data')).toEqual(data);
       expect(wrapper.state('width')).toEqual(window.innerWidth);
       expect(wrapper.state('height')).toEqual(window.innerHeight);
@@ -225,9 +235,6 @@ describe('<TimelineComponent /> Unit Tests', () => {
     it('checks if drawTimeline is called', () => {
       expect(initTimelineSpy).toHaveBeenCalled();
       expect(drawTimelineSpy).toHaveBeenCalled();
-      // console.log(document.body.innerHTML);
-      // console.log(wrapper.html());
-      // console.log(consoleOutput[0]);
     });
   });
 
@@ -326,8 +333,6 @@ describe('<TimelineComponent /> Unit Tests', () => {
             expect(wrapper.state('toggleTimeline')).toBe(1);
             wrapper.instance().updateChart();
             // expect(consoleOutput[1]).toEqual('d3.event was null');
-
-            // console.log(consoleOutput[0]);
             res(true);
           }, 1000));
 
@@ -342,11 +347,14 @@ describe('<TimelineComponent /> Unit Tests', () => {
   });
   describe('updateBars()', () => {
     it('dummy test', () => {
+      expect(drawTimelineSpy).toHaveBeenCalled();
+      expect(updateBarsSpy).toHaveBeenCalled();
+      console.log(document.body.innerHTML);
       // console.log(wrapper.)
       expect(d3.selectAll('.bar').size()).toBe(5);
       wrapper.instance().drawIntervalMagnitude(d3.selectAll('.bar'));
       expect(drawIntervalMagnitudeSpy).toHaveBeenCalled();
-      // console.log(document.body.innerHTML);
+      //
     });
   });
 

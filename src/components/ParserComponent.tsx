@@ -164,11 +164,9 @@ export default class ParserComponent extends React.Component<ParserInterface,
           try {
             // @ts-ignore
             const val = row[listFields[i]];
-            console.log(val);
             if (typeof val === 'string') {
               const date = moment(val);
               const isValid = date.isValid();
-              console.log(isValid);
               if (isValid) {
                 curColTypes['numDate'] += 1;
               } else {
@@ -235,13 +233,13 @@ export default class ParserComponent extends React.Component<ParserInterface,
         showTimeline: false,
       };
     });
-    // console.log(await readCsv());
+
     if (this.props.fileType === FileType.csv) {
       await this.parseCsv(fileEvent);
     }
     this.columnTypes = this.inferTypes(this.state.data);
 
-    console.log(this.columnTypes);
+    // console.log(this.columnTypes);
 
     this.setState(() => {
       return {
@@ -256,7 +254,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
    * @param {Object} fileEvent: the event passed into this component
    */
   async parseCsv(fileEvent: any) {
-    console.log(fileEvent);
+    // console.log(fileEvent);
 
     const csvFile = fileEvent.target.files[0];
 

@@ -64,8 +64,8 @@ describe('FileEvents processed correctly', () => {
     expect(onChangeMock).toHaveBeenCalledTimes(1);
   });
 
-  it('...',async => { //placeholder
-    //TODO: god help me
+  it("TBA", () => {
+      //TODO God help me
   })
 });
 

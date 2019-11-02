@@ -79,6 +79,8 @@ describe('FileEvents processed correctly', () => {
 
     console.log(component.debug)
 
+    //component.find('input').simulate()
+
   })
 });
 

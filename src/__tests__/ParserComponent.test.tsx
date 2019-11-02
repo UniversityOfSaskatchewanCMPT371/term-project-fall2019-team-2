@@ -73,8 +73,62 @@ describe('<ParserComponent /> Unit Tests', () => {
   });
 
   describe('isValid()', () => {
-    it('dummy test', () => {
-      // todo: devs need to write unit tests
+    it('test if when a csv is uploaded it works correctly', () => {
+      const testFile: File = new File(
+          [''],
+          'test.csv',
+          {type: '.csv,test/csv'},
+      );
+      // eslint-disable-next-line max-len
+      const wrapper = mount(<ParserComponent prompt={'Select a TL file: '} fileType={FileType.csv}/>);
+      const instance = wrapper.instance() as ParserComponent;
+      expect(instance.isValid(testFile)).toBeTruthy();
+    });
+    // eslint-disable-next-line max-len
+    it('test if when a csv is uploaded it works correctly with name csv(csv.csv)', () => {
+      const testFile: File = new File(
+          [''],
+          'csv.csv',
+          {type: '.csv,test/csv'},
+      );
+      // eslint-disable-next-line max-len
+      const wrapper = mount(<ParserComponent prompt={'Select a TL file: '} fileType={FileType.csv}/>);
+      const instance = wrapper.instance() as ParserComponent;
+      expect(instance.isValid(testFile)).toBeTruthy();
+    });
+    it('test if when a non-csv is uploaded it works correctly', () => {
+      const testFile: File = new File(
+          [''],
+          'test.pdf',
+          {type: '.pdf,test/pdf'},
+      );
+      // eslint-disable-next-line max-len
+      const wrapper = mount(<ParserComponent prompt={'Select a TL file: '} fileType={FileType.csv}/>);
+      const instance = wrapper.instance() as ParserComponent;
+      expect(instance.isValid(testFile)).toEqual(false);
+    });
+    // eslint-disable-next-line max-len
+    it('test if when a non-csv is uploaded it works correctly with name csv(csv.pdf)', () => {
+      const testFile: File = new File(
+          [''],
+          'test.pdf',
+          {type: '.pdf,test/pdf'},
+      );
+      // eslint-disable-next-line max-len
+      const wrapper = mount(<ParserComponent prompt={'Select a TL file: '} fileType={FileType.csv}/>);
+      const instance = wrapper.instance() as ParserComponent;
+      expect(instance.isValid(testFile)).toEqual(false);
+    });
+    it('test if it works when there is nothing', () => {
+      const testFile: File = new File(
+          [''],
+          '',
+          {type: ''},
+      );
+      // eslint-disable-next-line max-len
+      const wrapper = mount(<ParserComponent prompt={'Select a TL file: '} fileType={FileType.csv}/>);
+      const instance = wrapper.instance() as ParserComponent;
+      expect(instance.isValid(testFile)).toEqual(false);
     });
   });
 

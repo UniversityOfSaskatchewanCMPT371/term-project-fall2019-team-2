@@ -54,12 +54,12 @@ export default class ParserComponent extends React.Component<ParserInterface,
   /**
      * Purpose: checks if the passed in event contains a file upload, then
      * verifies that the file type and contents are valid
-     * @param {Object} fileEvent: the event passed into this component
+     * @param {Object} upFile: takes in the file
      * @return {boolean}: a boolean indicating whether or not the file upload is
      * valid
      */
-  isValid(fileEvent: any): boolean {
-    const typeOfFile = fileEvent.name.substr(fileEvent.name.length - 4);
+  isValid(upFile: File): boolean {
+    const typeOfFile = upFile.name.substr(upFile.name.length - 4);
     return typeOfFile === '.csv';
   }
 

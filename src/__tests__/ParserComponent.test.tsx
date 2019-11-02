@@ -76,7 +76,7 @@ describe('<ParserComponent /> Unit Tests', () => {
     it('dummy test', () => {
       // todo: devs need to write unit tests
     });
-  });
+  })
 
   describe('componentDidMount()', () => {
     it('dummy test', () => {

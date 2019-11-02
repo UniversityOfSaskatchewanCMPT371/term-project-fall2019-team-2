@@ -193,7 +193,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
       expect(wrapper.state('data')).toEqual(data);
       expect(wrapper.state('width')).toEqual(window.innerWidth);
       expect(wrapper.state('height')).toEqual(window.innerHeight);
-      expect(wrapper.state('marginTop')).toEqual(40);
+      expect(wrapper.state('marginTop')).toEqual(0);
       expect(wrapper.state('marginBottom')).toEqual(170);
       expect(wrapper.state('marginLeft')).toEqual(40);
       expect(wrapper.state('marginRight')).toEqual(20);

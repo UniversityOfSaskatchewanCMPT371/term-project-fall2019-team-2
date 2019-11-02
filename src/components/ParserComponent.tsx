@@ -1,6 +1,5 @@
 import React from 'react';
 import ParserInterface, {FileType, ParserState} from './ParserInterface';
-import * as d3dsv from 'd3-dsv';
 import Column, {enumDrawType} from './Column';
 import moment from 'moment';
 import * as d3

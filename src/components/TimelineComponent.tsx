@@ -62,7 +62,7 @@ export default class TimelineComponent
       width: window.innerWidth,
       height: window.innerHeight,
       marginTop: 0,
-      marginBottom: 570,
+      marginBottom: 170,
       marginLeft: 40,
       marginRight: 20,
       toggleTimeline: 0,

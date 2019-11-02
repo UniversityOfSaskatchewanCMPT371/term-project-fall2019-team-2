@@ -3,6 +3,8 @@ import {mount, shallow} from 'enzyme';
 import ParserComponent, {CountTypes} from '../components/ParserComponent';
 import ParserInterface, {FileType} from '../components/ParserInterface';
 import {enumDrawType} from '../components/Column';
+import {Simulate} from 'react-dom/test-utils';
+// import mouseOut = Simulate.mouseOut;
 
 describe('<ParserComponent /> renders correctly', () => {
   const prompt = <label>test: </label>;
@@ -60,6 +62,76 @@ describe('Csv FileEvents processed correctly', () => {
     const fileUsed: File = onChangeMock.mock.calls[0][0];
     expect(fileUsed.name).toBe(testFile.name);
     expect(onChangeMock).toHaveBeenCalledTimes(1);
+  });
+
+  describe('Incompatible File types not accepted', () => {
+    const onChangeMock = jest.fn((x: File) => x.name);
+    const comp = mount(
+        <ParserComponent
+          {...props}
+          onChange={onChangeMock}
+        />
+    );
+
+    beforeEach(() => {
+      onChangeMock.mockClear();
+      comp.setState({data: []});
+    });
+
+    xit('.pdf rejected', async () => {
+      const pdfTestFile: File = new File(
+          ['test'],
+          'test.pdf',
+          {type: '.pdf,application/pdf'},
+      );
+      const fileEvent = {target: {files: [pdfTestFile]}};
+      // expect(
+      //     comp
+      //         .find('input')
+      //         .simulate('change', fileEvent)
+      // ).toThrowError();
+    });
+
+    it('.txt rejected', async () => {
+      const txtTestFile: File = new File(
+          ['abcdefg'],
+          'test.txt',
+          {type: '.txt, text/plain'},
+      );
+      const fileEvent = {target: {files: [txtTestFile]}};
+      comp.find('input').simulate('change', fileEvent);
+      await onChangeMock;
+    });
+
+    xit('.doc rejected', async () => {
+      const docTestFile: File = new File(
+          [''],
+          'test.doc',
+          {type: '.doc, application/msword'},
+      );
+      const fileEvent = {target: {files: [docTestFile]}};
+      comp.find('input').simulate('change', fileEvent);
+    });
+
+    xit('.css rejected', async () => {
+      const cssTestFile: File = new File(
+          [''],
+          'test.css',
+          {type: '.css, text/css'},
+      );
+      const fileEvent = {target: {files: [cssTestFile]}};
+      comp.find('input').simulate('change', fileEvent);
+    });
+
+    xit('.js rejected', async () => {
+      const jsTestFile: File = new File(
+          ['abcdefg'],
+          'test.js',
+          {type: '.js, text/javascript'},
+      );
+      const fileEvent = {target: {files: [jsTestFile]}};
+      comp.find('input').simulate('change', fileEvent);
+    });
   });
 });
 

@@ -48,6 +48,7 @@ describe('FileEvents processed correctly', () => {
         'test.csv',
         {type: '.csv,text/csv'},);
 
+
     const props = {
       prompt: 'test: ',
       fileType: FileType.csv,

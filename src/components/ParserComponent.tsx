@@ -101,8 +101,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
         if (!isNaN(date) && isNaN(Number(value))) {
           doneTheWork = true;
 
-          const keyInt = key + '_num';
-          // console.log(keyInt);
+          const keyInt = `${key}_num`;
 
           TimSort.sort(data, function(a: any, b: any) {
             if (!a.hasOwnProperty(keyInt)) {
@@ -118,10 +117,9 @@ export default class ParserComponent extends React.Component<ParserInterface,
 
           this.setState(() => {
             return {
-              data: data,
+              data,
             };
           });
-          // console.log(this.state.data);
         }
       }
     }
@@ -219,7 +217,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
       );
       return arrayOfColumns;
     } else {
-      throw new Error('data is empty: ' + data.length);
+      throw new Error(`data is empty: ${data.length}`);
     }
   }
 
@@ -239,8 +237,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
     }
     this.columnTypes = this.inferTypes(this.state.data);
 
-    // console.log(this.columnTypes);
-
     this.setState(() => {
       return {
         showTimeline: true,
@@ -254,8 +250,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
    * @param {Object} fileEvent: the event passed into this component
    */
   async parseCsv(fileEvent: any) {
-    // console.log(fileEvent);
-
     const csvFile = fileEvent.target.files[0];
 
     // for testing

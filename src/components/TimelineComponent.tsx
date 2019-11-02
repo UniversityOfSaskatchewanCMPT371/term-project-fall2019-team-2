@@ -197,7 +197,7 @@ export default class TimelineComponent
       if (col !== null && col !== undefined) {
         const data = this.state.data;
         if (col.primType === 'date') {
-          const keyInt = column + '_num';
+          const keyInt = `${column}_num`;
           TimSort.sort(data.arrayOfData, function(a: any, b: any) {
             if (!a.hasOwnProperty(keyInt)) {
               a[keyInt] = Date.parse(a[column]);
@@ -215,7 +215,7 @@ export default class TimelineComponent
 
         this.setState(() => {
           return {
-            data: data,
+            data,
           };
         });
       }
@@ -242,7 +242,7 @@ export default class TimelineComponent
         return {
           xColumn: val,
         };
-      }, async () => await this.sortData(val));
+      }, () => this.sortData(val));
     } else if (column === 'xColumn2') {
       this.setState(() => {
         return {
@@ -461,8 +461,7 @@ export default class TimelineComponent
         // @ts-ignore
         .call(this.zoom)
         .append('g')
-        .attr('transform', 'translate(' + marginLeft +
-            ',' + marginTop + ')');
+        .attr('transform', `translate(${marginLeft}, ${marginTop})`);
 
     this.svg.append('rect')
         .attr('width', width)
@@ -510,8 +509,7 @@ export default class TimelineComponent
     // Column labels
     this.svg.append('text')
         .attr('transform',
-            'translate(' + (width/2) + ' ,' +
-                      (height + marginTop + 20) + ')')
+            `translate(${width/2},${height + marginTop + 20})`)
         .style('text-anchor', 'middle')
         .text(this.state.xColumn);
 
@@ -572,8 +570,8 @@ export default class TimelineComponent
         .style('border-width', '2px')
         .style('border-radius', '5px')
         .style('padding', '5px')
-        .style('left', (x + 70) + 'px')
-        .style('top', y + 'px');
+        .style('left', `${x + 70}px`)
+        .style('top', `${y}px`);
 
     const keys = Object.keys(d);
     let tooltip: string = '';

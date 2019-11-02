@@ -91,7 +91,7 @@ export default class TimelineComponent
     this.sortData = this.sortData.bind(this);
     this.getEventMagnitudeData = this.getEventMagnitudeData.bind(this);
     this.getIntervalMagnitudeData = this.getIntervalMagnitudeData.bind(this);
-    
+
     // this.changeColumn = this.changeyColumn.bind(this);
   }
 
@@ -766,37 +766,36 @@ export default class TimelineComponent
     data = csvData.slice(dataIdx, numBars + dataIdx);
     ordinals = data.map((d: any) => d[xColumn]);
   }
-  
+
   getIntervalMagnitudeData() {
     let dataIdxEnd: number;
-    let keyInt1 = xColumn + '_num';
-    let keyInt2 = xColumn2 + '_num';
+    const keyInt1 = xColumn + '_num';
+    const keyInt2 = xColumn2 + '_num';
     let consecutive = true;
-    
-    for(dataIdxEnd = dataIdx; dataIdxEnd < csvData.length; dataIdxEnd++){
+
+    for (dataIdxEnd = dataIdx; dataIdxEnd < csvData.length; dataIdxEnd++) {
       const elem: any = csvData[dataIdxEnd];
-  
+
       if (!elem.hasOwnProperty(keyInt1)) {
         elem[keyInt1] = Date.parse(elem[xColumn]);
       }
-  
+
       if (!elem.hasOwnProperty(keyInt2)) {
         elem[keyInt2] = Date.parse(elem[xColumn2]);
       }
-      
-      if(consecutive &&
+
+      if (consecutive &&
           ((scale * timeScale(elem[keyInt1])) < -deltaX &&
           (scale * timeScale(elem[keyInt2])) < -deltaX)) {
         dataIdx++;
-      }
-      else {
+      } else {
         consecutive = false;
       }
-      
+
       console.log('timeScale: ' + timeScale(elem[keyInt1]));
       // If this is true, then the x position of the start of the bar and end of
       // the bar are currently outside of the viewing area
-      if(!((scale * timeScale(elem[keyInt1])) < (-deltaX + width) ||
+      if (!((scale * timeScale(elem[keyInt1])) < (-deltaX + width) ||
           (((scale * timeScale(elem[keyInt2])) <= -deltaX + width) &&
               ((scale * timeScale(elem[keyInt2])) > -deltaX)))) {
         break;
@@ -806,12 +805,12 @@ export default class TimelineComponent
       //   break;
       // }
     }
-    console.log("dataIdx: " + dataIdx);
+    console.log('dataIdx: ' + dataIdx);
     console.log('dataIdxEnd: ' + dataIdxEnd);
-    
+
     data = csvData.slice(dataIdx, dataIdxEnd + barBuffer);
   }
-  
+
   /**
    *
    */
@@ -820,11 +819,11 @@ export default class TimelineComponent
         .attr('transform', (d) => {
           return `translate(${deltaX},0)`;
         });
-  
+
     this.state.toggleTimeline === 0 ?
         this.getEventMagnitudeData() :
         this.getIntervalMagnitudeData();
-    
+
     // finds starting index
     // dataIdx = Math.floor(-deltaX / (scale * barWidth));
     // data = csvData.slice(dataIdx, numBars + dataIdx);

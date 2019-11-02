@@ -35,11 +35,14 @@ export default class Mesa extends React.Component<{}, Interface> {
           for (let i = 0; i < data.length; i++) {
             const d: any = data[i];
             d['index'] = i;
-            // console.log(d);
+            d['Order Date Cmp'] = Date.parse(d['Order Date']);
             data[i] = d;
-            // @ts-ignore
-            // data[i]['Index'] = i;
           }
+
+          data.sort(function(a, b) {
+            // @ts-ignore
+            return a['Order Date Cmp']-b['Order Date Cmp'];
+          });
           console.log(data);
           this.setState({
             csvData: data,

@@ -13,7 +13,7 @@ const App: React.FC = () => {
         fileType={FileType.csv}
         onChange={function() {}}
       />
-      {/*<TimelineComponent data={new Data('path/to/file', [{}])} />*/}
+      {/* <TimelineComponent data={new Data('path/to/file', [{}])} />*/}
     </div>
   );
 };

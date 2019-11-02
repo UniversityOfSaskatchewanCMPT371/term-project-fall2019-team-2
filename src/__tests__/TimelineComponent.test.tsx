@@ -1,26 +1,14 @@
-import React, {ReactDOM} from 'react';
+import React from 'react';
 import {
-  mount,
-  shallow,
-  render
+  mount
 } from 'enzyme';
-import ParserComponent
-  from '../components/TimelineComponent';
-import {TimelineState} from '../components/TimelineInterface';
-import sinon
-  from 'sinon';
+import * as d3
+  from 'd3';
+
 import TimelineComponent
   from '../components/TimelineComponent';
 import Data
   from '../components/Data';
-import * as d3
-  from 'd3';
-import * as TimSort
-  from 'timsort';
-import React from 'react';
-import {shallow} from 'enzyme';
-import TimelineComponent from '../components/TimelineComponent';
-import Data from '../components/Data';
 
 
 // To be used by developers
@@ -160,13 +148,13 @@ describe('<TimelineComponent /> Unit Tests', () => {
     ttLeaveSpy =
         jest.spyOn(TimelineComponent.prototype, 'ttLeave');
     drawEventMagnitudeSpy =
-      jest.spyOn(TimelineComponent.prototype, 'drawEventMagnitude');
+        jest.spyOn(TimelineComponent.prototype, 'drawEventMagnitude');
     drawIntervalMagnitudeSpy =
-      jest.spyOn(TimelineComponent.prototype, 'drawIntervalMagnitude');
+        jest.spyOn(TimelineComponent.prototype, 'drawIntervalMagnitude');
 
 
     document.body.innerHTML = '<div><button>Switch to Interval Timeline' +
-      '</button><div id="svgtarget"></div></div>';
+        '</button><div id="svgtarget"></div></div>';
 
     // wrapper = render(
     //   <TimelineComponent

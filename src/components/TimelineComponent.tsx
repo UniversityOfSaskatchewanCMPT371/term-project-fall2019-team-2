@@ -61,8 +61,8 @@ export default class TimelineComponent
       data: props.data,
       width: window.innerWidth,
       height: window.innerHeight,
-      marginTop: 40,
-      marginBottom: 170,
+      marginTop: 0,
+      marginBottom: 570,
       marginLeft: 40,
       marginRight: 20,
       toggleTimeline: 0,
@@ -144,7 +144,7 @@ export default class TimelineComponent
     fullHeight = this.state.height;
     fullWidth = this.state.width;
 
-    height = fullHeight - (marginBottom - marginTop);
+    height = fullHeight - (marginBottom + marginTop);
 
     width = fullWidth - (marginLeft + marginRight);
 

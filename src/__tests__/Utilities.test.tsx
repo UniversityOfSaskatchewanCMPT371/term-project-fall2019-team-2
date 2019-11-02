@@ -90,13 +90,19 @@ describe('Utilites Unit Tests', ()=>{
           'num    [14 Bytes]: 123\n' +
           'total [30 Bytes]\n');
 
-      expect(sizeofObj(123)).toBe('8 Bytes');
-      expect(sizeofObj('a')).toBe('2 Bytes');
+      expect(sizeofObj(123)).toBe('');
+      expect(sizeofObj('a')).toBe('');
       expect(sizeofObj({name: 'test', num: 123}))
-          .toBe('30 Bytes');
-      expect(sizeofObj([1, 2, 3])).toBe('24 Bytes');
-      expect(sizeofObj([])).toBe('0 Bytes');
-      expect(sizeofObj({})).toBe('0 Bytes');
+          .toBe('name   [16 Bytes]: test\n' +
+              'num    [14 Bytes]: 123\n' +
+              'total [30 Bytes]\n');
+      expect(sizeofObj([1, 2, 3])).toBe(
+          '0      [10 Bytes]: 1\n' +
+          '1      [10 Bytes]: 2\n' +
+          '2      [10 Bytes]: 3\n' +
+          'total [24 Bytes]\n');
+      expect(sizeofObj([])).toBe('total [0 Bytes]\n');
+      expect(sizeofObj({})).toBe('total [0 Bytes]\n');
     });
   });
 });

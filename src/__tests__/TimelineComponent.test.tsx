@@ -277,7 +277,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
   describe('drawTimeline()', () => {
     it('timeline drawer handles zoom out', () => {
       wrapper.instance().drawTimeline();
-      const event = new KeyboardEvent('keypress', {'key': 'w'} as any);
+      const event = new KeyboardEvent('keypress', {'key': 'w'});
       document.body.dispatchEvent(event);
 
       expect(wrapper.instance().getScale()).toBeGreaterThan(1.0);
@@ -285,11 +285,11 @@ describe('<TimelineComponent /> Unit Tests', () => {
 
     it('timeline drawer handles zoom in', () => {
       wrapper.instance().drawTimeline();
-      let event = new KeyboardEvent('keypress', {'key': 'w'} as any);
+      let event = new KeyboardEvent('keypress', {'key': 'w'});
       document.body.dispatchEvent(event);
 
       expect(wrapper.instance().getScale()).toBeGreaterThan(1.0);
-      event = new KeyboardEvent('keypress', {'key': 's'} as any);
+      event = new KeyboardEvent('keypress', {'key': 's'});
       document.body.dispatchEvent(event);
 
       expect(wrapper.instance().getScale()).toBe(1.0);
@@ -297,7 +297,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
 
     it('timeline drawer handles pan right', () => {
       wrapper.instance().drawTimeline();
-      const event = new KeyboardEvent('keypress', {'key': 'd'} as any);
+      const event = new KeyboardEvent('keypress', {'key': 'd'});
       document.body.dispatchEvent(event);
 
       expect(wrapper.instance().getDeltaX()).toBeLessThan(0);
@@ -305,11 +305,11 @@ describe('<TimelineComponent /> Unit Tests', () => {
 
     it('timeline drawer handles pan left', () => {
       wrapper.instance().drawTimeline();
-      let event = new KeyboardEvent('keypress', {'key': 'd'} as any);
+      let event = new KeyboardEvent('keypress', {'key': 'd'});
       document.body.dispatchEvent(event);
 
       expect(wrapper.instance().getDeltaX()).toBeLessThan(0);
-      event = new KeyboardEvent('keypress', {'key': 'a'} as any);
+      event = new KeyboardEvent('keypress', {'key': 'a'});
       document.body.dispatchEvent(event);
 
       expect(wrapper.instance().getDeltaX()).toBe(0);
@@ -317,7 +317,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
 
     it('timeline drawer does not zoom out too far', () => {
       wrapper.instance().drawTimeline();
-      const event = new KeyboardEvent('keypress', {'key': 's'} as any);
+      const event = new KeyboardEvent('keypress', {'key': 's'});
       document.body.dispatchEvent(event);
 
       // Should stay at 1
@@ -326,7 +326,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
 
     it('timeline drawer does not pan too far left', () => {
       wrapper.instance().drawTimeline();
-      const event = new KeyboardEvent('keypress', {'key': 'a'} as any);
+      const event = new KeyboardEvent('keypress', {'key': 'a'});
       document.body.dispatchEvent(event);
 
       // Should stay at 50 (the default)

@@ -14,9 +14,14 @@ const marginBottom: number = 170;
 const marginLeft: number = 70;
 const marginRight: number = 20;
 
+// Zooming and Panning using the keyboard
+// 10% zoomed out
 const scaleZoomOut = 0.9;
+// 10% zoomed in
 const scaleZoomIn = 1.1;
+// The default starting panned position
 const deltaPan = 50;
+// The minimum possible scale
 const scaleMin = 1.0;
 
 let fullWidth: number = 0;
@@ -362,7 +367,8 @@ export default class TimelineComponent
    */
   private zoom: any;
   /**
-   * Stores the svg for appending elements
+   * Stores the D3 svg for appending elements. The SVG is the primary
+   * D3 element we use for storing the graph.
    */
   private svg: any;
   /**
@@ -506,7 +512,19 @@ export default class TimelineComponent
         .attr('class', 'plot')
         .attr('id', 'bars');
 
-    // Column labels
+    // Labels
+    this.drawLabels();
+
+    this.updateBars();
+
+    this.registerEvents();
+  }
+
+  /**
+   * Draw the axis labels
+   * @return {void}: Nothing
+   */
+  private drawLabels(): void {
     this.svg.append('text')
         .attr('transform',
             `translate(${width/2},${height + marginTop + 20})`)
@@ -520,36 +538,44 @@ export default class TimelineComponent
         .attr('dy', '1em')
         .style('text-anchor', 'middle')
         .text(this.state.yColumn);
+  }
 
-    this.updateBars();
-
+  /**
+   * Register events on D3 elements.
+   * @return {void}: Nothing
+   */
+  private registerEvents(): void {
     // Handle keypresses
     d3.select('body')
-        .on('keypress', () => {
-          if (d3.event.key === '-' || d3.event.key === 's') {
-            const identity = d3.zoomIdentity
-                .scale(Math.max(scaleMin, this.scale * scaleZoomOut))
-                .translate(1, 1);
+    .on('keypress', () => {
+      if (d3.event.key === '-' || d3.event.key === 's') {
+        // Zoom out
+        const identity = d3.zoomIdentity
+            .scale(Math.max(scaleMin, this.scale * scaleZoomOut));
 
-            this.svg.transition().ease(d3.easeLinear).duration(300)
-                .call(this.zoom.transform, identity);
-            this.scale = Math.max(scaleMin, this.scale * scaleZoomOut);
-          } else if (d3.event.key === '+' || d3.event.key === 'w') {
-            const identity = d3.zoomIdentity
-                .scale(this.scale * scaleZoomIn)
-                .translate(1, 1);
+        this.svg.transition().ease(d3.easeLinear).duration(300)
+            .call(this.zoom.transform, identity);
+        // Ensure the new scale is saved with a limit on the minimum zoomed out scope
+        this.scale = Math.max(scaleMin, this.scale * scaleZoomOut);
+      } else if (d3.event.key === '+' || d3.event.key === 'w') {
+        // Zoom in
+        const identity = d3.zoomIdentity
+            .scale(this.scale * scaleZoomIn);
 
-            this.svg.transition().ease(d3.easeLinear).duration(300)
-                .call(this.zoom.transform, identity);
-            this.scale = this.scale * scaleZoomIn;
-          } else if (d3.event.key === 'a') {
-            deltaX += deltaPan;
-            this.moveChart();
-          } else if (d3.event.key === 'd') {
-            deltaX = Math.min(0, deltaX - deltaPan);
-            this.moveChart();
-          }
-        });
+        this.svg.transition().ease(d3.easeLinear).duration(300)
+            .call(this.zoom.transform, identity);
+        // Ensure the new scale is saved
+        this.scale = this.scale * scaleZoomIn;
+      } else if (d3.event.key === 'a') {
+        // Pan left
+        deltaX += deltaPan;
+        this.moveChart();
+      } else if (d3.event.key === 'd') {
+        // Pan right
+        deltaX = Math.min(0, deltaX - deltaPan);
+        this.moveChart();
+      }
+    });
   }
 
   /**

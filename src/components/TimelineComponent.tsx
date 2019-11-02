@@ -161,7 +161,7 @@ export default class TimelineComponent
     data = csvData.slice(0, numBars);
     ordinals = data.map((d: any) => d[xColumn]);
 
-    //console.log(data);
+    // console.log(data);
 
     // @ts-ignore
     minDate = new Date(d3.min(

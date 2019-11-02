@@ -341,14 +341,13 @@ describe('<TimelineComponent /> Unit Tests', () => {
   });
   describe('drawEventMagnitude()', () => {
     it('dummy test', () => {
-
       wrapper.instance().drawEventMagnitude(d3.selectAll('.bar'));
       expect(drawEventMagnitudeSpy).toHaveBeenCalled();
     });
   });
   describe('updateBars()', () => {
     it('dummy test', () => {
-      //console.log(wrapper.)
+      // console.log(wrapper.)
       expect(d3.selectAll('.bar').size()).toBe(5);
       wrapper.instance().drawIntervalMagnitude(d3.selectAll('.bar'));
       expect(drawIntervalMagnitudeSpy).toHaveBeenCalled();

@@ -4,6 +4,18 @@ const kb = 1024;
 const mb = 1048576;
 const gb = 1073741824;
 
+
+/**
+ * Purpose: like the native JS toFixed, but without rounding
+ * @param {number} num: number to convert
+ * @param {number} precision: precision
+ * @return {number}: the number with the specified number of decimal places
+ */
+export function numTrim(num: number, precision: number) {
+  const mult = Math.pow(10, precision);
+  return (Math.trunc(num * mult) / mult);
+}
+
 /**
  * Purpose: formats a number in human readable form with up to 3 decimal places
  * of precision
@@ -11,15 +23,15 @@ const gb = 1073741824;
  * @param {number} size: number to be interpreted as a size of bytes
  * @return {string}: human readable size string
  */
-function formatSize(size: number) {
+export function formatSize(size: number) {
   let sizeStr: string = '';
 
   if (size >= gb) {
-    sizeStr = (size / gb).toFixed(3) + ' GiB';
+    sizeStr = numTrim((size / gb), 3).toFixed(3) + ' GiB';
   } else if (size >= mb) {
-    sizeStr = (size / mb).toFixed(3) + ' MiB';
+    sizeStr = numTrim((size / mb), 3).toFixed(3) + ' MiB';
   } else if (size >= kb) {
-    sizeStr = (size / kb).toFixed(3) + ' KiB';
+    sizeStr = numTrim((size / kb), 3).toFixed(3) + ' KiB';
   } else {
     sizeStr = size + ' Bytes';
   }
@@ -45,7 +57,7 @@ export function sizeof(obj: any): string {
  * @param {string[]} strs: an array of strings
  * @return {number}: the length of the longest string in the array
  */
-function maxStrLen(strs: string[]): number {
+export function maxStrLen(strs: string[]): number {
   let len: number = 0;
 
   for (let i = 0; i < strs.length; i++) {
@@ -74,9 +86,9 @@ export function sizeofObj(obj: any): string {
   const vals: string[] = [];
   let totalSize:number = 0;
 
-  console.log(Object.keys(obj));
-
+  keys.push('total');
   keyLen = maxStrLen(keys) + 1;
+  keys.pop();
 
   if (typeof obj === 'object') {
     for (const key in obj) {
@@ -94,7 +106,7 @@ export function sizeofObj(obj: any): string {
     }
 
     str += 'total'.padEnd(keyLen) +
-      ('[' + sizeof(obj) + '] ').padEnd(keyLen) + '\n';
+      ('[' + sizeof(obj) + ']').padEnd(keyLen) + '\n';
   }
 
   return str;

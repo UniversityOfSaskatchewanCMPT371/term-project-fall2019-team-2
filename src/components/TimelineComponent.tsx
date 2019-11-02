@@ -89,7 +89,7 @@ export default class TimelineComponent
     this.dragEnded = this.dragEnded.bind(this);
     this.resetTimeline = this.resetTimeline.bind(this);
     this.sortData = this.sortData.bind(this);
-    // this.changeColumn = this.changeyColumn.bind(this);
+    this.changeColumn = this.changeColumn.bind(this);
   }
 
 
@@ -98,8 +98,6 @@ export default class TimelineComponent
    * timeline
    */
   componentDidMount(): void {
-    // console.log(this.state.data);
-
     if (this.state.data.columns !== null &&
         this.state.data.columns !== undefined) {
       const cols = this.state.data.columns;
@@ -110,8 +108,11 @@ export default class TimelineComponent
       yColumns = [];
       xColumns = [];
 
+      // iterate through columns and set default values
       for (let i = 0; i < cols.length; i++) {
         const col = cols[i];
+        // Plotting occurrence data isn't yet supported, so we are only
+        // interested in plotting magnitude data for the y-axis
         if (col.primType === 'number') {
           yColumns.push(col);
           if (!yColumnSet) {
@@ -138,6 +139,8 @@ export default class TimelineComponent
             // continue so the next if isn't evaluated on the same element
             continue;
           }
+          // if xColumn has already been set, set xColumn2 to the next suitable
+          // column
           if (xColumnSet && !xColumn2Set) {
             this.setState(() => {
               return {
@@ -149,6 +152,7 @@ export default class TimelineComponent
           }
         }
       }
+      // render the timeline
       this.setState(() => {
         return {
           loading: false,
@@ -206,7 +210,6 @@ export default class TimelineComponent
    */
   async changeColumn(e: any, column: string) {
     const val = e.target.value;
-    console.log(val);
 
     // @ts-ignore
     if (column === 'yColumn') {
@@ -237,7 +240,6 @@ export default class TimelineComponent
    * Purpose: to clear and redraw the timeline
    */
   resetTimeline() {
-    // console.log('herhq');
     d3.selectAll('svg').remove();
     this.initTimeline();
     this.drawTimeline();
@@ -358,14 +360,9 @@ export default class TimelineComponent
     deltaX = 0;
     scale = 1;
     csvData = this.state.data.arrayOfData;
-    // csvData = this.state.data.arrayOfData.filter((d: any) => {
-    //   return d['Region'] === 'North America';
-    // });
 
     data = csvData.slice(0, numBars);
     ordinals = data.map((d: any) => d[xColumn]);
-
-    // console.log(data);
 
     // @ts-ignore
     minDate = new Date(d3.min(
@@ -385,6 +382,8 @@ export default class TimelineComponent
         .domain([0, ordinals.length])
         .rangeRound([0, width]);
 
+    // This has to be used so sonarcloud doesn't freak out about unused
+    // variables -.-
     console.log(x(0));
 
     y = d3.scaleLinear()
@@ -432,9 +431,6 @@ export default class TimelineComponent
         .append('g')
         .attr('transform', 'translate(' + marginLeft +
             ',' + marginTop + ')');
-
-    // console.warn(d3.select('#svgtarget').node());
-    // console.log(document.body.innerHTML);
 
     svg.append('rect')
         .attr('width', width)
@@ -509,8 +505,6 @@ export default class TimelineComponent
       tooltip += '<strong>' + key + '</strong> <span style=\'color:red\'>' +
           d[key] + '</span><br/>';
     });
-
-    // console.log(document.body.innerHTML);
 
     Tooltip.html(tooltip);
 
@@ -758,7 +752,8 @@ export default class TimelineComponent
   }
 
   /**
-   *
+   * Purpose: called to recalculate the current chart position and data elements
+   * being rendered.
    */
   moveChart() {
     d3.select('#barsLayer')

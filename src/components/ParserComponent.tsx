@@ -106,11 +106,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
         }
       }
     }
-    if (!doneTheWork) {
-      return false;
-    } else {
-      return true;
-    }
+    return doneTheWork;
   }
 
   /**
@@ -247,7 +243,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
           } catch (e) {
             console.log(e);
             alert('The file uploaded needs to be CSV.');
-          };
+          }
         }
         if (!this.sortData(content)) {
           try {
@@ -255,7 +251,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
           } catch (e) {
             console.log(e);
             alert('The file uploaded has no dates.');
-          };
+          }
         }
       }
     };

@@ -100,15 +100,15 @@ export default class TimelineComponent
           yColumn = col.key;
           yColumnSet = true;
         }
-        if (!xColumnSet && col.primType === 'date' ||
-            col.primType === 'number') {
+        if (!xColumnSet && (col.primType === 'date' ||
+            col.primType === 'number')) {
           xColumn = col.key;
           xColumnSet = true;
           // continue so the next if isn't evaluated on the same element
           continue;
         }
-        if (xColumnSet && !xColumn2Set && col.primType === 'date' ||
-            col.primType === 'number') {
+        if (xColumnSet && !xColumn2Set && (col.primType === 'date' ||
+            col.primType === 'number')) {
           xColumn2 = col.key;
           xColumn2Set = true;
         }

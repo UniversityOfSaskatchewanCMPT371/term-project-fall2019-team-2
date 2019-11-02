@@ -3,59 +3,63 @@ import {mount, shallow} from 'enzyme';
 import ParserComponent, {CountTypes} from '../components/ParserComponent';
 import ParserInterface, {FileType} from '../components/ParserInterface';
 import {enumDrawType} from '../components/Column';
-// may need in the future, but currently not being used
-// import sinon from 'sinon';
-
 
 describe('<ParserComponent /> renders correctly', () => {
-  describe('renders a <ParserComponent /> to select a .csv', () => {
-    // eslint-disable-next-line max-len
-    const wrapper = shallow(<ParserComponent prompt={'Select a CSV file: '} fileType={FileType.csv}/>);
-    const prompt = <label>Select a CSV file: </label>;
-    const button = <input type="file" accept=".csv,text/csv"/>;
+  const prompt = <label>test: </label>;
+  const props = {
+    prompt: 'test: ',
+    onChange: jest.fn(),
+  };
 
+  it('renders a <ParserComponent /> to select a .csv', () => {
+    const comp = shallow(
+        <ParserComponent
+          {...props}
+          fileType={FileType.csv}
+        />);
 
-    expect(wrapper.contains(prompt)).toEqual(true);
-    expect(wrapper.exists('input')).toEqual(true);
+    expect(comp.contains(prompt)).toBeTruthy();
+    expect(comp.exists('input')).toBeTruthy();
+    expect(comp.find('input').prop('accept')).toContain('.csv,text/csv');
   });
 
-  describe('renders a <ParseComponent /> to select a .tl', () => {
-    // eslint-disable-next-line max-len
-    const wrapper = shallow(<ParserComponent prompt={'Select a TL file: '} fileType={FileType.tl}/>);
-    const prompt = <label>Select a TL file: </label>;
-    const button = <input type='file' accept='.tl' ></input>;
+  it('renders a <ParseComponent /> to select a .tl', () => {
+    const comp = shallow(
+        <ParserComponent
+          {...props}
+          fileType={FileType.tl}
+        />);
 
-    expect(wrapper.contains(prompt)).toEqual(true);
-    expect(wrapper.exists('input')).toEqual(true);
+    expect(comp.contains(prompt)).toBeTruthy();
+    expect(comp.exists('input')).toBeTruthy();
+    expect(comp.find('input').prop('accept')).toContain('.tl');
   });
 });
 
-describe('FileEvents processed correctly', () => {
-  describe('responds to file selection', () => {
-    const fileUploaderMock = jest.fn();
-    const prompt = 'Select a CSV file:';
-    const fileType = FileType.csv;
+describe('Csv FileEvents processed correctly', () => {
+  const props = {
+    prompt: 'test: ',
+    fileType: FileType.csv,
+  };
 
-    const comp = shallow(
+  it('Onchange event triggered when file selected', async () => {
+    const onChangeMock = jest.fn();
+    const testFile: File = new File(
+        [''],
+        'test.csv',
+        {type: '.csv,text/csv'},);
+
+    const event = {target: {files: [testFile]}};
+    const comp = mount(
         <ParserComponent
-          prompt={prompt}
-          fileType={fileType}
-        />
-    );
+          {...props}
+          onChange={onChangeMock}
+        />);
 
-    const file = {
-      name: 'test.csv',
-      type: 'text/csv',
-    } as File;
-
-    const event = {
-      target: {files: null},
-    };
-
-    // console.log('before: ' + wrapper.debug());
-    // comp.find('input').simulate('change', event);
-    // wrapper.find('input').simulate('change', event);
-    // expect(parseMock).toBeCalledWith(testfile);
+    comp.find('input').simulate('change', event);
+    const fileUsed: File = onChangeMock.mock.calls[0][0];
+    expect(fileUsed.name).toBe(testFile.name);
+    expect(onChangeMock).toHaveBeenCalledTimes(1);
   });
 });
 
@@ -86,7 +90,11 @@ describe('<ParserComponent /> Unit Tests', () => {
   });
 
   describe('createCountingObjects()', () => {
-    const pi: ParserInterface = {prompt: 'test', fileType: FileType.csv};
+    const pi: ParserInterface = {
+      prompt: 'test',
+      fileType: FileType.csv,
+      onChange: jest.fn(),
+    };
     const pc = new ParserComponent(pi);
     it('instantiates a list of CountTypes', () => {
       const listObjects = pc.createTypeCountingObjects(4);
@@ -98,7 +106,11 @@ describe('<ParserComponent /> Unit Tests', () => {
     let data: any[] | object[] |
       { money: string; heartAttacks: string; animals: number; }[];
     beforeEach(() => {
-      const pi: ParserInterface = {prompt: 'test', fileType: FileType.csv};
+      const pi: ParserInterface = {
+        prompt: 'test',
+        fileType: FileType.csv,
+        onChange: jest.fn(),
+      };
       pc = new ParserComponent(pi);
       data = new Array(4);
       data[0] = {money: 100, heartAttacks: '2016-07-03', animals: 'dog'};

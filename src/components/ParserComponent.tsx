@@ -35,6 +35,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
 
     this.isValid = this.isValid.bind(this);
     this.sortData = this.sortData.bind(this);
+    this.inferTypes = this.inferTypes.bind(this);
     this.parseCsv = this.parseCsv.bind(this);
     this.parse = this.parse.bind(this);
     this.inferTypes = this.inferTypes.bind(this);
@@ -238,7 +239,13 @@ export default class ParserComponent extends React.Component<ParserInterface,
    * @param {Object} fileEvent: the event passed into this component
    */
   async parseCsv(fileEvent: any) {
+    console.log(fileEvent);
+
     const csvFile = fileEvent.target.files[0];
+
+    // for testing
+    this.props.onChange(fileEvent.target.files[0]);
+
     const fileReader = new FileReader();
 
     return new Promise((resolver, agent) => {

@@ -17,6 +17,10 @@ import * as d3
   from 'd3';
 import * as TimSort
   from 'timsort';
+import React from 'react';
+import {shallow} from 'enzyme';
+import TimelineComponent from '../components/TimelineComponent';
+import Data from '../components/Data';
 
 
 // To be used by developers
@@ -259,22 +263,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
 
   describe('drawTimeline()', () => {
     it('dummy test', () => {
-      expect(drawTimelineSpy).toHaveBeenCalled();
-    });
-  });
-
-  describe('ttOverHelper()', () => {
-    it('checks that ttOverHelper renders a tooltip', () => {
-      wrapper.instance().ttOverHelper({
-        str: 'test',
-        num: 123,
-      }, 100, 100);
-      expect(ttOverHelperSpy).toHaveBeenCalled();
-
-      expect(!d3.selectAll('.tooltip').empty()).toEqual(true);
-
-      // expect(consoleOutput[0])
-      //     .toEqual('Error adding Tooltip to the DOM');
+      // todo: devs need to write unit tests
     });
   });
 

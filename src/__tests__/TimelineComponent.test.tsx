@@ -4,11 +4,12 @@ import {
 } from 'enzyme';
 import * as d3
   from 'd3';
-
 import TimelineComponent
   from '../components/TimelineComponent';
 import Data
   from '../components/Data';
+import Column
+  from '../components/Column';
 
 
 // To be used by developers
@@ -129,7 +130,24 @@ describe('<TimelineComponent /> Unit Tests', () => {
         'Total Profit': 736165.58,
         'index': 9127,
         'Order Date_num': 1262412000000
-      }]);
+      }],
+    [
+      new Column('string', 1, 'Region', 1),
+      new Column('string', 1, 'Country', 1),
+      new Column('string', 1, 'Item Type', 1),
+      new Column('string', 1, 'Sales Channel', 1),
+      new Column('string', 1, 'Order Priority', 1),
+      new Column('date', 2, 'Order Date', 1),
+      new Column('number', 2, 'Order ID', 1),
+      new Column('date', 2, 'Ship Date', 1),
+      new Column('number', 2, 'Units Sold', 1),
+      new Column('number', 2, 'Unit Price', 1),
+      new Column('number', 2, 'Unit Cost', 1),
+      new Column('number', 2, 'Total Revenue', 1),
+      new Column('number', 2, 'Total Cost', 1),
+      new Column('number', 2, 'Total Profit', 1),
+      new Column('number', 2, 'index', 1),
+      new Column('number', 2, 'Order Date_num', 1)]);
 
     drawTimelineSpy =
         jest.spyOn(TimelineComponent.prototype, 'drawTimeline');

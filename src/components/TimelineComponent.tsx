@@ -5,9 +5,9 @@ import * as d3
   from 'd3';
 import './Timeline.css';
 
-const marginTop: number = 40;
+const marginTop: number = 0;
 const marginBottom: number = 170;
-const marginLeft: number = 40;
+const marginLeft: number = 70;
 const marginRight: number = 20;
 
 let fullWidth: number = 0;
@@ -20,9 +20,9 @@ let numBars: number = 0;
 let dataIdx: number = 0;
 let deltaX: number = 0;
 let scale: number = 1;
-const xColumn = 'Order Date';
-const xColumn2 = 'Ship Date';
-const yColumn = 'Units Sold';
+let xColumn: string;
+let xColumn2: string;
+let yColumn: string;
 
 let csvData: Object[];
 let data: Array<object>;
@@ -77,13 +77,53 @@ export default class TimelineComponent
     this.dragStarted = this.dragStarted.bind(this);
     this.dragged = this.dragged.bind(this);
     this.dragEnded = this.dragEnded.bind(this);
+    this.resetTimeline = this.resetTimeline.bind(this);
   }
+
 
   /**
    * Purpose: waits until the component has properly mounted before drawing the
    * timeline
    */
   componentDidMount(): void {
+    console.log(this.state.data);
+    if (this.state.data.columns !== null &&
+        this.state.data.columns !== undefined) {
+      const cols = this.state.data.columns;
+      let yColumnSet = false;
+      let xColumnSet = false;
+      let xColumn2Set = false;
+
+      for (let i = 0; i < cols.length; i++) {
+        const col = cols[i];
+        if (!yColumnSet && col.primType === 'number') {
+          yColumn = col.key;
+          yColumnSet = true;
+        }
+        if (!xColumnSet && col.primType === 'date' ||
+            col.primType === 'number') {
+          xColumn = col.key;
+          xColumnSet = true;
+          // continue so the next if isn't evaluated on the same element
+          continue;
+        }
+        if (xColumnSet && !xColumn2Set && col.primType === 'date' ||
+            col.primType === 'number') {
+          xColumn2 = col.key;
+          xColumn2Set = true;
+        }
+      }
+    }
+
+    this.initTimeline();
+    this.drawTimeline();
+  }
+
+  /**
+   *
+   */
+  resetTimeline() {
+    d3.selectAll('svg').remove();
     this.initTimeline();
     this.drawTimeline();
   }
@@ -93,10 +133,66 @@ export default class TimelineComponent
    * @return {string}: html output to the page
    */
   render() {
+    // @ts-ignore
     return (
       <div>
         <button
           onClick={this.toggleTimeline}>{this.state.togglePrompt}</button>
+        <label>
+        Y-Axis
+        </label>
+        <select value={yColumn} onChange={(e) => {
+          console.log(e);
+          yColumn = e.target.value;
+          this.resetTimeline();
+        }}>
+          {
+            // @ts-ignore
+            // eslint-disable-next-line max-len
+            this.state.data.columns.map((col: any, i: number) => {
+              if (col.primType === 'number') {
+                return <option key={i} value={col.key}>{col.key}</option>;
+              }
+            })
+          }
+        </select>
+
+        <label>
+          X-Axis
+        </label>
+        <select value={xColumn} onChange={(e) => {
+          xColumn = e.target.value;
+          this.resetTimeline();
+        }}>
+          {
+            // @ts-ignore
+            // eslint-disable-next-line max-len
+            this.state.data.columns.map((col: any, i: number) => {
+              if (col.primType === 'date' || col.primType === 'number') {
+                return <option key={i} value={col.key}>{col.key}</option>;
+              }
+            })
+          }
+        </select>
+
+        <label>
+          X-Axis 2
+        </label>
+        <select value={xColumn2} onChange={(e) => {
+          xColumn2 = e.target.value;
+          this.resetTimeline();
+        }}>
+          {
+            // @ts-ignore
+            // eslint-disable-next-line max-len
+            this.state.data.columns.map((col: any, i: number) => {
+              if (col.primType === 'date' || col.primType === 'number') {
+                return <option key={i} value={col.key}>{col.key}</option>;
+              }
+            })
+          }
+        </select>
+
         <div
           id="svgtarget">
         </div>
@@ -146,9 +242,10 @@ export default class TimelineComponent
     dataIdx = 0;
     deltaX = 0;
     scale = 1;
-    csvData = this.state.data.arrayOfData.filter((d: any) => {
-      return d['Region'] === 'North America';
-    });
+    csvData = this.state.data.arrayOfData;
+    // csvData = this.state.data.arrayOfData.filter((d: any) => {
+    //   return d['Region'] === 'North America';
+    // });
 
     data = csvData.slice(0, numBars);
     ordinals = data.map((d: any) => d[xColumn]);
@@ -158,12 +255,12 @@ export default class TimelineComponent
     // @ts-ignore
     minDate = new Date(d3.min(
         [d3.min(csvData, (d: any) => Date.parse(d[xColumn])),
-          d3.min(csvData, (d: any) => Date.parse(d['Ship Date']))]));
+          d3.min(csvData, (d: any) => Date.parse(d[xColumn2]))]));
 
     // @ts-ignore
     maxDate = new Date(d3.max(
         [d3.min(csvData, (d: any) => Date.parse(d[xColumn])),
-          d3.max(csvData, (d: any) => Date.parse(d['Ship Date']))]));
+          d3.max(csvData, (d: any) => Date.parse(d[xColumn2]))]));
 
     timeScale = d3.scaleTime()
         .domain([minDate, maxDate])

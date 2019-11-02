@@ -16,7 +16,8 @@ import * as TimSort
  */
 export default class ParserComponent extends React.Component<ParserInterface,
   ParserState> {
-  private columnTypes: Array<object> = Array(0);
+  private columnTypes: Array<Column> = Array(0);
+  private childKey = 0;
 
   /**
    * Purpose: ParserComponent constructor
@@ -53,8 +54,9 @@ export default class ParserComponent extends React.Component<ParserInterface,
   render() {
     const chart = this.state.showTimeline ?
       <div>
-        <TimelineComponent
-          data={new Data('path/to/file', this.state.data)}/>
+        <TimelineComponent key={this.childKey}
+          data={new Data('path/to/file', this.state.data,
+              this.columnTypes)}/>
       </div> :
       <div/>;
 
@@ -161,11 +163,19 @@ export default class ParserComponent extends React.Component<ParserInterface,
           const curColTypes = typesForEachCol[i];
           try {
             // @ts-ignore
-            const val = row[listfields[i]];
-            const date = moment(val, 'YYYY-MM-DD');
-            const isValid = date.isValid();
-            if (isValid) {
-              curColTypes['numDate'] += 1;
+            const val = row[listFields[i]];
+            console.log(val);
+            if (typeof val === 'string') {
+              const date = moment(val);
+              const isValid = date.isValid();
+              console.log(isValid);
+              if (isValid) {
+                curColTypes['numDate'] += 1;
+              } else {
+                throw val;
+              }
+            } else {
+              throw val;
             }
           } catch {
             // @ts-ignore
@@ -220,17 +230,25 @@ export default class ParserComponent extends React.Component<ParserInterface,
    * @param {Object} fileEvent: the event passed into this component
    */
   async parse(fileEvent: any) {
+    this.setState(() => {
+      return {
+        showTimeline: false,
+      };
+    });
     // console.log(await readCsv());
     if (this.props.fileType === FileType.csv) {
       await this.parseCsv(fileEvent);
     }
     this.columnTypes = this.inferTypes(this.state.data);
 
+    console.log(this.columnTypes);
+
     this.setState(() => {
       return {
         showTimeline: true,
       };
     });
+    this.childKey++;
   }
 
   /**

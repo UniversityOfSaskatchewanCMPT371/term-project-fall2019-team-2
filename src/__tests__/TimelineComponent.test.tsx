@@ -329,8 +329,8 @@ describe('<TimelineComponent /> Unit Tests', () => {
       const event = new KeyboardEvent('keypress', {'key': 'a'});
       document.body.dispatchEvent(event);
 
-      // Should stay at 50 (the default)
-      expect(wrapper.instance().getDeltaX()).toBe(50);
+      // Should stay at 0 (the min)
+      expect(wrapper.instance().getDeltaX()).toBe(0);
     });
   });
 

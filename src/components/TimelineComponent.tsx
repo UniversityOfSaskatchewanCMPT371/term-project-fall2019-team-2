@@ -569,11 +569,12 @@ export default class TimelineComponent
             this.scale = this.scale * scaleZoomIn;
           } else if (d3.event.key === 'a') {
             // Pan left
-            deltaX += deltaPan;
+            deltaX = Math.min(0, deltaX + deltaPan);
+            console.log(deltaX);
             this.moveChart();
           } else if (d3.event.key === 'd') {
             // Pan right
-            deltaX = Math.min(0, deltaX - deltaPan);
+            deltaX -= deltaPan;
             this.moveChart();
           }
         });

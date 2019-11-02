@@ -190,7 +190,7 @@ export default class TimelineComponent
           });
         }
 
-        await this.setState(() => {
+        this.setState(() => {
           return {
             data: data,
           };
@@ -210,21 +210,21 @@ export default class TimelineComponent
 
     // @ts-ignore
     if (column === 'yColumn') {
-      await this.setState(() => {
+      this.setState(() => {
         return {
-          ['yColumn']: val,
+          yColumn: val,
         };
       });
     } else if (column === 'xColumn') {
-      await this.setState(() => {
+      this.setState(() => {
         return {
-          ['xColumn']: val,
+          xColumn: val,
         };
       }, async () => await this.sortData(val));
     } else if (column === 'xColumn2') {
-      await this.setState(() => {
+      this.setState(() => {
         return {
-          ['xColumn2']: val,
+          xColumn2: val,
         };
       });
     }
@@ -332,9 +332,7 @@ export default class TimelineComponent
       toggleTimeline: toggle,
       togglePrompt: prompt,
     }), () => {
-      d3.selectAll('svg').remove();
-      this.initTimeline();
-      this.drawTimeline();
+      this.resetTimeline();
     });
   }
 
@@ -542,7 +540,8 @@ export default class TimelineComponent
         this.ttOverHelper(d, d3.event.x, d3.event.y);
       }
     } catch (e) {
-      throw e;
+      console.log(e);
+      throw (e);
     }
   }
 

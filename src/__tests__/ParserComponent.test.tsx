@@ -70,12 +70,15 @@ describe('FileEvents processed correctly', () => {
 
     //const props = {};
 
-    const wrapper = shallow(
+    const component = shallow(
         <ParserComponent
             prompt={'test: '}
             fileType={FileType.csv}
             onChange={onChangeMock}
         />);
+
+    console.log(component.debug)
+
   })
 });
 

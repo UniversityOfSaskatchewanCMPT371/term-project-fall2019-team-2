@@ -3,6 +3,7 @@ import {mount, shallow} from 'enzyme';
 import ParserComponent from '../components/ParserComponent';
 import {FileType} from '../components/ParserInterface';
 import fs from 'fs';
+import {mockComponent} from "react-dom/test-utils";
 // may need in the future, but currently not being used
 // import sinon from 'sinon';
 
@@ -41,7 +42,6 @@ describe('<ParserComponent /> renders correctly', () => {
 
 describe('FileEvents processed correctly', () => {
   it('file input event calls onChange with selected file', async () => {
-    // todo: pray for me
     const onChangeMock = jest.fn((x: File) => x.name);
     const testFile: File = new File(
         ['asafsa'],
@@ -62,7 +62,9 @@ describe('FileEvents processed correctly', () => {
 
     comp.find('input').simulate('change', event);
     expect(onChangeMock).toHaveReturnedWith(testFile.name);
-    expect(onChangeMock).toHaveBeenCalledTimes(1);
+    // expect(onChangeMock).toHaveBeenCalledTimes(1);
+    expect(onChangeMock.mock.calls.length).toBe(1);
+    expect(onChangeMock.mock.results[0].value).toBe(testFile.name);
   });
 });
 

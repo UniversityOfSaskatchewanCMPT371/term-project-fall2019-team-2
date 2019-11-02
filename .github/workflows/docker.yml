@@ -29,10 +29,10 @@ jobs:
     - name: Deploy to server (test)
       if: github.ref == 'refs/heads/master' || contains(github.ref, 'tags/')
       env:
-        ENDPOINT: ${{ secrets.DEV_ENDPOINT }}
+        ENDPOINT: ${{ secrets.TEST_ENDPOINT }}
       run: curl -X POST $ENDPOINT
     - name: Deploy to server (dev)
       if: github.ref == 'refs/heads/develop'
       env:
-        ENDPOINT: ${{ secrets.TEST_ENDPOINT }}
+        ENDPOINT: ${{ secrets.DEV_ENDPOINT }}
       run: curl -X POST $ENDPOINT

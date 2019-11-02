@@ -27,13 +27,13 @@ export function formatSize(size: number) {
   let sizeStr: string = '';
 
   if (size >= gb) {
-    sizeStr = numTrim((size / gb), 3).toFixed(3) + ' GiB';
+    sizeStr = `${numTrim((size / gb), 3).toFixed(3)} GiB`;
   } else if (size >= mb) {
-    sizeStr = numTrim((size / mb), 3).toFixed(3) + ' MiB';
+    sizeStr = `${numTrim((size / mb), 3).toFixed(3)} MiB`;
   } else if (size >= kb) {
-    sizeStr = numTrim((size / kb), 3).toFixed(3) + ' KiB';
+    sizeStr = `${numTrim((size / kb), 3).toFixed(3)} KiB`;
   } else {
-    sizeStr = size + ' Bytes';
+    sizeStr = `${size} Bytes`;
   }
 
   return sizeStr;
@@ -95,8 +95,8 @@ export function sizeofObj(obj: any): string {
       if (key !== null) {
         const size = osizeof(key) + osizeof(obj[key]);
         totalSize += size;
-        sizes.push('[' + formatSize(size) + ']: ');
-        vals.push(obj[key] + '\n');
+        sizes.push(`[${formatSize(size)}]: `);
+        vals.push(`${obj[key]}\n`);
       }
     }
     sizeLen = maxStrLen(sizes) + 1;

@@ -39,14 +39,6 @@ let extent: [[number, number], [number, number]];
 let plot: any;
 
 /**
- * Purpose: shorthand for console.log()
- * @param {any} str: thing to log
- */
-function log(str: any) {
-  console.log(str);
-}
-
-/**
  * Purpose: renders and updates a timeline to the screen
  */
 export default class TimelineComponent
@@ -180,6 +172,8 @@ export default class TimelineComponent
     x = d3.scaleLinear()
         .domain([0, ordinals.length])
         .rangeRound([0, width]);
+
+    console.log(x(0));
 
     y = d3.scaleLinear()
         .domain([d3.min(csvData,

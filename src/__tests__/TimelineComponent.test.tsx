@@ -225,7 +225,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
     it('checks if drawTimeline is called', () => {
       expect(initTimelineSpy).toHaveBeenCalled();
       expect(drawTimelineSpy).toHaveBeenCalled();
-      console.log(document.body.innerHTML);
+      // console.log(document.body.innerHTML);
       // console.log(wrapper.html());
       // console.log(consoleOutput[0]);
     });
@@ -317,7 +317,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
         async () => {
           await new Promise((res) => setTimeout(() => {
             wrapper.update();
-            console.log(wrapper.html());
+            // console.log(wrapper.html());
             expect(initTimelineSpy).toHaveBeenCalled();
             wrapper.instance().updateChart();
             // expect(consoleOutput[0]).toEqual('d3.event was null');
@@ -327,7 +327,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
             wrapper.instance().updateChart();
             // expect(consoleOutput[1]).toEqual('d3.event was null');
 
-            console.log(consoleOutput[0]);
+            // console.log(consoleOutput[0]);
             res(true);
           }, 1000));
 
@@ -346,7 +346,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
       expect(d3.selectAll('.bar').size()).toBe(5);
       wrapper.instance().drawIntervalMagnitude(d3.selectAll('.bar'));
       expect(drawIntervalMagnitudeSpy).toHaveBeenCalled();
-      console.log(document.body.innerHTML);
+      // console.log(document.body.innerHTML);
     });
   });
 

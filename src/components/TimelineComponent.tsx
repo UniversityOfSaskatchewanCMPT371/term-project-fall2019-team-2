@@ -98,7 +98,7 @@ export default class TimelineComponent
    * timeline
    */
   componentDidMount(): void {
-    console.log(this.state.data);
+    // console.log(this.state.data);
 
     if (this.state.data.columns !== null &&
         this.state.data.columns !== undefined) {

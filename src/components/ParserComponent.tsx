@@ -83,7 +83,17 @@ export default class ParserComponent extends React.Component<ParserInterface,
      */
     isValid(upFile: File): boolean {
       const typeOfFile = upFile.name.substr(upFile.name.length - 4);
-      return typeOfFile === '.csv';
+      if (typeOfFile === '.csv') {
+        return typeOfFile === '.csv';
+      } else {
+        try {
+          throw new Error('Wrong file type was uploaded.');
+        } catch (e) {
+          console.log(e);
+          alert('The file uploaded needs to be CSV.');
+        }
+        return false;
+      }
     }
 
     /**
@@ -127,7 +137,17 @@ export default class ParserComponent extends React.Component<ParserInterface,
           }
         }
       }
-      return doneTheWork;
+      if (doneTheWork) {
+        return true;
+      } else {
+        try {
+          throw new Error('The file uploaded has no dates.');
+        } catch (e) {
+          console.log(e);
+          alert('The file uploaded has no dates.');
+        }
+        return false;
+      }
     }
 
     /**
@@ -287,23 +307,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
               };
             });
             console.log(this.sortData(content));
+            this.isValid(csvFile);
             console.log(content);
-            if (!this.isValid(csvFile)) {
-              try {
-                throw new Error('Wrong file type was uploaded.');
-              } catch (e) {
-                console.log(e);
-                alert('The file uploaded needs to be CSV.');
-              }
-            }
-            if (!this.sortData(content)) {
-              try {
-                throw new Error('No dates found');
-              } catch (e) {
-                console.log(e);
-                alert('The file uploaded has no dates.');
-              }
-            }
           }
           resolver(true);
         };

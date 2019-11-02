@@ -547,35 +547,36 @@ export default class TimelineComponent
   private registerEvents(): void {
     // Handle keypresses
     d3.select('body')
-    .on('keypress', () => {
-      if (d3.event.key === '-' || d3.event.key === 's') {
-        // Zoom out
-        const identity = d3.zoomIdentity
-            .scale(Math.max(scaleMin, this.scale * scaleZoomOut));
+        .on('keypress', () => {
+          if (d3.event.key === '-' || d3.event.key === 's') {
+            // Zoom out
+            const identity = d3.zoomIdentity
+                .scale(Math.max(scaleMin, this.scale * scaleZoomOut));
 
-        this.svg.transition().ease(d3.easeLinear).duration(300)
-            .call(this.zoom.transform, identity);
-        // Ensure the new scale is saved with a limit on the minimum zoomed out scope
-        this.scale = Math.max(scaleMin, this.scale * scaleZoomOut);
-      } else if (d3.event.key === '+' || d3.event.key === 'w') {
-        // Zoom in
-        const identity = d3.zoomIdentity
-            .scale(this.scale * scaleZoomIn);
+            this.svg.transition().ease(d3.easeLinear).duration(300)
+                .call(this.zoom.transform, identity);
+            // Ensure the new scale is saved with a limit on the minimum
+            //  zoomed out scope
+            this.scale = Math.max(scaleMin, this.scale * scaleZoomOut);
+          } else if (d3.event.key === '+' || d3.event.key === 'w') {
+            // Zoom in
+            const identity = d3.zoomIdentity
+                .scale(this.scale * scaleZoomIn);
 
-        this.svg.transition().ease(d3.easeLinear).duration(300)
-            .call(this.zoom.transform, identity);
-        // Ensure the new scale is saved
-        this.scale = this.scale * scaleZoomIn;
-      } else if (d3.event.key === 'a') {
-        // Pan left
-        deltaX += deltaPan;
-        this.moveChart();
-      } else if (d3.event.key === 'd') {
-        // Pan right
-        deltaX = Math.min(0, deltaX - deltaPan);
-        this.moveChart();
-      }
-    });
+            this.svg.transition().ease(d3.easeLinear).duration(300)
+                .call(this.zoom.transform, identity);
+            // Ensure the new scale is saved
+            this.scale = this.scale * scaleZoomIn;
+          } else if (d3.event.key === 'a') {
+            // Pan left
+            deltaX += deltaPan;
+            this.moveChart();
+          } else if (d3.event.key === 'd') {
+            // Pan right
+            deltaX = Math.min(0, deltaX - deltaPan);
+            this.moveChart();
+          }
+        });
   }
 
   /**

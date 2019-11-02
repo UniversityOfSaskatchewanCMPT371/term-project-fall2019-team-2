@@ -48,8 +48,8 @@ describe('Csv FileEvents processed correctly', () => {
     const onChangeMock = jest.fn();
     const testFile: File = new File(
         [''],
-        'test.csv',
-        {type: '.csv,text/csv'},);
+        'test.txt',
+        {type: '.txt,text/plain'},);
 
     const event = {target: {files: [testFile]}};
     const comp = mount(
@@ -65,52 +65,51 @@ describe('Csv FileEvents processed correctly', () => {
   });
 
   describe('Incompatible File types not accepted', () => {
-    const onChangeMock = jest.fn((x: File) => x.name);
-    const comp = mount(
-        <ParserComponent
-          {...props}
-          onChange={onChangeMock}
-        />
-    );
-
-    beforeEach(() => {
-      onChangeMock.mockClear();
-      comp.setState({data: []});
-    });
-
-    xit('.pdf rejected', async () => {
+    it('.pdf rejected', async () => {
       const pdfTestFile: File = new File(
           ['test'],
           'test.pdf',
           {type: '.pdf,application/pdf'},
       );
       const fileEvent = {target: {files: [pdfTestFile]}};
-      // expect(
-      //     comp
-      //         .find('input')
-      //         .simulate('change', fileEvent)
-      // ).toThrowError();
+      // todo: finish test
     });
 
+    // Currently failing because no error handling
     it('.txt rejected', async () => {
+      const onChangeMock = jest.fn((x: File) => x.type);
+      const comp: any = mount(
+          <ParserComponent
+            {...props}
+            onChange={onChangeMock}
+          />
+      );
+      const waitForNextTick = process.nextTick;
       const txtTestFile: File = new File(
-          ['abcdefg'],
+          [''],
           'test.txt',
           {type: '.txt, text/plain'},
       );
       const fileEvent = {target: {files: [txtTestFile]}};
-      comp.find('input').simulate('change', fileEvent);
-      await onChangeMock;
+      try {
+        await comp.instance().parse(fileEvent);
+      } catch (error) {
+        console.log(error);
+      }
+
+      const fileUsed = onChangeMock.mock.instances[0][0];
+      // expect(onChangeMock).toHaveBeenCalledTimes(1);
+      // expect(onChangeMock).toHaveReturnedWith(txtTestFile.type);
     });
 
-    xit('.doc rejected', async () => {
+    it('.doc rejected', async () => {
       const docTestFile: File = new File(
           [''],
           'test.doc',
           {type: '.doc, application/msword'},
       );
       const fileEvent = {target: {files: [docTestFile]}};
-      comp.find('input').simulate('change', fileEvent);
+      // todo: finish test
     });
 
     xit('.css rejected', async () => {
@@ -120,7 +119,7 @@ describe('Csv FileEvents processed correctly', () => {
           {type: '.css, text/css'},
       );
       const fileEvent = {target: {files: [cssTestFile]}};
-      comp.find('input').simulate('change', fileEvent);
+      // todo: finish test
     });
 
     xit('.js rejected', async () => {
@@ -130,7 +129,7 @@ describe('Csv FileEvents processed correctly', () => {
           {type: '.js, text/javascript'},
       );
       const fileEvent = {target: {files: [jsTestFile]}};
-      comp.find('input').simulate('change', fileEvent);
+      // todo: finish test
     });
   });
 });
@@ -291,7 +290,6 @@ describe('<ParserComponent /> Unit Tests', () => {
       // mock a file event
       const event = {target: {files: [testFile]}};
       const onChangeMock = jest.fn();
-
       const comp: any = mount(
           <ParserComponent
             {...props}

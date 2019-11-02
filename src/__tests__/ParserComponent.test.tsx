@@ -64,8 +64,18 @@ describe('FileEvents processed correctly', () => {
     expect(onChangeMock).toHaveBeenCalledTimes(1);
   });
 
-  it("TBA", () => {
-      //TODO God help me
+  it("should throw error message when incorrectly formatted .csv file is uploaded", () => {
+    //TODO: god help me
+    const onChangeMock = jest.fn();
+
+    //const props = {};
+
+    const wrapper = shallow(
+        <ParserComponent
+            prompt={'test: '}
+            fileType={FileType.csv}
+            onChange={onChangeMock}
+        />);
   })
 });
 

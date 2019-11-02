@@ -4,6 +4,10 @@ import TimelineInterface, {TimelineState} from './TimelineInterface';
 import * as d3
   from 'd3';
 import './Timeline.css';
+import Column
+  from './Column';
+import * as TimSort
+  from 'timsort';
 
 const marginTop: number = 0;
 const marginBottom: number = 170;
@@ -23,6 +27,8 @@ let scale: number = 1;
 let xColumn: string;
 let xColumn2: string;
 let yColumn: string;
+let xColumns: Column[];
+let yColumns: Column[];
 
 let csvData: Object[];
 let data: Array<object>;
@@ -59,6 +65,10 @@ export default class TimelineComponent
       marginRight: 20,
       toggleTimeline: 0,
       togglePrompt: 'Switch to Interval Timeline',
+      yColumn: '',
+      xColumn: '',
+      xColumn2: '',
+      loading: true,
     };
 
     this.drawTimeline = this.drawTimeline.bind(this);
@@ -78,6 +88,8 @@ export default class TimelineComponent
     this.dragged = this.dragged.bind(this);
     this.dragEnded = this.dragEnded.bind(this);
     this.resetTimeline = this.resetTimeline.bind(this);
+    this.sortData = this.sortData.bind(this);
+    // this.changeColumn = this.changeyColumn.bind(this);
   }
 
 
@@ -87,6 +99,7 @@ export default class TimelineComponent
    */
   componentDidMount(): void {
     console.log(this.state.data);
+
     if (this.state.data.columns !== null &&
         this.state.data.columns !== undefined) {
       const cols = this.state.data.columns;
@@ -94,35 +107,137 @@ export default class TimelineComponent
       let xColumnSet = false;
       let xColumn2Set = false;
 
+      yColumns = [];
+      xColumns = [];
+
       for (let i = 0; i < cols.length; i++) {
         const col = cols[i];
-        if (!yColumnSet && col.primType === 'number') {
-          yColumn = col.key;
-          yColumnSet = true;
+        if (col.primType === 'number') {
+          yColumns.push(col);
+          if (!yColumnSet) {
+            this.setState(() => {
+              return {
+                yColumn: col.key,
+              };
+            });
+            yColumn = col.key;
+            yColumnSet = true;
+          }
         }
-        if (!xColumnSet && (col.primType === 'date' ||
-            col.primType === 'number')) {
-          xColumn = col.key;
-          xColumnSet = true;
-          // continue so the next if isn't evaluated on the same element
-          continue;
-        }
-        if (xColumnSet && !xColumn2Set && (col.primType === 'date' ||
-            col.primType === 'number')) {
-          xColumn2 = col.key;
-          xColumn2Set = true;
+
+        if (col.primType === 'date' || col.primType === 'number') {
+          xColumns.push(col);
+          if (!xColumnSet) {
+            this.setState(() => {
+              return {
+                xColumn: col.key,
+              };
+            });
+            xColumn = col.key;
+            xColumnSet = true;
+            // continue so the next if isn't evaluated on the same element
+            continue;
+          }
+          if (xColumnSet && !xColumn2Set) {
+            this.setState(() => {
+              return {
+                xColumn2: col.key,
+              };
+            });
+            xColumn2 = col.key;
+            xColumn2Set = true;
+          }
         }
       }
+      this.setState(() => {
+        return {
+          loading: false,
+        };
+      }, () => {
+        this.initTimeline();
+        this.drawTimeline();
+      });
     }
-
-    this.initTimeline();
-    this.drawTimeline();
   }
 
   /**
-   *
+   * Purpose: to sort data by the column passed in
+   * @param {string} column
+   */
+  async sortData(column: string) {
+    const cols = this.state.data.columns;
+    if (cols !== null && cols !== undefined) {
+      const col = cols.find((elem) => {
+        return elem.key === column;
+      });
+
+      if (col !== null && col !== undefined) {
+        const data = this.state.data;
+        if (col.primType === 'date') {
+          const keyInt = column + '_num';
+          TimSort.sort(data.arrayOfData, function(a: any, b: any) {
+            if (!a.hasOwnProperty(keyInt)) {
+              a[keyInt] = Date.parse(a[column]);
+            }
+            if (!b.hasOwnProperty(keyInt)) {
+              b[keyInt] = Date.parse(b[column]);
+            }
+            return (a[keyInt] - b[keyInt]);
+          });
+        } else {
+          TimSort.sort(data.arrayOfData, function(a: any, b: any) {
+            return (a[column] - b[column]);
+          });
+        }
+
+        await this.setState(() => {
+          return {
+            data: data,
+          };
+        });
+      }
+    }
+  }
+
+  /**
+   * Purpose: used to change the selected column for the timeline
+   * @param {any} e
+   * @param {string} column
+   */
+  async changeColumn(e: any, column: string) {
+    const val = e.target.value;
+    console.log(val);
+
+    // @ts-ignore
+    if (column === 'yColumn') {
+      await this.setState(() => {
+        return {
+          ['yColumn']: val,
+        };
+      });
+    } else if (column === 'xColumn') {
+      await this.setState(() => {
+        return {
+          ['xColumn']: val,
+        };
+      }, async () => await this.sortData(val));
+    } else if (column === 'xColumn2') {
+      await this.setState(() => {
+        return {
+          ['xColumn2']: val,
+        };
+      });
+    }
+
+    this.resetTimeline();
+  }
+
+
+  /**
+   * Purpose: to clear and redraw the timeline
    */
   resetTimeline() {
+    // console.log('herhq');
     d3.selectAll('svg').remove();
     this.initTimeline();
     this.drawTimeline();
@@ -133,71 +248,70 @@ export default class TimelineComponent
    * @return {string}: html output to the page
    */
   render() {
+    const contents = this.state.loading ?
+        <p><em>loading...</em></p> :
+        <div>
+          <div>
+            <button
+              onClick={this.toggleTimeline}>{this.state.togglePrompt}</button>
+            <label>
+              Y-Axis
+            </label>
+            <select id="ySelect"
+              value={this.state.yColumn}
+              onChange={(e) => {
+                this.changeColumn(e, 'yColumn');
+              }}>
+              {
+                yColumns.map((col: any, i: number) =>
+                  <option
+                    key={i}
+                    value={col.key}>{col.key}</option>)
+              }
+            </select>
+
+            <label>
+              X-Axis
+            </label>
+            <select id="xSelect"
+              value={this.state.xColumn}
+              onChange={(e) => {
+                this.changeColumn(e, 'xColumn');
+              }}>
+              {
+                xColumns.map((col: any, i: number) =>
+                  <option
+                    key={i}
+                    value={col.key}>{col.key}</option>)
+              }
+            </select>
+
+            <label>
+              X-Axis
+              2
+            </label>
+            <select id="x2Select"
+              value={this.state.xColumn}
+              onChange={(e) => {
+                this.changeColumn(e, 'xColumn2');
+              }}>
+              {
+                xColumns.map((col: any, i: number) =>
+                  <option
+                    key={i}
+                    value={col.key}>{col.key}</option>)
+              }
+            </select>
+          </div>
+          <div id="svgtarget">
+          </div>
+        </div>
+        ;
     // @ts-ignore
     return (
       <div>
-        <button
-          onClick={this.toggleTimeline}>{this.state.togglePrompt}</button>
-        <label>
-        Y-Axis
-        </label>
-        <select value={yColumn} onChange={(e) => {
-          console.log(e);
-          yColumn = e.target.value;
-          this.resetTimeline();
-        }}>
-          {
-            // @ts-ignore
-            // eslint-disable-next-line max-len
-            this.state.data.columns.map((col: any, i: number) => {
-              if (col.primType === 'number') {
-                return <option key={i} value={col.key}>{col.key}</option>;
-              }
-            })
-          }
-        </select>
-
-        <label>
-          X-Axis
-        </label>
-        <select value={xColumn} onChange={(e) => {
-          xColumn = e.target.value;
-          this.resetTimeline();
-        }}>
-          {
-            // @ts-ignore
-            // eslint-disable-next-line max-len
-            this.state.data.columns.map((col: any, i: number) => {
-              if (col.primType === 'date' || col.primType === 'number') {
-                return <option key={i} value={col.key}>{col.key}</option>;
-              }
-            })
-          }
-        </select>
-
-        <label>
-          X-Axis 2
-        </label>
-        <select value={xColumn2} onChange={(e) => {
-          xColumn2 = e.target.value;
-          this.resetTimeline();
-        }}>
-          {
-            // @ts-ignore
-            // eslint-disable-next-line max-len
-            this.state.data.columns.map((col: any, i: number) => {
-              if (col.primType === 'date' || col.primType === 'number') {
-                return <option key={i} value={col.key}>{col.key}</option>;
-              }
-            })
-          }
-        </select>
-
-        <div
-          id="svgtarget">
-        </div>
-      </div>
-    );
+        {contents}
+      </div>);
   }
 
   /**
@@ -229,6 +343,9 @@ export default class TimelineComponent
    * Purpose: sets the initial values for rendering the actual timeline
    */
   initTimeline() {
+    yColumn = this.state.yColumn;
+    xColumn = this.state.xColumn;
+    xColumn2 = this.state.xColumn2;
     fullHeight = this.state.height;
     fullWidth = this.state.width;
 

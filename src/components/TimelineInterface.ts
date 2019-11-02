@@ -18,4 +18,10 @@ export interface TimelineState {
     toggleTimeline: number;
     // Prompt for toggle button
     togglePrompt: string;
+
+    xColumn: string;
+    xColumn2: string;
+    yColumn: string;
+
+    loading: boolean;
 }

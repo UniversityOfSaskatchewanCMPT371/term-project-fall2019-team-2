@@ -350,6 +350,25 @@ describe('<TimelineComponent /> Unit Tests', () => {
     });
   });
 
+  describe('Change Column', () => {
+    it('Checks that data is sorted and re-drawn when a column ' +
+        'dropdown is selected', () => {
+      wrapper.find('#ySelect')
+          .simulate('change', {target: {value: 'Unit Price'}});
+
+      wrapper.find('#xSelect')
+          .simulate('change', {target: {value: 'Units Sold'}});
+
+      wrapper.find('#xSelect')
+          .simulate('change', {target: {value: 'Ship Date'}});
+
+      wrapper.find('#x2Select')
+          .simulate('change', {target: {value: 'Order Date'}});
+
+      expect(updateBarsSpy).toHaveBeenCalled();
+    });
+  });
+
   describe('updateBars()', () => {
     it('dummy test', () => {
       expect(updateBarsSpy).toHaveBeenCalled();

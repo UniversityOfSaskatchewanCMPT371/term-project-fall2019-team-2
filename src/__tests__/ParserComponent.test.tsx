@@ -371,7 +371,13 @@ describe('<ParserComponent /> Unit Tests', () => {
     });
     it('give empty data', () => {
       const data1 = new Array(0);
-      expect(data1).toEqual([]);
+      pc.state = {prompt: 'data1',
+        fileType: FileType.csv,
+        data: data1,
+        showTimeline: false,
+      };
+      const t2 = pc.inferTypes(data1);
+      expect(t2).toEqual(undefined);
     });
   });
 

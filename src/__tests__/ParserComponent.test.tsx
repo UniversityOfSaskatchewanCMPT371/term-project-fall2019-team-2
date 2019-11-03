@@ -62,11 +62,11 @@ describe('Csv FileEvents processed correctly', () => {
     expect(onChangeMock).toHaveBeenCalledTimes(1);
   });
 
+  //test documentation
   it("onChange event handles .csv file with incorrect formatting", async() =>{
 
     const props = {
-      prompt: 'test: ',
-      fileType: FileType.csv,
+      prompt: 'test: ',fileType: FileType.csv,
     };
 
     const testFile: File = new File(
@@ -87,9 +87,11 @@ describe('Csv FileEvents processed correctly', () => {
             onChange={onChangeMock}
         />);
 
-   //await comp.instance()
+   //await comp.instance().
 
-
+    //expect
+    //expect
+    //expect
   })
 });
 

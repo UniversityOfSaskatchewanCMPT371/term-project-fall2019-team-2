@@ -4,6 +4,7 @@ import ParserComponent, {CountTypes} from '../components/ParserComponent';
 import ParserInterface, {FileType} from '../components/ParserInterface';
 import {enumDrawType} from '../components/Column';
 import {Simulate} from 'react-dom/test-utils';
+// import error = Simulate.error;
 // import mouseOut = Simulate.mouseOut;
 
 describe('<ParserComponent /> renders correctly', () => {
@@ -47,9 +48,9 @@ describe('Csv FileEvents processed correctly', () => {
   it('Onchange event triggered when file selected', async () => {
     const onChangeMock = jest.fn();
     const testFile: File = new File(
-        [''],
-        'test.txt',
-        {type: '.txt,text/plain'},);
+        ['abcdef'],
+        'test.csv',
+        {type: '.csv,text/csv'},);
 
     const event = {target: {files: [testFile]}};
     const comp = mount(
@@ -65,41 +66,58 @@ describe('Csv FileEvents processed correctly', () => {
   });
 
   describe('Incompatible File types not accepted', () => {
+    const onChangeMock = jest.fn();
+    const comp: any = mount(
+        <ParserComponent
+          {...props}
+          onChange={onChangeMock}
+        />
+    );
+    let compData: Array<object>;
+
+    // make sure mock is cleared
+    beforeEach(() => {
+      console.log('before()');
+      onChangeMock.mockClear();
+      compData = [];
+    });
+
+    afterEach(() => {
+      console.log('after()');
+      compData = comp.state('data');
+      // expect(onChangeMock).not.toHaveBeenCalled();
+      expect(compData.length).toBe(0);
+    });
+
     it('.pdf rejected', async () => {
       const pdfTestFile: File = new File(
           ['test'],
           'test.pdf',
           {type: '.pdf,application/pdf'},
       );
-      const fileEvent = {target: {files: [pdfTestFile]}};
-      // todo: finish test
+      const fileEvent: any = {target: {files: [pdfTestFile]}};
+      // try {
+      //   // todo: make sure it throws the right error
+      //   expect(await comp.instance().parse(fileEvent)).toThrowError();
+      // } catch (error) {
+      //   console.log(error);
+      // }
     });
 
     // Currently failing because no error handling
     it('.txt rejected', async () => {
-      const onChangeMock = jest.fn((x: File) => x.type);
-      const comp: any = mount(
-          <ParserComponent
-            {...props}
-            onChange={onChangeMock}
-          />
-      );
-      const waitForNextTick = process.nextTick;
       const txtTestFile: File = new File(
-          [''],
+          ['abcdef'],
           'test.txt',
           {type: '.txt, text/plain'},
       );
-      const fileEvent = {target: {files: [txtTestFile]}};
-      try {
-        await comp.instance().parse(fileEvent);
-      } catch (error) {
-        console.log(error);
-      }
-
-      const fileUsed = onChangeMock.mock.instances[0][0];
-      // expect(onChangeMock).toHaveBeenCalledTimes(1);
-      // expect(onChangeMock).toHaveReturnedWith(txtTestFile.type);
+      const fileEvent: any = {target: {files: [txtTestFile]}};
+      // try {
+      //   // todo: make sure it throws the right error
+      //   expect(await comp.instance().parse(fileEvent)).toThrowError();
+      // } catch (error) {
+      //   console.log(error);
+      // }
     });
 
     it('.doc rejected', async () => {
@@ -108,29 +126,71 @@ describe('Csv FileEvents processed correctly', () => {
           'test.doc',
           {type: '.doc, application/msword'},
       );
-      const fileEvent = {target: {files: [docTestFile]}};
-      // todo: finish test
+      const fileEvent: any = {target: {files: [docTestFile]}};
+      // try {
+      //   // todo: make sure it throws the right error
+      //   expect(await comp.instance().parse(fileEvent)).toThrowError();
+      // } catch (error) {
+      //   console.log(error);
+      // }
     });
 
-    xit('.css rejected', async () => {
+    it('.css rejected', async () => {
       const cssTestFile: File = new File(
           [''],
           'test.css',
           {type: '.css, text/css'},
       );
-      const fileEvent = {target: {files: [cssTestFile]}};
-      // todo: finish test
+      const fileEvent: any = {target: {files: [cssTestFile]}};
+      // try {
+      //   // todo: make sure it throws the right error
+      //   expect(await comp.instance().parse(fileEvent)).toThrowError();
+      // } catch (error) {
+      //   console.log(error);
+      // }
     });
 
-    xit('.js rejected', async () => {
+    it('.js rejected', async () => {
       const jsTestFile: File = new File(
           ['abcdefg'],
           'test.js',
           {type: '.js, text/javascript'},
       );
-      const fileEvent = {target: {files: [jsTestFile]}};
-      // todo: finish test
+      const fileEvent: any = {target: {files: [jsTestFile]}};
+      // try {
+      //   // todo: make sure it throws the right error
+      //   expect(await comp.instance().parse(fileEvent)).toThrowError();
+      // } catch (error) {
+      //   console.log(error);
+      // }
     });
+  });
+
+  it('.csv file with no temporal data is rejected', async () => {
+    const onChangeMock = jest.fn();
+    const noDateFile: File = new File(
+        ['H1,H2,H3,H4\n' +
+                'a,b,c,d\n' +
+                'e,f,g,h\n' +
+                'i,j,k,l\n'],
+        'test.csv',
+        {type: '.csv,text/csv'},);
+    const comp: any = mount(<ParserComponent
+      {...props}
+      onChange={onChangeMock}
+    />);
+    const fileEvent = {target: {files: [noDateFile]}};
+    try {
+      expect(
+          await comp.instance().parse(fileEvent)
+      ).toThrowError('The file uploaded has no dates.');
+    } catch (error) {
+      console.log(error);
+    }
+
+    const fileUsed: File = onChangeMock.mock.calls[0][0];
+    expect(onChangeMock).toHaveBeenCalledTimes(1);
+    expect(fileUsed.name).toBe(noDateFile.name);
   });
 });
 

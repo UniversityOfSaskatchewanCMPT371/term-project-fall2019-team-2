@@ -82,6 +82,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * valid
      */
     isValid(upFile: File): boolean {
+      console.log('isValid()');
       const typeOfFile = upFile.name.substr(upFile.name.length - 4);
       if (typeOfFile === '.csv') {
         return typeOfFile === '.csv';
@@ -104,17 +105,20 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * @param {Array} data: the array of data to sort
      * @return {boolean}: array of sorted data
      */
-    sortData(data: Array<object>): Boolean {
+    sortData(data: Array<object>): boolean {
+      console.log('sortData()');
       let doneTheWork = false;
+      console.log('doneTheWork :' + doneTheWork);
       /* loop goes through each key and saves the 1 with a date in first row */
+      console.log(Object.entries(data[0]));
       for (const [key, value] of Object.entries(data[0])) {
+        console.log('sortData() for loop');
         if (!doneTheWork) {
           const date = Date.parse(String(value));
           if (!isNaN(date) && isNaN(Number(value))) {
             doneTheWork = true;
 
-            const keyInt = key + '_num';
-            // console.log(keyInt);
+            const keyInt = `${key}_num`;
 
             TimSort.sort(data, function(a: any, b: any) {
               if (!a.hasOwnProperty(keyInt)) {
@@ -130,14 +134,14 @@ export default class ParserComponent extends React.Component<ParserInterface,
 
             this.setState(() => {
               return {
-                data: data,
+                data,
               };
             });
-            // console.log(this.state.data);
           }
         }
       }
       if (doneTheWork) {
+        console.log('finished work');
         return true;
       } else {
         try {
@@ -241,7 +245,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
         );
         return arrayOfColumns;
       } else {
-        throw new Error('data is empty: ' + data.length);
+        throw new Error(`data is empty: ${data.length}`);
       }
     }
 
@@ -250,6 +254,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * @param {Object} fileEvent: the event passed into this component
      */
     async parse(fileEvent: any) {
+      console.log('parse()');
       this.setState(() => {
         return {
           showTimeline: false,
@@ -257,6 +262,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
       });
 
       if (this.props.fileType === FileType.csv) {
+        console.log('parse(): await parseCsv()');
         await this.parseCsv(fileEvent);
       }
       this.columnTypes = this.inferTypes(this.state.data);
@@ -276,8 +282,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * @param {Object} fileEvent: the event passed into this component
      */
     async parseCsv(fileEvent: any) {
-      // console.log(fileEvent);
-
+      console.log('parseCsv()');
       const csvFile = fileEvent.target.files[0];
 
       // for testing
@@ -286,8 +291,11 @@ export default class ParserComponent extends React.Component<ParserInterface,
       const fileReader = new FileReader();
 
       return new Promise((resolver, agent) => {
+        console.log('parseCsv() return Promise');
         const handleFileRead = () => {
+          console.log('parseCsv() handleFileRead()');
           if (typeof fileReader.result === 'string') {
+            console.log('parseCsv() tries to parse file contents...');
             const content = d3.csvParse(fileReader.result,
                 function(d: any, i: number): any {
                   // autoType the row

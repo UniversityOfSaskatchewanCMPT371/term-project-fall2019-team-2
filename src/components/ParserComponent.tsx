@@ -110,31 +110,33 @@ export default class ParserComponent extends React.Component<ParserInterface,
     sortData(data: Array<object>): boolean {
       let doneTheWork = false;
       /* loop goes through each key and saves the 1 with a date in first row */
-      for (const [key, value] of Object.entries(data[0])) {
-        if (!doneTheWork) {
-          const date = Date.parse(String(value));
-          if (!isNaN(date) && isNaN(Number(value))) {
-            doneTheWork = true;
+      if (Object.entries((data[0])) !== undefined) {
+        for (const [key, value] of Object.entries(data[0])) {
+          if (!doneTheWork) {
+            const date = Date.parse(String(value));
+            if (!isNaN(date) && isNaN(Number(value))) {
+              doneTheWork = true;
 
-            const keyInt = `${key}_num`;
+              const keyInt = `${key}_num`;
 
-            TimSort.sort(data, function(a: any, b: any) {
-              if (!a.hasOwnProperty(keyInt)) {
-                a[keyInt] = Date.parse(a[key]);
-              }
+              TimSort.sort(data, function(a: any, b: any) {
+                if (!a.hasOwnProperty(keyInt)) {
+                  a[keyInt] = Date.parse(a[key]);
+                }
 
-              if (!b.hasOwnProperty(keyInt)) {
-                b[keyInt] = Date.parse(b[key]);
-              }
+                if (!b.hasOwnProperty(keyInt)) {
+                  b[keyInt] = Date.parse(b[key]);
+                }
 
-              return (a[keyInt] - b[keyInt]);
-            });
+                return (a[keyInt] - b[keyInt]);
+              });
 
-            this.setState(() => {
-              return {
-                data,
-              };
-            });
+              this.setState(() => {
+                return {
+                  data,
+                };
+              });
+            }
           }
         }
       }

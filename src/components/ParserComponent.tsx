@@ -15,7 +15,7 @@ import * as TimSort from 'timsort';
  */
 export default class ParserComponent extends React.Component<ParserInterface,
   ParserState> {
-    private columnTypes: Array<Column> = Array(0);
+    private columnTypes: Array<Column> | undefined = Array(0);
     private childKey = 0;
 
     /**
@@ -171,7 +171,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * @param {Array} data: the array of pre-sorted valid data
      * @return {Array}: a list of objects of type Column
      */
-    inferTypes(data: Array<object>): Array<Column> {
+    inferTypes(data: Array<object>): Array<Column> | undefined {
       if (this.state.data.length > 0) {
         const listFields = Object.keys(this.state.data[0]);
         // instantiate objects to track the types of data
@@ -241,8 +241,13 @@ export default class ParserComponent extends React.Component<ParserInterface,
         );
         return arrayOfColumns;
       } else {
-        throw new Error('data is empty: ' + data.length);
+        try {
+          throw new Error('data is empty');
+        } catch (e) {
+          console.log(e);
+        }
       }
+      return undefined;
     }
 
     /**
@@ -256,8 +261,10 @@ export default class ParserComponent extends React.Component<ParserInterface,
         };
       });
 
-      if (this.props.fileType === FileType.csv) {
+      const temp: File = fileEvent.target.files[0];
+      if (this.props.fileType === FileType.csv && this.isValid(temp)) {
         await this.parseCsv(fileEvent);
+        this.sortData(this.state.data);
       }
       this.columnTypes = this.inferTypes(this.state.data);
 
@@ -306,8 +313,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
                 data: content,
               };
             });
-            console.log(this.sortData(content));
-            this.isValid(csvFile);
             console.log(content);
           }
           resolver(true);

@@ -82,18 +82,21 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * valid
      */
     isValid(upFile: File): boolean {
-      const typeOfFile = upFile.name.substr(upFile.name.length - 4);
-      if (typeOfFile === '.csv') {
-        return typeOfFile === '.csv';
-      } else {
-        try {
-          throw new Error('Wrong file type was uploaded.');
-        } catch (e) {
-          console.log(e);
-          alert('The file uploaded needs to be CSV.');
+      if (upFile !== undefined) {
+        const typeOfFile = upFile.name.substr(upFile.name.length - 4);
+        if (typeOfFile === '.csv') {
+          return typeOfFile === '.csv';
+        } else {
+          try {
+            throw new Error('Wrong file type was uploaded.');
+          } catch (e) {
+            console.log(e);
+            alert('The file uploaded needs to be CSV.');
+          }
+          return false;
         }
-        return false;
       }
+      return false;
     }
 
     /**
@@ -132,7 +135,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
                 data,
               };
             });
-            // console.log(this.state.data);
           }
         }
       }
@@ -267,7 +269,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
       }
       this.columnTypes = this.inferTypes(this.state.data);
 
-      // console.log(this.columnTypes);
 
       this.setState(() => {
         return {
@@ -310,7 +311,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
                 data: content,
               };
             });
-            console.log(this.sortData(content));
             this.isValid(csvFile);
             console.log(content);
           }

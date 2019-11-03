@@ -89,6 +89,17 @@ describe('<ParserComponent /> Unit Tests', () => {
       const instance = wrapper.instance() as ParserComponent;
       expect(instance.isValid(testFile)).toBeTruthy();
     });
+    it('test if undefined files works correctly', () => {
+      const testFile: File = new File(
+          [''],
+          '',
+          {type: undefined},
+      );
+      // eslint-disable-next-line max-len
+      const wrapper = mount(<ParserComponent prompt={'Select a TL file: '} fileType={FileType.csv} onChange={function() {}}/>);
+      const instance = wrapper.instance() as ParserComponent;
+      expect(instance.isValid(testFile)).toBeFalsy();
+    });
     // eslint-disable-next-line max-len
     it('test if when a csv is uploaded it works correctly with name csv(csv.csv)', () => {
       const testFile: File = new File(
@@ -112,7 +123,7 @@ describe('<ParserComponent /> Unit Tests', () => {
       const wrapper = mount(<ParserComponent prompt={'Select a TL file: '} fileType={FileType.csv}
         onChange={function() {}}/>);
       const instance = wrapper.instance() as ParserComponent;
-      expect(instance.isValid(testFile)).toEqual(false);
+      expect(instance.isValid(testFile)).toBeFalsy();
     });
     // eslint-disable-next-line max-len
     it('test if when a non-csv is uploaded it works correctly with name csv(csv.pdf)', () => {
@@ -125,7 +136,7 @@ describe('<ParserComponent /> Unit Tests', () => {
       const wrapper = mount(<ParserComponent prompt={'Select a TL file: '} fileType={FileType.csv}
         onChange={function() {}}/>);
       const instance = wrapper.instance() as ParserComponent;
-      expect(instance.isValid(testFile)).toEqual(false);
+      expect(instance.isValid(testFile)).toBeFalsy();
     });
     it('test if it works when there is nothing', () => {
       const testFile: File = new File(
@@ -137,7 +148,7 @@ describe('<ParserComponent /> Unit Tests', () => {
       const wrapper = mount(<ParserComponent prompt={'Select a TL file: '} fileType={FileType.csv}
         onChange={function() {}}/>);
       const instance = wrapper.instance() as ParserComponent;
-      expect(instance.isValid(testFile)).toEqual(false);
+      expect(instance.isValid(testFile)).toBeFalsy();
     });
   });
 
@@ -195,7 +206,7 @@ describe('<ParserComponent /> Unit Tests', () => {
         {'id': 2, 'name': 'name2', 'job': 'job2'},
         {'id': 3, 'name': 'name3', 'job': 'job3'},
         {'id': 4, 'name': 'name4', 'job': 'job4'}];
-      expect(instance.sortData(testArray)).toEqual(false);
+      expect(instance.sortData(testArray)).toBeFalsy();
     });
 
     // eslint-disable-next-line max-len
@@ -358,7 +369,7 @@ describe('<ParserComponent /> Unit Tests', () => {
         // test number
         expect(t1[0].drawType).toBe(enumDrawType.any);
         // test date
-        // expect(t1[1].drawType).toBe(enumDrawType.any);
+        expect(t1[1].drawType).toBe(enumDrawType.any);
       }
     });
     it('handles inconsistent data', () => {

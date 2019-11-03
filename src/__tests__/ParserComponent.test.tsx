@@ -352,18 +352,26 @@ describe('<ParserComponent /> Unit Tests', () => {
 
     it('handles regular data', () => {
       const t1 = pc.inferTypes(data);
-      // test string
-      expect(t1[2].drawType).toBe(enumDrawType.occurrence);
-      // test number
-      expect(t1[0].drawType).toBe(enumDrawType.any);
-      // test date
-      // expect(t1[1].drawType).toBe(enumDrawType.any);
+      if (t1 !== undefined) {
+        // test string
+        expect(t1[2].drawType).toBe(enumDrawType.occurrence);
+        // test number
+        expect(t1[0].drawType).toBe(enumDrawType.any);
+        // test date
+        // expect(t1[1].drawType).toBe(enumDrawType.any);
+      }
     });
     it('handles inconsistent data', () => {
       data[0] = {money: 'word', heart_attacks: '2016-07-03', animals: 0};
       const t1 = pc.inferTypes(data);
+      if (t1 !== undefined) {
       // test string
-      expect(t1[2].drawType).toBe(enumDrawType.occurrence);
+        expect(t1[2].drawType).toBe(enumDrawType.occurrence);
+      }
+    });
+    it('give empty data', () => {
+      const data1 = new Array(0);
+      expect(data1).toEqual([]);
     });
   });
 

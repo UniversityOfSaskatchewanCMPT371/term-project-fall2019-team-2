@@ -104,7 +104,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * @param {Array} data: the array of data to sort
      * @return {boolean}: array of sorted data
      */
-    sortData(data: Array<object>): Boolean {
+    sortData(data: Array<object>): boolean {
       let doneTheWork = false;
       /* loop goes through each key and saves the 1 with a date in first row */
       for (const [key, value] of Object.entries(data[0])) {
@@ -113,8 +113,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
           if (!isNaN(date) && isNaN(Number(value))) {
             doneTheWork = true;
 
-            const keyInt = key + '_num';
-            // console.log(keyInt);
+            const keyInt = `${key}_num`;
 
             TimSort.sort(data, function(a: any, b: any) {
               if (!a.hasOwnProperty(keyInt)) {
@@ -130,7 +129,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
 
             this.setState(() => {
               return {
-                data: data,
+                data,
               };
             });
             // console.log(this.state.data);
@@ -283,8 +282,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * @param {Object} fileEvent: the event passed into this component
      */
     async parseCsv(fileEvent: any) {
-      // console.log(fileEvent);
-
       const csvFile = fileEvent.target.files[0];
 
       // for testing
@@ -313,6 +310,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
                 data: content,
               };
             });
+            console.log(this.sortData(content));
+            this.isValid(csvFile);
             console.log(content);
           }
           resolver(true);

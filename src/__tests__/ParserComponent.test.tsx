@@ -4,6 +4,8 @@ import ParserComponent, {CountTypes} from '../components/ParserComponent';
 import ParserInterface, {FileType} from '../components/ParserInterface';
 import {enumDrawType} from '../components/Column';
 import {Simulate} from 'react-dom/test-utils';
+import {on} from "cluster";
+import {isNull} from "util";
 // import error = Simulate.error;
 // import mouseOut = Simulate.mouseOut;
 
@@ -191,6 +193,78 @@ describe('Csv FileEvents processed correctly', () => {
     const fileUsed: File = onChangeMock.mock.calls[0][0];
     expect(onChangeMock).toHaveBeenCalledTimes(1);
     expect(fileUsed.name).toBe(noDateFile.name);
+  });
+
+  describe('.csv with different date formats processed correctly', () => {
+    const onChangeMock = jest.fn();
+    const comp: any = mount(<ParserComponent
+      {...props}
+      onChange={onChangeMock}
+    />);
+    let compData: Array<object>;
+
+    beforeEach(() => {
+      onChangeMock.mockClear();
+      comp.setState({data: []});
+      compData = comp.state('data');
+      expect(compData.length).toBe(0);
+    });
+
+    afterEach(() => {
+      // onChange should be called once, and it should get to parseCsv()
+      expect(onChangeMock).toHaveBeenCalledTimes(1);
+      expect(compData.length).toBe(3);
+    });
+
+    it('.csv with sorted dates accepted', async () => {
+      const multiDateFile: File = new File(
+          // todo: add more date formats
+          ['Date,SomeNum,SomeString\n' +
+                  '04/04/1995,4,abcd\n' +
+                  '06-07-1996,5,efg\n' +
+                  'November 5 1997,1,hij\n' +
+                  ''],
+          'multiDateTest.csv',
+          {type: '.csv,text/csv'},
+      );
+      const fileEvent = {target: {files: [multiDateFile]}};
+
+      // no error should be thrown!!!
+      try {
+        expect(await comp.instance().parse(fileEvent)).toBe(undefined);
+      } catch (error) {
+        fail();
+      }
+      // data should be updated to contain csv info
+      compData = comp.state('data');
+      // Check that the object contains all the data from the csv
+      expect(compData).toMatchSnapshot();
+    });
+
+    it('.csv with unsorted dates accepted & data sorted by date', async () => {
+      const unsortedMultiDateFile: File = new File(
+          // todo: add more date formats
+          ['Date,SomeNum,SomeString\n' +
+                  '04/12/1998,4,abcd\n' +
+                  '06-01-1994,5,efg\n' +
+                  'November 5 1997,1,hij\n' +
+                  ''],
+          'test.csv',
+          {type: '.csv,text/csv'},
+      );
+      const fileEvent = {target: {files: [unsortedMultiDateFile]}};
+
+      try {
+        // no error should be thrown!!!
+        expect(await comp.instance().parse(fileEvent)).toBe(undefined);
+      } catch (error) {
+        console.log('ERROR!!!!!!: ' + error);
+      }
+      // data should be updated to contain csv info
+      compData = comp.state('data');
+      // Check that the object contains all the data from the csv
+      expect(compData).toMatchSnapshot();
+    });
   });
 });
 

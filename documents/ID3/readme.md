@@ -16,9 +16,9 @@
 
 [Here](TODO ADD LINK AFTER TAG) is the formal review that was done for ID3.  
 
-# Design Document
+# Design and Requirements Documents
 
-[Here](TODO ADD LINK) is the updated design document with Pre and Post conditions for every method.
+[Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID3/documents/ID3/ID3%20Requirements%20Revisions.pdf) are the updated requirements documents, with new stakeholder needs and nice to haves added.  And [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID3/documents/ID3/ID3%20Design%20Revisions.pdf) are the updated design documents, with Pre/Post conditions added for all methods, and updated documentation to reflect as-built design as closely as possible.
 
 # Meetings With Stakeholders
 

@@ -174,7 +174,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * @param {Array} data: the array of pre-sorted valid data
      * @return {Array}: a list of objects of type Column
      */
-    inferTypes(data: Array<object>): Array<Column> | undefined {
+    inferTypes(data: Array<object>): Array<Column> {
       if (this.state.data.length > 0) {
         const listFields = Object.keys(this.state.data[0]);
         // instantiate objects to track the types of data
@@ -244,13 +244,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
         );
         return arrayOfColumns;
       } else {
-        try {
-          throw new Error('data is empty');
-        } catch (e) {
-          console.log(e);
-        }
+        throw new Error(`data is empty: ${data.length}`);
       }
-      return undefined;
     }
 
     /**

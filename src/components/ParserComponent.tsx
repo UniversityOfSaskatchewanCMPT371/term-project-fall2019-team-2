@@ -244,9 +244,13 @@ export default class ParserComponent extends React.Component<ParserInterface,
         );
         return arrayOfColumns;
       } else {
-        // return undefined if file is undefined
-        return undefined;
+        try {
+          throw new Error('data is empty');
+        } catch (e) {
+          console.log(e);
+        }
       }
+      return undefined;
     }
 
     /**

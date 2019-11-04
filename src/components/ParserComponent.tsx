@@ -15,7 +15,7 @@ import * as TimSort from 'timsort';
  */
 export default class ParserComponent extends React.Component<ParserInterface,
   ParserState> {
-    private columnTypes: Array<Column> | undefined = Array(0);
+    private columnTypes?: Array<Column>;
     private childKey = 0;
 
     /**

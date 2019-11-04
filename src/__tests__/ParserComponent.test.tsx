@@ -193,9 +193,7 @@ describe('Csv FileEvents processed correctly', () => {
         expect(fileUsed.name).toBe(noDateFile.name);
     });
 
-    //test documentation
     describe("onChange event handles .csv file with incorrect formatting", () => {
-
         const onChangeMock = jest.fn();
         const comp: any = mount(
             <ParserComponent
@@ -203,46 +201,80 @@ describe('Csv FileEvents processed correctly', () => {
                 onChange={onChangeMock}
             />
         );
+        let compData: Array<object> = [];
 
-        it('.csv file data  < categories rejected', async () => {
-            const onChangeMock = jest.fn();
+        beforeEach(() => {
+            onChangeMock.mockClear();
+            comp.setState({data: []});
+            compData = comp.state('data');
+        });
+
+        afterEach(() => {
+            expect(onChangeMock).toHaveBeenCalledTimes(1);
+            // todo: ask devs what should happen in this case
+            // expect(compData.length).toBe(0);
+        });
+
+        it('rejects a .csv file with less data than there are categories', async () => {
             const lessDataTest: File = new File(
                 ['Item Name,Item Price,Item Description\n' +
-                'Pencil, school item\n' +
-                'Sharpener,school item\n' +
-                'Notebook,school item\n' +
-                'Bag,schoolitem\n'],
-                'test.csv',
+                'Pencil,1\n' +
+                'Sharpener,1\n' +
+                'Notebook, 2\n' +
+                'Bag, 1\n'],
+                'lessDataTest.csv',
                 {type: '.csv,text/csv'},);
 
             const fileEvent: any = {target: {files: [lessDataTest]}};
-            // try {
-            //   // todo: make sure it throws the right error
-            //   expect(await comp.instance().parse(fileEvent)).toThrowError();
-            // } catch (error) {
-            //   console.log(error);
-            // }
+            try {
+                // TODO:
+                expect(await comp.instance().parse(fileEvent)).toThrowError();
+            } catch (error) {
+                console.log(error);
+            }
         });
 
-        it(".csv file data > categories rejected", async() =>{
-            const onChangeMock = jest.fn();
+        it("rejects a .csv with more data than there are categories", async() =>{
             const moreDataTest: File = new File(
-                ['Item Name,\n' +
-                'Pencil, school item\n' +
-                'Sharpener, school item\n' +
-                'Notebook,,school item\n' +
-                'Bag, schoolitem\n'],
-                'test.csv',
+                ['Item Name, Item Price\n' +
+                'Pencil, 1, school item\n' +
+                'Sharpener, 1, school item\n' +
+                'Notebook, 1, school item\n' +
+                'Bag, 1, school item\n'],
+                'moreDataTest.csv',
                 {type: '.csv,text/csv'},
             );
+
             const fileEvent: any = {target: {files: [moreDataTest]}};
-            // try {
-            //   // todo: make sure it throws the right error
-            //   expect(await comp.instance().parse(fileEvent)).toThrowError();
-            // } catch (error) {
-            //   console.log(error);
-            // }
+            try {
+                // TODO:
+                expect(await comp.instance().parse(fileEvent)).toThrowError();
+            } catch (error) {
+                console.log(error);
+            }
+            compData = comp.state('data');
+            console.log('BOO!' + compData);
         });
+
+        it(".csv file data consisting of emojis rejected",async() =>{
+            const emojiFileTest: File = new File(
+                ['U+1F63C, U+1F640\t, U+1F63F\t\n' +
+            'U+1F648, U+1F649, U+1F64A\n' +
+            'U+1F4A5\t, U+1F573\t, U+1F4A3\n' +
+            'U+1F918, U+1F595, U+1F93A\t\n' +
+            'U+1F3C2, U+1F419\t, U+1F41B\n'],
+                'emojiFileTest.csv',
+                {type: 'csv,text/csv'},
+            );
+            const fileEvent: any = {target: {files: [emojiFileTest]}};
+            try {
+               // Todo: ask devs again about behaviour
+                expect(await comp.instance().parse(fileEvent)).toThrowError();
+                } catch (error) {
+                console.log(error);
+            }
+        });
+
     });
 });
 

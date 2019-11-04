@@ -110,7 +110,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
     sortData(data: Array<object>): boolean {
       let doneTheWork = false;
       /* loop goes through each key and saves the 1 with a date in first row */
-      if (Object !== undefined) {
+      if (data[0] !== undefined && data.length > 0) {
         for (const [key, value] of Object.entries(data[0])) {
           if (!doneTheWork) {
             const date = Date.parse(String(value));

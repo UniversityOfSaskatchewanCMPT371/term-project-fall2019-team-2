@@ -4,10 +4,6 @@ import ParserComponent, {CountTypes} from '../components/ParserComponent';
 import ParserInterface, {FileType} from '../components/ParserInterface';
 import {enumDrawType} from '../components/Column';
 import {Simulate} from 'react-dom/test-utils';
-import {on} from "cluster";
-import {isNull} from "util";
-// import error = Simulate.error;
-// import mouseOut = Simulate.mouseOut;
 
 describe('<ParserComponent /> renders correctly', () => {
   const prompt = <label>test: </label>;
@@ -241,6 +237,7 @@ describe('Csv FileEvents processed correctly', () => {
       expect(compData).toMatchSnapshot();
     });
 
+    // todo: add tests for to check sorting by month, day, time
     it('.csv with unsorted dates accepted & data sorted by date', async () => {
       const unsortedMultiDateFile: File = new File(
           // todo: add more date formats

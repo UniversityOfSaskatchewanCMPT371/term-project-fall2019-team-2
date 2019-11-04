@@ -244,6 +244,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
         );
         return arrayOfColumns;
       } else {
+        // return undefined if file is undefined
         return undefined;
       }
     }

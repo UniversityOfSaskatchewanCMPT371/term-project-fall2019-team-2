@@ -252,3 +252,5 @@ _Pvt_Extensions
 
 # JS Stuff
 build/
+coverage/
+test-report.xml

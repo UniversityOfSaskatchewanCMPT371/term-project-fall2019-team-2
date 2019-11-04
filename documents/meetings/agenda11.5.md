@@ -31,6 +31,8 @@ ID3 Retrospective and Moving Forward
   - Smaller, bite sized commits make you look better
     - They reduce bad code
   - People are merging stuff from other branches into their branch
+  - No more PR delete then re-upload PR
+    - Update your current PR, don't delete it!
   
 
 

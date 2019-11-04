@@ -10,15 +10,15 @@
 
 # Risk Report
 
-[Here](TODO ADD LINK) is the risk documentation and planning for ID3. This risk document also included information about *past* risks, rather than just risks which were considered as new.
+[Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID3/documents/ID3/Risk%20Analysis.pdf) is the risk documentation and planning for ID3. This risk document also included information about *past* risks, rather than just risks which were considered as new.
 
 # Reviews Conducted
 
-[Here](TODO ADD LINK AFTER TAG) is the formal review that was done for ID3.  
+[Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID3/documents/ID3/Code%20review.pdf) is the formal review that was done for ID3.  
 
 # Design and Requirements Documents
 
-[Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID3/documents/ID3/ID3%20Requirements%20Revisions.pdf) are the updated requirements documents, with new stakeholder needs and nice to haves added.  And [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID3/documents/ID3/ID3%20Design%20Revisions.pdf) are the updated design documents, with Pre/Post conditions added for all methods, and updated documentation to reflect as-built design as closely as possible.
+[Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID3/documents/ID3/ID3%20Requirements%20Revisions.pdf) are the updated requirements documents, with new stakeholder needs and nice to haves added.  And [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID3/documents/ID3/ID3%20Design%20Revisions.pdf) are the updated design documents, with Pre/Post conditions added for all methods, and updated documentation to reflect as-built design as closely as possible.  
 
 # Meetings With Stakeholders
 
@@ -26,7 +26,7 @@
 
 # Testing
 
-[This](https://docs.google.com/spreadsheets/d/12vy-1gQfcwR33prfGowxQvH6npkmUBBFCrHuZndAZkY/edit#gid=0) spreadsheet is the result of some manual bug hunting done after our feature freeze. [This](https://docs.google.com/spreadsheets/d/1ZnNRrXKV4FqdfMf8I6ga-5IDUYAZFbtIXiw5_pEGHTY/edit#gid=0) spreadsheet is the test matrix, with the new updated tests documented.
+[This](https://docs.google.com/spreadsheets/d/12vy-1gQfcwR33prfGowxQvH6npkmUBBFCrHuZndAZkY/edit#gid=0) spreadsheet is the result of some manual bug hunting done after our feature freeze. [This](https://docs.google.com/spreadsheets/d/1ZnNRrXKV4FqdfMf8I6ga-5IDUYAZFbtIXiw5_pEGHTY/edit#gid=0) spreadsheet is the test matrix, with the new updated tests documented. [Here](https://docs.google.com/document/d/1YjQQGTEJ5isLvPcnyOce28Hsbc9B3ct_JlJeo1cQCH0/edit#heading=h.h3jbtsmzbcar) is a link to the test design document. Finally [this](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/develop/src) is a link to the currently implemented tests on the develop branch, which all devs are currently pulling from.
 
 # Timelog
 

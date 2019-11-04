@@ -194,8 +194,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
                 const isValid = date.isValid();
                 if (isValid) {
                   curColTypes['numDate'] += 1;
-                } else {
-                  throw val;
                 }
               }
             } catch {

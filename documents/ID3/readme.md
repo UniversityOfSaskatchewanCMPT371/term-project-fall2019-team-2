@@ -6,7 +6,7 @@
 
 # Mini-Milestones
 
-[Our current list](TODO ADD LINK) of mini-milestones along with the roadmap for their completion.  This document also includes a break down of how our timelogging will work in the future deliverables.  Various categories were merged as they were viewed as redundant.
+[Our current list](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID3/documents/ID3/ID3%20Mini%20Milestones.pdf) of mini-milestones along with the roadmap for their completion.  This document also includes a break down of how our timelogging will work in the future deliverables.  Various categories were merged as they were viewed as redundant.
 
 # Risk Report
 

@@ -10,7 +10,7 @@
 
 # Risk Report
 
-[Here](TODO ADD LINK) is the risk documentation and planning for ID3. This risk document also included information about *past* risks, rather than just risks which were considered as new.
+[Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/master/documents/ID3/Risk%20Analysis.pdf) is the risk documentation and planning for ID3. This risk document also included information about *past* risks, rather than just risks which were considered as new.
 
 # Reviews Conducted
 

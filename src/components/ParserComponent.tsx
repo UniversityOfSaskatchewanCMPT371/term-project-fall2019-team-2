@@ -197,6 +197,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
                 } else {
                   throw val;
                 }
+              } else {
+                throw val;
               }
             } catch {
               // @ts-ignore

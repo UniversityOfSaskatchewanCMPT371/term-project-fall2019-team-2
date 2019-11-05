@@ -1,7 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Csv FileEvents processed correctly .csv with different date formats \
-processed correctly .csv with sorted dates accepted 1`] = `
+exports[`Csv FileEvents processed correctly \
+.csv with different date formats processed correctly \
+.csv with sorted dates accepted 1`] = `
 Array [
   Object {
     "Date": "04/04/1995",
@@ -27,8 +28,9 @@ Array [
 ]
 `;
 
-exports[`Csv FileEvents processed correctly .csv with different date formats \
-processed correctly .csv with unsorted dates accepted & data sorted by date 1`] = `
+exports[`Csv FileEvents processed correctly \
+.csv with different date formats processed correctly \
+.csv with unsorted dates accepted & data sorted by date 1`] = `
 Array [
   Object {
     "Date": "06-01-1994",

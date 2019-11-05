@@ -227,13 +227,14 @@ describe('Csv FileEvents processed correctly', () => {
       try {
         expect(await comp.instance().parse(fileEvent)).toBe(undefined);
       } catch (error) {
-        fail();
+        fail(); // fail if error thrown
       }
       // data should be updated to contain csv info
       compData = comp.state('data');
       // Check that the object contains all the data from the csv
-      // snapshot currently causing problems on different OSs
-      // expect(compData).toMatchSnapshot();
+      compData.forEach((date) => {
+        expect(date).toMatchSnapshot({Date_num: expect.any(Number)});
+      });
     });
 
     // todo: add tests for to check sorting by month, day, time
@@ -250,35 +251,25 @@ describe('Csv FileEvents processed correctly', () => {
       );
       const fileEvent = {target: {files: [unsortedMultiDateFile]}};
 
+
+      // no error should be thrown!!!
       try {
-        // no error should be thrown!!!
         expect(await comp.instance().parse(fileEvent)).toBe(undefined);
-      } catch (error) {
-        console.log('ERROR!!!!!!: ' + error);
+      } catch (e) {
+        fail(); // fail if error thrown
       }
       // data should be updated to contain csv info
       compData = comp.state('data');
       // Check that the object contains all the data from the csv
-      // snapshot currently causing problems on different OSs
-      // expect(compData).toMatchSnapshot();
+      compData.forEach((date) => {
+        expect(date).toMatchSnapshot({Date_num: expect.any(Number)});
+      });
     });
   });
 });
 
 // To be used by the developers
 describe('<ParserComponent /> Unit Tests', () => {
-  describe('constructor()', () => {
-    it('dummy test', () => {
-      // todo: devs need to write unit tests
-    });
-  });
-
-  describe('componentDidMount()', () => {
-    it('dummy test', () => {
-      // todo: devs need to write unit tests
-    });
-  });
-
   describe('isValid()', () => {
     it('test if when a csv is uploaded it works correctly', () => {
       const testFile: File = new File(

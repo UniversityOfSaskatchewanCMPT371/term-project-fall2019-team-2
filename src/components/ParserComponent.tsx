@@ -302,9 +302,9 @@ export default class ParserComponent extends React.Component<ParserInterface,
                 data: content,
               };
             });
-            console.log(this.sortData(content));
+            // console.log(this.sortData(content));
             this.isValid(csvFile);
-            console.log(content);
+            // console.log(content);
           }
           resolver(true);
         };

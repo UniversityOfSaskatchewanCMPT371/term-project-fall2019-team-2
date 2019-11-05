@@ -61,6 +61,35 @@ describe('Csv FileEvents processed correctly', () => {
     expect(fileUsed.name).toBe(testFile.name);
     expect(onChangeMock).toHaveBeenCalledTimes(1);
   });
+
+});
+
+
+describe('Csv FileEvents processed correctly', () => {
+  const props = {
+    prompt: 'test: ',
+    fileType: FileType.csv,
+  };
+
+  it('Onchange event triggered when file selected', async () => {
+    const onChangeMock = jest.fn();
+    const testFile: File = new File(
+        [''],
+        'test.csv',
+        {type: '.csv,text/csv'},);
+
+    const event = {target: {files: [testFile]}};
+    const comp = mount(
+        <ParserComponent
+          {...props}
+          onChange={onChangeMock}
+        />);
+
+    comp.find('input').simulate('change', event);
+    const fileUsed: File = onChangeMock.mock.calls[0][0];
+    expect(fileUsed.name).toBe(testFile.name);
+    expect(onChangeMock).toHaveBeenCalledTimes(1);
+  });
 });
 
 // To be used by the developers

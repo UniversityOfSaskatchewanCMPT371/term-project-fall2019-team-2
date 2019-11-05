@@ -98,7 +98,9 @@ describe('<ParserComponent /> Unit Tests', () => {
       // eslint-disable-next-line max-len
       const wrapper = mount(<ParserComponent prompt={'Select a TL file: '} fileType={FileType.csv} onChange={function() {}}/>);
       const instance = wrapper.instance() as ParserComponent;
-      expect(instance.isValid(testFile)).toBeFalsy();
+      expect(() => {
+        instance.isValid(testFile);
+      }).toThrow('Wrong file type was uploaded.');
     });
     // eslint-disable-next-line max-len
     it('test if when a csv is uploaded it works correctly with name csv(csv.csv)', () => {
@@ -123,7 +125,9 @@ describe('<ParserComponent /> Unit Tests', () => {
       const wrapper = mount(<ParserComponent prompt={'Select a TL file: '} fileType={FileType.csv}
         onChange={function() {}}/>);
       const instance = wrapper.instance() as ParserComponent;
-      expect(instance.isValid(testFile)).toBeFalsy();
+      expect(() => {
+        instance.isValid(testFile);
+      }).toThrow('Wrong file type was uploaded.');
     });
     // eslint-disable-next-line max-len
     it('test if when a non-csv is uploaded it works correctly with name csv(csv.pdf)', () => {
@@ -136,7 +140,9 @@ describe('<ParserComponent /> Unit Tests', () => {
       const wrapper = mount(<ParserComponent prompt={'Select a TL file: '} fileType={FileType.csv}
         onChange={function() {}}/>);
       const instance = wrapper.instance() as ParserComponent;
-      expect(instance.isValid(testFile)).toBeFalsy();
+      expect(() => {
+        instance.isValid(testFile);
+      }).toThrow('Wrong file type was uploaded.');
     });
     it('test if it works when there is nothing', () => {
       const testFile: File = new File(
@@ -148,7 +154,9 @@ describe('<ParserComponent /> Unit Tests', () => {
       const wrapper = mount(<ParserComponent prompt={'Select a TL file: '} fileType={FileType.csv}
         onChange={function() {}}/>);
       const instance = wrapper.instance() as ParserComponent;
-      expect(instance.isValid(testFile)).toBeFalsy();
+      expect(() => {
+        instance.isValid(testFile);
+      }).toThrow('Wrong file type was uploaded.');
     });
   });
 
@@ -206,7 +214,9 @@ describe('<ParserComponent /> Unit Tests', () => {
         {'id': 2, 'name': 'name2', 'job': 'job2'},
         {'id': 3, 'name': 'name3', 'job': 'job3'},
         {'id': 4, 'name': 'name4', 'job': 'job4'}];
-      expect(instance.sortData(testArray)).toBeFalsy();
+      expect(() => {
+        instance.sortData(testArray);
+      }).toThrow('The file uploaded has no dates.');
     });
 
     // eslint-disable-next-line max-len
@@ -301,11 +311,11 @@ describe('<ParserComponent /> Unit Tests', () => {
       expect(testArray[3]).toMatchObject(expectedResult[3]);
     });
 
-    // eslint-disable-next-line max-len
-    it('checks if sort works on data where dates are invalid January 32, 2019 by moving it to the end', () => {
-      // eslint-disable-next-line max-len
-      const wrapper = shallow(<ParserComponent prompt={'Select a TL file: '} fileType={FileType.tl}
-        onChange={function() {}}/>);
+    it('checks if sort works on data where dates are ' +
+        'invalid January 32, 2019 by moving it to the end', () => {
+      const wrapper = shallow(<ParserComponent prompt={'Select ' +
+      'a TL file: '} fileType={FileType.tl}
+      onChange={function() {}}/>);
       const instance = wrapper.instance() as ParserComponent;
       const testArray: {id: number, name: string, Date: string}[] = [
         {'id': 3, 'name': 'name3', 'Date': 'January 15, 2019'},
@@ -387,8 +397,9 @@ describe('<ParserComponent /> Unit Tests', () => {
         data: data1,
         showTimeline: false,
       };
-      const t2 = pc.inferTypes(data1);
-      expect(t2).toEqual(undefined);
+      expect(() => {
+        pc.inferTypes(data1);
+      }).toThrow('data is empty');
     });
   });
 

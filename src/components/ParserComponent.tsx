@@ -87,13 +87,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
         if (typeOfFile === '.csv') {
           return typeOfFile === '.csv';
         } else {
-          try {
-            throw new Error('Wrong file type was uploaded.');
-          } catch (e) {
-            console.log(e);
-            alert('The file uploaded needs to be CSV.');
-          }
-          return false;
+          throw new Error('Wrong file type was uploaded.');
         }
       }
       return false;
@@ -143,13 +137,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
       if (doneTheWork) {
         return true;
       } else {
-        try {
-          throw new Error('The file uploaded has no dates.');
-        } catch (e) {
-          console.log(e);
-          alert('The file uploaded has no dates.');
-        }
-        return false;
+        throw new Error('The file uploaded has no dates.');
       }
     }
 
@@ -244,13 +232,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
         );
         return arrayOfColumns;
       } else {
-        try {
-          throw new Error('data is empty');
-        } catch (e) {
-          console.log(e);
-        }
+        throw new Error('data is empty');
       }
-      return undefined;
     }
 
     /**
@@ -265,12 +248,21 @@ export default class ParserComponent extends React.Component<ParserInterface,
       });
 
       const temp: File = fileEvent.target.files[0];
-      if (this.props.fileType === FileType.csv && this.isValid(temp)) {
-        await this.parseCsv(fileEvent);
-        this.sortData(this.state.data);
+      try {
+        if (this.props.fileType === FileType.csv && this.isValid(temp)) {
+          await this.parseCsv(fileEvent);
+          try {
+            this.columnTypes = this.inferTypes(this.state.data);
+            this.sortData(this.state.data);
+          } catch (e) {
+            alert('data is empty');
+            console.log('data is empty');
+          }
+        }
+      } catch (e) {
+        alert('Wrong file type was uploaded.');
+        console.log('Wrong file was uploaded.');
       }
-      this.columnTypes = this.inferTypes(this.state.data);
-
 
       this.setState(() => {
         return {
@@ -313,8 +305,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
                 data: content,
               };
             });
-            this.isValid(csvFile);
-            console.log(content);
           }
           resolver(true);
         };

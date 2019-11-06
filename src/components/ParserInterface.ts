@@ -27,6 +27,7 @@ export class FileType {
 interface Parser {
     prompt: string;
     fileType: FileType;
+    onChange: (filePath: any) => void;
 }
 export default Parser;
 
@@ -34,4 +35,5 @@ export interface ParserState {
     prompt: string;
     fileType: FileType;
     data: Array<object>;
+    showTimeline: boolean;
 }

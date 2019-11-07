@@ -548,15 +548,15 @@ export default class TimelineComponent
       case 'interval':
         this.svg.append('text')
             .attr('transform',
-                `translate(${width / 2},${height + marginTop + 20})`)
+                `translate(${(width / 2) + 10},${height + marginTop + 20})`)
             .style('text-anchor', 'start')
-            .text('start: ' + this.state.xColumn);
+            .text('end: ' + this.state.xColumn2);
 
         this.svg.append('text')
             .attr('transform',
                 `translate(${width / 2},${height + marginTop + 20})`)
             .style('text-anchor', 'end')
-            .text('end: ' + this.state.xColumn2);
+            .text('start: ' + this.state.xColumn + ',');
 
         this.svg.append('text')
             .attr('transform', 'rotate(-90)')

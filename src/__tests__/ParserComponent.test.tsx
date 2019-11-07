@@ -629,6 +629,11 @@ describe('<ParserComponent /> Unit Tests', () => {
     it('sortDate called within method', async () => {
       const sortDataSpy =
         jest.spyOn(ParserComponent.prototype, 'sortData');
+      comp = mount( // moved this, must render after spy is created
+          <ParserComponent
+            {...props}
+            onChange={onChangeMock}
+          />);
       // check sortDate is called
       await comp.instance().parseCsv(event);
       expect(sortDataSpy).toHaveBeenCalled();

@@ -275,8 +275,62 @@ describe('<TimelineComponent /> Unit Tests', () => {
   });
 
   describe('drawTimeline()', () => {
-    it('dummy test', () => {
-      // todo: devs need to write unit tests
+    it('timeline drawer handles zoom out', () => {
+      wrapper.instance().drawTimeline();
+      const event = new KeyboardEvent('keypress', {'key': 'w'});
+      document.body.dispatchEvent(event);
+
+      expect(wrapper.instance().getScale()).toBeGreaterThan(1.0);
+    });
+
+    it('timeline drawer handles zoom in', () => {
+      wrapper.instance().drawTimeline();
+      let event = new KeyboardEvent('keypress', {'key': 'w'});
+      document.body.dispatchEvent(event);
+
+      expect(wrapper.instance().getScale()).toBeGreaterThan(1.0);
+      event = new KeyboardEvent('keypress', {'key': 's'});
+      document.body.dispatchEvent(event);
+
+      expect(wrapper.instance().getScale()).toBe(1.0);
+    });
+
+    it('timeline drawer handles pan right', () => {
+      wrapper.instance().drawTimeline();
+      const event = new KeyboardEvent('keypress', {'key': 'd'});
+      document.body.dispatchEvent(event);
+
+      expect(wrapper.instance().getDeltaX()).toBeLessThan(0);
+    });
+
+    it('timeline drawer handles pan left', () => {
+      wrapper.instance().drawTimeline();
+      let event = new KeyboardEvent('keypress', {'key': 'd'});
+      document.body.dispatchEvent(event);
+
+      expect(wrapper.instance().getDeltaX()).toBeLessThan(0);
+      event = new KeyboardEvent('keypress', {'key': 'a'});
+      document.body.dispatchEvent(event);
+
+      expect(wrapper.instance().getDeltaX()).toBe(0);
+    });
+
+    it('timeline drawer does not zoom out too far', () => {
+      wrapper.instance().drawTimeline();
+      const event = new KeyboardEvent('keypress', {'key': 's'});
+      document.body.dispatchEvent(event);
+
+      // Should stay at 1
+      expect(wrapper.instance().getScale()).toBe(1.0);
+    });
+
+    it('timeline drawer does not pan too far left', () => {
+      wrapper.instance().drawTimeline();
+      const event = new KeyboardEvent('keypress', {'key': 'a'});
+      document.body.dispatchEvent(event);
+
+      // Should stay at 0 (the min)
+      expect(wrapper.instance().getDeltaX()).toBe(0);
     });
   });
 
@@ -306,12 +360,6 @@ describe('<TimelineComponent /> Unit Tests', () => {
         });
   });
 
-  describe('ttMove()', () => {
-    it('dummy test', () => {
-      // todo: devs need to write unit tests
-    });
-  });
-
   describe('ttLeave()', () => {
     it('dummy test', () => {
       wrapper.instance().ttLeave();
@@ -335,8 +383,6 @@ describe('<TimelineComponent /> Unit Tests', () => {
             // expect(consoleOutput[1]).toEqual('d3.event was null');
             res(true);
           }, 1000));
-
-          // todo: devs need to write unit tests
         });
   });
   describe('drawEventMagnitude()', () => {

@@ -14,6 +14,16 @@ const marginBottom: number = 170;
 const marginLeft: number = 70;
 const marginRight: number = 20;
 
+// Zooming and Panning using the keyboard
+// 10% zoomed out
+const scaleZoomOut = 0.9;
+// 10% zoomed in
+const scaleZoomIn = 1.1;
+// The default starting panned position
+const deltaPan = 50;
+// The minimum possible scale
+const scaleMin = 1.0;
+
 let fullWidth: number = 0;
 let fullHeight: number = 0;
 let height: number = 0;
@@ -23,7 +33,6 @@ const barBuffer: number = 5;
 let numBars: number = 0;
 let dataIdx: number = 0;
 let deltaX: number = 0;
-let scale: number = 1;
 let xColumn: string;
 let xColumn2: string;
 let yColumn: string;
@@ -94,6 +103,21 @@ export default class TimelineComponent
     this.getIntervalMagnitudeData = this.getIntervalMagnitudeData.bind(this);
   }
 
+  /**
+   * Get the current scale data for zooming of keys
+   * @return {number}: The scale
+   */
+  getScale(): number {
+    return this.scale;
+  }
+
+  /**
+   * Get the current delta value for panning left and right
+   * @return {number}: The deltaX
+   */
+  getDeltaX(): number {
+    return deltaX;
+  }
 
   /**
    * Purpose: waits until the component has properly mounted before drawing the
@@ -180,7 +204,7 @@ export default class TimelineComponent
       if (col !== null && col !== undefined) {
         const data = this.state.data;
         if (col.primType === 'date') {
-          const keyInt = column + '_num';
+          const keyInt = `${column}_num`;
           TimSort.sort(data.arrayOfData, function(a: any, b: any) {
             if (!a.hasOwnProperty(keyInt)) {
               a[keyInt] = Date.parse(a[column]);
@@ -198,7 +222,7 @@ export default class TimelineComponent
 
         this.setState(() => {
           return {
-            data: data,
+            data,
           };
         });
       }
@@ -225,7 +249,7 @@ export default class TimelineComponent
         return {
           xColumn: val,
         };
-      }, async () => await this.sortData(val));
+      }, () => this.sortData(val));
     } else if (column === 'xColumn2') {
       this.setState(() => {
         return {
@@ -340,6 +364,19 @@ export default class TimelineComponent
     });
   }
 
+  /**
+   * Stores the zoom object for programmatically adjusting the zoom
+   */
+  private zoom: any;
+  /**
+   * Stores the D3 svg for appending elements. The SVG is the primary
+   * D3 element we use for storing the graph.
+   */
+  private svg: any;
+  /**
+   * Stores the current scale
+   */
+  private scale = 1;
 
   /**
    * Purpose: sets the initial values for rendering the actual timeline
@@ -360,7 +397,7 @@ export default class TimelineComponent
 
     dataIdx = 0;
     deltaX = 0;
-    scale = 1;
+    this.scale = 1;
     csvData = this.state.data.arrayOfData;
 
     data = csvData.slice(0, numBars);
@@ -417,29 +454,29 @@ export default class TimelineComponent
    * said timeline
    */
   drawTimeline() {
-    const zoom = d3.zoom()
+    this.zoom = d3.zoom()
         .scaleExtent([1, 20]) // zoom range
         .translateExtent(extent)
         .extent(extent)
-        .on('zoom', this.updateChart);
+        .on('zoom', this.updateChart)
+        .on('zoom.transform', this.updateChart);
 
-    const svg = d3.select('#svgtarget')
+    this.svg = d3.select('#svgtarget')
         .append('svg')
         .attr('width', width)
         .attr('height', height + marginTop +
             marginBottom)
         // @ts-ignore
-        .call(zoom)
+        .call(this.zoom)
         .append('g')
-        .attr('transform', 'translate(' + marginLeft +
-            ',' + marginTop + ')');
+        .attr('transform', `translate(${marginLeft}, ${marginTop})`);
 
-    svg.append('rect')
+    this.svg.append('rect')
         .attr('width', width)
         .attr('height', height)
         .style('fill', 'none');
 
-    svg.append('defs')
+    this.svg.append('defs')
         .append('clipPath')
         .attr('id', 'barsBox')
         .append('rect')
@@ -449,7 +486,7 @@ export default class TimelineComponent
         .attr('x', 0)
         .attr('y', 0);
 
-    const barsLayer = svg.append('g')
+    const barsLayer = this.svg.append('g')
         .attr('clip-path', 'url(#barsBox)')
         .append('g')
         .attr('id', 'barsLayer')
@@ -458,7 +495,7 @@ export default class TimelineComponent
             .on('drag', this.dragged)
             .on('end', this.dragEnded));
 
-    const axisLayer = svg.append('g')
+    const axisLayer = this.svg.append('g')
         .attr('id', 'axisLayer');
 
     axisLayer.append('g')
@@ -477,7 +514,72 @@ export default class TimelineComponent
         .attr('class', 'plot')
         .attr('id', 'bars');
 
+    // Labels
+    this.drawLabels();
+
     this.updateBars();
+
+    this.registerEvents();
+  }
+
+  /**
+   * Draw the axis labels
+   * @return {void}: Nothing
+   */
+  private drawLabels(): void {
+    this.svg.append('text')
+        .attr('transform',
+            `translate(${width/2},${height + marginTop + 20})`)
+        .style('text-anchor', 'middle')
+        .text(this.state.xColumn);
+
+    this.svg.append('text')
+        .attr('transform', 'rotate(-90)')
+        .attr('y', 0 - marginLeft)
+        .attr('x', 0 - (height / 2))
+        .attr('dy', '1em')
+        .style('text-anchor', 'middle')
+        .text(this.state.yColumn);
+  }
+
+  /**
+   * Register events on D3 elements.
+   * @return {void}: Nothing
+   */
+  private registerEvents(): void {
+    // Handle keypresses
+    d3.select('body')
+        .on('keypress', () => {
+          if (d3.event.key === '-' || d3.event.key === 's') {
+            // Zoom out
+            const identity = d3.zoomIdentity
+                .scale(Math.max(scaleMin, this.scale * scaleZoomOut));
+
+            this.svg.transition().ease(d3.easeLinear).duration(300)
+                .call(this.zoom.transform, identity);
+            // Ensure the new scale is saved with a limit on the minimum
+            //  zoomed out scope
+            this.scale = Math.max(scaleMin, this.scale * scaleZoomOut);
+          } else if (d3.event.key === '+' || d3.event.key === 'w') {
+            // Zoom in
+            const identity = d3.zoomIdentity
+                .scale(this.scale * scaleZoomIn);
+
+            this.svg.transition().ease(d3.easeLinear).duration(300)
+                .call(this.zoom.transform, identity);
+            // Ensure the new scale is saved
+            this.scale = this.scale * scaleZoomIn;
+          } else if (d3.event.key === 'a') {
+            // Pan left
+            deltaX = Math.min(0, deltaX + deltaPan);
+            console.log(deltaX);
+            this.moveChart();
+          } else if (d3.event.key === 'd') {
+            // Pan right
+            deltaX -= deltaPan;
+            this.moveChart();
+          }
+        });
   }
 
   /**
@@ -498,8 +600,8 @@ export default class TimelineComponent
         .style('border-width', '2px')
         .style('border-radius', '5px')
         .style('padding', '5px')
-        .style('left', (x + 70) + 'px')
-        .style('top', y + 'px');
+        .style('left', `${x + 70}px`)
+        .style('top', `${y}px`);
 
     const keys = Object.keys(d);
     let tooltip: string = '';
@@ -595,7 +697,7 @@ export default class TimelineComponent
   updateChart() {
     // recover the new scale
     if (d3.event !== null) {
-      scale = d3.event.transform.k;
+      this.scale = d3.event.transform.k;
     } else {
       console.warn('d3.event was null');
     }
@@ -607,28 +709,28 @@ export default class TimelineComponent
 
     if (this.state.toggleTimeline === 0) {
       d3.selectAll('.bar')
-          .attr('x', (d, i) => scale * barWidth * (i + dataIdx))
-          .attr('width', scale * barWidth);
+          .attr('x', (d, i) => this.scale * barWidth * (i + dataIdx))
+          .attr('width', this.scale * barWidth);
 
       d3.selectAll('.xtick')
           .attr('transform', (d: any, i) => 'translate(' +
-              ((scale * barWidth * (d['index'] + dataIdx)) +
-                  ((scale * barWidth) / 2)) + ',' + height + ')');
+              ((this.scale * barWidth * (d['index'] + dataIdx)) +
+                  ((this.scale * barWidth) / 2)) + ',' + height + ')');
     } else {
       d3.selectAll('.bar')
           .attr('x', (d: any, i: number) =>
-            scale * timeScale(new Date(d[xColumn])))
+            this.scale * timeScale(new Date(d[xColumn])))
           .attr('width', (d: any, i: number) =>
-            scale * (timeScale(new Date(d[xColumn2])) -
+            this.scale * (timeScale(new Date(d[xColumn2])) -
               timeScale(new Date(d[xColumn]))));
 
       d3.selectAll('.xtick')
           .attr('transform', (d: any, i: number) =>
-            `translate(${scale * timeScale(new Date(d.text))},${height})`);
+            `translate(${this.scale * timeScale(new Date(d.text))},${height})`);
     }
-    // console.warn(d3.selectAll('.bar').size());
 
-    if (d3.event !== null && d3.event.sourceEvent.type === 'mousemove') {
+    if (d3.event !== null && d3.event.sourceEvent !== null &&
+      d3.event.sourceEvent.type === 'mousemove') {
       this.dragged();
     }
     this.moveChart();
@@ -642,8 +744,8 @@ export default class TimelineComponent
     selection.append('rect')
         .attr('class', 'bar')
         .attr('x', (d: any, i: number) =>
-          (scale * barWidth * (i + dataIdx)))
-        .attr('width', scale * barWidth)
+          (this.scale * barWidth * (i + dataIdx)))
+        .attr('width', this.scale * barWidth)
         .attr('y', (d: any) => y(d[yColumn]))
         .attr('height', (d: any) => {
           const newHeight = (height - y(d[yColumn]));
@@ -666,7 +768,7 @@ export default class TimelineComponent
     selection.append('rect')
         .attr('class', 'bar')
         .attr('x', (d: any, i: number) =>
-          (scale * timeScale(new Date(d[xColumn]))))
+          (this.scale * timeScale(new Date(d[xColumn]))))
         // (scale * barWidth * (i + dataIdx)))
         .attr('width', (d: any, i: number) =>
           (timeScale(new Date(d[xColumn2])) -
@@ -728,8 +830,8 @@ export default class TimelineComponent
                   .attr('transform', (d: any, i: number) => {
                     if (this.state.toggleTimeline === 0) {
                       return 'translate(' +
-                          ((scale * barWidth * (d.index + dataIdx)) +
-                              ((scale * barWidth) / 2)) + ',' + height + ')';
+                          ((this.scale * barWidth * (d.index + dataIdx)) +
+                          ((this.scale * barWidth) / 2)) + ',' + height + ')';
                     } else {
                       return `translate(${timeScale(new Date(d.text))} ,
                     ${height})`;
@@ -805,7 +907,8 @@ export default class TimelineComponent
   }
 
   /**
-   *
+   * Purpose: called to recalculate the current chart position and data elements
+   * being rendered.
    */
   moveChart() {
     d3.select('#barsLayer')

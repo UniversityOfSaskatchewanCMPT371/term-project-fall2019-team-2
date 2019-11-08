@@ -108,7 +108,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
         for (const [key, value] of Object.entries(data[0])) {
           if (!doneTheWork) {
             const date1 = moment(String(value));
-            date1.isValid();
             if (!isNaN(Number(date1)) && isNaN(Number(value))) {
               doneTheWork = true;
 
@@ -122,7 +121,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
                 if (!b.hasOwnProperty(keyInt)) {
                   b[keyInt] = Date.parse(b[key]);
                 }
-
+                console.log(a[key] + moment(a[key], 'MM-DD-YYYY').isValid());
+                console.log(b[key] + moment(b[key], 'MM-DD-YYYY').isValid());
                 return (a[keyInt] - b[keyInt]);
               });
 

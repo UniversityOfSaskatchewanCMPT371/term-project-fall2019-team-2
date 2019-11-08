@@ -80,8 +80,9 @@ export default class TimelineComponent
       xColumn: '',
       xColumn2: '',
       loading: true,
+      view: 'occurrence',
     };
-    view = 'occurrence';
+
     this.drawTimeline = this.drawTimeline.bind(this);
     this.toggleTimeline = this.toggleTimeline.bind(this);
     this.initTimeline = this.initTimeline.bind(this);
@@ -360,6 +361,7 @@ export default class TimelineComponent
     this.setState(() => ({
       toggleTimeline: toggle,
       togglePrompt: prompt,
+      view: view,
     }), () => {
       this.resetTimeline();
     });

@@ -319,7 +319,7 @@ export default class TimelineComponent
               2
             </label>
             <select id="x2Select"
-              value={this.state.xColumn}
+              value={this.state.xColumn2}
               onChange={(e) => {
                 this.changeColumn(e, 'xColumn2');
               }}>
@@ -855,13 +855,21 @@ export default class TimelineComponent
         );
   }
 
+  /**
+   * Purpose: updates dataIdx, data, and ordinals when drawing an EventMagnitude
+   * Timeline
+   */
   getEventMagnitudeData() {
     // finds starting index
-    dataIdx = Math.floor(-deltaX / (scale * barWidth));
+    dataIdx = Math.floor(-deltaX / (this.scale * barWidth));
     data = csvData.slice(dataIdx, numBars + dataIdx);
     ordinals = data.map((d: any) => d[xColumn]);
   }
 
+  /**
+   * Purpose: updates dataIdx, data, and ordinals when drawing an
+   * IntervalMagnitude Timeline
+   */
   getIntervalMagnitudeData() {
     let dataIdxEnd: number;
     const keyInt1 = xColumn + '_num';
@@ -879,9 +887,12 @@ export default class TimelineComponent
         elem[keyInt2] = Date.parse(elem[xColumn2]);
       }
 
+      // We can only increment dataIdx if the preceding elements have also been
+      // moved off of the current screen area, otherwise elements will be
+      // removed prematurely
       if (consecutive &&
-          ((scale * timeScale(elem[keyInt1])) < -deltaX &&
-          (scale * timeScale(elem[keyInt2])) < -deltaX)) {
+          ((this.scale * timeScale(elem[keyInt1])) < -deltaX &&
+          (this.scale * timeScale(elem[keyInt2])) < -deltaX)) {
         dataIdx++;
       } else {
         consecutive = false;
@@ -890,9 +901,9 @@ export default class TimelineComponent
       console.log('timeScale: ' + timeScale(elem[keyInt1]));
       // If this is true, then the x position of the start of the bar and end of
       // the bar are currently outside of the viewing area
-      if (!((scale * timeScale(elem[keyInt1])) < (-deltaX + width) ||
-          (((scale * timeScale(elem[keyInt2])) <= -deltaX + width) &&
-              ((scale * timeScale(elem[keyInt2])) > -deltaX)))) {
+      if (!((this.scale * timeScale(elem[keyInt1])) < (-deltaX + width) ||
+          (((this.scale * timeScale(elem[keyInt2])) <= -deltaX + width) &&
+              ((this.scale * timeScale(elem[keyInt2])) > -deltaX)))) {
         break;
       }
       // if(!(scale * timeScale(new Date(elem[xColumn])) > -deltaX ||
@@ -919,11 +930,6 @@ export default class TimelineComponent
     this.state.toggleTimeline === 0 ?
         this.getEventMagnitudeData() :
         this.getIntervalMagnitudeData();
-
-    // finds starting index
-    // dataIdx = Math.floor(-deltaX / (scale * barWidth));
-    // data = csvData.slice(dataIdx, numBars + dataIdx);
-    // ordinals = data.map((d: any) => d[xColumn]);
 
     this.updateBars();
   }

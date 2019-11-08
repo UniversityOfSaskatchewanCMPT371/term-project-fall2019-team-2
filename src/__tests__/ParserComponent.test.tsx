@@ -3,10 +3,6 @@ import {mount, shallow} from 'enzyme';
 import ParserComponent, {CountTypes} from '../components/ParserComponent';
 import ParserInterface, {FileType} from '../components/ParserInterface';
 import {enumDrawType} from '../components/Column';
-import TimelineComponent
-  from '../components/TimelineComponent';
-import Data
-  from '../components/Data';
 
 describe('<ParserComponent /> renders correctly', () => {
   const prompt = <label>test: </label>;
@@ -380,7 +376,10 @@ describe('<ParserComponent /> Unit Tests', () => {
     let event: any;
     let onChangeMock: any;
     let comp: any;
+    let inferTypesSpy: any;
     beforeEach(() => {
+      inferTypesSpy =
+        jest.spyOn(ParserComponent.prototype, 'inferTypes');
       props = {
         prompt: 'test: ',
         fileType: FileType.csv,
@@ -464,8 +463,6 @@ describe('<ParserComponent /> Unit Tests', () => {
           />);
     });
     it('infertypes is called', async () => {
-      const inferTypesSpy =
-        jest.spyOn(ParserComponent.prototype, 'inferTypes');
       // Call the parse method with the fake event
       await comp.instance().parse(event);
       expect(inferTypesSpy).toHaveBeenCalled();
@@ -482,64 +479,12 @@ describe('<ParserComponent /> Unit Tests', () => {
     let event: any;
     let onChangeMock: any;
     let comp: any;
-    let data: any;
-    let wrapper: any;
+    let sortDataSpy: any;
+    let isValidSpy: any;
     beforeEach(() => {
-      // We have to mount the wrapper once to get the html it will generate in
-      // it's render method
-      // data array
-      data = new Data('path/to/file', [
-        {
-          'Region': 'North America',
-          'Country': 'Central African Republic',
-          'Item Type': 'Vegetables',
-          'Sales Channel': 'Online',
-          'Order Priority': 'H',
-          'Order Date': '1/1/2010',
-          'Order ID': 506209075,
-          'Ship Date': '2/4/2010',
-          'Units Sold': 7369,
-          'Unit Price': 154.06,
-          'Unit Cost': 90.93,
-          'Total Revenue': 1135268.14,
-          'Total Cost': 670063.17,
-          'Total Profit': 465204.97,
-          'index': 4535,
-          'Order Date_num': 1262325600000
-        },
-        {
-          'Region': 'North America',
-          'Country': 'China',
-          'Item Type': 'Cereal',
-          'Sales Channel': 'Online',
-          'Order Priority': 'C',
-          'Order Date': '1/1/2010',
-          'Order ID': 863776719,
-          'Ship Date': '2/10/2010',
-          'Units Sold': 9581,
-          'Unit Price': 205.7,
-          'Unit Cost': 117.11,
-          'Total Revenue': 1970811.7,
-          'Total Cost': 1122030.91,
-          'Total Profit': 848780.79,
-          'index': 5104,
-          'Order Date_num': 1262325600000
-        }]);
-      wrapper = mount(
-          <TimelineComponent
-            data={data}/>);
+      sortDataSpy = jest.spyOn(ParserComponent.prototype, 'sortData');
+      isValidSpy = jest.spyOn(ParserComponent.prototype, 'isValid');
 
-      // Because d3 needs to manipulate the DOM, we need to bind the html
-      // produced
-      // by the TimelineComponent to the current browser window so that the d3
-      // functions have something to manipulate.
-      document.body.innerHTML = wrapper.html();
-
-      // Unforuntately, the wrapper must be mounted again so that the test cases
-      // will have a blank slate to work with.
-      wrapper = mount(
-          <TimelineComponent
-            data={data}/>);
       props = {
         prompt: 'test: ',
         fileType: FileType.csv,
@@ -623,21 +568,12 @@ describe('<ParserComponent /> Unit Tests', () => {
           />);
     });
     it('sortDate called within method', async () => {
-      const sortDataSpy =
-        jest.spyOn(ParserComponent.prototype, 'sortData');
-      comp = mount( // moved this, must render after spy is created
-          <ParserComponent
-            {...props}
-            onChange={onChangeMock}
-          />);
       // check sortDate is called
       await comp.instance().parseCsv(event);
       expect(sortDataSpy).toHaveBeenCalled();
     });
     it('isValid called within method', async () => {
       // check isValid is called
-      const isValidSpy =
-        jest.spyOn(ParserComponent.prototype, 'isValid');
       await comp.instance().parseCsv(event);
       expect(isValidSpy).toHaveBeenCalled();
     });

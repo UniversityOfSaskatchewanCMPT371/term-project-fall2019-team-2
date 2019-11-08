@@ -296,7 +296,7 @@ describe('<ParserComponent /> Unit Tests', () => {
     });
 
     it('checks if sort works on data with ' +
-        'dates D/M (assumes they are same year)', () => {
+        'dates M/D (assumes they are same year)', () => {
       const wrapper = shallow(<ParserComponent prompt={'Select ' +
       'a TL file: '} fileType={FileType.tl}
       onChange={function() {}}/>);
@@ -325,16 +325,16 @@ describe('<ParserComponent /> Unit Tests', () => {
       onChange={function() {}}/>);
       const instance = wrapper.instance() as ParserComponent;
       const testArray: {id: number, name: string, Date: string}[] = [
-        {'id': 3, 'name': 'name3', 'Date': 'January 15, 2019'},
-        {'id': 4, 'name': 'name4', 'Date': 'February 5, 2019'},
+        {'id': 3, 'name': 'name3', 'Date': 'December 1, 2019'},
+        {'id': 4, 'name': 'name4', 'Date': 'February 30, 2019'},
         {'id': 1, 'name': 'name1', 'Date': 'January 1, 2019'},
-        {'id': 2, 'name': 'name2', 'Date': 'January 32, 2019'}];
+        {'id': 2, 'name': 'name2', 'Date': 'January 31, 2019'}];
       instance.sortData(testArray);
       const expectedResult: {id: number, name: string, Date: string}[] = [
         {'id': 1, 'name': 'name1', 'Date': 'January 1, 2019'},
-        {'id': 3, 'name': 'name3', 'Date': 'January 15, 2019'},
-        {'id': 4, 'name': 'name4', 'Date': 'February 5, 2019'},
-        {'id': 2, 'name': 'name2', 'Date': 'January 32, 2019'}];
+        {'id': 2, 'name': 'name2', 'Date': 'January 31, 2019'},
+        {'id': 3, 'name': 'name3', 'Date': 'December 1, 2019'},
+        {'id': 4, 'name': 'name4', 'Date': 'February 30, 2019'}];
       expect(testArray[0]).toMatchObject(expectedResult[0]);
       expect(testArray[1]).toMatchObject(expectedResult[1]);
       expect(testArray[2]).toMatchObject(expectedResult[2]);
@@ -392,12 +392,12 @@ describe('<ParserComponent /> Unit Tests', () => {
     it('handles inconsistent data', () => {
       data[0] = {money: 'word', heart_attacks: '2016-07-03', animals: 0};
       const t1 = pc.inferTypes(data);
-      if (t1 !== undefined) {
       // test string
+      if (t1!== undefined) {
         expect(t1[2].drawType).toBe(enumDrawType.occurrence);
       }
     });
-    it('give empty data', () => {
+    it('Throw exception when given empty data(undefined)', () => {
       const data1 = new Array(0);
       pc.state = {prompt: 'data1',
         fileType: FileType.csv,

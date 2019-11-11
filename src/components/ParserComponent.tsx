@@ -310,6 +310,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
         };
 
         fileReader.onloadend = handleFileRead;
+        this.isValid(csvFile); // take this OUT
         fileReader.readAsText(csvFile);
       });
     }

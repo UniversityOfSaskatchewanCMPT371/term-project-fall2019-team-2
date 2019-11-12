@@ -189,7 +189,7 @@ describe('Csv FileEvents processed correctly', () => {
     expect(fileUsed.name).toBe(noDateFile.name);
   });
 
-  describe('.csv with different date formats processed correctly', () => {
+  describe('.csv with different valid date formats accepted', () => {
     const onChangeMock = jest.fn();
     const comp: any = mount(<ParserComponent
       {...props}

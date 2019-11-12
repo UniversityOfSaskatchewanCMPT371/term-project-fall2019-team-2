@@ -228,6 +228,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
       expect(wrapper.state('toggleTimeline')).toEqual(0);
       expect(wrapper.state('togglePrompt'))
           .toEqual('Switch to Interval Timeline');
+      expect(wrapper.state('view')).toEqual('occurrence');
     });
   });
 
@@ -253,6 +254,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
       expect(initTimelineSpy).toHaveBeenCalled();
       expect(drawTimelineSpy).toHaveBeenCalled();
       expect(drawEventMagnitudeSpy).toHaveBeenCalled();
+      expect(wrapper.state('view')).toEqual('interval');
 
       button.simulate('click');
 
@@ -264,6 +266,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
       expect(initTimelineSpy).toHaveBeenCalled();
       expect(drawTimelineSpy).toHaveBeenCalled();
       expect(drawIntervalMagnitudeSpy).toHaveBeenCalled();
+      expect(wrapper.state('view')).toEqual('occurrence');
     });
   });
 
@@ -281,6 +284,12 @@ describe('<TimelineComponent /> Unit Tests', () => {
       document.body.dispatchEvent(event);
 
       expect(wrapper.instance().getScale()).toBeGreaterThan(1.0);
+    });
+    it('drawLabels is called', () => {
+      const drawTimelineSpy = jest.spyOn(TimelineComponent.prototype,
+          'drawTimeline');
+      wrapper.instance().drawTimeline();
+      expect(drawTimelineSpy).toHaveBeenCalled();
     });
 
     it('timeline drawer handles zoom in', () => {
@@ -376,7 +385,6 @@ describe('<TimelineComponent /> Unit Tests', () => {
             expect(initTimelineSpy).toHaveBeenCalled();
             wrapper.instance().updateChart();
             // expect(consoleOutput[0]).toEqual('d3.event was null');
-
             wrapper.setState({toggleTimeline: 1});
             expect(wrapper.state('toggleTimeline')).toBe(1);
             wrapper.instance().updateChart();

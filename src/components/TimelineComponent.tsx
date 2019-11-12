@@ -50,6 +50,8 @@ let x: any;
 let y: any;
 
 let extent: [[number, number], [number, number]];
+// tracks the switch statement for what should be drawn
+let view: string;
 
 let plot: any;
 
@@ -78,6 +80,7 @@ export default class TimelineComponent
       xColumn: '',
       xColumn2: '',
       loading: true,
+      view: 'occurrence',
     };
 
     this.drawTimeline = this.drawTimeline.bind(this);
@@ -297,7 +300,7 @@ export default class TimelineComponent
             </select>
 
             <label>
-              X-Axis
+              Starting Range
             </label>
             <select id="xSelect"
               value={this.state.xColumn}
@@ -313,8 +316,7 @@ export default class TimelineComponent
             </select>
 
             <label>
-              X-Axis
-              2
+              Ending Range
             </label>
             <select id="x2Select"
               value={this.state.xColumn}
@@ -349,14 +351,17 @@ export default class TimelineComponent
     if (toggle === 0) {
       toggle = 1;
       prompt = 'Switch to Occurrence Timeline';
+      view = 'interval';
     } else {
       toggle = 0;
       prompt = 'Switch to Interval Timeline';
+      view = 'occurrence';
     }
 
     this.setState(() => ({
       toggleTimeline: toggle,
       togglePrompt: prompt,
+      view: view,
     }), () => {
       this.resetTimeline();
     });
@@ -525,19 +530,45 @@ export default class TimelineComponent
    * @return {void}: Nothing
    */
   private drawLabels(): void {
-    this.svg.append('text')
-        .attr('transform',
-            `translate(${width/2},${height + marginTop + 20})`)
-        .style('text-anchor', 'middle')
-        .text(this.state.xColumn);
+    switch (view) {
+      case 'occurrence':
+        this.svg.append('text')
+            .attr('transform',
+                `translate(${width / 2},${height + marginTop + 20})`)
+            .style('text-anchor', 'start')
+            .text(this.state.xColumn);
 
-    this.svg.append('text')
-        .attr('transform', 'rotate(-90)')
-        .attr('y', 0 - marginLeft)
-        .attr('x', 0 - (height / 2))
-        .attr('dy', '1em')
-        .style('text-anchor', 'middle')
-        .text(this.state.yColumn);
+        this.svg.append('text')
+            .attr('transform', 'rotate(-90)')
+            .attr('y', 0 - marginLeft)
+            .attr('x', 0 - (height / 2))
+            .attr('dy', '1em')
+            .style('text-anchor', 'middle')
+            .text(this.state.yColumn);
+        break;
+
+      case 'interval':
+        this.svg.append('text')
+            .attr('transform',
+                `translate(${(width / 2) + 10},${height + marginTop + 20})`)
+            .style('text-anchor', 'start')
+            .text('end: ' + this.state.xColumn2);
+
+        this.svg.append('text')
+            .attr('transform',
+                `translate(${width / 2},${height + marginTop + 20})`)
+            .style('text-anchor', 'end')
+            .text('start: ' + this.state.xColumn + ',');
+
+        this.svg.append('text')
+            .attr('transform', 'rotate(-90)')
+            .attr('y', 0 - marginLeft)
+            .attr('x', 0 - (height / 2))
+            .attr('dy', '1em')
+            .style('text-anchor', 'middle')
+            .text(this.state.yColumn);
+        break;
+    }
   }
 
   /**

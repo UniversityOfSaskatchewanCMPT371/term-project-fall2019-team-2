@@ -121,8 +121,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
                 if (!b.hasOwnProperty(keyInt)) {
                   b[keyInt] = Date.parse(b[key]);
                 }
-                console.log(a[key] + moment(a[key], 'MM-DD-YYYY').isValid());
-                console.log(b[key] + moment(b[key], 'MM-DD-YYYY').isValid());
                 return (a[keyInt] - b[keyInt]);
               });
 

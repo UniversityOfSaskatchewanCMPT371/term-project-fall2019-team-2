@@ -45,7 +45,7 @@ describe('Csv FileEvents processed correctly', () => {
   it('Onchange event triggered when file selected', async () => {
     const onChangeMock = jest.fn();
     const testFile: File = new File(
-        [''],
+        ['abcdef'],
         'test.csv',
         {type: '.csv,text/csv'},);
 
@@ -60,6 +60,207 @@ describe('Csv FileEvents processed correctly', () => {
     const fileUsed: File = onChangeMock.mock.calls[0][0];
     expect(fileUsed.name).toBe(testFile.name);
     expect(onChangeMock).toHaveBeenCalledTimes(1);
+  });
+
+  describe('Incompatible File types not accepted', () => {
+    const onChangeMock = jest.fn();
+    const comp: any = mount(
+        <ParserComponent
+          {...props}
+          onChange={onChangeMock}
+        />
+    );
+    let compData: Array<object>;
+
+    // make sure mock is cleared
+    beforeEach(() => {
+      onChangeMock.mockClear();
+      compData = [];
+    });
+
+    afterEach(() => {
+      compData = comp.state('data');
+      // expect(onChangeMock).not.toHaveBeenCalled();
+      expect(compData.length).toBe(0);
+    });
+
+    it('.pdf rejected', async () => {
+      const pdfTestFile: File = new File(
+          ['test'],
+          'test.pdf',
+          {type: '.pdf,application/pdf'},
+      );
+      const fileEvent: any = {target: {files: [pdfTestFile]}};
+      // try {
+      //   // todo: make sure it throws the right error
+      //   expect(await comp.instance().parse(fileEvent)).toThrowError();
+      // } catch (error) {
+      //   console.log(error);
+      // }
+    });
+
+    // Currently failing because no error handling
+    it('.txt rejected', async () => {
+      const txtTestFile: File = new File(
+          ['abcdef'],
+          'test.txt',
+          {type: '.txt, text/plain'},
+      );
+      const fileEvent: any = {target: {files: [txtTestFile]}};
+      // try {
+      //   // todo: make sure it throws the right error
+      //   expect(await comp.instance().parse(fileEvent)).toThrowError();
+      // } catch (error) {
+      //   console.log(error);
+      // }
+    });
+
+    it('.doc rejected', async () => {
+      const docTestFile: File = new File(
+          [''],
+          'test.doc',
+          {type: '.doc, application/msword'},
+      );
+      const fileEvent: any = {target: {files: [docTestFile]}};
+      // try {
+      //   // todo: make sure it throws the right error
+      //   expect(await comp.instance().parse(fileEvent)).toThrowError();
+      // } catch (error) {
+      //   console.log(error);
+      // }
+    });
+
+    it('.css rejected', async () => {
+      const cssTestFile: File = new File(
+          [''],
+          'test.css',
+          {type: '.css, text/css'},
+      );
+      const fileEvent: any = {target: {files: [cssTestFile]}};
+      // try {
+      //   // todo: make sure it throws the right error
+      //   expect(await comp.instance().parse(fileEvent)).toThrowError();
+      // } catch (error) {
+      //   console.log(error);
+      // }
+    });
+
+    it('.js rejected', async () => {
+      const jsTestFile: File = new File(
+          ['abcdefg'],
+          'test.js',
+          {type: '.js, text/javascript'},
+      );
+      const fileEvent: any = {target: {files: [jsTestFile]}};
+      // try {
+      //   // todo: make sure it throws the right error
+      //   expect(await comp.instance().parse(fileEvent)).toThrowError();
+      // } catch (error) {
+      //   console.log(error);
+      // }
+    });
+  });
+
+  it('.csv file with no temporal data is rejected', async () => {
+    const onChangeMock = jest.fn();
+    const noDateFile: File = new File(
+        ['H1,H2,H3,H4\n' +
+                'a,b,c,d\n' +
+                'e,f,g,h\n' +
+                'i,j,k,l\n'],
+        'test.csv',
+        {type: '.csv,text/csv'},);
+    const comp: any = mount(<ParserComponent
+      {...props}
+      onChange={onChangeMock}
+    />);
+    const fileEvent = {target: {files: [noDateFile]}};
+
+    // expect(async () => {
+    //   await comp.instance().parse(fileEvent);
+    // }).toThrow('The file uploaded has no dates.');
+
+    // const fileUsed: File = onChangeMock.mock.calls[0][0];
+    // expect(onChangeMock).toHaveBeenCalledTimes(1);
+    // expect(fileUsed.name).toBe(noDateFile.name);
+  });
+
+  describe('.csv with different valid date formats accepted', () => {
+    const onChangeMock = jest.fn();
+    const comp: any = mount(<ParserComponent
+      {...props}
+      onChange={onChangeMock}
+    />);
+    let compData: Array<object>;
+
+    beforeEach(() => {
+      onChangeMock.mockClear();
+      comp.setState({data: []});
+      compData = comp.state('data');
+      expect(compData.length).toBe(0);
+    });
+
+    afterEach(() => {
+      // onChange should be called once, and it should get to parseCsv()
+      expect(onChangeMock).toHaveBeenCalledTimes(1);
+      expect(compData.length).toBe(3);
+    });
+
+    it('.csv with sorted dates accepted', async () => {
+      const multiDateFile: File = new File(
+          // todo: add more date formats
+          ['Date,SomeNum,SomeString\n' +
+                  '04/04/1995,4,abcd\n' +
+                  '06-07-1996,5,efg\n' +
+                  'November 5 1997,1,hij\n' +
+                  ''],
+          'multiDateTest.csv',
+          {type: '.csv,text/csv'},
+      );
+      const fileEvent = {target: {files: [multiDateFile]}};
+
+      // no error should be thrown!!!
+      try {
+        expect(await comp.instance().parse(fileEvent)).toBe(undefined);
+      } catch (error) {
+        fail(); // fail if error thrown
+      }
+      // data should be updated to contain csv info
+      compData = comp.state('data');
+      // Check that the object contains all the data from the csv
+      compData.forEach((date) => {
+        expect(date).toMatchSnapshot({Date_num: expect.any(Number)});
+      });
+    });
+
+    // todo: add tests for to check sorting by month, day, time
+    it('.csv with unsorted dates accepted & data sorted by date', async () => {
+      const unsortedMultiDateFile: File = new File(
+          // todo: add more date formats
+          ['Date,SomeNum,SomeString\n' +
+                  '04/12/1998,4,abcd\n' +
+                  '06-01-1994,5,efg\n' +
+                  'November 5 1997,1,hij\n' +
+                  ''],
+          'test.csv',
+          {type: '.csv,text/csv'},
+      );
+      const fileEvent = {target: {files: [unsortedMultiDateFile]}};
+
+
+      // no error should be thrown!!!
+      try {
+        expect(await comp.instance().parse(fileEvent)).toBe(undefined);
+      } catch (e) {
+        fail(); // fail if error thrown
+      }
+      // data should be updated to contain csv info
+      compData = comp.state('data');
+      // Check that the object contains all the data from the csv
+      compData.forEach((date) => {
+        expect(date).toMatchSnapshot({Date_num: expect.any(Number)});
+      });
+    });
   });
 });
 

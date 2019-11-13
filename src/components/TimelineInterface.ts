@@ -24,4 +24,5 @@ export interface TimelineState {
     yColumn: string;
 
     loading: boolean;
+    view: string;
 }

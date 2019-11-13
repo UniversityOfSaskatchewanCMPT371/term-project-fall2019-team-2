@@ -45,7 +45,7 @@ describe('Csv FileEvents processed correctly', () => {
   it('Onchange event triggered when file selected', async () => {
     const onChangeMock = jest.fn();
     const testFile: File = new File(
-        [''],
+        ['abcdef'],
         'test.csv',
         {type: '.csv,text/csv'},);
 
@@ -61,13 +61,222 @@ describe('Csv FileEvents processed correctly', () => {
     expect(fileUsed.name).toBe(testFile.name);
     expect(onChangeMock).toHaveBeenCalledTimes(1);
   });
+
+  describe('Incompatible File types not accepted', () => {
+    const onChangeMock = jest.fn();
+    const comp: any = mount(
+        <ParserComponent
+          {...props}
+          onChange={onChangeMock}
+        />
+    );
+    let compData: Array<object>;
+
+    // make sure mock is cleared
+    beforeEach(() => {
+      onChangeMock.mockClear();
+      compData = [];
+    });
+
+    afterEach(() => {
+      compData = comp.state('data');
+      // expect(onChangeMock).not.toHaveBeenCalled();
+      expect(compData.length).toBe(0);
+    });
+
+    it('.pdf rejected', async () => {
+      const pdfTestFile: File = new File(
+          ['test'],
+          'test.pdf',
+          {type: '.pdf,application/pdf'},
+      );
+      const fileEvent: any = {target: {files: [pdfTestFile]}};
+      // try {
+      //   // todo: make sure it throws the right error
+      //   expect(await comp.instance().parse(fileEvent)).toThrowError();
+      // } catch (error) {
+      //   console.log(error);
+      // }
+    });
+
+    // Currently failing because no error handling
+    it('.txt rejected', async () => {
+      const txtTestFile: File = new File(
+          ['abcdef'],
+          'test.txt',
+          {type: '.txt, text/plain'},
+      );
+      const fileEvent: any = {target: {files: [txtTestFile]}};
+      // try {
+      //   // todo: make sure it throws the right error
+      //   expect(await comp.instance().parse(fileEvent)).toThrowError();
+      // } catch (error) {
+      //   console.log(error);
+      // }
+    });
+
+    it('.doc rejected', async () => {
+      const docTestFile: File = new File(
+          [''],
+          'test.doc',
+          {type: '.doc, application/msword'},
+      );
+      const fileEvent: any = {target: {files: [docTestFile]}};
+      // try {
+      //   // todo: make sure it throws the right error
+      //   expect(await comp.instance().parse(fileEvent)).toThrowError();
+      // } catch (error) {
+      //   console.log(error);
+      // }
+    });
+
+    it('.css rejected', async () => {
+      const cssTestFile: File = new File(
+          [''],
+          'test.css',
+          {type: '.css, text/css'},
+      );
+      const fileEvent: any = {target: {files: [cssTestFile]}};
+      // try {
+      //   // todo: make sure it throws the right error
+      //   expect(await comp.instance().parse(fileEvent)).toThrowError();
+      // } catch (error) {
+      //   console.log(error);
+      // }
+    });
+
+    it('.js rejected', async () => {
+      const jsTestFile: File = new File(
+          ['abcdefg'],
+          'test.js',
+          {type: '.js, text/javascript'},
+      );
+      const fileEvent: any = {target: {files: [jsTestFile]}};
+      // try {
+      //   // todo: make sure it throws the right error
+      //   expect(await comp.instance().parse(fileEvent)).toThrowError();
+      // } catch (error) {
+      //   console.log(error);
+      // }
+    });
+  });
+
+  it('.csv file with no temporal data is rejected', async () => {
+    const onChangeMock = jest.fn();
+    const noDateFile: File = new File(
+        ['H1,H2,H3,H4\n' +
+                'a,b,c,d\n' +
+                'e,f,g,h\n' +
+                'i,j,k,l\n'],
+        'test.csv',
+        {type: '.csv,text/csv'},);
+    const comp: any = mount(<ParserComponent
+      {...props}
+      onChange={onChangeMock}
+    />);
+    const fileEvent = {target: {files: [noDateFile]}};
+
+    // expect(async () => {
+    //   await comp.instance().parse(fileEvent);
+    // }).toThrow('The file uploaded has no dates.');
+
+    // const fileUsed: File = onChangeMock.mock.calls[0][0];
+    // expect(onChangeMock).toHaveBeenCalledTimes(1);
+    // expect(fileUsed.name).toBe(noDateFile.name);
+  });
+
+  describe('.csv with different valid date formats accepted', () => {
+    const onChangeMock = jest.fn();
+    const comp: any = mount(<ParserComponent
+      {...props}
+      onChange={onChangeMock}
+    />);
+    let compData: Array<object>;
+
+    beforeEach(() => {
+      onChangeMock.mockClear();
+      comp.setState({data: []});
+      compData = comp.state('data');
+      expect(compData.length).toBe(0);
+    });
+
+    afterEach(() => {
+      // onChange should be called once, and it should get to parseCsv()
+      expect(onChangeMock).toHaveBeenCalledTimes(1);
+      expect(compData.length).toBe(3);
+    });
+
+    it('.csv with sorted dates accepted', async () => {
+      const multiDateFile: File = new File(
+          // todo: add more date formats
+          ['Date,SomeNum,SomeString\n' +
+                  '04/04/1995,4,abcd\n' +
+                  '06-07-1996,5,efg\n' +
+                  'November 5 1997,1,hij\n' +
+                  ''],
+          'multiDateTest.csv',
+          {type: '.csv,text/csv'},
+      );
+      const fileEvent = {target: {files: [multiDateFile]}};
+
+      // no error should be thrown!!!
+      try {
+        expect(await comp.instance().parse(fileEvent)).toBe(undefined);
+      } catch (error) {
+        fail(); // fail if error thrown
+      }
+      // data should be updated to contain csv info
+      compData = comp.state('data');
+      // Check that the object contains all the data from the csv
+      compData.forEach((date) => {
+        expect(date).toMatchSnapshot({Date_num: expect.any(Number)});
+      });
+    });
+
+    // todo: add tests for to check sorting by month, day, time
+    it('.csv with unsorted dates accepted & data sorted by date', async () => {
+      const unsortedMultiDateFile: File = new File(
+          // todo: add more date formats
+          ['Date,SomeNum,SomeString\n' +
+                  '04/12/1998,4,abcd\n' +
+                  '06-01-1994,5,efg\n' +
+                  'November 5 1997,1,hij\n' +
+                  ''],
+          'test.csv',
+          {type: '.csv,text/csv'},
+      );
+      const fileEvent = {target: {files: [unsortedMultiDateFile]}};
+
+
+      // no error should be thrown!!!
+      try {
+        expect(await comp.instance().parse(fileEvent)).toBe(undefined);
+      } catch (e) {
+        fail(); // fail if error thrown
+      }
+      // data should be updated to contain csv info
+      compData = comp.state('data');
+      // Check that the object contains all the data from the csv
+      compData.forEach((date) => {
+        expect(date).toMatchSnapshot({Date_num: expect.any(Number)});
+      });
+    });
+  });
 });
 
 // To be used by the developers
 describe('<ParserComponent /> Unit Tests', () => {
   describe('constructor()', () => {
-    it('dummy test', () => {
-      // todo: devs need to write unit tests
+    it('constructor sets variables', () => {
+      const pi: ParserInterface = {
+        prompt: 'test',
+        fileType: FileType.csv,
+        onChange: jest.fn(),
+      };
+      const pc = new ParserComponent(pi);
+      expect(pc.state.prompt).toBe('test');
+      expect(pc.state.fileType).toBe(FileType.csv);
+      expect(pc.state.data).toStrictEqual([]);
     });
   });
 
@@ -312,11 +521,11 @@ describe('<ParserComponent /> Unit Tests', () => {
       data[1] = {money: 55, heartAttacks: '2019-02-02', animals: 'cat'};
       data[2] = {money: 300, heartAttacks: '2013-02-02', animals: 'horse'};
       data[3] = {money: 2, heartAttacks: '2013-03-02', animals: 'fish'};
-      // @ts-ignore
       pc.state = {
         prompt: 'test',
         fileType: FileType.csv,
         data: data,
+        showTimeline: false,
       };
     });
 
@@ -353,97 +562,213 @@ describe('<ParserComponent /> Unit Tests', () => {
   });
 
   describe('parse()', () => {
-    it('dummy test', async () => {
-      const props = {
+    let props: any;
+    let event: any;
+    let onChangeMock: any;
+    let comp: any;
+    let inferTypesSpy: any;
+    beforeEach(() => {
+      inferTypesSpy =
+        jest.spyOn(ParserComponent.prototype, 'inferTypes');
+      props = {
         prompt: 'test: ',
         fileType: FileType.csv,
       };
       // create a File with a csv string from the 10000_Sales_Records.csv file
       const testFile: File = new File(
           ['Region,Country,Item Type,Sales Channel,Order Priority,' +
-          'Order Date,Order ID,Ship Date,Units Sold,Unit Price,Unit Cost,' +
-          'Total Revenue,Total Cost,Total Profit\n' +
-          'Sub-Saharan Africa,Chad,Office Supplies,Online,L,1/27/2011,' +
-          '292494523,2/12/2011,4484,651.21,524.96,2920025.64,2353920.64,' +
-          '566105.00\n' +
-          'Europe,Latvia,Beverages,Online,C,12/28/2015,361825549,1/23/2016,' +
-          '1075,47.45,31.79,51008.75,34174.25,16834.50\n' +
-          'Middle East and North Africa,Pakistan,Vegetables,Offline,C,' +
-          '1/13/2011,141515767,2/1/2011,6515,154.06,90.93,1003700.90,' +
-          '592408.95,411291.95\n' +
-          'Sub-Saharan Africa,Democratic Republic of the Congo,Household,' +
-          'Online,C,9/11/2012,500364005,10/6/2012,7683,668.27,502.54,' +
-          '5134318.41,3861014.82,1273303.59\n' +
-          'Europe,Czech Republic,Beverages,Online,C,10/27/2015,127481591,' +
-          '12/5/2015,3491,47.45,31.79,165647.95,110978.89,54669.06\n' +
-          'Sub-Saharan Africa,South Africa,Beverages,Offline,H,7/10/2012,' +
-          '482292354,8/21/2012,9880,47.45,31.79,468806.00,314085.20,' +
-          '154720.80\n' +
-          'Asia,Laos,Vegetables,Online,L,2/20/2011,844532620,3/20/2011,4825,' +
-          '154.06,90.93,743339.50,438737.25,304602.25\n' +
-          'Asia,China,Baby Food,Online,C,4/10/2017,564251220,5/12/2017,3330,' +
-          '255.28,159.42,850082.40,530868.60,319213.80\n' +
-          'Sub-Saharan Africa,Eritrea,Meat,Online,L,11/21/2014,411809480,' +
-          '1/10/2015,2431,421.89,364.69,1025614.59,886561.39,139053.20\n' +
-          'Central America and the Caribbean,Haiti,Office Supplies,Online,C,' +
-          '7/4/2015,327881228,7/20/2015,6197,651.21,524.96,4035548.37,' +
-          '3253177.12,782371.25\n' +
-          'Sub-Saharan Africa,Zambia,Cereal,Offline,M,7/26/2016,773452794,' +
-          '8/24/2016,724,205.70,117.11,148926.80,84787.64,64139.16\n' +
-          'Europe,Bosnia and Herzegovina,Baby Food,Offline,M,10/20/2012,' +
-          '479823005,11/15/2012,9145,255.28,159.42,2334535.60,1457895.90,' +
-          '876639.70\n' +
-          'Europe,Germany,Office Supplies,Online,C,2/22/2015,498603188,' +
-          '2/27/2015,6618,651.21,524.96,4309707.78,3474185.28,835522.50\n' +
-          'Asia,India,Household,Online,C,8/27/2016,151717174,9/2/2016,' +
-          '5338,668.27,502.54,3567225.26,2682558.52,884666.74\n' +
-          'Middle East and North Africa,Algeria,Clothes,Offline,C,6/21/2011,' +
-          '181401288,7/21/2011,9527,109.28,35.84,1041110.56,341447.68,' +
-          '699662.88\n' +
-          'Australia and Oceania,Palau,Snacks,Offline,L,9/19/2013,500204360,' +
-          '10/4/2013,441,152.58,97.44,67287.78,42971.04,24316.74\n' +
-          'Central America and the Caribbean,Cuba,Beverages,Online,H,' +
-          '11/15/2015,640987718,11/30/2015,1365,47.45,31.79,64769.25,' +
-          '43393.35,21375.90\n' +
-          'Europe,Vatican City,Beverages,Online,L,4/6/2015,206925189,' +
-          '4/27/2015,2617,47.45,31.79,124176.65,83194.43,40982.22\n' +
-          'Middle East and North Africa,Lebanon,Personal Care,Offline,H,' +
-          '4/12/2010,221503102,5/19/2010,6545,81.73,56.67,534922.85,' +
-          '370905.15,164017.70\n' +
-          'Europe,Lithuania,Snacks,Offline,H,9/26/2011,878520286,' +
-          '10/2/2011,2530,152.58,97.44,386027.40,246523.20,139504.20\n' +
-          'Sub-Saharan Africa,Mauritius ,Cosmetics,Offline,H,5/14/2016,' +
-          '192088067,6/18/2016,1983,437.20,263.33,866967.60,522183.39,' +
-          '344784.21\n' +
-          'Europe,Ukraine,Office Supplies,Online,C,8/14/2010,746630275,' +
-          '8/31/2010,3345,651.21,524.96,2178297.45,1755991.20,422306.25\n' +
-          'Europe,Russia,Snacks,Offline,L,4/13/2012,246883237,4/22/2012,' +
-          '7091,152.58,97.44,1081944.78,690947.04,390997.74\n' +
-          'Asia,Japan,Cosmetics,Offline,H,9/19/2013,967895781,9/28/2013,' +
-          '725,437.20,263.33,316970.00,190914.25,126055.75\n' +
-          'Europe,Russia,Meat,Offline,L,12/2/2015,305029237,12/26/2015,3784,' +
-          '421.89,364.69,1596431.76,1379986.96,216444.80\n'],
+        'Order Date,Order ID,Ship Date,Units Sold,Unit Price,Unit Cost,' +
+        'Total Revenue,Total Cost,Total Profit\n' +
+        'Sub-Saharan Africa,Chad,Office Supplies,Online,L,1/27/2011,' +
+        '292494523,2/12/2011,4484,651.21,524.96,2920025.64,2353920.64,' +
+        '566105.00\n' +
+        'Europe,Latvia,Beverages,Online,C,12/28/2015,361825549,1/23/2016,' +
+        '1075,47.45,31.79,51008.75,34174.25,16834.50\n' +
+        'Middle East and North Africa,Pakistan,Vegetables,Offline,C,' +
+        '1/13/2011,141515767,2/1/2011,6515,154.06,90.93,1003700.90,' +
+        '592408.95,411291.95\n' +
+        'Sub-Saharan Africa,Democratic Republic of the Congo,Household,' +
+        'Online,C,9/11/2012,500364005,10/6/2012,7683,668.27,502.54,' +
+        '5134318.41,3861014.82,1273303.59\n' +
+        'Europe,Czech Republic,Beverages,Online,C,10/27/2015,127481591,' +
+        '12/5/2015,3491,47.45,31.79,165647.95,110978.89,54669.06\n' +
+        'Sub-Saharan Africa,South Africa,Beverages,Offline,H,7/10/2012,' +
+        '482292354,8/21/2012,9880,47.45,31.79,468806.00,314085.20,' +
+        '154720.80\n' +
+        'Asia,Laos,Vegetables,Online,L,2/20/2011,844532620,3/20/2011,4825,' +
+        '154.06,90.93,743339.50,438737.25,304602.25\n' +
+        'Asia,China,Baby Food,Online,C,4/10/2017,564251220,5/12/2017,3330,' +
+        '255.28,159.42,850082.40,530868.60,319213.80\n' +
+        'Sub-Saharan Africa,Eritrea,Meat,Online,L,11/21/2014,411809480,' +
+        '1/10/2015,2431,421.89,364.69,1025614.59,886561.39,139053.20\n' +
+        'Central America and the Caribbean,Haiti,Office Supplies,Online,C,' +
+        '7/4/2015,327881228,7/20/2015,6197,651.21,524.96,4035548.37,' +
+        '3253177.12,782371.25\n' +
+        'Sub-Saharan Africa,Zambia,Cereal,Offline,M,7/26/2016,773452794,' +
+        '8/24/2016,724,205.70,117.11,148926.80,84787.64,64139.16\n' +
+        'Europe,Bosnia and Herzegovina,Baby Food,Offline,M,10/20/2012,' +
+        '479823005,11/15/2012,9145,255.28,159.42,2334535.60,1457895.90,' +
+        '876639.70\n' +
+        'Europe,Germany,Office Supplies,Online,C,2/22/2015,498603188,' +
+        '2/27/2015,6618,651.21,524.96,4309707.78,3474185.28,835522.50\n' +
+        'Asia,India,Household,Online,C,8/27/2016,151717174,9/2/2016,' +
+        '5338,668.27,502.54,3567225.26,2682558.52,884666.74\n' +
+        'Middle East and North Africa,Algeria,Clothes,Offline,C,6/21/2011,' +
+        '181401288,7/21/2011,9527,109.28,35.84,1041110.56,341447.68,' +
+        '699662.88\n' +
+        'Australia and Oceania,Palau,Snacks,Offline,L,9/19/2013,500204360,' +
+        '10/4/2013,441,152.58,97.44,67287.78,42971.04,24316.74\n' +
+        'Central America and the Caribbean,Cuba,Beverages,Online,H,' +
+        '11/15/2015,640987718,11/30/2015,1365,47.45,31.79,64769.25,' +
+        '43393.35,21375.90\n' +
+        'Europe,Vatican City,Beverages,Online,L,4/6/2015,206925189,' +
+        '4/27/2015,2617,47.45,31.79,124176.65,83194.43,40982.22\n' +
+        'Middle East and North Africa,Lebanon,Personal Care,Offline,H,' +
+        '4/12/2010,221503102,5/19/2010,6545,81.73,56.67,534922.85,' +
+        '370905.15,164017.70\n' +
+        'Europe,Lithuania,Snacks,Offline,H,9/26/2011,878520286,' +
+        '10/2/2011,2530,152.58,97.44,386027.40,246523.20,139504.20\n' +
+        'Sub-Saharan Africa,Mauritius ,Cosmetics,Offline,H,5/14/2016,' +
+        '192088067,6/18/2016,1983,437.20,263.33,866967.60,522183.39,' +
+        '344784.21\n' +
+        'Europe,Ukraine,Office Supplies,Online,C,8/14/2010,746630275,' +
+        '8/31/2010,3345,651.21,524.96,2178297.45,1755991.20,422306.25\n' +
+        'Europe,Russia,Snacks,Offline,L,4/13/2012,246883237,4/22/2012,' +
+        '7091,152.58,97.44,1081944.78,690947.04,390997.74\n' +
+        'Asia,Japan,Cosmetics,Offline,H,9/19/2013,967895781,9/28/2013,' +
+        '725,437.20,263.33,316970.00,190914.25,126055.75\n' +
+        'Europe,Russia,Meat,Offline,L,12/2/2015,305029237,12/26/2015,3784,' +
+        '421.89,364.69,1596431.76,1379986.96,216444.80\n'],
           'test.csv',
           {type: '.csv,text/csv'});
 
       // mock a file event
-      const event = {target: {files: [testFile]}};
-      const onChangeMock = jest.fn();
+      event = {target: {files: [testFile]}};
+      onChangeMock = jest.fn();
 
-      const comp: any = mount(
+      comp = mount(
           <ParserComponent
             {...props}
             onChange={onChangeMock}
           />);
-
+    });
+    it('infertypes is called', async () => {
       // Call the parse method with the fake event
       await comp.instance().parse(event);
+      expect(inferTypesSpy).toHaveBeenCalled();
+    });
+    it('timeline is set to true', async () => {
+      // Call the parse method with the fake event
+      await comp.instance().parse(event);
+      expect(comp.state('showTimeline')).toBeTruthy();
     });
   });
 
   describe('parseCsv()', () => {
-    it('dummy test', async () => {
+    let props: any;
+    let event: any;
+    let onChangeMock: any;
+    let comp: any;
+    let sortDataSpy: any;
+    let isValidSpy: any;
+    beforeEach(() => {
+      sortDataSpy = jest.spyOn(ParserComponent.prototype, 'sortData');
+      isValidSpy = jest.spyOn(ParserComponent.prototype, 'isValid');
 
+      props = {
+        prompt: 'test: ',
+        fileType: FileType.csv,
+      };
+      // create a File with a csv string from the 10000_Sales_Records.csv file
+      const testFile: File = new File(
+          ['Region,Country,Item Type,Sales Channel,Order Priority,' +
+        'Order Date,Order ID,Ship Date,Units Sold,Unit Price,Unit Cost,' +
+        'Total Revenue,Total Cost,Total Profit\n' +
+        'Sub-Saharan Africa,Chad,Office Supplies,Online,L,1/27/2011,' +
+        '292494523,2/12/2011,4484,651.21,524.96,2920025.64,2353920.64,' +
+        '566105.00\n' +
+        'Europe,Latvia,Beverages,Online,C,12/28/2015,361825549,1/23/2016,' +
+        '1075,47.45,31.79,51008.75,34174.25,16834.50\n' +
+        'Middle East and North Africa,Pakistan,Vegetables,Offline,C,' +
+        '1/13/2011,141515767,2/1/2011,6515,154.06,90.93,1003700.90,' +
+        '592408.95,411291.95\n' +
+        'Sub-Saharan Africa,Democratic Republic of the Congo,Household,' +
+        'Online,C,9/11/2012,500364005,10/6/2012,7683,668.27,502.54,' +
+        '5134318.41,3861014.82,1273303.59\n' +
+        'Europe,Czech Republic,Beverages,Online,C,10/27/2015,127481591,' +
+        '12/5/2015,3491,47.45,31.79,165647.95,110978.89,54669.06\n' +
+        'Sub-Saharan Africa,South Africa,Beverages,Offline,H,7/10/2012,' +
+        '482292354,8/21/2012,9880,47.45,31.79,468806.00,314085.20,' +
+        '154720.80\n' +
+        'Asia,Laos,Vegetables,Online,L,2/20/2011,844532620,3/20/2011,4825,' +
+        '154.06,90.93,743339.50,438737.25,304602.25\n' +
+        'Asia,China,Baby Food,Online,C,4/10/2017,564251220,5/12/2017,3330,' +
+        '255.28,159.42,850082.40,530868.60,319213.80\n' +
+        'Sub-Saharan Africa,Eritrea,Meat,Online,L,11/21/2014,411809480,' +
+        '1/10/2015,2431,421.89,364.69,1025614.59,886561.39,139053.20\n' +
+        'Central America and the Caribbean,Haiti,Office Supplies,Online,C,' +
+        '7/4/2015,327881228,7/20/2015,6197,651.21,524.96,4035548.37,' +
+        '3253177.12,782371.25\n' +
+        'Sub-Saharan Africa,Zambia,Cereal,Offline,M,7/26/2016,773452794,' +
+        '8/24/2016,724,205.70,117.11,148926.80,84787.64,64139.16\n' +
+        'Europe,Bosnia and Herzegovina,Baby Food,Offline,M,10/20/2012,' +
+        '479823005,11/15/2012,9145,255.28,159.42,2334535.60,1457895.90,' +
+        '876639.70\n' +
+        'Europe,Germany,Office Supplies,Online,C,2/22/2015,498603188,' +
+        '2/27/2015,6618,651.21,524.96,4309707.78,3474185.28,835522.50\n' +
+        'Asia,India,Household,Online,C,8/27/2016,151717174,9/2/2016,' +
+        '5338,668.27,502.54,3567225.26,2682558.52,884666.74\n' +
+        'Middle East and North Africa,Algeria,Clothes,Offline,C,6/21/2011,' +
+        '181401288,7/21/2011,9527,109.28,35.84,1041110.56,341447.68,' +
+        '699662.88\n' +
+        'Australia and Oceania,Palau,Snacks,Offline,L,9/19/2013,500204360,' +
+        '10/4/2013,441,152.58,97.44,67287.78,42971.04,24316.74\n' +
+        'Central America and the Caribbean,Cuba,Beverages,Online,H,' +
+        '11/15/2015,640987718,11/30/2015,1365,47.45,31.79,64769.25,' +
+        '43393.35,21375.90\n' +
+        'Europe,Vatican City,Beverages,Online,L,4/6/2015,206925189,' +
+        '4/27/2015,2617,47.45,31.79,124176.65,83194.43,40982.22\n' +
+        'Middle East and North Africa,Lebanon,Personal Care,Offline,H,' +
+        '4/12/2010,221503102,5/19/2010,6545,81.73,56.67,534922.85,' +
+        '370905.15,164017.70\n' +
+        'Europe,Lithuania,Snacks,Offline,H,9/26/2011,878520286,' +
+        '10/2/2011,2530,152.58,97.44,386027.40,246523.20,139504.20\n' +
+        'Sub-Saharan Africa,Mauritius ,Cosmetics,Offline,H,5/14/2016,' +
+        '192088067,6/18/2016,1983,437.20,263.33,866967.60,522183.39,' +
+        '344784.21\n' +
+        'Europe,Ukraine,Office Supplies,Online,C,8/14/2010,746630275,' +
+        '8/31/2010,3345,651.21,524.96,2178297.45,1755991.20,422306.25\n' +
+        'Europe,Russia,Snacks,Offline,L,4/13/2012,246883237,4/22/2012,' +
+        '7091,152.58,97.44,1081944.78,690947.04,390997.74\n' +
+        'Asia,Japan,Cosmetics,Offline,H,9/19/2013,967895781,9/28/2013,' +
+        '725,437.20,263.33,316970.00,190914.25,126055.75\n' +
+        'Europe,Russia,Meat,Offline,L,12/2/2015,305029237,12/26/2015,3784,' +
+        '421.89,364.69,1596431.76,1379986.96,216444.80\n'],
+          'test.csv',
+          {type: '.csv,text/csv'});
+
+      // mock a file event
+      event = {target: {files: [testFile]}};
+      onChangeMock = jest.fn();
+
+      comp = mount(
+          <ParserComponent
+            {...props}
+            onChange={onChangeMock}
+          />);
+    });
+    it('sortDate called within method', async () => {
+      // check sortDate is called
+      await comp.instance().parseCsv(event);
+      expect(sortDataSpy).toHaveBeenCalled();
+    });
+    it('isValid called within method', async () => {
+      // check isValid is called
+      await comp.instance().parseCsv(event);
+      expect(isValidSpy).toHaveBeenCalled();
+    });
+    it('this.state is set', () => {
+      expect(comp.state('fileType')).toBe(FileType.csv);
     });
   });
 

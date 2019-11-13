@@ -167,8 +167,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
       if (this.state.data.length > 0) {
         const listFields = Object.keys(this.state.data[0]);
         // instantiate objects to track the types of data
-        // eslint-disable-next-line max-len
-        const typesForEachCol = this.createTypeCountingObjects(listFields.length);
+        const typesForEachCol =
+            this.createTypeCountingObjects(listFields.length);
         // check half the values to find if the data is consistent
         [0, Math.floor(this.state.data.length / 2)].forEach((element) => {
           const row: object = this.state.data[element];
@@ -218,8 +218,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
             indx++;
           } else if (mostCommonType === 'number') {
             // create a Column with interval, point or magnitude data
-            // eslint-disable-next-line max-len
-            newCol = new Column(mostCommonType, enumDrawType.any, listFields[indx]);
+            newCol = new Column(mostCommonType,
+                enumDrawType.any, listFields[indx]);
             arrayOfColumns[indx] = newCol;
             indx++;
           } else if (mostCommonType === 'date') {

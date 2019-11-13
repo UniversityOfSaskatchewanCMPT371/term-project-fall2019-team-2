@@ -78,7 +78,7 @@ describe('<ParserComponent /> Unit Tests', () => {
   });
 
   describe('isValid()', () => {
-    it('test if when a csv is uploaded it works correctly', () => {
+    it('Should return true when given a .csv file', () => {
       const testFile: File = new File(
           [''],
           'test.csv',
@@ -89,7 +89,7 @@ describe('<ParserComponent /> Unit Tests', () => {
       const instance = wrapper.instance() as ParserComponent;
       expect(instance.isValid(testFile)).toBeTruthy();
     });
-    it('test if undefined files works correctly', () => {
+    it('should throw exception when given undefined', () => {
       const testFile: File = new File(
           [''],
           '',
@@ -102,8 +102,7 @@ describe('<ParserComponent /> Unit Tests', () => {
         instance.isValid(testFile);
       }).toThrow('Wrong file type was uploaded.');
     });
-    it('test if when a csv is uploaded it ' +
-        'works correctly with name csv(csv.csv)', () => {
+    it('should return true when given csv.csv', () => {
       const testFile: File = new File(
           [''],
           'csv.csv',
@@ -115,7 +114,7 @@ describe('<ParserComponent /> Unit Tests', () => {
       const instance = wrapper.instance() as ParserComponent;
       expect(instance.isValid(testFile)).toBeTruthy();
     });
-    it('test if when a non-csv is uploaded it works correctly', () => {
+    it('should throw exception when given non-csv file', () => {
       const testFile: File = new File(
           [''],
           'test.pdf',
@@ -129,26 +128,11 @@ describe('<ParserComponent /> Unit Tests', () => {
         instance.isValid(testFile);
       }).toThrow('Wrong file type was uploaded.');
     });
-    it('test if when a non-csv is uploaded it works ' +
-        'correctly with name csv(csv.pdf)', () => {
+    it('should throw exception when given csv.pdf', () => {
       const testFile: File = new File(
           [''],
-          'test.pdf',
-          {type: '.pdf,test/pdf'},
-      );
-      const wrapper = mount(<ParserComponent prompt={'Select ' +
-      'a TL file: '} fileType={FileType.csv}
-      onChange={function() {}}/>);
-      const instance = wrapper.instance() as ParserComponent;
-      expect(() => {
-        instance.isValid(testFile);
-      }).toThrow('Wrong file type was uploaded.');
-    });
-    it('test if it works when there is nothing', () => {
-      const testFile: File = new File(
-          [''],
-          '',
-          {type: ''},
+          'csv.pdf',
+          {type: '.pdf,csv/pdf'},
       );
       const wrapper = mount(<ParserComponent prompt={'Select ' +
       'a TL file: '} fileType={FileType.csv}
@@ -161,7 +145,8 @@ describe('<ParserComponent /> Unit Tests', () => {
   });
 
   describe('sortData()', () => {
-    it('checks if data is sorted', () => {
+    it('should sort data by date properly when ' +
+        'given data with id, name and date where date is in form m/d/y', () => {
       const wrapper = shallow(<ParserComponent prompt={'Select ' +
       'a TL file: '} fileType={FileType.tl}
       onChange={function() {}}/>);
@@ -180,8 +165,8 @@ describe('<ParserComponent /> Unit Tests', () => {
       expect(testArray[2]).toMatchObject(expectedResult[2]);
     });
 
-    it('checks if data is sorted by the first date ' +
-        'column when there are 2 date columns', () => {
+    it('should sort data by the first date ' +
+        'column when given data with 2 date columns', () => {
       const wrapper = shallow(<ParserComponent prompt={'Select ' +
       'a TL file: '} fileType={FileType.tl}
       onChange={function() {}}/>);
@@ -203,7 +188,7 @@ describe('<ParserComponent /> Unit Tests', () => {
       expect(testArray[3]).toMatchObject(expectedResult[3]);
     });
 
-    it('checks if sort works when there are no dates', () => {
+    it('should throw exception when given data with no dates', () => {
       const wrapper = shallow(<ParserComponent prompt={'Select ' +
       'a TL file: '} fileType={FileType.tl}
       onChange={function() {}}/>);
@@ -218,7 +203,7 @@ describe('<ParserComponent /> Unit Tests', () => {
       }).toThrow('The file uploaded has no dates.');
     });
 
-    it('checks if sort works when file has nothing in it', () => {
+    it('should throw exception when given an empty file with no data', () => {
       const wrapper = shallow(<ParserComponent prompt={'Select ' +
       'a TL file: '} fileType={FileType.tl}
       onChange={function() {}}/>);
@@ -229,7 +214,8 @@ describe('<ParserComponent /> Unit Tests', () => {
       }).toThrow('The file uploaded has no dates.');
     });
 
-    it('checks if sort works on data with dates like november 12, 2019', () => {
+    it('should sort the data by dates when given ' +
+        'dates written in a form like November 23, 2019', () => {
       const wrapper = shallow(<ParserComponent prompt={'Select ' +
       'a TL file: '} fileType={FileType.tl}
       onChange={function() {}}/>);
@@ -251,7 +237,8 @@ describe('<ParserComponent /> Unit Tests', () => {
       expect(testArray[3]).toMatchObject(expectedResult[3]);
     });
 
-    it('checks if sort works on data with dates like november 12 2019', () => {
+    it('should sort the data by dates when given ' +
+        'dates written in a form like November 23 2019 (no comma)', () => {
       const wrapper = shallow(<ParserComponent prompt={'Select ' +
       'a TL file: '} fileType={FileType.tl}
       onChange={function() {}}/>);
@@ -273,7 +260,8 @@ describe('<ParserComponent /> Unit Tests', () => {
       expect(testArray[3]).toMatchObject(expectedResult[3]);
     });
 
-    it('checks if sort works on data with dates like 12 november 2019', () => {
+    it('should sort data correctly when given ' +
+        'dates written in a form like 23 november 2019', () => {
       const wrapper = shallow(<ParserComponent prompt={'Select ' +
       'a TL file: '} fileType={FileType.tl}
       onChange={function() {}}/>);
@@ -295,8 +283,8 @@ describe('<ParserComponent /> Unit Tests', () => {
       expect(testArray[3]).toMatchObject(expectedResult[3]);
     });
 
-    it('checks if sort works on data with ' +
-        'dates M/D (assumes they are same year)', () => {
+    it('should sort data correctly when given ' +
+        'dates written in a form like M/D with no year', () => {
       const wrapper = shallow(<ParserComponent prompt={'Select ' +
       'a TL file: '} fileType={FileType.tl}
       onChange={function() {}}/>);
@@ -318,8 +306,8 @@ describe('<ParserComponent /> Unit Tests', () => {
       expect(testArray[3]).toMatchObject(expectedResult[3]);
     });
 
-    it('checks if sort works on data where dates are ' +
-        'invalid January 32, 2019 by moving it to the end', () => {
+    it('should return sorted data with invalid date ' +
+        'at the end when given data with an invalid date', () => {
       const wrapper = shallow(<ParserComponent prompt={'Select ' +
       'a TL file: '} fileType={FileType.tl}
       onChange={function() {}}/>);
@@ -378,7 +366,7 @@ describe('<ParserComponent /> Unit Tests', () => {
       };
     });
 
-    it('handles regular data', () => {
+    it('should work properly when given regular data', () => {
       const t1 = pc.inferTypes(data);
       // test string
       // @ts-ignore
@@ -397,7 +385,7 @@ describe('<ParserComponent /> Unit Tests', () => {
       // @ts-ignore
       expect(t1[2].drawType).toBe(enumDrawType.occurrence);
     });
-    it('Throw exception when given empty data(undefined)', () => {
+    it('should throw exception when given empty data(undefined)', () => {
       const data1 = new Array(0);
       pc.state = {prompt: 'data1',
         fileType: FileType.csv,

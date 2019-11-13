@@ -78,15 +78,16 @@ describe('<ParserComponent /> Unit Tests', () => {
   });
 
   describe('isValid()', () => {
+    const wrapper = mount(<ParserComponent prompt={'Select ' +
+      'a CSV file: '} fileType={FileType.csv}
+    onChange={function() {}}/>);
+    const instance = wrapper.instance() as ParserComponent;
     it('Should return true when given a .csv file', () => {
       const testFile: File = new File(
           [''],
           'test.csv',
-          {type: '.csv,test/csv'},
+          {type: '.csv,text/csv'},
       );
-      const wrapper = mount(<ParserComponent prompt={'Select ' +
-      'a TL file: '} fileType={FileType.csv} onChange={function() {}}/>);
-      const instance = wrapper.instance() as ParserComponent;
       expect(instance.isValid(testFile)).toBeTruthy();
     });
     it('should throw exception when given undefined', () => {
@@ -95,9 +96,6 @@ describe('<ParserComponent /> Unit Tests', () => {
           '',
           {type: undefined},
       );
-      const wrapper = mount(<ParserComponent prompt={'Select' +
-      ' a TL file: '} fileType={FileType.csv} onChange={function() {}}/>);
-      const instance = wrapper.instance() as ParserComponent;
       expect(() => {
         instance.isValid(testFile);
       }).toThrow('Wrong file type was uploaded.');
@@ -106,38 +104,26 @@ describe('<ParserComponent /> Unit Tests', () => {
       const testFile: File = new File(
           [''],
           'csv.csv',
-          {type: '.csv,test/csv'},
+          {type: '.csv,text/csv'},
       );
-      const wrapper = mount(<ParserComponent prompt={'Sele' +
-      'ct a TL file: '} fileType={FileType.csv}
-      onChange={function() {}}/>);
-      const instance = wrapper.instance() as ParserComponent;
       expect(instance.isValid(testFile)).toBeTruthy();
     });
     it('should throw exception when given non-csv file', () => {
       const testFile: File = new File(
           [''],
           'test.pdf',
-          {type: '.pdf,test/pdf'},
+          {type: '.pdf,application/pdf'},
       );
-      const wrapper = mount(<ParserComponent prompt={'Select ' +
-      'a TL file: '} fileType={FileType.csv}
-      onChange={function() {}}/>);
-      const instance = wrapper.instance() as ParserComponent;
       expect(() => {
         instance.isValid(testFile);
       }).toThrow('Wrong file type was uploaded.');
     });
-    it('should throw exception when given csv.pdf', () => {
+    it('should throw exception when given non csv file with name csv', () => {
       const testFile: File = new File(
           [''],
           'csv.pdf',
-          {type: '.pdf,csv/pdf'},
+          {type: '.pdf,application/pdf'},
       );
-      const wrapper = mount(<ParserComponent prompt={'Select ' +
-      'a TL file: '} fileType={FileType.csv}
-      onChange={function() {}}/>);
-      const instance = wrapper.instance() as ParserComponent;
       expect(() => {
         instance.isValid(testFile);
       }).toThrow('Wrong file type was uploaded.');
@@ -145,12 +131,12 @@ describe('<ParserComponent /> Unit Tests', () => {
   });
 
   describe('sortData()', () => {
+    const wrapper = shallow(<ParserComponent prompt={'Select ' +
+      'a CSV file: '} fileType={FileType.csv}
+    onChange={function() {}}/>);
+    const instance = wrapper.instance() as ParserComponent;
     it('should sort data by date properly when ' +
         'given data with id, name and date where date is in form m/d/y', () => {
-      const wrapper = shallow(<ParserComponent prompt={'Select ' +
-      'a TL file: '} fileType={FileType.tl}
-      onChange={function() {}}/>);
-      const instance = wrapper.instance() as ParserComponent;
       const testArray: {id: number, name: string, Date: string}[] = [
         {'id': 1, 'name': 'name1', 'Date': '4/5/2010'},
         {'id': 2, 'name': 'name2', 'Date': '4/5/1992'},
@@ -167,10 +153,6 @@ describe('<ParserComponent /> Unit Tests', () => {
 
     it('should sort data by the first date ' +
         'column when given data with 2 date columns', () => {
-      const wrapper = shallow(<ParserComponent prompt={'Select ' +
-      'a TL file: '} fileType={FileType.tl}
-      onChange={function() {}}/>);
-      const instance = wrapper.instance() as ParserComponent;
       const testArray: {id: number, Date: string, Date1: string}[] = [
         {'id': 1, 'Date': '1/1/2001', 'Date1': '4/5/2010'},
         {'id': 2, 'Date': '1/1/2003', 'Date1': '4/5/1992'},
@@ -189,10 +171,6 @@ describe('<ParserComponent /> Unit Tests', () => {
     });
 
     it('should throw exception when given data with no dates', () => {
-      const wrapper = shallow(<ParserComponent prompt={'Select ' +
-      'a TL file: '} fileType={FileType.tl}
-      onChange={function() {}}/>);
-      const instance = wrapper.instance() as ParserComponent;
       const testArray: {id: number, name: string, job: string}[] = [
         {'id': 1, 'name': 'name1', 'job': 'job1'},
         {'id': 2, 'name': 'name2', 'job': 'job2'},
@@ -204,10 +182,6 @@ describe('<ParserComponent /> Unit Tests', () => {
     });
 
     it('should throw exception when given an empty file with no data', () => {
-      const wrapper = shallow(<ParserComponent prompt={'Select ' +
-      'a TL file: '} fileType={FileType.tl}
-      onChange={function() {}}/>);
-      const instance = wrapper.instance() as ParserComponent;
       const testArray: {id: number, name: string, job: string}[] = [];
       expect(() => {
         instance.sortData(testArray);
@@ -216,10 +190,6 @@ describe('<ParserComponent /> Unit Tests', () => {
 
     it('should sort the data by dates when given ' +
         'dates written in a form like November 23, 2019', () => {
-      const wrapper = shallow(<ParserComponent prompt={'Select ' +
-      'a TL file: '} fileType={FileType.tl}
-      onChange={function() {}}/>);
-      const instance = wrapper.instance() as ParserComponent;
       const testArray: {id: number, name: string, Date: string}[] = [
         {'id': 1, 'name': 'name1', 'Date': 'November 23, 2019'},
         {'id': 2, 'name': 'name2', 'Date': 'January 1, 2019'},
@@ -239,10 +209,6 @@ describe('<ParserComponent /> Unit Tests', () => {
 
     it('should sort the data by dates when given ' +
         'dates written in a form like November 23 2019 (no comma)', () => {
-      const wrapper = shallow(<ParserComponent prompt={'Select ' +
-      'a TL file: '} fileType={FileType.tl}
-      onChange={function() {}}/>);
-      const instance = wrapper.instance() as ParserComponent;
       const testArray: {id: number, name: string, Date: string}[] = [
         {'id': 1, 'name': 'name1', 'Date': 'November 23 2019'},
         {'id': 2, 'name': 'name2', 'Date': 'January 1 2019'},
@@ -260,12 +226,8 @@ describe('<ParserComponent /> Unit Tests', () => {
       expect(testArray[3]).toMatchObject(expectedResult[3]);
     });
 
-    it('should sort data correctly when given ' +
+    it('should sort data when given ' +
         'dates written in a form like 23 november 2019', () => {
-      const wrapper = shallow(<ParserComponent prompt={'Select ' +
-      'a TL file: '} fileType={FileType.tl}
-      onChange={function() {}}/>);
-      const instance = wrapper.instance() as ParserComponent;
       const testArray: {id: number, name: string, Date: string}[] = [
         {'id': 1, 'name': 'name1', 'Date': '23 november 2019'},
         {'id': 2, 'name': 'name2', 'Date': '1 january 2019'},
@@ -283,12 +245,8 @@ describe('<ParserComponent /> Unit Tests', () => {
       expect(testArray[3]).toMatchObject(expectedResult[3]);
     });
 
-    it('should sort data correctly when given ' +
+    it('should sort data when given ' +
         'dates written in a form like M/D with no year', () => {
-      const wrapper = shallow(<ParserComponent prompt={'Select ' +
-      'a TL file: '} fileType={FileType.tl}
-      onChange={function() {}}/>);
-      const instance = wrapper.instance() as ParserComponent;
       const testArray: {id: number, name: string, Date: string}[] = [
         {'id': 1, 'name': 'name1', 'Date': '11/23'},
         {'id': 2, 'name': 'name2', 'Date': '1/1'},
@@ -308,10 +266,6 @@ describe('<ParserComponent /> Unit Tests', () => {
 
     it('should return sorted data with invalid date ' +
         'at the end when given data with an invalid date', () => {
-      const wrapper = shallow(<ParserComponent prompt={'Select ' +
-      'a TL file: '} fileType={FileType.tl}
-      onChange={function() {}}/>);
-      const instance = wrapper.instance() as ParserComponent;
       const testArray: {id: number, name: string, Date: string}[] = [
         {'id': 3, 'name': 'name3', 'Date': 'December 1, 2019'},
         {'id': 4, 'name': 'name4', 'Date': 'February 30, 2019'},

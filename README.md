@@ -10,6 +10,11 @@ For more information about ID1 and the location of its contents, refer to [here]
 
 For more information about ID2 and the location of its contents, refer to [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID2/documents/ID2).
 
+
+## Incremental Deliverable 3
+
+For more information about ID2 and the location of its contents, refer to [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID3/documents/ID3).
+
 ## Prototypes
 
 Prototypes can be found in `prototypes/` and a central description of all the prototypes 

@@ -57,7 +57,7 @@ jobs:
       name: Install selenium deps
       if: matrix.os == 'ubuntu-latest'
     - run: | 
-        curl -O https://chromedriver.storage.googleapis.com/77.0.3865.40/chromedriver_linux64.zip
+        curl -O https://chromedriver.storage.googleapis.com/78.0.3904.70/chromedriver_linux64.zip
         unzip chromedriver_linux64.zip"
         python scripts/smoke-test.py build/index.html
       if: matrix.os == 'ubuntu-latest'

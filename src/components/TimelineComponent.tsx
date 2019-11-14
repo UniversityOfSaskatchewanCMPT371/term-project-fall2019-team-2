@@ -8,7 +8,6 @@ import Column
   from './Column';
 import * as TimSort
   from 'timsort';
-import {start} from "repl";
 
 const marginTop: number = 0;
 const marginBottom: number = 170;
@@ -625,17 +624,16 @@ export default class TimelineComponent
     let currKey: string = '';
     let movingTimeout: number = -1;
 
+    // helper() that calls the loop helper method
     const startMoving = (op: string) => {
       if (movingTimeout === -1) {
-        console.log('startMoving()');
         loop(op);
       }
     };
 
-    // loop until key released
+    // helper() that loops until key is released
     const loop = (op: string) => {
       // moveChart depending on operation
-      console.log('loop()');
       if (op === '-' || op === 's') {
         this.zoomOut();
       } else if (op === '+' || op === 'w') {

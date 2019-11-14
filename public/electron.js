@@ -33,8 +33,10 @@ function createWindow() {
   });
   mainWindow.loadURL(startUrl);
 
-  // Open the DevTools.
-  // mainWindow.webContents.openDevTools();
+  // Open the DevTools when loading in developer mode
+  if (process.env.ELECTRON_START_URL) {
+    mainWindow.webContents.openDevTools();
+  }
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function() {

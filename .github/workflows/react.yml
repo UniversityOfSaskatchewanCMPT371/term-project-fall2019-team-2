@@ -48,9 +48,13 @@ jobs:
         CI: true
 
     - uses: actions/setup-python@v1
+      if: matrix.os != 'windows-latest'
       with:
         python-version: '3.8'
         architecture: 'x64'
     - run: pip install -r scripts/requirements.txt
+      if: matrix.os != 'windows-latest'
     - run: docker run -d -p 4444:4444 --shm-size=2g  -v $(pwd):/mnt selenium/standalone-chrome:3.141.59-xenon
+      if: matrix.os != 'windows-latest'
     - run: python scripts/smoke-test.py build/index.html
+      if: matrix.os != 'windows-latest'

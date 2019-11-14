@@ -1,28 +1,37 @@
-## Incremental Deliverable 4 Readme
+# Incremental Deliverable 4 Readme
 
-# Source Code
+## Source Code
 
 [Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID4/src) is the link to the current source code for the project, and [Here](https://dev.braunson.me/) is a link to the current development build of the software.
 
-# Mini-Milestones
+### Notable PRs
+
+- [Electron Builds](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/pull/109)
+
+## Mini-Milestones
 
 
-# Risk Report
+## Risk Report
 
 
-# Reviews Conducted
+## Reviews Conducted
 
 
-# Design and Requirements Documents
+## Design and Requirements Documents
 
 
-# Meetings With Stakeholders
+## Meetings With Stakeholders
 
 
-# Testing
+## Testing
 
+Smoke tests are run on every push to the repository using Jest on each individual component to check that 
+the HTML was rendered correctly.
 
-# Builds
+Furthermore, we test the final build output by using a Python script with Selenium to ensure our production
+build has the homepage that we expect. **TODO ADD LINK**
+
+## Builds
 
 Builds in this deliverable changed to automatically create our electron builds on MacOS, Linux and Windows
 completely automatically whenever we create a new tagged release for this repository. The tagged release will
@@ -38,7 +47,7 @@ natively on MacOS for the Mac builds.
 
 For viewing our current code climate and test coverage, refer to sonarcloud [here](https://sonarcloud.io/dashboard?id=cmpt371-team2) which is updated on every push to the repository.
 
-# Timelog
+## Timelog
 
 [This](https://docs.google.com/spreadsheets/d/1NQE-0Cl15hqOMuEmQf0g8BnSgYWp-6AZVLhdm_tuwbE/edit#gid=688492208) document holds our time log information.
 

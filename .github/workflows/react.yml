@@ -34,6 +34,7 @@ jobs:
         npm run test
       env:
         CI: true
+
     # Use the winter!
     - name: npm install, wint, build, and test
       if: matrix.os == 'windows-latest'
@@ -45,3 +46,11 @@ jobs:
         set CI=true&&npm run test
       env:
         CI: true
+
+    - uses: actions/setup-python@v1
+      with:
+        python-version: '3.8'
+        architecture: 'x64'
+    - run: pip install -r scripts/requirements.txt
+    - run: docker run -d -p 4444:4444 --shm-size=2g  -v $(pwd):/mnt selenium/standalone-chrome:3.141.59-xenon
+    - run: python scripts/smoke-test.py build/index.html

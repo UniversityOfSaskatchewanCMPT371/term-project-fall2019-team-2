@@ -48,14 +48,13 @@ jobs:
         CI: true
 
     # Smoke tests only run on Ubuntu
-    - name: npm install, wint, build, and test
+    - name: npm install, lint, build, test, and smoke test
       if: matrix.os == 'ubuntu-latest'
-      shell: cmd
       run: |
         npm install
-        npm run wint
+        npm run lint
         npm run build
-        set CI=true&&npm run test
+        npm run test
         docker run -p 4444:4444 --shm-size=2g -v $(pwd):/mnt selenium/standalone-chrome:3.141.59-xenon /bin/bash -c "bash /mnt/scripts/setup-builder.sh"
       env:
         CI: true

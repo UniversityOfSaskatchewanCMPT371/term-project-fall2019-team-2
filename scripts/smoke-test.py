@@ -4,6 +4,7 @@ import os
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from selenium.webdriver.chrome.options import Options
 
 
 class SmokeTests(unittest.TestCase):
@@ -16,7 +17,11 @@ class SmokeTests(unittest.TestCase):
     """
     Use a remote driver in docker running Chrome
     """
-    self.driver = webdriver.Chrome(executable_path=os.getcwd() + "/chromedriver")
+    chrome_options = Options()
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    self.driver = webdriver.Chrome(executable_path=os.getcwd() + "/chromedriver", options=chrome_options)
     #self.driver = webdriver.Remote(command_executor='http://127.0.0.1:4444/wd/hub',
     #                              desired_capabilities=DesiredCapabilities.CHROME,
     #                              keep_alive=True)

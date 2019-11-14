@@ -300,14 +300,7 @@ describe('<ParserComponent /> Unit Tests', () => {
       expect(instance.isValid(testFile)).toBeTruthy();
     });
     it('should throw exception when given undefined', () => {
-      const testFile: File = new File(
-          [''],
-          '',
-          {type: undefined},
-      );
-      expect(() => {
-        instance.isValid(testFile);
-      }).toThrow('Wrong file type was uploaded.');
+      expect(instance.isValid(undefined)).toBeFalsy();
     });
     it('should return true when given csv.csv', () => {
       const testFile: File = new File(
@@ -759,12 +752,12 @@ describe('<ParserComponent /> Unit Tests', () => {
     });
     it('sortDate called within method', async () => {
       // check sortDate is called
-      await comp.instance().parseCsv(event);
+      await comp.instance().parse(event);
       expect(sortDataSpy).toHaveBeenCalled();
     });
     it('isValid called within method', async () => {
       // check isValid is called
-      await comp.instance().parseCsv(event);
+      await comp.instance().parse(event);
       expect(isValidSpy).toHaveBeenCalled();
     });
     it('this.state is set', () => {

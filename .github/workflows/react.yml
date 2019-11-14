@@ -55,6 +55,7 @@ jobs:
         npm run lint
         npm run build
         npm run test
+        cat build/index.html
         docker run -e START_XVFB=false -p 4444:4444 --shm-size=2g -v $(pwd):/mnt selenium/standalone-chrome:3.141.59-xenon /bin/bash -c "bash /mnt/scripts/setup-builder.sh"
       env:
         CI: true

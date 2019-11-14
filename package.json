@@ -1,5 +1,9 @@
 {
   "name": "timeline",
+  "description": "A timeline application for CMPT371G2",
+  "author": {
+    "name": "CMPT371G2"
+  },
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -55,7 +59,7 @@
     "directories": {
       "buildResources": "assets"
     },
-    "appId": "com.example.electron-cra"
+    "appId": "ca.usask.cmpt371g2.timeline"
   },
   "eslintConfig": {
     "extends": "google"

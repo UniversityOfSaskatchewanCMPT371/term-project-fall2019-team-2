@@ -278,14 +278,22 @@ describe('<TimelineComponent /> Unit Tests', () => {
   });
 
   describe('drawTimeline()', () => {
-    it('timeline drawer handles zoom out', () => {
+    // zoom in events for keydown & keyup
+    const zoomInEventDown = new KeyboardEvent('keydown', {'key': '+'});
+    const zoomInEventUp = new KeyboardEvent('keyup', {'key': '+'});
+    // zoom out events for keydown & keyup
+    const zoomOutEventDown = new KeyboardEvent('keydown', {'key': '-'});
+    const zoomOutEventUp = new KeyboardEvent('keyup', {'key': '-'});
+
+    it('timeline drawer handles zoom out', async () => {
       wrapper.instance().drawTimeline();
-      const zoomInEvent = new KeyboardEvent('keydown', {'key': '+'});
-      const zoomOutEvent = new KeyboardEvent('keydown', {'key': '-'});
-      document.body.dispatchEvent(zoomInEvent);
       // zoom in so that we can see if zooming back out works
+      document.body.dispatchEvent(zoomInEventDown);
+      document.body.dispatchEvent(zoomInEventUp);
       expect(wrapper.instance().getScale()).toBeGreaterThan(1.0);
-      document.body.dispatchEvent(zoomOutEvent);
+      // zoom back out
+      document.body.dispatchEvent(zoomOutEventDown);
+      document.body.dispatchEvent(zoomOutEventUp);
       expect(wrapper.instance().getScale()).toBe(1.0);
     });
     it('drawLabels is called', () => {
@@ -297,8 +305,9 @@ describe('<TimelineComponent /> Unit Tests', () => {
 
     it('timeline drawer handles zoom in', () => {
       wrapper.instance().drawTimeline();
-      const event = new KeyboardEvent('keydown', {'key': '+'});
-      document.body.dispatchEvent(event);
+      expect(wrapper.instance().getScale()).toBe(1.0);
+      document.body.dispatchEvent(zoomInEventDown);
+      document.body.dispatchEvent(zoomInEventUp);
       expect(wrapper.instance().getScale()).toBeGreaterThan(1.0);
     });
 
@@ -314,9 +323,13 @@ describe('<TimelineComponent /> Unit Tests', () => {
       wrapper.instance().drawTimeline();
       let event = new KeyboardEvent('keydown', {'key': 'ArrowRight'});
       document.body.dispatchEvent(event);
+      event = new KeyboardEvent('keyup', {'key': 'ArrowRight'});
+      document.body.dispatchEvent(event);
 
       expect(wrapper.instance().getDeltaX()).toBeLessThan(0);
       event = new KeyboardEvent('keydown', {'key': 'ArrowLeft'});
+      document.body.dispatchEvent(event);
+      event = new KeyboardEvent('keyup', {'key': 'ArrowRight'});
       document.body.dispatchEvent(event);
 
       expect(wrapper.instance().getDeltaX()).toBe(0);

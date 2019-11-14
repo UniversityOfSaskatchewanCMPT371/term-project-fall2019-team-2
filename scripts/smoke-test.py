@@ -34,7 +34,6 @@ class SmokeTests(unittest.TestCase):
     driver = self.driver
     driver.get(f"file:///{self.TEST_FILE}")
     self.assertEqual("React App", driver.title)
-    print(driver.title)
     elem = driver.find_element_by_xpath('//*[@id="root"]/div/div/label')
     self.assertEqual("Select a CSV file:", elem.text)
 

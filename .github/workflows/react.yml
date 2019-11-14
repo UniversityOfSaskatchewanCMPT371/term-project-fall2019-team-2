@@ -47,15 +47,15 @@ jobs:
       env:
         CI: true
 
-    # Smoke tests only run on Ubuntu
+    # Smoke tests only run on Windows
     - uses: actions/setup-python@v1
-      if: matrix.os == 'ubuntu-latest'
+      if: matrix.os == 'windows-latest'
       with:
         python-version: '3.8'
         architecture: 'x64'
     - run: pip install -r scripts/requirements.txt
       name: Install selenium deps
-      if: matrix.os == 'ubuntu-latest'
+      if: matrix.os == 'windows-latest'
     - run: python3 scripts/smoke-test.py build/index.html
-      if: matrix.os == 'ubuntu-latest'
+      if: matrix.os == 'windows-latest'
       name: Run the smoke tests

@@ -16,7 +16,7 @@ class SmokeTests(unittest.TestCase):
     """
     Use a remote driver in docker running Chrome
     """
-    self.driver = webdriver.Chrome(os.environ['ChromeWebDriver'])
+    self.driver = webdriver.Chrome(executable_path=os.getcwd() + "/chromedriver")
     #self.driver = webdriver.Remote(command_executor='http://127.0.0.1:4444/wd/hub',
     #                              desired_capabilities=DesiredCapabilities.CHROME,
     #                              keep_alive=True)

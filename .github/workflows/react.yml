@@ -49,13 +49,16 @@ jobs:
 
     # Smoke tests only run on Windows
     - uses: actions/setup-python@v1
-      if: matrix.os == 'windows-latest'
+      if: matrix.os == 'ubuntu-latest'
       with:
         python-version: '3.8'
         architecture: 'x64'
     - run: pip install -r scripts/requirements.txt
       name: Install selenium deps
-      if: matrix.os == 'windows-latest'
-    - run: python scripts/smoke-test.py build/index.html
-      if: matrix.os == 'windows-latest'
+      if: matrix.os == 'ubuntu-latest'
+    - run: | 
+        curl -O https://chromedriver.storage.googleapis.com/77.0.3865.40/chromedriver_linux64.zip
+        unzip chromedriver_linux64.zip"
+        python scripts/smoke-test.py build/index.html
+      if: matrix.os == 'ubuntu-latest'
       name: Run the smoke tests

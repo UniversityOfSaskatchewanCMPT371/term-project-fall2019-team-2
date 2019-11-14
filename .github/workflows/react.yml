@@ -47,15 +47,7 @@ jobs:
       env:
         CI: true
 
-    # Smoke tests only run on Windows
-    - uses: actions/setup-python@v1
-      if: matrix.os == 'ubuntu-latest'
-      with:
-        python-version: '3.8'
-        architecture: 'x64'
-    - run: pip install -r scripts/requirements.txt
-      name: Install selenium deps
-      if: matrix.os == 'ubuntu-latest'
-    - run: docker run -p 4444:4444 --shm-size=2g  -v $(pwd):/mnt selenium/standalone-chrome:3.141.59-xenon /bin/bash -c "bash /mnt/scripts/setup-build.sh"
+    # Smoke tests only run on Ubuntu
+    - run: docker run -p 4444:4444 --shm-size=2g -v $(pwd):/mnt selenium/standalone-chrome:3.141.59-xenon /bin/bash -c "bash /mnt/scripts/setup-builder.sh"
       if: matrix.os == 'ubuntu-latest'
       name: Run the smoke tests

@@ -280,10 +280,13 @@ describe('<TimelineComponent /> Unit Tests', () => {
   describe('drawTimeline()', () => {
     it('timeline drawer handles zoom out', () => {
       wrapper.instance().drawTimeline();
-      const event = new KeyboardEvent('keypress', {'key': 'w'});
-      document.body.dispatchEvent(event);
-
+      const zoomInEvent = new KeyboardEvent('keydown', {'key': '+'});
+      const zoomOutEvent = new KeyboardEvent('keydown', {'key': '-'});
+      document.body.dispatchEvent(zoomInEvent);
+      // zoom in so that we can see if zooming back out works
       expect(wrapper.instance().getScale()).toBeGreaterThan(1.0);
+      document.body.dispatchEvent(zoomOutEvent);
+      expect(wrapper.instance().getScale()).toBe(1.0);
     });
     it('drawLabels is called', () => {
       const drawTimelineSpy = jest.spyOn(TimelineComponent.prototype,
@@ -294,14 +297,9 @@ describe('<TimelineComponent /> Unit Tests', () => {
 
     it('timeline drawer handles zoom in', () => {
       wrapper.instance().drawTimeline();
-      let event = new KeyboardEvent('keydown', {'key': 'w'});
+      const event = new KeyboardEvent('keydown', {'key': '+'});
       document.body.dispatchEvent(event);
-
       expect(wrapper.instance().getScale()).toBeGreaterThan(1.0);
-      event = new KeyboardEvent('keydown', {'key': 's'});
-      document.body.dispatchEvent(event);
-
-      expect(wrapper.instance().getScale()).toBe(1.0);
     });
 
     it('timeline drawer handles pan right', () => {

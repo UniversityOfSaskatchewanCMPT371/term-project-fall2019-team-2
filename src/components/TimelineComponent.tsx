@@ -578,7 +578,7 @@ export default class TimelineComponent
   private registerEvents(): void {
     // Handle keypresses
     d3.select('body')
-        .on('keypress', () => {
+        .on('keydown', () => {
           if (d3.event.key === '-' || d3.event.key === 's') {
             // Zoom out
             const identity = d3.zoomIdentity
@@ -598,12 +598,12 @@ export default class TimelineComponent
                 .call(this.zoom.transform, identity);
             // Ensure the new scale is saved
             this.scale = this.scale * scaleZoomIn;
-          } else if (d3.event.key === 'a') {
+          } else if (d3.event.keyCode === 37) {
             // Pan left
             deltaX = Math.min(0, deltaX + deltaPan);
             console.log(deltaX);
             this.moveChart();
-          } else if (d3.event.key === 'd') {
+          } else if (d3.event.keyCode === 39) {
             // Pan right
             deltaX -= deltaPan;
             this.moveChart();

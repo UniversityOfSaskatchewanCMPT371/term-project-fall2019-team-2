@@ -56,6 +56,6 @@ jobs:
     - run: pip install -r scripts/requirements.txt
       name: Install selenium deps
       if: matrix.os == 'windows-latest'
-    - run: python3 scripts/smoke-test.py build/index.html
+    - run: python scripts/smoke-test.py build/index.html
       if: matrix.os == 'windows-latest'
       name: Run the smoke tests

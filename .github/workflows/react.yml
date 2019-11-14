@@ -56,7 +56,6 @@ jobs:
     - run: pip install -r scripts/requirements.txt
       name: Install selenium deps
       if: matrix.os == 'ubuntu-latest'
-    - run: | 
-        docker run -it -p 4444:4444 --shm-size=2g  -v $(pwd):/mnt selenium/standalone-chrome:3.141.59-xenon /bin/bash -c "bash /mnt/scripts/setup-build.sh"
+    - run: docker run -p 4444:4444 --shm-size=2g  -v $(pwd):/mnt selenium/standalone-chrome:3.141.59-xenon /bin/bash -c "bash /mnt/scripts/setup-build.sh"
       if: matrix.os == 'ubuntu-latest'
       name: Run the smoke tests

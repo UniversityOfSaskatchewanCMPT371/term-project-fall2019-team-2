@@ -8,6 +8,9 @@ import Column
   from './Column';
 import * as TimSort
   from 'timsort';
+import Button from 'react-bootstrap/Button';
+import InputGroup from 'react-bootstrap/InputGroup';
+import Form from 'react-bootstrap/Form';
 
 const marginTop: number = 0;
 const marginBottom: number = 170;
@@ -281,55 +284,66 @@ export default class TimelineComponent
         <p><em>loading...</em></p> :
         <div>
           <div>
-            <button
-              onClick={this.toggleTimeline}>{this.state.togglePrompt}</button>
+            <Button variant="primary"
+              onClick={this.toggleTimeline}>{this.state.togglePrompt}</Button>
             <label>
               Y-Axis
             </label>
-            <select id="ySelect"
-              value={this.state.yColumn}
-              onChange={(e) => {
-                this.changeColumn(e, 'yColumn');
-              }}>
-              {
-                yColumns.map((col: any, i: number) =>
-                  <option
-                    key={i}
-                    value={col.key}>{col.key}</option>)
-              }
-            </select>
+            <InputGroup>
+              <InputGroup.Prepend>
+                <InputGroup.Text id="inputGroup
+                Prepend">yColumn</InputGroup.Text>
+              </InputGroup.Prepend>
+              <Form.Control
+                as = "select"
+                value={this.state.yColumn}
+                onChange={(e) => {
+                  this.changeColumn(e, 'yColumn');
+                }}>
+                {
+                  yColumns.map((col: any, i: number) =>
+                    <option
+                      key={i}
+                      value={col.key}>{col.key}</option>)
+                }
+              </Form.Control>
 
-            <label>
-              Starting Range
-            </label>
-            <select id="xSelect"
-              value={this.state.xColumn}
-              onChange={(e) => {
-                this.changeColumn(e, 'xColumn');
-              }}>
-              {
-                xColumns.map((col: any, i: number) =>
-                  <option
-                    key={i}
-                    value={col.key}>{col.key}</option>)
-              }
-            </select>
+              <InputGroup.Prepend>
+                <InputGroup.Text id="inputGroup
+                Prepend">xColumn</InputGroup.Text>
+              </InputGroup.Prepend>
+              <Form.Control
+                as = "select"
+                value={this.state.xColumn}
+                onChange={(e) => {
+                  this.changeColumn(e, 'xColumn');
+                }}>
+                {
+                  xColumns.map((col: any, i: number) =>
+                    <option
+                      key={i}
+                      value={col.key}>{col.key}</option>)
+                }
+              </Form.Control>
 
-            <label>
-              Ending Range
-            </label>
-            <select id="x2Select"
-              value={this.state.xColumn}
-              onChange={(e) => {
-                this.changeColumn(e, 'xColumn2');
-              }}>
-              {
-                xColumns.map((col: any, i: number) =>
-                  <option
-                    key={i}
-                    value={col.key}>{col.key}</option>)
-              }
-            </select>
+              <InputGroup.Prepend>
+                <InputGroup.Text id="inputGroup
+                Prepend">Ending Range</InputGroup.Text>
+              </InputGroup.Prepend>
+              <Form.Control
+                as = "select"
+                value={this.state.xColumn}
+                onChange={(e) => {
+                  this.changeColumn(e, 'xColumn2');
+                }}>
+                {
+                  xColumns.map((col: any, i: number) =>
+                    <option
+                      key={i}
+                      value={col.key}>{col.key}</option>)
+                }
+              </Form.Control>
+            </InputGroup>
           </div>
           <div id="svgtarget">
           </div>

@@ -55,7 +55,7 @@ export default class Filter {
   /**
    * Purpose: removes the predicate at the specified index
    * @precondition The predicate list is non-empty
-   * @postcondition The specified predicate is removed from the list. 
+   * @postcondition The specified predicate is removed from the list.
    * If no such predicate exists nothing is removed.
    * @param {number} index: the index of the predicate to remove
    */

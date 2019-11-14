@@ -24,7 +24,7 @@ export default class Column {
 
     /**
      * Purpose: renders a column of data to the timeline
-     * @precondition A .csv file has been uploaded and there exists 
+     * @precondition A .csv file has been uploaded and there exists
      * data for a column to be created from
      * @postcondition A column class is created
      */

@@ -170,8 +170,9 @@ export default class ParserComponent extends React.Component<ParserInterface,
     /**
      * Purpose: attempts to infer the types of the data in each of the columns
      * of the csv data
-     * @precondition An array of sorted data exists for types to be inferred from
-     * @postcondition The array is transformed into an array of type Column, 
+     * @precondition An array of sorted data exists for types to be inferred
+     * from
+     * @postcondition The array is transformed into an array of type Column,
      * and the default behavior for the data is inferred and set
      * @param {Array} data: the array of pre-sorted valid data
      * @return {Array}: a list of objects of type Column
@@ -253,7 +254,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
     /**
      * Purpose: attempts to parse the file uploaded by the user.
      * @precondition The user uploads a file
-     * @postcondition The data is read out of the csv file and put into an array object
+     * @postcondition The data is read out of the csv file and put into
+     * an array object
      * @param {Object} fileEvent: the event passed into this component
      */
     async parse(fileEvent: any) {

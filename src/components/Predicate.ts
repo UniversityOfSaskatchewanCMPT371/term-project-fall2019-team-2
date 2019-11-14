@@ -20,6 +20,8 @@ export default class Predicate {
 
   /**
    * Get the name of the predicate function
+   * @precondition The predicate name is set
+   * @postcondition The predicate name is returned
    * @return {string} The name of the predicate function
    */
   public getName(): string {
@@ -28,6 +30,11 @@ export default class Predicate {
 
   /**
    * Evaluate the predicate function
+   * @precondition The predicate is defined, and the object
+   * being passed in is the correct type
+   * @postcondition The predicate is evaluated with the passed in object
+   * and true or false returned depending on whether or not the predicate
+   * holds for that object
    * @param  {Object} point The data point to evaluate
    * @return {boolean} The result of the function evaluated
    */

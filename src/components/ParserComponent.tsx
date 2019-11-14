@@ -77,6 +77,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
     /**
      * Purpose: checks if the passed in event contains a file upload, then
      * verifies that the file type and contents are valid
+     * @precondition no other parser object exists
+     * @postcondition a parser object is instantiated as the only parser object
      * @param {Object} upFile: takes in the file
      * @return {boolean}: a boolean indicating whether or not the file upload is
      * valid
@@ -98,9 +100,11 @@ export default class ParserComponent extends React.Component<ParserInterface,
 
     /**
      * Purpose: sorts the array of data
-     * @precondition: dates must contain year month and date,
-     * if data does not contain year in some
-     * dates but does in some it will sort lexicographically
+     * @precondition dates must contain year month and date,
+     *    if data does not contain year in some
+     *    dates but does in some it will sort lexicographically.
+     *    a csv has been uploaded, and the data is stored in an array.
+     * @postcondition the data stored in the array is sorted by some date column
      * @param {Array} data: the array of data to sort
      * @return {boolean}: array of sorted data
      */
@@ -166,6 +170,9 @@ export default class ParserComponent extends React.Component<ParserInterface,
     /**
      * Purpose: attempts to infer the types of the data in each of the columns
      * of the csv data
+     * @precondition An array of sorted data exists for types to be inferred from
+     * @postcondition The array is transformed into an array of type Column, 
+     * and the default behavior for the data is inferred and set
      * @param {Array} data: the array of pre-sorted valid data
      * @return {Array}: a list of objects of type Column
      */
@@ -245,6 +252,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
 
     /**
      * Purpose: attempts to parse the file uploaded by the user.
+     * @precondition The user uploads a file
+     * @postcondition The data is read out of the csv file and put into an array object
      * @param {Object} fileEvent: the event passed into this component
      */
     async parse(fileEvent: any) {
@@ -271,6 +280,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
 
     /**
      * Purpose: to parse a csv file uploaded by the user
+     * @precondtion The user has uploaded a csv file
+     * @postcondtion The data from the file is stored in a global array
      * @param {Object} fileEvent: the event passed into this component
      */
     async parseCsv(fileEvent: any) {

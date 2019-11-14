@@ -31,9 +31,10 @@ export default class Filter {
 
   /**
    * Purpose: assigns the lower and upper range to the values passed in
+   * @precondition None
+   * @postcondition The filter objects values are adjusted
    * @param {number} newLowerRange: the new lower range
    * @param {number} newUpperRange: the new upper range
-   * @constructor
    */
   public redefineRange(newLowerRange: number, newUpperRange: number) {
     this.lowerRange = newLowerRange;
@@ -42,8 +43,10 @@ export default class Filter {
 
   /**
    * Purpose: adds a new predicate to the list
+   * @precondition None
+   * @postcondition The predicate is added to the list of
+   * predicates and this is immediately applied to the current render
    * @param {boolean} predicate: the predicate to add to the list
-   * @constructor
    */
   public addPredicate(predicate: () => boolean) {
     this.listOfPreds.push(predicate);
@@ -51,8 +54,10 @@ export default class Filter {
 
   /**
    * Purpose: removes the predicate at the specified index
+   * @precondition The predicate list is non-empty
+   * @postcondition The specified predicate is removed from the list. 
+   * If no such predicate exists nothing is removed.
    * @param {number} index: the index of the predicate to remove
-   * @constructor
    */
   public removePredicate(index: number) {
     this.listOfPreds.splice(index, 1);

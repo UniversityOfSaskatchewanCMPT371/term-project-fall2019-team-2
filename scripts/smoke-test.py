@@ -16,9 +16,10 @@ class SmokeTests(unittest.TestCase):
     """
     Use a remote driver in docker running Chrome
     """
-    self.driver = webdriver.Remote(command_executor='http://127.0.0.1:4444/wd/hub',
-                                  desired_capabilities=DesiredCapabilities.CHROME,
-                                  keep_alive=True)
+    self.driver = webdriver.Chrome(os.environ['ChromeWebDriver'])
+    #self.driver = webdriver.Remote(command_executor='http://127.0.0.1:4444/wd/hub',
+    #                              desired_capabilities=DesiredCapabilities.CHROME,
+    #                              keep_alive=True)
 
   def test_local_file(self):
     """
@@ -46,7 +47,7 @@ class SmokeTests(unittest.TestCase):
     driver = self.driver
     driver.get(f"file:///{self.TEST_FILE}")
     elem = driver.find_element_by_xpath('//*[@id="root"]/div/div/input')
-    elem.send_keys("/mnt/scripts/test.csv")
+    elem.send_keys(os.getcwd() + "/scripts/test.csv")
 
     # Check for the bar graph
     bar_graph = driver.find_elements_by_class_name("bar")
@@ -70,6 +71,7 @@ if __name__ == "__main__":
     exit(1)
 
   SmokeTests.TEST_FILE = sys.argv.pop()
-  SmokeTests.TEST_FILE = "/mnt/" + SmokeTests.TEST_FILE
+  SmokeTests.TEST_FILE = os.getcwd() + "/" + SmokeTests.TEST_FILE
+  #SmokeTests.TEST_FILE = "/mnt/" + SmokeTests.TEST_FILE
 
   unittest.main()

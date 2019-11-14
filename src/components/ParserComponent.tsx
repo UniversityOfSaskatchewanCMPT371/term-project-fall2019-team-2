@@ -90,7 +90,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
           throw new Error('Wrong file type was uploaded.');
         }
       }
-      return false;
+      throw new Error('Wrong file type was uploaded.');
     }
 
     /**
@@ -250,13 +250,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
       try {
         if (this.props.fileType === FileType.csv && this.isValid(temp)) {
           await this.parseCsv(fileEvent);
-          try {
-            this.columnTypes = this.inferTypes(this.state.data);
-            this.sortData(this.state.data);
-          } catch (e) {
-            alert('data is empty');
-            console.log('data is empty');
-          }
         }
       } catch (e) {
         alert('Wrong file type was uploaded.');
@@ -304,6 +297,13 @@ export default class ParserComponent extends React.Component<ParserInterface,
                 data: content,
               };
             });
+            try {
+              this.columnTypes = this.inferTypes(this.state.data);
+              this.sortData(this.state.data);
+            } catch (e) {
+              alert('data is EMPTY');
+              console.log('data is empty');
+            }
           }
           resolver(true);
         };

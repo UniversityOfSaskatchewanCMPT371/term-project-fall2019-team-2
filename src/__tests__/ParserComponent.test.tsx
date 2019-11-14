@@ -300,7 +300,9 @@ describe('<ParserComponent /> Unit Tests', () => {
       expect(instance.isValid(testFile)).toBeTruthy();
     });
     it('should throw exception when given undefined', () => {
-      expect(instance.isValid(undefined)).toBeFalsy();
+      expect(() => {
+        instance.isValid(undefined);
+      }).toThrow('Wrong file type was uploaded.');
     });
     it('should return true when given csv.csv', () => {
       const testFile: File = new File(

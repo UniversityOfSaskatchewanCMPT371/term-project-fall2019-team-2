@@ -598,12 +598,12 @@ export default class TimelineComponent
                 .call(this.zoom.transform, identity);
             // Ensure the new scale is saved
             this.scale = this.scale * scaleZoomIn;
-          } else if (d3.event.keyCode === 37) {
+          } else if (d3.event.key === 'ArrowLeft') {
             // Pan left
             deltaX = Math.min(0, deltaX + deltaPan);
             console.log(deltaX);
             this.moveChart();
-          } else if (d3.event.keyCode === 39) {
+          } else if (d3.event.key === 'ArrowRight') {
             // Pan right
             deltaX -= deltaPan;
             this.moveChart();

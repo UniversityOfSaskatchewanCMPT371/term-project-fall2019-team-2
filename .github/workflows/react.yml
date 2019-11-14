@@ -48,6 +48,7 @@ jobs:
         CI: true
 
     # Smoke tests only run on Ubuntu
+    - run: echo build/index.html
     - run: docker run -p 4444:4444 --shm-size=2g -v $(pwd):/mnt selenium/standalone-chrome:3.141.59-xenon /bin/bash -c "bash /mnt/scripts/setup-builder.sh"
       if: matrix.os == 'ubuntu-latest'
       name: Run the smoke tests

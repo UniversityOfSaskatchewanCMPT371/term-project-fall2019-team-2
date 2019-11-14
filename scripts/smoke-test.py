@@ -21,7 +21,8 @@ class SmokeTests(unittest.TestCase):
     chrome_options.add_argument('--headless')
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
-    self.driver = webdriver.Chrome(executable_path=os.getcwd() + "/chromedriver", options=chrome_options)
+    self.driver = webdriver.Chrome(options=chrome_options)
+    # If running in docker, use the following:
     #self.driver = webdriver.Remote(command_executor='http://127.0.0.1:4444/wd/hub',
     #                              desired_capabilities=DesiredCapabilities.CHROME,
     #                              keep_alive=True)
@@ -77,6 +78,7 @@ if __name__ == "__main__":
 
   SmokeTests.TEST_FILE = sys.argv.pop()
   SmokeTests.TEST_FILE = os.getcwd() + "/" + SmokeTests.TEST_FILE
+  # If running in docker use the following:
   #SmokeTests.TEST_FILE = "/mnt/" + SmokeTests.TEST_FILE
 
   unittest.main()

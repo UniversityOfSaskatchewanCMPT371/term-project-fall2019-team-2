@@ -57,8 +57,6 @@ jobs:
       name: Install selenium deps
       if: matrix.os == 'ubuntu-latest'
     - run: | 
-        curl -O https://chromedriver.storage.googleapis.com/78.0.3904.70/chromedriver_linux64.zip
-        unzip chromedriver_linux64.zip
-        python scripts/smoke-test.py build/index.html
+        docker run -it -p 4444:4444 --shm-size=2g  -v $(pwd):/mnt selenium/standalone-chrome:3.141.59-xenon /bin/bash -c "bash /mnt/scripts/setup-build.sh"
       if: matrix.os == 'ubuntu-latest'
       name: Run the smoke tests

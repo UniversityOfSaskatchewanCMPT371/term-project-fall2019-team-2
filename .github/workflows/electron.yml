@@ -38,7 +38,6 @@ jobs:
       env:
         CI: true
     - name: Upload AppImage
-      id: upload-release-asset 
       uses: actions/upload-release-asset@v1.0.1
       if: matrix.os == 'ubuntu-latest'
       env:
@@ -51,7 +50,6 @@ jobs:
         asset_name: timeline-0.1.0.AppImage
         asset_content_type: application/octet-stream
     - name: Upload Snap
-      id: upload-release-asset 
       uses: actions/upload-release-asset@v1.0.1
       if: matrix.os == 'ubuntu-latest'
       env:
@@ -62,7 +60,6 @@ jobs:
         asset_name: timeline-0.1.0_amd64.snap
         asset_content_type: application/octet-stream
     - name: Upload Windows Setup
-      id: upload-release-asset 
       uses: actions/upload-release-asset@v1.0.1
       if: matrix.os == 'macOS-latest'
       env:
@@ -81,7 +78,6 @@ jobs:
       run: |
         npm run package-macos
     - name: Upload dmg
-      id: upload-release-asset 
       uses: actions/upload-release-asset@v1.0.1
       if: matrix.os == 'macOS-latest'
       env:

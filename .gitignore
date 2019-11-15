@@ -255,5 +255,9 @@ build/
 coverage/
 test-report.xml
 
+# Electron
+dist/
+
 # Python
 .python-version
+

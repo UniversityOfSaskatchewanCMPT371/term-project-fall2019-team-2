@@ -55,7 +55,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ github.event.release.upload_url }}
-        asset_path: ./dist/timeline-0.1.0_amd64.snap
+        asset_path: ./dist/timeline_0.1.0_amd64.snap
         asset_name: timeline_0.1.0_amd64.snap
         asset_content_type: application/octet-stream
     - name: Upload Windows Setup

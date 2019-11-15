@@ -293,6 +293,25 @@ describe('should accept valid csv file name with unusual' +
     expect(comp.state('data').length).toEqual(3);
     expect(onChangeMock).toHaveBeenCalledTimes(1);
   });
+
+  // clear the on change event mock and the enzyme component
+  onChangeMock.mockClear();
+  comp.setState({data: []});
+
+  it('file name with emoji that use unicode', async ()=>{
+    const testfilewithemoji: File = new File(['Date,SomeNum,SomeString\n' +
+          '04/12/1998,4,abcd\n' +
+          '06-01-1994,5,efg\n' +
+          'November 5 1997,1,hij\n' +
+          ''],
+    '😁😁😁😁.csv',
+    {type: '.csv,text/csv'},);
+
+    const fileEvent = {target: {files: [testfilewithemoji]}};
+    await comp.instance().parse(fileEvent);
+    expect(comp.state('data').length).toEqual(3);
+    expect(onChangeMock).toHaveBeenCalledTimes(1);
+  });
 });
 
 // To be used by the developers
@@ -412,6 +431,7 @@ describe('<ParserComponent /> Unit Tests', () => {
       instance.sortData(testArray);
       const expectedResult: {id: number, Date: string, Date1: string}[] = [
         {'id': 3, 'Date': '1/1/2000', 'Date1': '12/21/1992'},
+
         {'id': 1, 'Date': '1/1/2001', 'Date1': '4/5/2010'},
         {'id': 4, 'Date': '1/1/2002', 'Date1': '12/21/1993'},
         {'id': 2, 'Date': '1/1/2003', 'Date1': '4/5/1992'}];

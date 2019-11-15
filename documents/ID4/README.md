@@ -7,6 +7,7 @@
 ### Notable PRs
 
 - [Electron Builds](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/pull/109)
+- [Selenium Tests](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/pull/114)
 
 ## Mini-Milestones
 
@@ -29,7 +30,7 @@ Smoke tests are run on every push to the repository using Jest on each individua
 the HTML was rendered correctly.
 
 Furthermore, we test the final build output by using a Python script with Selenium to ensure our production
-build has the homepage that we expect. **TODO ADD LINK**
+build has the homepage that we expect. You can find the script and more details in [this directory](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID4/scripts)
 
 ## Builds
 
@@ -46,6 +47,9 @@ In order to create the builds on all the platforms we use a docker image with wi
 natively on MacOS for the Mac builds.
 
 For viewing our current code climate and test coverage, refer to sonarcloud [here](https://sonarcloud.io/dashboard?id=cmpt371-team2) which is updated on every push to the repository.
+
+Lastly, we now run external selenium tests using a headless Chrome instance running inside docker with the
+selenium server. 
 
 ## Timelog
 

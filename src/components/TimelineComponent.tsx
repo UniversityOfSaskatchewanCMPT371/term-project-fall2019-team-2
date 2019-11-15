@@ -51,7 +51,7 @@ let y: any;
 
 let extent: [[number, number], [number, number]];
 // tracks the switch statement for what should be drawn
-let view: string;
+let view: ViewType;
 
 let plot: any;
 
@@ -74,13 +74,12 @@ export default class TimelineComponent
       marginBottom: 170,
       marginLeft: 40,
       marginRight: 20,
-      toggleTimeline: 0,
       togglePrompt: 'Switch to Interval Timeline',
       yColumn: '',
       xColumn: '',
       xColumn2: '',
       loading: true,
-      view: 'occurrence',
+      view: ViewType.occurrence,
     };
 
     this.drawTimeline = this.drawTimeline.bind(this);
@@ -346,20 +345,16 @@ export default class TimelineComponent
    * Purpose: toggles between interval and occurrence timelines
    */
   toggleTimeline() {
-    let toggle: number = this.state.toggleTimeline;
     let prompt = this.state.togglePrompt;
-    if (toggle === 0) {
-      toggle = 1;
+    if (view === ViewType.occurrence) {
       prompt = 'Switch to Occurrence Timeline';
-      view = 'interval';
+      view = ViewType.interval;
     } else {
-      toggle = 0;
       prompt = 'Switch to Interval Timeline';
-      view = 'occurrence';
+      view = ViewType.occurrence;
     }
 
     this.setState(() => ({
-      toggleTimeline: toggle,
       togglePrompt: prompt,
       view: view,
     }), () => {
@@ -531,7 +526,7 @@ export default class TimelineComponent
    */
   private drawLabels(): void {
     switch (view) {
-      case 'occurrence':
+      case ViewType.occurrence:
         this.svg.append('text')
             .attr('transform',
                 `translate(${width / 2},${height + marginTop + 20})`)
@@ -547,7 +542,7 @@ export default class TimelineComponent
             .text(this.state.yColumn);
         break;
 
-      case 'interval':
+      case ViewType.interval:
         this.svg.append('text')
             .attr('transform',
                 `translate(${(width / 2) + 10},${height + marginTop + 20})`)
@@ -736,7 +731,7 @@ export default class TimelineComponent
 
     // d3.selectAll('#xaxis').remove();
 
-    if (this.state.toggleTimeline === 0) {
+    if (this.state.view === ViewType.occurrence) {
       d3.selectAll('.bar')
           .attr('x', (d, i) => this.scale * barWidth * (i + dataIdx))
           .attr('width', this.scale * barWidth);
@@ -829,7 +824,7 @@ export default class TimelineComponent
           return d['index'];
         })
         .join(
-            (enter: any) => this.state.toggleTimeline === 0 ?
+            (enter: any) => this.state.view === ViewType.occurrence ?
                 this.drawEventMagnitude(enter) :
                 this.drawIntervalMagnitude(enter),
             (update: any) => update,
@@ -857,7 +852,7 @@ export default class TimelineComponent
                   .attr('class', 'xtick')
                   .attr('opacity', 1)
                   .attr('transform', (d: any, i: number) => {
-                    if (this.state.toggleTimeline === 0) {
+                    if (this.state.view === ViewType.occurrence) {
                       return 'translate(' +
                           ((this.scale * barWidth * (d.index + dataIdx)) +
                           ((this.scale * barWidth) / 2)) + ',' + height + ')';
@@ -931,4 +926,11 @@ export default class TimelineComponent
   dragEnded(caller: any) {
     d3.select(caller).classed('active', false);
   }
+}
+
+/**
+ * an enum to help track which chart is being displayed
+ */
+export enum ViewType {
+  interval, occurrence
 }

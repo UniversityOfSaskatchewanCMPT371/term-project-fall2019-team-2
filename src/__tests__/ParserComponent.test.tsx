@@ -339,7 +339,7 @@ describe('<ParserComponent /> Unit Tests', () => {
       'a CSV file: '} fileType={FileType.csv}
     onChange={function() {}}/>);
     const instance = wrapper.instance() as ParserComponent;
-    it('should sort data by date properly when ' +
+    it('should sort data by date when ' +
         'given data with id, name and date where date is in form m/d/y', () => {
       const testArray: {id: number, name: string, Date: string}[] = [
         {'id': 1, 'name': 'name1', 'Date': '4/5/2010'},
@@ -449,42 +449,21 @@ describe('<ParserComponent /> Unit Tests', () => {
       expect(testArray[3]).toMatchObject(expectedResult[3]);
     });
 
-    it('should sort data when given ' +
-        'dates written in a form like M/D with no year', () => {
-      const testArray: {id: number, name: string, Date: string}[] = [
-        {'id': 1, 'name': 'name1', 'Date': '11/23'},
-        {'id': 2, 'name': 'name2', 'Date': '1/1'},
-        {'id': 4, 'name': 'name4', 'Date': '2/5'},
-        {'id': 3, 'name': 'name3', 'Date': '12/31'}];
-      instance.sortData(testArray);
-      const expectedResult: {id: number, name: string, Date: string}[] = [
-        {'id': 2, 'name': 'name2', 'Date': '1/1'},
-        {'id': 4, 'name': 'name4', 'Date': '2/5'},
-        {'id': 1, 'name': 'name1', 'Date': '11/23'},
-        {'id': 3, 'name': 'name3', 'Date': '12/31'}];
-      expect(testArray[0]).toMatchObject(expectedResult[0]);
-      expect(testArray[1]).toMatchObject(expectedResult[1]);
-      expect(testArray[2]).toMatchObject(expectedResult[2]);
-      expect(testArray[3]).toMatchObject(expectedResult[3]);
-    });
-
-    it('should return sorted data with invalid date ' +
-        'at the end when given data with an invalid date', () => {
+    it('should return sorted data without invalid date ' +
+        'when given data with an invalid date(ferwfesr 31, 2019)', () => {
       const testArray: {id: number, name: string, Date: string}[] = [
         {'id': 3, 'name': 'name3', 'Date': 'December 1, 2019'},
-        {'id': 4, 'name': 'name4', 'Date': 'February 30, 2019'},
+        {'id': 4, 'name': 'name4', 'Date': 'freaf 30, 2019'},
         {'id': 1, 'name': 'name1', 'Date': 'January 1, 2019'},
-        {'id': 2, 'name': 'name2', 'Date': 'January 31, 2019'}];
+        {'id': 2, 'name': 'name2', 'Date': 'January 30, 2019'}];
       instance.sortData(testArray);
       const expectedResult: {id: number, name: string, Date: string}[] = [
         {'id': 1, 'name': 'name1', 'Date': 'January 1, 2019'},
-        {'id': 2, 'name': 'name2', 'Date': 'January 31, 2019'},
-        {'id': 4, 'name': 'name4', 'Date': 'February 30, 2019'},
+        {'id': 2, 'name': 'name2', 'Date': 'January 30, 2019'},
         {'id': 3, 'name': 'name3', 'Date': 'December 1, 2019'}];
       expect(testArray[0]).toMatchObject(expectedResult[0]);
       expect(testArray[1]).toMatchObject(expectedResult[1]);
       expect(testArray[2]).toMatchObject(expectedResult[2]);
-      expect(testArray[3]).toMatchObject(expectedResult[3]);
     });
   });
 

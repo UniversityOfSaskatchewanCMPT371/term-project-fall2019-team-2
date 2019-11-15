@@ -110,7 +110,21 @@ export default class ParserComponent extends React.Component<ParserInterface,
             const date1 = moment(String(value));
             if (!isNaN(Number(date1)) && isNaN(Number(value))) {
               doneTheWork = true;
-
+              // const indexOfWrongDate = 0;
+              // data.splice(indexOfWrongDate, 1);
+              // console.log(data);
+              let t = 0;
+              while (t < data.length) {
+                // @ts-ignore
+                // eslint-disable-next-line max-len
+                const item1 = data.indexOf(data.find((i) => Object.keys(i).some((k) => isNaN(Number(moment(String(i[key])))))));
+                if (item1 !== -1) {
+                  data.splice(item1, 1);
+                  console.log(item1);
+                }
+                t++;
+              }
+              console.log(data);
               const keyInt = `${key}_num`;
 
               TimSort.sort(data, function(a: any, b: any) {
@@ -133,6 +147,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
           }
         }
       }
+      console.log(data);
       if (doneTheWork) {
         return true;
       } else {

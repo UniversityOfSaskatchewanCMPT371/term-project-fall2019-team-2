@@ -1,5 +1,5 @@
 import React from 'react';
-import ParserInterface, {FileType, ParserState} from './ParserInterface';
+import ParserInterface, {ParserState} from './ParserInterface';
 import Column, {enumDrawType} from './Column';
 import moment from 'moment';
 import * as d3
@@ -9,13 +9,14 @@ import TimelineComponent
 import Data
   from './Data';
 import * as TimSort from 'timsort';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 /**
  * Purpose: react component responsible for receiving and parsing file data
  */
 export default class ParserComponent extends React.Component<ParserInterface,
   ParserState> {
-    private columnTypes: Array<Column> = Array(0);
+    private columnTypes?: Array<Column>;
     private childKey = 0;
 
     /**
@@ -30,6 +31,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
         fileType: props.fileType,
         data: [],
         showTimeline: false,
+        formatString: '',
       };
 
       this.isValid = this.isValid.bind(this);
@@ -61,15 +63,39 @@ export default class ParserComponent extends React.Component<ParserInterface,
 
       return (
         <div>
-          <label>
-            {this.props.prompt}
-          </label>
-          <input
-            type="file"
-            onChange={this.parse}
-            accept={this.props.fileType.mimeName}/>
+          <div className="row">
+            <div className="col-6">
+              <label>
+                {this.props.prompt}
+              </label>
+              <input
+                type="file"
+                onChange={this.parse}
+                accept={this.props.fileType.mimeName}/>
+            </div>
+            <div className="col-6">
+              <select value={this.state.formatString}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  this.setState(() => {
+                    return {
+                      formatString: val,
+                    };
+                  });
+                }}>
+                <option selected value="">Open this select menu</option>
+                <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                <option value="MM-DD-YYYY">MM-DD-YYYY</option>
+                <option value="DD-MM-YYYY">DD-MM-YYYY</option>
+              </select>
+            </div>
+          </div>
 
-          {chart}
+          <div className="row">
+            <div className="col-12">
+              {chart}
+            </div>
+          </div>
         </div>
       );
     }
@@ -83,19 +109,16 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * @return {boolean}: a boolean indicating whether or not the file upload is
      * valid
      */
-    isValid(upFile: File): boolean {
-      const typeOfFile = upFile.name.substr(upFile.name.length - 4);
-      if (typeOfFile === '.csv') {
-        return typeOfFile === '.csv';
-      } else {
-        try {
+    isValid(upFile?: File): boolean {
+      if (upFile !== undefined) {
+        const typeOfFile = upFile.name.substr(upFile.name.length - 4);
+        if (typeOfFile === '.csv') {
+          return typeOfFile === '.csv';
+        } else {
           throw new Error('Wrong file type was uploaded.');
-        } catch (e) {
-          console.log(e);
-          alert('The file uploaded needs to be CSV.');
         }
-        return false;
       }
+      throw new Error('Wrong file type was uploaded.');
     }
 
     /**
@@ -111,44 +134,51 @@ export default class ParserComponent extends React.Component<ParserInterface,
     sortData(data: Array<object>): boolean {
       let doneTheWork = false;
       /* loop goes through each key and saves the 1 with a date in first row */
-      for (const [key, value] of Object.entries(data[0])) {
-        if (!doneTheWork) {
-          const date = Date.parse(String(value));
-          if (!isNaN(date) && isNaN(value)) {
-            doneTheWork = true;
+      if (data[0] !== undefined && data.length > 0) {
+        for (const [key, value] of Object.entries(data[0])) {
+          if (!doneTheWork) {
+            const date1 = moment(String(value));
+            if (!isNaN(Number(date1)) && isNaN(Number(value))) {
+              doneTheWork = true;
+              const formatString = this.state.formatString;
 
-            const keyInt = `${key}_num`;
+              const keyInt = `${key}_num`;
 
-            TimSort.sort(data, function(a: any, b: any) {
-              if (!a.hasOwnProperty(keyInt)) {
-                a[keyInt] = Date.parse(a[key]);
-              }
+              TimSort.sort(data, function(a: any, b: any) {
+                let val: any;
+                if (!a.hasOwnProperty(keyInt)) {
+                  val = moment(a[key], formatString);
+                  if (val.isValid()) {
+                    a[keyInt] = val.valueOf();
+                  } else {
+                    a[keyInt] = -1;
+                  }
+                }
 
-              if (!b.hasOwnProperty(keyInt)) {
-                b[keyInt] = Date.parse(b[key]);
-              }
+                if (!b.hasOwnProperty(keyInt)) {
+                  val = moment(b[key], formatString);
+                  if (val.isValid()) {
+                    b[keyInt] = val.valueOf();
+                  } else {
+                    b[keyInt] = -1;
+                  }
+                }
+                return (a[keyInt] - b[keyInt]);
+              });
 
-              return (a[keyInt] - b[keyInt]);
-            });
-
-            this.setState(() => {
-              return {
-                data,
-              };
-            });
+              this.setState(() => {
+                return {
+                  data,
+                };
+              });
+            }
           }
         }
       }
       if (doneTheWork) {
         return true;
       } else {
-        try {
-          throw new Error('The file uploaded has no dates.');
-        } catch (e) {
-          console.log(e);
-          alert('The file uploaded has no dates.');
-        }
-        return false;
+        throw new Error('The file uploaded has no dates.');
       }
     }
 
@@ -177,12 +207,12 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * @param {Array} data: the array of pre-sorted valid data
      * @return {Array}: a list of objects of type Column
      */
-    inferTypes(data: Array<object>): Array<Column> {
+    inferTypes(data: Array<object>): Array<Column> | undefined {
       if (this.state.data.length > 0) {
         const listFields = Object.keys(this.state.data[0]);
         // instantiate objects to track the types of data
-        // eslint-disable-next-line max-len
-        const typesForEachCol = this.createTypeCountingObjects(listFields.length);
+        const typesForEachCol =
+            this.createTypeCountingObjects(listFields.length);
         // check half the values to find if the data is consistent
         [0, Math.floor(this.state.data.length / 2)].forEach((element) => {
           const row: object = this.state.data[element];
@@ -232,8 +262,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
             indx++;
           } else if (mostCommonType === 'number') {
             // create a Column with interval, point or magnitude data
-            // eslint-disable-next-line max-len
-            newCol = new Column(mostCommonType, enumDrawType.any, listFields[indx]);
+            newCol = new Column(mostCommonType,
+                enumDrawType.any, listFields[indx]);
             arrayOfColumns[indx] = newCol;
             indx++;
           } else if (mostCommonType === 'date') {
@@ -247,7 +277,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
         );
         return arrayOfColumns;
       } else {
-        throw new Error(`data is empty: ${data.length}`);
+        throw new Error('data is empty');
       }
     }
 
@@ -265,12 +295,16 @@ export default class ParserComponent extends React.Component<ParserInterface,
         };
       });
 
-      if (this.props.fileType === FileType.csv) {
-        await this.parseCsv(fileEvent);
+      const temp: File = fileEvent.target.files[0];
+      try {
+        if (this.props.fileType.mimeName === '.csv' +
+            ',text/csv' && this.isValid(temp)) {
+          await this.parseCsv(fileEvent);
+        }
+      } catch (e) {
+        alert('Wrong file type was uploaded.');
+        console.log('Wrong file was uploaded.');
       }
-      this.columnTypes = this.inferTypes(this.state.data);
-
-      // console.log(this.columnTypes);
 
       this.setState(() => {
         return {
@@ -315,15 +349,18 @@ export default class ParserComponent extends React.Component<ParserInterface,
                 data: content,
               };
             });
-            console.log(this.sortData(content));
-            this.isValid(csvFile);
-            console.log(content);
+            try {
+              this.columnTypes = this.inferTypes(this.state.data);
+              this.sortData(this.state.data);
+            } catch (e) {
+              alert('data is EMPTY');
+              console.log('data is empty');
+            }
           }
           resolver(true);
         };
 
         fileReader.onloadend = handleFileRead;
-        this.isValid(csvFile); // take this OUT
         fileReader.readAsText(csvFile);
       });
     }

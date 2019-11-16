@@ -36,4 +36,5 @@ export interface ParserState {
     fileType: FileType;
     data: Array<object>;
     showTimeline: boolean;
+    formatString: string;
 }

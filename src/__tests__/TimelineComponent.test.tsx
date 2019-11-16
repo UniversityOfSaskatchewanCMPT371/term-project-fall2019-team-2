@@ -5,7 +5,7 @@ import {
 import * as d3
   from 'd3';
 import TimelineComponent
-  from '../components/TimelineComponent';
+, {ViewType} from '../components/TimelineComponent';
 import Data
   from '../components/Data';
 import Column
@@ -374,10 +374,9 @@ describe('<TimelineComponent /> Unit Tests', () => {
       expect(wrapper.state('marginBottom')).toEqual(170);
       expect(wrapper.state('marginLeft')).toEqual(40);
       expect(wrapper.state('marginRight')).toEqual(20);
-      expect(wrapper.state('toggleTimeline')).toEqual(0);
       expect(wrapper.state('togglePrompt'))
           .toEqual('Switch to Interval Timeline');
-      expect(wrapper.state('view')).toEqual('occurrence');
+      expect(wrapper.state('view')).toEqual(ViewType.occurrence);
     });
   });
 
@@ -397,25 +396,23 @@ describe('<TimelineComponent /> Unit Tests', () => {
 
       expect(toggleTimelineSpy).toHaveBeenCalled();
       // check that the state is set properly
-      expect(wrapper.state('toggleTimeline')).toEqual(1);
       expect(wrapper.state('togglePrompt'))
           .toEqual('Switch to Occurrence Timeline');
       expect(initTimelineSpy).toHaveBeenCalled();
       expect(drawTimelineSpy).toHaveBeenCalled();
       expect(drawEventMagnitudeSpy).toHaveBeenCalled();
-      expect(wrapper.state('view')).toEqual('interval');
+      expect(wrapper.state('view')).toEqual(ViewType.interval);
 
       button.simulate('click');
 
       expect(toggleTimelineSpy).toHaveBeenCalled();
       // check that the state is set properly
-      expect(wrapper.state('toggleTimeline')).toEqual(0);
       expect(wrapper.state('togglePrompt'))
           .toEqual('Switch to Interval Timeline');
       expect(initTimelineSpy).toHaveBeenCalled();
       expect(drawTimelineSpy).toHaveBeenCalled();
       expect(drawIntervalMagnitudeSpy).toHaveBeenCalled();
-      expect(wrapper.state('view')).toEqual('occurrence');
+      expect(wrapper.state('view')).toEqual(ViewType.occurrence);
     });
   });
 
@@ -565,7 +562,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
       expect(updateBarsSpy).toHaveBeenCalled();
       console.log(document.body.innerHTML);
       // console.log(wrapper.)
-      expect(d3.selectAll('.bar').size()).toBe(5);
+      expect(d3.selectAll('.line.pin').size()).toBe(5);
       wrapper.instance().drawIntervalMagnitude(d3.selectAll('.bar'));
       expect(drawIntervalMagnitudeSpy).toHaveBeenCalled();
       //

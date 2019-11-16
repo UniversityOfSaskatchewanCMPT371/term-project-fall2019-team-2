@@ -5,7 +5,7 @@ import {
 import * as d3
   from 'd3';
 import TimelineComponent
-  from '../components/TimelineComponent';
+, {ViewType} from '../components/TimelineComponent';
 import Data
   from '../components/Data';
 import Column
@@ -225,10 +225,9 @@ describe('<TimelineComponent /> Unit Tests', () => {
       expect(wrapper.state('marginBottom')).toEqual(170);
       expect(wrapper.state('marginLeft')).toEqual(40);
       expect(wrapper.state('marginRight')).toEqual(20);
-      expect(wrapper.state('toggleTimeline')).toEqual(0);
       expect(wrapper.state('togglePrompt'))
           .toEqual('Switch to Interval Timeline');
-      expect(wrapper.state('view')).toEqual('occurrence');
+      expect(wrapper.state('view')).toEqual(ViewType.occurrence);
     });
   });
 
@@ -248,25 +247,23 @@ describe('<TimelineComponent /> Unit Tests', () => {
 
       expect(toggleTimelineSpy).toHaveBeenCalled();
       // check that the state is set properly
-      expect(wrapper.state('toggleTimeline')).toEqual(1);
       expect(wrapper.state('togglePrompt'))
           .toEqual('Switch to Occurrence Timeline');
       expect(initTimelineSpy).toHaveBeenCalled();
       expect(drawTimelineSpy).toHaveBeenCalled();
       expect(drawEventMagnitudeSpy).toHaveBeenCalled();
-      expect(wrapper.state('view')).toEqual('interval');
+      expect(wrapper.state('view')).toEqual(ViewType.interval);
 
       button.simulate('click');
 
       expect(toggleTimelineSpy).toHaveBeenCalled();
       // check that the state is set properly
-      expect(wrapper.state('toggleTimeline')).toEqual(0);
       expect(wrapper.state('togglePrompt'))
           .toEqual('Switch to Interval Timeline');
       expect(initTimelineSpy).toHaveBeenCalled();
       expect(drawTimelineSpy).toHaveBeenCalled();
       expect(drawIntervalMagnitudeSpy).toHaveBeenCalled();
-      expect(wrapper.state('view')).toEqual('occurrence');
+      expect(wrapper.state('view')).toEqual(ViewType.occurrence);
     });
   });
 
@@ -278,12 +275,23 @@ describe('<TimelineComponent /> Unit Tests', () => {
   });
 
   describe('drawTimeline()', () => {
-    it('timeline drawer handles zoom out', () => {
-      wrapper.instance().drawTimeline();
-      const event = new KeyboardEvent('keypress', {'key': 'w'});
-      document.body.dispatchEvent(event);
+    // zoom in events for keydown & keyup
+    const zoomInEventDown = new KeyboardEvent('keydown', {'key': '+'});
+    const zoomInEventUp = new KeyboardEvent('keyup', {'key': '+'});
+    // zoom out events for keydown & keyup
+    const zoomOutEventDown = new KeyboardEvent('keydown', {'key': '-'});
+    const zoomOutEventUp = new KeyboardEvent('keyup', {'key': '-'});
 
+    it('timeline drawer handles zoom out', async () => {
+      wrapper.instance().drawTimeline();
+      // zoom in so that we can see if zooming back out works
+      document.body.dispatchEvent(zoomInEventDown);
+      document.body.dispatchEvent(zoomInEventUp);
       expect(wrapper.instance().getScale()).toBeGreaterThan(1.0);
+      // zoom back out
+      document.body.dispatchEvent(zoomOutEventDown);
+      document.body.dispatchEvent(zoomOutEventUp);
+      expect(wrapper.instance().getScale()).toBe(1.0);
     });
     it('drawLabels is called', () => {
       const drawTimelineSpy = jest.spyOn(TimelineComponent.prototype,
@@ -294,19 +302,15 @@ describe('<TimelineComponent /> Unit Tests', () => {
 
     it('timeline drawer handles zoom in', () => {
       wrapper.instance().drawTimeline();
-      let event = new KeyboardEvent('keypress', {'key': 'w'});
-      document.body.dispatchEvent(event);
-
-      expect(wrapper.instance().getScale()).toBeGreaterThan(1.0);
-      event = new KeyboardEvent('keypress', {'key': 's'});
-      document.body.dispatchEvent(event);
-
       expect(wrapper.instance().getScale()).toBe(1.0);
+      document.body.dispatchEvent(zoomInEventDown);
+      document.body.dispatchEvent(zoomInEventUp);
+      expect(wrapper.instance().getScale()).toBeGreaterThan(1.0);
     });
 
     it('timeline drawer handles pan right', () => {
       wrapper.instance().drawTimeline();
-      const event = new KeyboardEvent('keypress', {'key': 'd'});
+      const event = new KeyboardEvent('keydown', {'key': 'ArrowRight'});
       document.body.dispatchEvent(event);
 
       expect(wrapper.instance().getDeltaX()).toBeLessThan(0);
@@ -314,11 +318,15 @@ describe('<TimelineComponent /> Unit Tests', () => {
 
     it('timeline drawer handles pan left', () => {
       wrapper.instance().drawTimeline();
-      let event = new KeyboardEvent('keypress', {'key': 'd'});
+      let event = new KeyboardEvent('keydown', {'key': 'ArrowRight'});
+      document.body.dispatchEvent(event);
+      event = new KeyboardEvent('keyup', {'key': 'ArrowRight'});
       document.body.dispatchEvent(event);
 
       expect(wrapper.instance().getDeltaX()).toBeLessThan(0);
-      event = new KeyboardEvent('keypress', {'key': 'a'});
+      event = new KeyboardEvent('keydown', {'key': 'ArrowLeft'});
+      document.body.dispatchEvent(event);
+      event = new KeyboardEvent('keyup', {'key': 'ArrowRight'});
       document.body.dispatchEvent(event);
 
       expect(wrapper.instance().getDeltaX()).toBe(0);
@@ -326,7 +334,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
 
     it('timeline drawer does not zoom out too far', () => {
       wrapper.instance().drawTimeline();
-      const event = new KeyboardEvent('keypress', {'key': 's'});
+      const event = new KeyboardEvent('keydown', {'key': 's'});
       document.body.dispatchEvent(event);
 
       // Should stay at 1
@@ -335,7 +343,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
 
     it('timeline drawer does not pan too far left', () => {
       wrapper.instance().drawTimeline();
-      const event = new KeyboardEvent('keypress', {'key': 'a'});
+      const event = new KeyboardEvent('keydown', {'key': 'ArrowLeft'});
       document.body.dispatchEvent(event);
 
       // Should stay at 0 (the min)
@@ -405,7 +413,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
       expect(updateBarsSpy).toHaveBeenCalled();
       console.log(document.body.innerHTML);
       // console.log(wrapper.)
-      expect(d3.selectAll('.bar').size()).toBe(5);
+      expect(d3.selectAll('.line.pin').size()).toBe(5);
       wrapper.instance().drawIntervalMagnitude(d3.selectAll('.bar'));
       expect(drawIntervalMagnitudeSpy).toHaveBeenCalled();
       //

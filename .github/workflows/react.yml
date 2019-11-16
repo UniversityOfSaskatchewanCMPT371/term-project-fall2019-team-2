@@ -26,7 +26,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: npm install, lint, build, and test
-      if: matrix.os != 'windows-latest'
+      if: matrix.os == 'macos-latest'
       run: |
         npm install
         npm run lint
@@ -34,6 +34,7 @@ jobs:
         npm run test
       env:
         CI: true
+
     # Use the winter!
     - name: npm install, wint, build, and test
       if: matrix.os == 'windows-latest'
@@ -43,5 +44,17 @@ jobs:
         npm run wint
         npm run build
         set CI=true&&npm run test
+      env:
+        CI: true
+
+    # Smoke tests only run on Ubuntu
+    - name: npm install, lint, build, test, and smoke test
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        npm install
+        npm run lint
+        npm run build
+        npm run test
+        docker run -e START_XVFB=false -p 4444:4444 --shm-size=2g -v $(pwd):/mnt selenium/standalone-chrome:3.141.59-xenon /bin/bash -c "bash /mnt/scripts/setup-builder.sh"
       env:
         CI: true

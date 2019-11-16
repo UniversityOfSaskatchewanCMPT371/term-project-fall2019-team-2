@@ -446,7 +446,6 @@ describe('<TimelineComponent /> Unit Tests', () => {
       // console.log(document.getElementById('barsLayer'));
       // wrapper.instance().dragged();
 
-
       // await new Promise((res) => setTimeout(() => {
       //   wrapper.update();
       //   //console.log(wrapper.html());

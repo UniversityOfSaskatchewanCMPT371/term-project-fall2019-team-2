@@ -1,5 +1,5 @@
 import Data from './Data';
-import {ViewType} from "./TimelineComponent";
+import {ViewType} from './TimelineComponent';
 
 interface TimelineInterface {
     data: Data;

@@ -576,38 +576,78 @@ export default class TimelineComponent
    * @return {void}: Nothing
    */
   private registerEvents(): void {
+    let currKey: string = '';
+    let movingTimeout: number = -1;
+
+    const startMoving = (op: string) => {
+      if (movingTimeout === -1) {
+        loop(op);
+      }
+    };
+
+    // helper() that loops until key is released
+    const loop = (op: string) => {
+      // moveChart depending on operation
+      if (op === '-' || op === 's') {
+        // Zoom out
+        const identity = d3.zoomIdentity
+            .scale(Math.max(scaleMin, this.scale * scaleZoomOut));
+
+        this.svg.transition().ease(d3.easeLinear).duration(300)
+            .call(this.zoom.transform, identity);
+        // Ensure the new scale is saved with a limit on the minimum
+        //  zoomed out scope
+        this.scale = Math.max(scaleMin, this.scale * scaleZoomOut);
+      } else if (op === '+' || op === 'w') {
+        // Zoom In
+        const identity = d3.zoomIdentity
+            .scale(this.scale * scaleZoomIn);
+
+        this.svg.transition().ease(d3.easeLinear).duration(300)
+            .call(this.zoom.transform, identity);
+        // Ensure the new scale is saved
+        this.scale = this.scale * scaleZoomIn;
+      } else if (op === 'ArrowLeft') {
+        // Pan Left
+        deltaX = Math.min(0, deltaX + deltaPan);
+        console.log(deltaX);
+        this.moveChart();
+      } else if (op === 'ArrowRight') {
+        // Pan Right
+        deltaX -= deltaPan;
+        this.moveChart();
+      }
+      movingTimeout = setTimeout(loop, 25, op);
+    };
+
     // Handle keypresses
     d3.select('body')
-        .on('keypress', () => {
-          if (d3.event.key === '-' || d3.event.key === 's') {
-            // Zoom out
-            const identity = d3.zoomIdentity
-                .scale(Math.max(scaleMin, this.scale * scaleZoomOut));
-
-            this.svg.transition().ease(d3.easeLinear).duration(300)
-                .call(this.zoom.transform, identity);
-            // Ensure the new scale is saved with a limit on the minimum
-            //  zoomed out scope
-            this.scale = Math.max(scaleMin, this.scale * scaleZoomOut);
-          } else if (d3.event.key === '+' || d3.event.key === 'w') {
-            // Zoom in
-            const identity = d3.zoomIdentity
-                .scale(this.scale * scaleZoomIn);
-
-            this.svg.transition().ease(d3.easeLinear).duration(300)
-                .call(this.zoom.transform, identity);
-            // Ensure the new scale is saved
-            this.scale = this.scale * scaleZoomIn;
-          } else if (d3.event.key === 'a') {
-            // Pan left
-            deltaX = Math.min(0, deltaX + deltaPan);
-            console.log(deltaX);
-            this.moveChart();
-          } else if (d3.event.key === 'd') {
-            // Pan right
-            deltaX -= deltaPan;
-            this.moveChart();
+        .on('keydown', () => {
+          if (currKey === '') {
+            if (d3.event.key === '-' || d3.event.key === 's') {
+              // zoom out
+              currKey = d3.event.key;
+            } else if (d3.event.key === '+' || d3.event.key === 'w') {
+              // Zoom in
+              currKey = d3.event.key;
+            } else if (d3.event.key === 'ArrowLeft') {
+              // Pan left
+              currKey = d3.event.key;
+            } else if (d3.event.key === 'ArrowRight') {
+              // Pan right
+              currKey = d3.event.key;
+            }
+            if (currKey !== '') {
+              startMoving(currKey);
+            }
           }
+        });
+
+    d3.select('body')
+        .on('keyup', () => {
+          clearTimeout(movingTimeout);
+          movingTimeout = -1;
+          currKey = '';
         });
   }
 

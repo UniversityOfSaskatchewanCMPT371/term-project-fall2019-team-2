@@ -361,10 +361,12 @@ export default class TimelineComponent
       view = ViewType.occurrence;
     }
 
-    this.setState(() => ({
-      togglePrompt: prompt,
-      view: view,
-    }), () => {
+    this.setState(() => {
+      return {
+        togglePrompt: prompt,
+        view: view,
+      };
+    }, () => {
       this.resetTimeline();
     });
   }
@@ -392,6 +394,7 @@ export default class TimelineComponent
     xColumn2 = this.state.xColumn2;
     fullHeight = this.state.height;
     fullWidth = this.state.width;
+    view = this.state.view;
 
     height = fullHeight - (marginBottom + marginTop);
 
@@ -818,7 +821,7 @@ export default class TimelineComponent
     // but data not linked to labels
     const spacing = 48.5;
     selection.append('rect')
-        .attr('class', 'line')
+        .attr('class', 'line pin')
         .attr('x', (d: any, i: number) =>
           (spacing * (i + dataIdx)))
         .attr('width', 2)

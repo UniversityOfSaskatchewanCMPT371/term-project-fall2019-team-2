@@ -537,21 +537,41 @@ describe('<ParserComponent /> Unit Tests', () => {
     it('should work properly when given regular data', () => {
       const t1 = pc.inferTypes(data);
       // test string
-      // @ts-ignore
-      expect(t1[2].drawType).toBe(enumDrawType.occurrence);
+      try {
+        if (t1 !== undefined) {
+          expect(t1[2].drawType).toBe(enumDrawType.occurrence);
+        }
+      } catch (error) {
+        fail(); // fail if error thrown
+      }
       // test number
-      // @ts-ignore
-      expect(t1[0].drawType).toBe(enumDrawType.any);
+      try {
+        if (t1 !== undefined) {
+          expect(t1[0].drawType).toBe(enumDrawType.any);
+        }
+      } catch (error) {
+        fail(); // fail if error thrown
+      }
       // test date
-      // @ts-ignore
-      expect(t1[1].drawType).toBe(enumDrawType.any);
+      try {
+        if (t1 !== undefined) {
+          expect(t1[1].drawType).toBe(enumDrawType.any);
+        }
+      } catch (error) {
+        fail(); // fail if error thrown
+      }
     });
     it('handles inconsistent data', () => {
       data[0] = {money: 'word', heart_attacks: '2016-07-03', animals: 0};
       const t1 = pc.inferTypes(data);
       // test string
-      // @ts-ignore
-      expect(t1[2].drawType).toBe(enumDrawType.occurrence);
+      try {
+        if (t1 !== undefined) {
+          expect(t1[2].drawType).toBe(enumDrawType.occurrence);
+        }
+      } catch (error) {
+        fail(); // fail if error thrown
+      }
     });
     it('should throw exception when given empty data(undefined)', () => {
       const data1 = new Array(0);

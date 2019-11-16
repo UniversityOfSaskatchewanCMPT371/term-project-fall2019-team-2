@@ -297,7 +297,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
 
       const temp: File = fileEvent.target.files[0];
       try {
-        if (this.props.fileType === FileType.csv && this.isValid(temp)) {
+        if (this.props.fileType.mimeName === '.csv' +
+            ',text/csv' && this.isValid(temp)) {
           await this.parseCsv(fileEvent);
         }
       } catch (e) {

@@ -9,6 +9,7 @@ import TimelineComponent
 import Data
   from './Data';
 import * as TimSort from 'timsort';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 /**
  * Purpose: react component responsible for receiving and parsing file data
@@ -30,6 +31,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
         fileType: props.fileType,
         data: [],
         showTimeline: false,
+        formatString: '',
       };
 
       this.isValid = this.isValid.bind(this);
@@ -61,15 +63,39 @@ export default class ParserComponent extends React.Component<ParserInterface,
 
       return (
         <div>
-          <label>
-            {this.props.prompt}
-          </label>
-          <input
-            type="file"
-            onChange={this.parse}
-            accept={this.props.fileType.mimeName}/>
+          <div className="row">
+            <div className="col-6">
+              <label>
+                {this.props.prompt}
+              </label>
+              <input
+                type="file"
+                onChange={this.parse}
+                accept={this.props.fileType.mimeName}/>
+            </div>
+            <div className="col-6">
+              <select value={this.state.formatString}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  this.setState(() => {
+                    return {
+                      formatString: val,
+                    };
+                  });
+                }}>
+                <option selected value="">Open this select menu</option>
+                <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                <option value="MM-DD-YYYY">MM-DD-YYYY</option>
+                <option value="DD-MM-YYYY">DD-MM-YYYY</option>
+              </select>
+            </div>
+          </div>
 
-          {chart}
+          <div className="row">
+            <div className="col-12">
+              {chart}
+            </div>
+          </div>
         </div>
       );
     }
@@ -110,30 +136,30 @@ export default class ParserComponent extends React.Component<ParserInterface,
             const date1 = moment(String(value));
             if (!isNaN(Number(date1)) && isNaN(Number(value))) {
               doneTheWork = true;
-              // const indexOfWrongDate = 0;
-              // data.splice(indexOfWrongDate, 1);
-              // console.log(data);
-              let t = 0;
-              while (t < data.length) {
-                // @ts-ignore
-                // eslint-disable-next-line max-len
-                const item1 = data.indexOf(data.find((i) => Object.keys(i).some((k) => isNaN(Number(moment(String(i[key])))))));
-                if (item1 !== -1) {
-                  data.splice(item1, 1);
-                  console.log(item1);
-                }
-                t++;
-              }
-              console.log(data);
+              const t = 0;
+              const formatString = this.state.formatString;
+              console.log(formatString);
+
               const keyInt = `${key}_num`;
 
               TimSort.sort(data, function(a: any, b: any) {
+                let val: any;
                 if (!a.hasOwnProperty(keyInt)) {
-                  a[keyInt] = Date.parse(a[key]);
+                  val = moment(a[key], formatString);
+                  if (val.isValid()) {
+                    a[keyInt] = val.valueOf();
+                  } else {
+                    a[keyInt] = -1;
+                  }
                 }
 
                 if (!b.hasOwnProperty(keyInt)) {
-                  b[keyInt] = Date.parse(b[key]);
+                  val = moment(b[key], formatString);
+                  if (val.isValid()) {
+                    b[keyInt] = val.valueOf();
+                  } else {
+                    b[keyInt] = -1;
+                  }
                 }
                 return (a[keyInt] - b[keyInt]);
               });
@@ -147,7 +173,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
           }
         }
       }
-      console.log(data);
       if (doneTheWork) {
         return true;
       } else {

@@ -340,14 +340,16 @@ describe('<ParserComponent /> Unit Tests', () => {
     onChange={function() {}}/>);
     const instance = wrapper.instance() as ParserComponent;
     it('should sort data by date when ' +
-        'given data with id, name and date where date is in form m/d/y', () => {
+        'given data with id, name and date where date is in form m/d/y' +
+        'with invalid date going to the first spot', () => {
       const testArray: {id: number, name: string, Date: string}[] = [
         {'id': 1, 'name': 'name1', 'Date': '4/5/2010'},
-        {'id': 2, 'name': 'name2', 'Date': '4/5/1992'},
+        {'id': 2, 'name': 'name2', 'Date': '2/31/1992'},
         {'id': 3, 'name': 'name3', 'Date': '12/21/1992'}];
+      instance.setState({formatString: 'M D YYYY'});
       instance.sortData(testArray);
       const expectedResult: {id: number, name: string, Date: string}[] = [
-        {'id': 2, 'name': 'name2', 'Date': '4/5/1992'},
+        {'id': 2, 'name': 'name2', 'Date': '2/31/1992'},
         {'id': 3, 'name': 'name3', 'Date': '12/21/1992'},
         {'id': 1, 'name': 'name1', 'Date': '4/5/2010'}];
       expect(testArray[0]).toMatchObject(expectedResult[0]);
@@ -362,6 +364,7 @@ describe('<ParserComponent /> Unit Tests', () => {
         {'id': 2, 'Date': '1/1/2003', 'Date1': '4/5/1992'},
         {'id': 3, 'Date': '1/1/2000', 'Date1': '12/21/1992'},
         {'id': 4, 'Date': '1/1/2002', 'Date1': '12/21/1993'}];
+      instance.setState({formatString: 'M D YYYY'});
       instance.sortData(testArray);
       const expectedResult: {id: number, Date: string, Date1: string}[] = [
         {'id': 3, 'Date': '1/1/2000', 'Date1': '12/21/1992'},
@@ -399,6 +402,7 @@ describe('<ParserComponent /> Unit Tests', () => {
         {'id': 2, 'name': 'name2', 'Date': 'January 1, 2019'},
         {'id': 3, 'name': 'name3', 'Date': 'December 31, 2019'},
         {'id': 4, 'name': 'name4', 'Date': 'February 5, 2019'}];
+      instance.setState({formatString: 'MMMM D YYYY'});
       instance.sortData(testArray);
       const expectedResult: {id: number, name: string, Date: string}[] = [
         {'id': 2, 'name': 'name2', 'Date': 'January 1, 2019'},
@@ -418,6 +422,7 @@ describe('<ParserComponent /> Unit Tests', () => {
         {'id': 2, 'name': 'name2', 'Date': 'January 1 2019'},
         {'id': 3, 'name': 'name3', 'Date': 'December 31 2019'},
         {'id': 4, 'name': 'name4', 'Date': 'February 5 2019'}];
+      instance.setState({formatString: 'MMMM D YYYY'});
       instance.sortData(testArray);
       const expectedResult: {id: number, name: string, Date: string}[] = [
         {'id': 2, 'name': 'name2', 'Date': 'January 1 2019'},
@@ -437,6 +442,7 @@ describe('<ParserComponent /> Unit Tests', () => {
         {'id': 2, 'name': 'name2', 'Date': '1 january 2019'},
         {'id': 3, 'name': 'name3', 'Date': '31 december 2019'},
         {'id': 4, 'name': 'name4', 'Date': '5 february 2019'}];
+      instance.setState({formatString: 'D MMMM YYYY'});
       instance.sortData(testArray);
       const expectedResult: {id: number, name: string, Date: string}[] = [
         {'id': 2, 'name': 'name2', 'Date': '1 january 2019'},
@@ -449,21 +455,44 @@ describe('<ParserComponent /> Unit Tests', () => {
       expect(testArray[3]).toMatchObject(expectedResult[3]);
     });
 
-    it('should return sorted data without invalid date ' +
-        'when given data with an invalid date(ferwfesr 31, 2019)', () => {
+    it('should return sorted data with invalid date moved to the front' +
+        'when given data with an invalid date(february 31, 2019)', () => {
       const testArray: {id: number, name: string, Date: string}[] = [
         {'id': 3, 'name': 'name3', 'Date': 'December 1, 2019'},
-        {'id': 4, 'name': 'name4', 'Date': 'freaf 30, 2019'},
+        {'id': 4, 'name': 'name4', 'Date': 'february 31, 2019'},
         {'id': 1, 'name': 'name1', 'Date': 'January 1, 2019'},
         {'id': 2, 'name': 'name2', 'Date': 'January 30, 2019'}];
+      instance.setState({formatString: 'MMMM D YYYY'});
       instance.sortData(testArray);
       const expectedResult: {id: number, name: string, Date: string}[] = [
+        {'id': 4, 'name': 'name4', 'Date': 'february 31, 2019'},
         {'id': 1, 'name': 'name1', 'Date': 'January 1, 2019'},
         {'id': 2, 'name': 'name2', 'Date': 'January 30, 2019'},
         {'id': 3, 'name': 'name3', 'Date': 'December 1, 2019'}];
       expect(testArray[0]).toMatchObject(expectedResult[0]);
       expect(testArray[1]).toMatchObject(expectedResult[1]);
       expect(testArray[2]).toMatchObject(expectedResult[2]);
+      expect(testArray[3]).toMatchObject(expectedResult[3]);
+    });
+
+    it('should return sorted data when given date of different format' +
+          'when given data with an invalid date(february 31, 2019)', () => {
+      const testArray: {id: number, name: string, Date: string}[] = [
+        {'id': 3, 'name': 'name3', 'Date': 'Dec 1, 2019'},
+        {'id': 4, 'name': 'name4', 'Date': 'February 19, 2019'},
+        {'id': 1, 'name': 'name1', 'Date': 'Jan 1, 2019'},
+        {'id': 2, 'name': 'name2', 'Date': 'Jan 30, 2019'}];
+      instance.setState({formatString: 'MMM D YYYY'});
+      instance.sortData(testArray);
+      const expectedResult: {id: number, name: string, Date: string}[] = [
+        {'id': 1, 'name': 'name1', 'Date': 'Jan 1, 2019'},
+        {'id': 2, 'name': 'name2', 'Date': 'Jan 30, 2019'},
+        {'id': 4, 'name': 'name4', 'Date': 'February 19, 2019'},
+        {'id': 3, 'name': 'name3', 'Date': 'Dec 1, 2019'}];
+      expect(testArray[0]).toMatchObject(expectedResult[0]);
+      expect(testArray[1]).toMatchObject(expectedResult[1]);
+      expect(testArray[2]).toMatchObject(expectedResult[2]);
+      expect(testArray[3]).toMatchObject(expectedResult[3]);
     });
   });
 
@@ -500,6 +529,7 @@ describe('<ParserComponent /> Unit Tests', () => {
         fileType: FileType.csv,
         data: data,
         showTimeline: false,
+        formatString: 'YYYY-MM-DD'
       };
     });
 
@@ -528,6 +558,7 @@ describe('<ParserComponent /> Unit Tests', () => {
         fileType: FileType.csv,
         data: data1,
         showTimeline: false,
+        formatString: '',
       };
       expect(() => {
         pc.inferTypes(data1);

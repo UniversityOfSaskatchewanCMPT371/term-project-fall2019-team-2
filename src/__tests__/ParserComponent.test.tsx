@@ -265,6 +265,57 @@ describe('Csv FileEvents processed correctly\n', () => {
   });
 });
 
+describe('should accept valid csv file name with unusual' +
+    ' chars in file name', () => {
+  const props = {
+    prompt: 'test: ',
+    fileType: FileType.csv,
+  };
+
+
+  const onChangeMock = jest.fn();
+  const comp: any = mount(<ParserComponent
+    {...props}
+    onChange={onChangeMock}
+  />);
+
+  it('file name with \\', async () => {
+    const testfile: File = new File(
+        ['Date,SomeNum,SomeString\n' +
+        '04/12/1998,4,abcd\n' +
+        '06-01-1994,5,efg\n' +
+        'November 5 1997,1,hij\n' +
+        ''],
+        'test\\.csv',
+        {type: '.csv,text/csv'},
+    );
+    const fileEvent = {target: {files: [testfile]}};
+    await comp.instance().parse(fileEvent);
+    expect(comp.state('data').length).toEqual(3);
+    expect(onChangeMock).toHaveBeenCalledTimes(1);
+  });
+
+  // clear the on change event mock and the enzyme component
+  onChangeMock.mockClear();
+  comp.setState({data: []});
+
+  it('file name with emoji that use unicode', async () => {
+    const testfilewithemoji: File = new File(['Date,SomeNum,SomeString\n' +
+        '04/12/1998,4,abcd\n' +
+        '06-01-1994,5,efg\n' +
+        'November 5 1997,1,hij\n' +
+        ''],
+    '😁😁😁😁.csv',
+    {type: '.csv,text/csv'},);
+
+    const fileEvent = {target: {files: [testfilewithemoji]}};
+    await comp.instance().parse(fileEvent);
+    expect(comp.state('data').length).toEqual(3);
+    expect(onChangeMock).toHaveBeenCalledTimes(1);
+  });
+});
+
+
 // To be used by the developers
 describe('<ParserComponent /> Unit Tests', () => {
   describe('constructor()', () => {

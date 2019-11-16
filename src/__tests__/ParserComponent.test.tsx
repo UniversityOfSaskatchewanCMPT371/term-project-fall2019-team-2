@@ -463,6 +463,7 @@ describe('Csv FileEvents processed correctly\n', () => {
 
       it('checks if sort works on data with dates like november 12, 2019',
           () => {
+            // eslint-disable-next-line max-len
             const wrapper = shallow(<ParserComponent prompt={'Select a TL file: '}
               fileType={FileType.tl}
               onChange={function() {
@@ -474,6 +475,7 @@ describe('Csv FileEvents processed correctly\n', () => {
               {'id': 3, 'name': 'name3', 'Date': 'December 31, 2019'},
               {'id': 4, 'name': 'name4', 'Date': 'February 5, 2019'}];
             instance.sortData(testArray);
+            // eslint-disable-next-line max-len
             const expectedResult: { id: number, name: string, Date: string }[] = [
               {'id': 2, 'name': 'name2', 'Date': 'January 1, 2019'},
               {'id': 4, 'name': 'name4', 'Date': 'February 5, 2019'},
@@ -487,6 +489,7 @@ describe('Csv FileEvents processed correctly\n', () => {
 
       it('checks if sort works on data with dates like november 12 2019',
           () => {
+            // eslint-disable-next-line max-len
             const wrapper = shallow(<ParserComponent prompt={'Select a TL file: '}
               fileType={FileType.tl}
               onChange={function() {
@@ -498,6 +501,7 @@ describe('Csv FileEvents processed correctly\n', () => {
               {'id': 3, 'name': 'name3', 'Date': 'December 31 2019'},
               {'id': 4, 'name': 'name4', 'Date': 'February 5 2019'}];
             instance.sortData(testArray);
+            // eslint-disable-next-line max-len
             const expectedResult: { id: number, name: string, Date: string }[] = [
               {'id': 2, 'name': 'name2', 'Date': 'January 1 2019'},
               {'id': 4, 'name': 'name4', 'Date': 'February 5 2019'},
@@ -511,6 +515,7 @@ describe('Csv FileEvents processed correctly\n', () => {
 
       it('checks if sort works on data with dates like 12 november 2019',
           () => {
+            // eslint-disable-next-line max-len
             const wrapper = shallow(<ParserComponent prompt={'Select a TL file: '}
               fileType={FileType.tl}
               onChange={function() {
@@ -522,6 +527,7 @@ describe('Csv FileEvents processed correctly\n', () => {
               {'id': 3, 'name': 'name3', 'Date': '31 december 2019'},
               {'id': 4, 'name': 'name4', 'Date': '5 february 2019'}];
             instance.sortData(testArray);
+            // eslint-disable-next-line max-len
             const expectedResult: { id: number, name: string, Date: string }[] = [
               {'id': 2, 'name': 'name2', 'Date': '1 january 2019'},
               {'id': 4, 'name': 'name4', 'Date': '5 february 2019'},
@@ -669,12 +675,15 @@ describe('Csv FileEvents processed correctly\n', () => {
             'Sub-Saharan Africa,South Africa,Beverages,Offline,H,7/10/2012,' +
             '482292354,8/21/2012,9880,47.45,31.79,468806.00,314085.20,' +
             '154720.80\n' +
+            // eslint-disable-next-line max-len
             'Asia,Laos,Vegetables,Online,L,2/20/2011,844532620,3/20/2011,4825,' +
             '154.06,90.93,743339.50,438737.25,304602.25\n' +
+            // eslint-disable-next-line max-len
             'Asia,China,Baby Food,Online,C,4/10/2017,564251220,5/12/2017,3330,' +
             '255.28,159.42,850082.40,530868.60,319213.80\n' +
             'Sub-Saharan Africa,Eritrea,Meat,Online,L,11/21/2014,411809480,' +
             '1/10/2015,2431,421.89,364.69,1025614.59,886561.39,139053.20\n' +
+            // eslint-disable-next-line max-len
             'Central America and the Caribbean,Haiti,Office Supplies,Online,C,' +
             '7/4/2015,327881228,7/20/2015,6197,651.21,524.96,4035548.37,' +
             '3253177.12,782371.25\n' +
@@ -687,9 +696,11 @@ describe('Csv FileEvents processed correctly\n', () => {
             '2/27/2015,6618,651.21,524.96,4309707.78,3474185.28,835522.50\n' +
             'Asia,India,Household,Online,C,8/27/2016,151717174,9/2/2016,' +
             '5338,668.27,502.54,3567225.26,2682558.52,884666.74\n' +
+            // eslint-disable-next-line max-len
             'Middle East and North Africa,Algeria,Clothes,Offline,C,6/21/2011,' +
             '181401288,7/21/2011,9527,109.28,35.84,1041110.56,341447.68,' +
             '699662.88\n' +
+            // eslint-disable-next-line max-len
             'Australia and Oceania,Palau,Snacks,Offline,L,9/19/2013,500204360,' +
             '10/4/2013,441,152.58,97.44,67287.78,42971.04,24316.74\n' +
             'Central America and the Caribbean,Cuba,Beverages,Online,H,' +
@@ -711,6 +722,7 @@ describe('Csv FileEvents processed correctly\n', () => {
             '7091,152.58,97.44,1081944.78,690947.04,390997.74\n' +
             'Asia,Japan,Cosmetics,Offline,H,9/19/2013,967895781,9/28/2013,' +
             '725,437.20,263.33,316970.00,190914.25,126055.75\n' +
+            // eslint-disable-next-line max-len
             'Europe,Russia,Meat,Offline,L,12/2/2015,305029237,12/26/2015,3784,' +
             '421.89,364.69,1596431.76,1379986.96,216444.80\n'],
             'test.csv',
@@ -774,12 +786,15 @@ describe('Csv FileEvents processed correctly\n', () => {
             'Sub-Saharan Africa,South Africa,Beverages,Offline,H,7/10/2012,' +
             '482292354,8/21/2012,9880,47.45,31.79,468806.00,314085.20,' +
             '154720.80\n' +
+            // eslint-disable-next-line max-len
             'Asia,Laos,Vegetables,Online,L,2/20/2011,844532620,3/20/2011,4825,' +
             '154.06,90.93,743339.50,438737.25,304602.25\n' +
+            // eslint-disable-next-line max-len
             'Asia,China,Baby Food,Online,C,4/10/2017,564251220,5/12/2017,3330,' +
             '255.28,159.42,850082.40,530868.60,319213.80\n' +
             'Sub-Saharan Africa,Eritrea,Meat,Online,L,11/21/2014,411809480,' +
             '1/10/2015,2431,421.89,364.69,1025614.59,886561.39,139053.20\n' +
+            // eslint-disable-next-line max-len
             'Central America and the Caribbean,Haiti,Office Supplies,Online,C,' +
             '7/4/2015,327881228,7/20/2015,6197,651.21,524.96,4035548.37,' +
             '3253177.12,782371.25\n' +
@@ -792,9 +807,11 @@ describe('Csv FileEvents processed correctly\n', () => {
             '2/27/2015,6618,651.21,524.96,4309707.78,3474185.28,835522.50\n' +
             'Asia,India,Household,Online,C,8/27/2016,151717174,9/2/2016,' +
             '5338,668.27,502.54,3567225.26,2682558.52,884666.74\n' +
+            // eslint-disable-next-line max-len
             'Middle East and North Africa,Algeria,Clothes,Offline,C,6/21/2011,' +
             '181401288,7/21/2011,9527,109.28,35.84,1041110.56,341447.68,' +
             '699662.88\n' +
+            // eslint-disable-next-line max-len
             'Australia and Oceania,Palau,Snacks,Offline,L,9/19/2013,500204360,' +
             '10/4/2013,441,152.58,97.44,67287.78,42971.04,24316.74\n' +
             'Central America and the Caribbean,Cuba,Beverages,Online,H,' +
@@ -816,6 +833,7 @@ describe('Csv FileEvents processed correctly\n', () => {
             '7091,152.58,97.44,1081944.78,690947.04,390997.74\n' +
             'Asia,Japan,Cosmetics,Offline,H,9/19/2013,967895781,9/28/2013,' +
             '725,437.20,263.33,316970.00,190914.25,126055.75\n' +
+            // eslint-disable-next-line max-len
             'Europe,Russia,Meat,Offline,L,12/2/2015,305029237,12/26/2015,3784,' +
             '421.89,364.69,1596431.76,1379986.96,216444.80\n'],
             'test.csv',

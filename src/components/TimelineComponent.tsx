@@ -406,7 +406,7 @@ export default class TimelineComponent
     csvData = this.state.data.arrayOfData;
 
     data = csvData.slice(0, numBars);
-    ordinals = data.map((d: any) => d[xColumn]);
+    // ordinals = data.map((d: any) => d[xColumn]);
 
     // @ts-ignore
     minDate = new Date(d3.min(
@@ -423,6 +423,7 @@ export default class TimelineComponent
         .range([0, 50 * csvData.length]);
 
     x = d3.scaleBand()
+        // may need this in the future for spacing so leaving in
         // .padding(1)
         .domain(data.map((d: any) => d[xColumn]))
         .range([0, width]).round(true);
@@ -813,7 +814,9 @@ export default class TimelineComponent
    * @param {any} selection: the selection for the object to draw
    */
   drawEventMagnitude(selection: any): void {
-    const spacing = 48.5; // this needs to change
+    // this needs to change, currently close to desired behaviour
+    // but data not linked to labels
+    const spacing = 48.5;
     selection.append('rect')
         .attr('class', 'line')
         .attr('x', (d: any, i: number) =>
@@ -949,7 +952,8 @@ export default class TimelineComponent
     // finds starting index
     dataIdx = Math.floor(-deltaX / (this.scale * barWidth));
     data = csvData.slice(dataIdx, numBars + dataIdx);
-    ordinals = data.map((d: any) => d[xColumn]);
+    // may use in the future
+    // ordinals = data.map((d: any) => d[xColumn]);
 
     this.updateBars();
   }

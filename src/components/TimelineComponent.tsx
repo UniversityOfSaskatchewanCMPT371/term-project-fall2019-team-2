@@ -9,6 +9,13 @@ import Column
 import * as TimSort
   from 'timsort';
 
+/**
+ * an enum to help track which chart is being displayed
+ */
+export enum ViewType {
+  interval, occurrence
+}
+
 const marginTop: number = 0;
 const marginBottom: number = 170;
 const marginLeft: number = 70;
@@ -976,11 +983,4 @@ export default class TimelineComponent
   dragEnded(caller: any) {
     d3.select(caller).classed('active', false);
   }
-}
-
-/**
- * an enum to help track which chart is being displayed
- */
-export enum ViewType {
-  interval, occurrence
 }

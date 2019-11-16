@@ -416,7 +416,7 @@ export default class TimelineComponent
         .range([0, 50 * csvData.length]);
 
     x = d3.scaleBand()
-        .padding(0.2)
+        .padding(1)
         .domain(data.map((d: any) => d[xColumn]))
         .range([0, width]).round(true);
 
@@ -734,13 +734,13 @@ export default class TimelineComponent
 
     if (this.state.view === ViewType.occurrence) {
       d3.selectAll('.bar')
-          .attr('x', (d, i) => this.scale * barWidth * (i + dataIdx))
-          .attr('width', this.scale * barWidth);
+          .attr('x', (d, i) => barWidth * (i + dataIdx))
+          .attr('width', barWidth);
 
       d3.selectAll('.xtick')
           .attr('transform', (d: any, i) => 'translate(' +
-              ((this.scale * barWidth * (d['index'] + dataIdx)) +
-                  ((this.scale * barWidth) / 2)) + ',' + height + ')');
+              ((barWidth * (d['index'] + dataIdx)) +
+                  ((barWidth) / 2)) + ',' + height + ')');
     } else {
       d3.selectAll('.bar')
           .attr('x', (d: any, i: number) =>
@@ -779,38 +779,18 @@ export default class TimelineComponent
           } else {
             return (height - y(d[yColumn]));
           }
-        })
+        });
+    // Circles
+    selection.append('circle')
+        .attr('cx', (d: any, i: number) =>
+          (2*(i + dataIdx)))
+        .attr('cy', (d: any) => y(d[yColumn]))
+        .attr('r', '5')
+        .style('fill', '#69b3a2')
+        .attr('stroke', 'black')
         .on('mouseover', this.ttOver)
         .on('mousemove', this.ttMove)
         .on('mouseleave', this.ttLeave);
-
-    // selection.append('pins')
-    //     .append('line')
-    //     .attr('x1', (d: any, i: number) =>
-    //       (this.scale * barWidth * (i + dataIdx)))
-    //     .attr('x2', function(d: any) {
-    //       return x(d.Country);
-    //     })
-    //     .attr('y1', function(d: any) {
-    //       return y(d.Value);
-    //     })
-    //     .attr('y2', y(0))
-    //     .attr('stroke', 'grey');
-
-    // Circles
-    // selection.append('pinTops')
-    //     .data(data)
-    //     .enter()
-    //     .append('circle')
-    //     .attr('cx', function(d: any) {
-    //       return x(d.Country);
-    //     })
-    //     .attr('cy', function(d: any) {
-    //       return y(d.Value);
-    //     })
-    //     .attr('r', '4')
-    //     .style('fill', '#69b3a2')
-    //     .attr('stroke', 'black');
   }
 
   /**

@@ -416,7 +416,7 @@ export default class TimelineComponent
         .range([0, 50 * csvData.length]);
 
     x = d3.scaleBand()
-        .padding(1)
+        // .padding(1)
         .domain(data.map((d: any) => d[xColumn]))
         .range([0, width]).round(true);
 
@@ -766,10 +766,11 @@ export default class TimelineComponent
    * @param {any} selection: the selection for the object to draw
    */
   drawEventMagnitude(selection: any): void {
+    const spacing = 48.5; // this needs to change
     selection.append('rect')
         .attr('class', 'line')
         .attr('x', (d: any, i: number) =>
-          (2 * (i + dataIdx)))
+          (spacing * (i + dataIdx)))
         .attr('width', 2)
         .attr('y', (d: any) => y(d[yColumn]))
         .attr('height', (d: any) => {
@@ -783,7 +784,7 @@ export default class TimelineComponent
     // Circles
     selection.append('circle')
         .attr('cx', (d: any, i: number) =>
-          (2*(i + dataIdx)))
+          (spacing*(i + dataIdx)))
         .attr('cy', (d: any) => y(d[yColumn]))
         .attr('r', '5')
         .style('fill', '#69b3a2')

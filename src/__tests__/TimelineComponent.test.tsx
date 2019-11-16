@@ -351,6 +351,22 @@ describe('<TimelineComponent /> Unit Tests', () => {
     });
   });
 
+  describe('getIntervalMagnitudeData()', () => {
+    it('checks that getIntervalMagnitudeData is called when needed ',
+        () => {
+          const button = wrapper.find('button');
+          button.simulate('click');
+
+          wrapper.instance().drawTimeline();
+          const event = new KeyboardEvent('keydown', {'key': 'ArrowRight'});
+          document.body.dispatchEvent(event);
+          wrapper.instance().moveChart();
+          wrapper.instance().updateChart();
+          expect(wrapper.state('view')).toBe(ViewType.interval);
+        });
+  });
+
+
   describe('ttOver()', () => {
     it('checks that ttOver throws an error if it is called on the ' +
         'incorrect type of event', () => {

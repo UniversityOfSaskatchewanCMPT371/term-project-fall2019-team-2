@@ -572,51 +572,6 @@ export default class TimelineComponent
   }
 
   /**
-   * @return {void}: Nothing
-   */
-  private zoomOut(): void {
-    // Zoom out
-    const identity = d3.zoomIdentity
-        .scale(Math.max(scaleMin, this.scale * scaleZoomOut));
-
-    this.svg.transition().ease(d3.easeLinear).duration(300)
-        .call(this.zoom.transform, identity);
-    // Ensure the new scale is saved with a limit on the minimum
-    //  zoomed out scope
-    this.scale = Math.max(scaleMin, this.scale * scaleZoomOut);
-  }
-
-  /**
-   * @return {void}: Nothing
-   */
-  private zoomIn(): void {
-    const identity = d3.zoomIdentity
-        .scale(this.scale * scaleZoomIn);
-
-    this.svg.transition().ease(d3.easeLinear).duration(300)
-        .call(this.zoom.transform, identity);
-    // Ensure the new scale is saved
-    this.scale = this.scale * scaleZoomIn;
-  }
-
-  /**
-   * @return {void}: Nothing
-   */
-  private panLeft(): void {
-    deltaX = Math.min(0, deltaX + deltaPan);
-    console.log(deltaX);
-    this.moveChart();
-  }
-
-  /**
-   * @return {void}: Nothing
-   */
-  private panRight(): void {
-    deltaX -= deltaPan;
-    this.moveChart();
-  }
-
-  /**
    * Register events on D3 elements.
    * @return {void}: Nothing
    */
@@ -624,7 +579,6 @@ export default class TimelineComponent
     let currKey: string = '';
     let movingTimeout: number = -1;
 
-    // helper() that calls the loop helper method
     const startMoving = (op: string) => {
       if (movingTimeout === -1) {
         loop(op);
@@ -635,15 +589,35 @@ export default class TimelineComponent
     const loop = (op: string) => {
       // moveChart depending on operation
       if (op === '-' || op === 's') {
-        this.zoomOut();
+        // Zoom out
+        const identity = d3.zoomIdentity
+            .scale(Math.max(scaleMin, this.scale * scaleZoomOut));
+
+        this.svg.transition().ease(d3.easeLinear).duration(300)
+            .call(this.zoom.transform, identity);
+        // Ensure the new scale is saved with a limit on the minimum
+        //  zoomed out scope
+        this.scale = Math.max(scaleMin, this.scale * scaleZoomOut);
       } else if (op === '+' || op === 'w') {
-        this.zoomIn();
+        // Zoom In
+        const identity = d3.zoomIdentity
+            .scale(this.scale * scaleZoomIn);
+
+        this.svg.transition().ease(d3.easeLinear).duration(300)
+            .call(this.zoom.transform, identity);
+        // Ensure the new scale is saved
+        this.scale = this.scale * scaleZoomIn;
       } else if (op === 'ArrowLeft') {
-        this.panLeft();
+        // Pan Left
+        deltaX = Math.min(0, deltaX + deltaPan);
+        console.log(deltaX);
+        this.moveChart();
       } else if (op === 'ArrowRight') {
-        this.panRight();
+        // Pan Right
+        deltaX -= deltaPan;
+        this.moveChart();
       }
-      movingTimeout = setTimeout(loop, 35, op);
+      movingTimeout = setTimeout(loop, 25, op);
     };
 
     // Handle keypresses

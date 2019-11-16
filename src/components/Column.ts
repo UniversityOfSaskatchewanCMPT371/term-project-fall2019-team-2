@@ -24,7 +24,9 @@ export default class Column {
 
     /**
      * Purpose: renders a column of data to the timeline
-     * @constructor
+     * @precondition A .csv file has been uploaded and there exists
+     * data for a column to be created from
+     * @postcondition A column class is created
      */
     public Show(): void {
     }
@@ -32,7 +34,8 @@ export default class Column {
     /**
      * Purpose: causes the column to be rendered at a new scale
      * @param {number} newScale: a float which is the new scaling factor
-     * @constructor
+     * @precondition The column is populated with data
+     * @postcondition The y scale of the column is changed
      */
     public Rescale(newScale: number): void {
     }

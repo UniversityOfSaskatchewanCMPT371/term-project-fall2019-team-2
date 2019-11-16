@@ -435,7 +435,7 @@ export default class TimelineComponent
 
     // This has to be used so sonarcloud doesn't freak out about unused
     // variables -.-
-    console.log(x(0));
+    // console.log(x(0));
 
     y = d3.scaleLinear()
         .domain([d3.min(csvData,
@@ -470,8 +470,8 @@ export default class TimelineComponent
         .scaleExtent([1, 20]) // zoom range
         .translateExtent(extent)
         .extent(extent)
-        .on('zoom', this.updateChart)
-        .on('zoom.transform', this.updateChart);
+        .on('zoom', this.updateChart);
+    // .on('zoom.transform', this.updateChart);
 
     this.svg = d3.select('#svgtarget')
         .append('svg')
@@ -619,7 +619,7 @@ export default class TimelineComponent
       } else if (op === 'ArrowLeft') {
         // Pan Left
         deltaX = Math.min(0, deltaX + deltaPan);
-        console.log(deltaX);
+        // console.log(deltaX);
         this.moveChart();
       } else if (op === 'ArrowRight') {
         // Pan Right
@@ -713,6 +713,7 @@ export default class TimelineComponent
   ttOver(d: any) {
     try {
       if (d3.event.buttons === 0) {
+        // console.log(d3.event);
         this.ttOverHelper(d, d3.event.x, d3.event.y);
       }
     } catch (e) {
@@ -786,14 +787,22 @@ export default class TimelineComponent
     // d3.selectAll('#xaxis').remove();
 
     if (this.state.view === ViewType.occurrence) {
-      d3.selectAll('.bar')
-          .attr('x', (d, i) => barWidth * (i + dataIdx))
-          .attr('width', barWidth);
+      // d3.selectAll('.bar')
+      //     .attr('x', (d, i) => (this.scale * barWidth * (i + dataIdx)));
+      //     // .attr('width', barWidth);
+
+      d3.selectAll('.pin-line')
+          .attr('x', (d, i) => (this.scale * barWidth * (i + dataIdx)));
+      // .attr('width', barWidth);
+      d3.selectAll('.pin-head')
+          .attr('cx', (d, i) => (this.scale * barWidth * (i + dataIdx)));
+      // .attr('width', barWidth);
+
 
       d3.selectAll('.xtick')
           .attr('transform', (d: any, i) => 'translate(' +
-              ((barWidth * (d['index'] + dataIdx)) +
-                  ((barWidth) / 2)) + ',' + height + ')');
+              ((this.scale * barWidth * (d['index'] + dataIdx)) +
+                  ((this.scale * barWidth) / 2)) + ',' + height + ')');
     } else {
       d3.selectAll('.bar')
           .attr('x', (d: any, i: number) =>
@@ -809,9 +818,11 @@ export default class TimelineComponent
 
     if (d3.event !== null && d3.event.sourceEvent !== null &&
       d3.event.sourceEvent.type === 'mousemove') {
+      // console.log('updatechart');
       this.dragged();
+    } else {
+      this.moveChart();
     }
-    this.moveChart();
   }
 
   /**
@@ -819,13 +830,14 @@ export default class TimelineComponent
    * @param {any} selection: the selection for the object to draw
    */
   drawEventMagnitude(selection: any): void {
-    // this needs to change, currently close to desired behaviour
-    // but data not linked to labels
-    const spacing = 48.5;
-    selection.append('rect')
-        .attr('class', 'line pin')
+    const bar = selection.append('g')
+        .attr('class', 'bar');
+
+
+    bar.append('rect')
+        .attr('class', 'pin-line')
         .attr('x', (d: any, i: number) =>
-          (spacing * (i + dataIdx)))
+          (this.scale * barWidth * (i + dataIdx)))
         .attr('width', 2)
         .attr('y', (d: any) => y(d[yColumn]))
         .attr('height', (d: any) => {
@@ -837,9 +849,10 @@ export default class TimelineComponent
           }
         });
     // Circles
-    selection.append('circle')
+    bar.append('circle')
+        .attr('class', 'pin-head')
         .attr('cx', (d: any, i: number) =>
-          (spacing*(i + dataIdx)))
+          (this.scale * barWidth * (i + dataIdx)))
         .attr('cy', (d: any) => y(d[yColumn]))
         .attr('r', '5')
         .style('fill', '#69b3a2')
@@ -897,6 +910,7 @@ export default class TimelineComponent
             (exit: any) => exit.remove()
         );
 
+    // plot every 5th date
     data.forEach(function(d: any, i: number) {
       if (((i + dataIdx) % 5) === 0) {
         ticks.push({
@@ -952,7 +966,7 @@ export default class TimelineComponent
     // finds starting index
     dataIdx = Math.floor(-deltaX / (this.scale * barWidth));
     data = csvData.slice(dataIdx, numBars + dataIdx);
-    ordinals = data.map((d: any) => d[xColumn]);
+    // ordinals = data.map((d: any) => d[xColumn]);
   }
 
   /**
@@ -987,7 +1001,7 @@ export default class TimelineComponent
         consecutive = false;
       }
 
-      console.log('timeScale: ' + timeScale(elem[keyInt1]));
+      // console.log('timeScale: ' + timeScale(elem[keyInt1]));
       // If this is true, then the x position of the start of the bar and end of
       // the bar are currently outside of the viewing area
       if (!((this.scale * timeScale(elem[keyInt1])) < (-deltaX + width) ||
@@ -1000,8 +1014,8 @@ export default class TimelineComponent
       //   break;
       // }
     }
-    console.log('dataIdx: ' + dataIdx);
-    console.log('dataIdxEnd: ' + dataIdxEnd);
+    // console.log('dataIdx: ' + dataIdx);
+    // console.log('dataIdxEnd: ' + dataIdxEnd);
 
     data = csvData.slice(dataIdx, dataIdxEnd + barBuffer);
   }
@@ -1022,8 +1036,8 @@ export default class TimelineComponent
       this.getIntervalMagnitudeData();
 
     // finds starting index
-    dataIdx = Math.floor(-deltaX / (this.scale * barWidth));
-    data = csvData.slice(dataIdx, numBars + dataIdx);
+    // dataIdx = Math.floor(-deltaX / (this.scale * barWidth));
+    // data = csvData.slice(dataIdx, numBars + dataIdx);
     // may use in the future
     // ordinals = data.map((d: any) => d[xColumn]);
 
@@ -1043,13 +1057,15 @@ export default class TimelineComponent
    * Purpose: called when the timeline is dragged by the user
    */
   dragged() {
-    console.log(d3.event);
+    // console.log(d3.event);
     this.ttUpdatePos(d3.event.sourceEvent.x, d3.event.sourceEvent.y);
 
     deltaX += d3.event.sourceEvent.movementX;
     if (deltaX > 0) {
       deltaX = 0;
     }
+    // console.log(d3.event);
+    // console.log(`deltaX:${deltaX}`);
     this.moveChart();
   }
 

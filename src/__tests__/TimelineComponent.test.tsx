@@ -413,7 +413,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
       expect(updateBarsSpy).toHaveBeenCalled();
       console.log(document.body.innerHTML);
       // console.log(wrapper.)
-      expect(d3.selectAll('.line.pin').size()).toBe(5);
+      expect(d3.selectAll('.pin-line').size()).toBe(5);
       wrapper.instance().drawIntervalMagnitude(d3.selectAll('.bar'));
       expect(drawIntervalMagnitudeSpy).toHaveBeenCalled();
       //

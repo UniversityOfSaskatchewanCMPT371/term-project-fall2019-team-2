@@ -145,12 +145,14 @@ describe('<TimelineComponent /> R2 Tests\n', () => {
 
     // This just makes the snapshot more readable
     // Sorry that it's a little gross :p
-    // @ts-ignore
-    const temp: Array<string> = document.getElementById('svgtarget').innerHTML
-        .split(/(?=<)/g);
+    const svgTarget: any = document.getElementById('svgtarget');
     let svgHTML: string = '';
-    for (let i: number = 0; i < temp.length; i++) {
-      svgHTML += (temp[i] + '\n');
+    if (svgTarget) {
+      const temp: Array<string> = svgTarget.innerHTML
+          .split(/(?=<)/g);
+      for (let i: number = 0; i < temp.length; i++) {
+        svgHTML += (temp[i] + '\n');
+      }
     }
 
     // Check that svg created by d3 matches snapshot

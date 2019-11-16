@@ -947,6 +947,7 @@ export default class TimelineComponent
    * Purpose: called when the timeline is dragged by the user
    */
   dragged() {
+    console.log(d3.event);
     this.ttUpdatePos(d3.event.sourceEvent.x, d3.event.sourceEvent.y);
 
     deltaX += d3.event.sourceEvent.movementX;

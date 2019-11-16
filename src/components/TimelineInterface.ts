@@ -1,4 +1,5 @@
 import Data from './Data';
+import {ViewType} from './TimelineComponent';
 
 interface TimelineInterface {
     data: Data;
@@ -14,8 +15,6 @@ export interface TimelineState {
     marginBottom: number;
     marginLeft: number;
     marginRight: number;
-
-    toggleTimeline: number;
     // Prompt for toggle button
     togglePrompt: string;
 
@@ -24,4 +23,5 @@ export interface TimelineState {
     yColumn: string;
 
     loading: boolean;
+    view: ViewType;
 }

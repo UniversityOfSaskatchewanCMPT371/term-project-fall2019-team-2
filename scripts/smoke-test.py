@@ -55,9 +55,9 @@ class SmokeTests(unittest.TestCase):
     elem = driver.find_element_by_xpath('//*[@id="root"]/div/div/div[1]/div[1]/input')
     elem.send_keys(os.getcwd() + "/scripts/test.csv")
 
-    # Check for the bar graph
-    bar_graph = driver.find_elements_by_class_name("bar")
-    self.assertNotEqual(0, len(bar_graph))
+    # Check for the pin graph
+    pin_graph = driver.find_elements_by_class_name("pin")
+    self.assertNotEqual(0, len(pin_graph))
 
     # Ensure the switch to interval timeline exists
     switch_button = driver.find_element_by_xpath('//*[@id="root"]/div/div/div[2]/div/div/div/div/div[1]/button')

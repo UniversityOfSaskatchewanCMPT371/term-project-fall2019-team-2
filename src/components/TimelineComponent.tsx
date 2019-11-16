@@ -435,7 +435,7 @@ export default class TimelineComponent
 
     // This has to be used so sonarcloud doesn't freak out about unused
     // variables -.-
-    // console.log(x(0));
+    console.log(x(0));
 
     y = d3.scaleLinear()
         .domain([d3.min(csvData,

@@ -140,9 +140,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
             const date1 = moment(String(value));
             if (!isNaN(Number(date1)) && isNaN(Number(value))) {
               doneTheWork = true;
-              const t = 0;
               const formatString = this.state.formatString;
-              console.log(formatString);
 
               const keyInt = `${key}_num`;
 

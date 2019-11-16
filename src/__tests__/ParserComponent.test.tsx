@@ -265,6 +265,62 @@ describe('Csv FileEvents processed correctly\n', () => {
   });
 });
 
+describe('should accept valid csv file name with unusual' +
+    ' chars in file name', () => {
+  const props = {
+    prompt: 'test: ',
+    fileType: FileType.csv,
+  };
+
+  // create mock component and onchange events
+  const onChangeMock = jest.fn();
+  const comp: any = mount(<ParserComponent
+    {...props}
+    onChange={onChangeMock}
+  />);
+
+  // clear the on change event mock and the enzyme component
+  beforeEach(() => {
+    onChangeMock.mockClear();
+    comp.setState({data: []});
+  });
+
+  it('file name with \\', async () => {
+    const testfile: File = new File(
+        ['Date,SomeNum,SomeString\n' +
+        '04/12/1998,4,abcd\n' +
+        '06-01-1994,5,efg\n' +
+        'November 5 1997,1,hij\n' +
+        ''],
+        'test\\.csv',
+        {type: '.csv,text/csv'},
+    );
+    const fileEvent = {target: {files: [testfile]}};
+    await comp.instance().parse(fileEvent);
+  });
+
+
+  it('file name with emoji that use unicode', async () => {
+    const testfilewithemoji: File = new File(['Date,SomeNum,SomeString\n' +
+        '04/12/1998,4,abcd\n' +
+        '06-01-1994,5,efg\n' +
+        'November 5 1997,1,hij\n' +
+        ''],
+    '😁😁😁😁.csv',
+    {type: '.csv,text/csv'},);
+
+    const fileEvent = {target: {files: [testfilewithemoji]}};
+    await comp.instance().parse(fileEvent);
+  });
+
+  // check conditions after each it() block
+  afterEach(() => {
+    expect(comp.state('data').length).toEqual(3);
+    expect(onChangeMock).toHaveBeenCalledTimes(1);
+  });
+});
+
+
 // To be used by the developers
 describe('<ParserComponent /> Unit Tests', () => {
   describe('constructor()', () => {
@@ -288,80 +344,69 @@ describe('<ParserComponent /> Unit Tests', () => {
   });
 
   describe('isValid()', () => {
-    it('test if when a csv is uploaded it works correctly', () => {
+    const wrapper = mount(<ParserComponent prompt={'Select ' +
+      'a CSV file: '} fileType={FileType.csv}
+    onChange={function() {}}/>);
+    const instance = wrapper.instance() as ParserComponent;
+    it('Should return true when given a .csv file', () => {
       const testFile: File = new File(
           [''],
           'test.csv',
-          {type: '.csv,test/csv'},
+          {type: '.csv,text/csv'},
       );
-      const wrapper = mount(<ParserComponent prompt={'Select a TL file: '}
-        fileType={FileType.csv} onChange={function() {}}/>);
-      const instance = wrapper.instance() as ParserComponent;
       expect(instance.isValid(testFile)).toBeTruthy();
     });
-    it('test if when a csv is uploaded it works correctly with name ' +
-      'csv(csv.csv)', () => {
+    it('should throw exception when given undefined', () => {
+      expect(() => {
+        instance.isValid(undefined);
+      }).toThrow('Wrong file type was uploaded.');
+    });
+    it('should return true when given csv.csv', () => {
       const testFile: File = new File(
           [''],
           'csv.csv',
-          {type: '.csv,test/csv'},
+          {type: '.csv,text/csv'},
       );
-      const wrapper = mount(<ParserComponent prompt={'Select a TL file: '}
-        fileType={FileType.csv} onChange={function() {}}/>);
-      const instance = wrapper.instance() as ParserComponent;
       expect(instance.isValid(testFile)).toBeTruthy();
     });
-    it('test if when a non-csv is uploaded it works correctly', () => {
+    it('should throw exception when given non-csv file', () => {
       const testFile: File = new File(
           [''],
           'test.pdf',
-          {type: '.pdf,test/pdf'},
+          {type: '.pdf,application/pdf'},
       );
-      // eslint-disable-next-line max-len
-      const wrapper = mount(<ParserComponent prompt={'Select a TL file: '}
-        fileType={FileType.csv} onChange={function() {}}/>);
-      const instance = wrapper.instance() as ParserComponent;
-      expect(instance.isValid(testFile)).toEqual(false);
+      expect(() => {
+        instance.isValid(testFile);
+      }).toThrow('Wrong file type was uploaded.');
     });
-    it('test if when a non-csv is uploaded it works correctly with name' +
-      ' csv(csv.pdf)', () => {
+    it('should throw exception when given non csv file with name csv', () => {
       const testFile: File = new File(
           [''],
-          'test.pdf',
-          {type: '.pdf,test/pdf'},
+          'csv.pdf',
+          {type: '.pdf,application/pdf'},
       );
-      // eslint-disable-next-line max-len
-      const wrapper = mount(<ParserComponent prompt={'Select a TL file: '} fileType={FileType.csv}
-        onChange={function() {}}/>);
-      const instance = wrapper.instance() as ParserComponent;
-      expect(instance.isValid(testFile)).toEqual(false);
-    });
-    it('test if it works when there is nothing', () => {
-      const testFile: File = new File(
-          [''],
-          '',
-          {type: ''},
-      );
-      // eslint-disable-next-line max-len
-      const wrapper = mount(<ParserComponent prompt={'Select a TL file: '} fileType={FileType.csv}
-        onChange={function() {}}/>);
-      const instance = wrapper.instance() as ParserComponent;
-      expect(instance.isValid(testFile)).toEqual(false);
+      expect(() => {
+        instance.isValid(testFile);
+      }).toThrow('Wrong file type was uploaded.');
     });
   });
 
   describe('sortData()', () => {
-    it('checks if data is sorted', () => {
-      const wrapper = shallow(<ParserComponent prompt={'Select a TL file: '}
-        fileType={FileType.tl} onChange={function() {}}/>);
-      const instance = wrapper.instance() as ParserComponent;
+    const wrapper = shallow(<ParserComponent prompt={'Select ' +
+      'a CSV file: '} fileType={FileType.csv}
+    onChange={function() {}}/>);
+    const instance = wrapper.instance() as ParserComponent;
+    it('should sort data by date when ' +
+        'given data with id, name and date where date is in form m/d/y' +
+        'with invalid date going to the first spot', () => {
       const testArray: {id: number, name: string, Date: string}[] = [
         {'id': 1, 'name': 'name1', 'Date': '4/5/2010'},
-        {'id': 2, 'name': 'name2', 'Date': '4/5/1992'},
+        {'id': 2, 'name': 'name2', 'Date': '2/31/1992'},
         {'id': 3, 'name': 'name3', 'Date': '12/21/1992'}];
+      instance.setState({formatString: 'M D YYYY'});
       instance.sortData(testArray);
       const expectedResult: {id: number, name: string, Date: string}[] = [
-        {'id': 2, 'name': 'name2', 'Date': '4/5/1992'},
+        {'id': 2, 'name': 'name2', 'Date': '2/31/1992'},
         {'id': 3, 'name': 'name3', 'Date': '12/21/1992'},
         {'id': 1, 'name': 'name1', 'Date': '4/5/2010'}];
       expect(testArray[0]).toMatchObject(expectedResult[0]);
@@ -369,16 +414,14 @@ describe('<ParserComponent /> Unit Tests', () => {
       expect(testArray[2]).toMatchObject(expectedResult[2]);
     });
 
-    it('checks if data is sorted by the first date column when there are' +
-      ' 2 date columns', () => {
-      const wrapper = shallow(<ParserComponent prompt={'Select a TL file: '}
-        fileType={FileType.tl} onChange={function() {}}/>);
-      const instance = wrapper.instance() as ParserComponent;
+    it('should sort data by the first date ' +
+        'column when given data with 2 date columns', () => {
       const testArray: {id: number, Date: string, Date1: string}[] = [
         {'id': 1, 'Date': '1/1/2001', 'Date1': '4/5/2010'},
         {'id': 2, 'Date': '1/1/2003', 'Date1': '4/5/1992'},
         {'id': 3, 'Date': '1/1/2000', 'Date1': '12/21/1992'},
         {'id': 4, 'Date': '1/1/2002', 'Date1': '12/21/1993'}];
+      instance.setState({formatString: 'M D YYYY'});
       instance.sortData(testArray);
       const expectedResult: {id: number, Date: string, Date1: string}[] = [
         {'id': 3, 'Date': '1/1/2000', 'Date1': '12/21/1992'},
@@ -391,128 +434,118 @@ describe('<ParserComponent /> Unit Tests', () => {
       expect(testArray[3]).toMatchObject(expectedResult[3]);
     });
 
-    it('checks if sort works when there are no dates', () => {
-      const wrapper = shallow(<ParserComponent prompt={'Select a TL file: '}
-        fileType={FileType.tl}
-        onChange={function() {}}/>);
-      const instance = wrapper.instance() as ParserComponent;
+    it('should throw exception when given data with no dates', () => {
       const testArray: {id: number, name: string, job: string}[] = [
         {'id': 1, 'name': 'name1', 'job': 'job1'},
         {'id': 2, 'name': 'name2', 'job': 'job2'},
         {'id': 3, 'name': 'name3', 'job': 'job3'},
         {'id': 4, 'name': 'name4', 'job': 'job4'}];
-      expect(instance.sortData(testArray)).toEqual(false);
+      expect(() => {
+        instance.sortData(testArray);
+      }).toThrow('The file uploaded has no dates.');
     });
 
-    it('checks if sort works on data with dates like november 12, 2019',
-        () => {
-          const wrapper = shallow(<ParserComponent prompt={'Select a TL file: '}
-            fileType={FileType.tl}
-            onChange={function() {}}/>);
-          const instance = wrapper.instance() as ParserComponent;
-          const testArray: {id: number, name: string, Date: string}[] = [
-            {'id': 1, 'name': 'name1', 'Date': 'November 23, 2019'},
-            {'id': 2, 'name': 'name2', 'Date': 'January 1, 2019'},
-            {'id': 3, 'name': 'name3', 'Date': 'December 31, 2019'},
-            {'id': 4, 'name': 'name4', 'Date': 'February 5, 2019'}];
-          instance.sortData(testArray);
-          const expectedResult: {id: number, name: string, Date: string}[] = [
-            {'id': 2, 'name': 'name2', 'Date': 'January 1, 2019'},
-            {'id': 4, 'name': 'name4', 'Date': 'February 5, 2019'},
-            {'id': 1, 'name': 'name1', 'Date': 'November 23, 2019'},
-            {'id': 3, 'name': 'name3', 'Date': 'December 31, 2019'}];
-          expect(testArray[0]).toMatchObject(expectedResult[0]);
-          expect(testArray[1]).toMatchObject(expectedResult[1]);
-          expect(testArray[2]).toMatchObject(expectedResult[2]);
-          expect(testArray[3]).toMatchObject(expectedResult[3]);
-        });
+    it('should throw exception when given an empty file with no data', () => {
+      const testArray: {id: number, name: string, job: string}[] = [];
+      expect(() => {
+        instance.sortData(testArray);
+      }).toThrow('The file uploaded has no dates.');
+    });
 
-    it('checks if sort works on data with dates like november 12 2019',
-        () => {
-          const wrapper = shallow(<ParserComponent prompt={'Select a TL file: '}
-            fileType={FileType.tl}
-            onChange={function() {}}/>);
-          const instance = wrapper.instance() as ParserComponent;
-          const testArray: {id: number, name: string, Date: string}[] = [
-            {'id': 1, 'name': 'name1', 'Date': 'November 23 2019'},
-            {'id': 2, 'name': 'name2', 'Date': 'January 1 2019'},
-            {'id': 3, 'name': 'name3', 'Date': 'December 31 2019'},
-            {'id': 4, 'name': 'name4', 'Date': 'February 5 2019'}];
-          instance.sortData(testArray);
-          const expectedResult: {id: number, name: string, Date: string}[] = [
-            {'id': 2, 'name': 'name2', 'Date': 'January 1 2019'},
-            {'id': 4, 'name': 'name4', 'Date': 'February 5 2019'},
-            {'id': 1, 'name': 'name1', 'Date': 'November 23 2019'},
-            {'id': 3, 'name': 'name3', 'Date': 'December 31 2019'}];
-          expect(testArray[0]).toMatchObject(expectedResult[0]);
-          expect(testArray[1]).toMatchObject(expectedResult[1]);
-          expect(testArray[2]).toMatchObject(expectedResult[2]);
-          expect(testArray[3]).toMatchObject(expectedResult[3]);
-        });
-
-    it('checks if sort works on data with dates like 12 november 2019',
-        () => {
-          const wrapper = shallow(<ParserComponent prompt={'Select a TL file: '}
-            fileType={FileType.tl}
-            onChange={function() {}}/>);
-          const instance = wrapper.instance() as ParserComponent;
-          const testArray: {id: number, name: string, Date: string}[] = [
-            {'id': 1, 'name': 'name1', 'Date': '23 november 2019'},
-            {'id': 2, 'name': 'name2', 'Date': '1 january 2019'},
-            {'id': 3, 'name': 'name3', 'Date': '31 december 2019'},
-            {'id': 4, 'name': 'name4', 'Date': '5 february 2019'}];
-          instance.sortData(testArray);
-          const expectedResult: {id: number, name: string, Date: string}[] = [
-            {'id': 2, 'name': 'name2', 'Date': '1 january 2019'},
-            {'id': 4, 'name': 'name4', 'Date': '5 february 2019'},
-            {'id': 1, 'name': 'name1', 'Date': '23 november 2019'},
-            {'id': 3, 'name': 'name3', 'Date': '31 december 2019'}];
-          expect(testArray[0]).toMatchObject(expectedResult[0]);
-          expect(testArray[1]).toMatchObject(expectedResult[1]);
-          expect(testArray[2]).toMatchObject(expectedResult[2]);
-          expect(testArray[3]).toMatchObject(expectedResult[3]);
-        });
-
-    it('checks if sort works on data with dates D/M ' +
-      '(assumes they are same year)', () => {
-      const wrapper = shallow(<ParserComponent prompt={'Select a TL file: '}
-        fileType={FileType.tl}
-        onChange={function() {}}/>);
-      const instance = wrapper.instance() as ParserComponent;
+    it('should sort the data by dates when given ' +
+        'dates written in a form like November 23, 2019', () => {
       const testArray: {id: number, name: string, Date: string}[] = [
-        {'id': 1, 'name': 'name1', 'Date': '11/23'},
-        {'id': 2, 'name': 'name2', 'Date': '1/1'},
-        {'id': 4, 'name': 'name4', 'Date': '2/5'},
-        {'id': 3, 'name': 'name3', 'Date': '12/31'}];
+        {'id': 1, 'name': 'name1', 'Date': 'November 23, 2019'},
+        {'id': 2, 'name': 'name2', 'Date': 'January 1, 2019'},
+        {'id': 3, 'name': 'name3', 'Date': 'December 31, 2019'},
+        {'id': 4, 'name': 'name4', 'Date': 'February 5, 2019'}];
+      instance.setState({formatString: 'MMMM D YYYY'});
       instance.sortData(testArray);
       const expectedResult: {id: number, name: string, Date: string}[] = [
-        {'id': 2, 'name': 'name2', 'Date': '1/1'},
-        {'id': 4, 'name': 'name4', 'Date': '2/5'},
-        {'id': 1, 'name': 'name1', 'Date': '11/23'},
-        {'id': 3, 'name': 'name3', 'Date': '12/31'}];
+        {'id': 2, 'name': 'name2', 'Date': 'January 1, 2019'},
+        {'id': 4, 'name': 'name4', 'Date': 'February 5, 2019'},
+        {'id': 1, 'name': 'name1', 'Date': 'November 23, 2019'},
+        {'id': 3, 'name': 'name3', 'Date': 'December 31, 2019'}];
       expect(testArray[0]).toMatchObject(expectedResult[0]);
       expect(testArray[1]).toMatchObject(expectedResult[1]);
       expect(testArray[2]).toMatchObject(expectedResult[2]);
       expect(testArray[3]).toMatchObject(expectedResult[3]);
     });
 
-    it('checks if sort works on data where dates are invalid January 32, ' +
-      '2019 by moving it to the end', () => {
-      const wrapper = shallow(<ParserComponent prompt={'Select a TL file: '}
-        fileType={FileType.tl}
-        onChange={function() {}}/>);
-      const instance = wrapper.instance() as ParserComponent;
+    it('should sort the data by dates when given ' +
+        'dates written in a form like November 23 2019 (no comma)', () => {
       const testArray: {id: number, name: string, Date: string}[] = [
-        {'id': 3, 'name': 'name3', 'Date': 'January 15, 2019'},
-        {'id': 4, 'name': 'name4', 'Date': 'February 5, 2019'},
-        {'id': 1, 'name': 'name1', 'Date': 'January 1, 2019'},
-        {'id': 2, 'name': 'name2', 'Date': 'January 32, 2019'}];
+        {'id': 1, 'name': 'name1', 'Date': 'November 23 2019'},
+        {'id': 2, 'name': 'name2', 'Date': 'January 1 2019'},
+        {'id': 3, 'name': 'name3', 'Date': 'December 31 2019'},
+        {'id': 4, 'name': 'name4', 'Date': 'February 5 2019'}];
+      instance.setState({formatString: 'MMMM D YYYY'});
       instance.sortData(testArray);
       const expectedResult: {id: number, name: string, Date: string}[] = [
+        {'id': 2, 'name': 'name2', 'Date': 'January 1 2019'},
+        {'id': 4, 'name': 'name4', 'Date': 'February 5 2019'},
+        {'id': 1, 'name': 'name1', 'Date': 'November 23 2019'},
+        {'id': 3, 'name': 'name3', 'Date': 'December 31 2019'}];
+      expect(testArray[0]).toMatchObject(expectedResult[0]);
+      expect(testArray[1]).toMatchObject(expectedResult[1]);
+      expect(testArray[2]).toMatchObject(expectedResult[2]);
+      expect(testArray[3]).toMatchObject(expectedResult[3]);
+    });
+
+    it('should sort data when given ' +
+        'dates written in a form like 23 november 2019', () => {
+      const testArray: {id: number, name: string, Date: string}[] = [
+        {'id': 1, 'name': 'name1', 'Date': '23 november 2019'},
+        {'id': 2, 'name': 'name2', 'Date': '1 january 2019'},
+        {'id': 3, 'name': 'name3', 'Date': '31 december 2019'},
+        {'id': 4, 'name': 'name4', 'Date': '5 february 2019'}];
+      instance.setState({formatString: 'D MMMM YYYY'});
+      instance.sortData(testArray);
+      const expectedResult: {id: number, name: string, Date: string}[] = [
+        {'id': 2, 'name': 'name2', 'Date': '1 january 2019'},
+        {'id': 4, 'name': 'name4', 'Date': '5 february 2019'},
+        {'id': 1, 'name': 'name1', 'Date': '23 november 2019'},
+        {'id': 3, 'name': 'name3', 'Date': '31 december 2019'}];
+      expect(testArray[0]).toMatchObject(expectedResult[0]);
+      expect(testArray[1]).toMatchObject(expectedResult[1]);
+      expect(testArray[2]).toMatchObject(expectedResult[2]);
+      expect(testArray[3]).toMatchObject(expectedResult[3]);
+    });
+
+    it('should return sorted data with invalid date moved to the front' +
+        'when given data with an invalid date(february 31, 2019)', () => {
+      const testArray: {id: number, name: string, Date: string}[] = [
+        {'id': 3, 'name': 'name3', 'Date': 'December 1, 2019'},
+        {'id': 4, 'name': 'name4', 'Date': 'february 31, 2019'},
         {'id': 1, 'name': 'name1', 'Date': 'January 1, 2019'},
-        {'id': 3, 'name': 'name3', 'Date': 'January 15, 2019'},
-        {'id': 4, 'name': 'name4', 'Date': 'February 5, 2019'},
-        {'id': 2, 'name': 'name2', 'Date': 'January 32, 2019'}];
+        {'id': 2, 'name': 'name2', 'Date': 'January 30, 2019'}];
+      instance.setState({formatString: 'MMMM D YYYY'});
+      instance.sortData(testArray);
+      const expectedResult: {id: number, name: string, Date: string}[] = [
+        {'id': 4, 'name': 'name4', 'Date': 'february 31, 2019'},
+        {'id': 1, 'name': 'name1', 'Date': 'January 1, 2019'},
+        {'id': 2, 'name': 'name2', 'Date': 'January 30, 2019'},
+        {'id': 3, 'name': 'name3', 'Date': 'December 1, 2019'}];
+      expect(testArray[0]).toMatchObject(expectedResult[0]);
+      expect(testArray[1]).toMatchObject(expectedResult[1]);
+      expect(testArray[2]).toMatchObject(expectedResult[2]);
+      expect(testArray[3]).toMatchObject(expectedResult[3]);
+    });
+
+    it('should return sorted data when given date of different format' +
+          'when given data with an invalid date(february 31, 2019)', () => {
+      const testArray: {id: number, name: string, Date: string}[] = [
+        {'id': 3, 'name': 'name3', 'Date': 'Dec 1, 2019'},
+        {'id': 4, 'name': 'name4', 'Date': 'February 19, 2019'},
+        {'id': 1, 'name': 'name1', 'Date': 'Jan 1, 2019'},
+        {'id': 2, 'name': 'name2', 'Date': 'Jan 30, 2019'}];
+      instance.setState({formatString: 'MMM D YYYY'});
+      instance.sortData(testArray);
+      const expectedResult: {id: number, name: string, Date: string}[] = [
+        {'id': 1, 'name': 'name1', 'Date': 'Jan 1, 2019'},
+        {'id': 2, 'name': 'name2', 'Date': 'Jan 30, 2019'},
+        {'id': 4, 'name': 'name4', 'Date': 'February 19, 2019'},
+        {'id': 3, 'name': 'name3', 'Date': 'Dec 1, 2019'}];
       expect(testArray[0]).toMatchObject(expectedResult[0]);
       expect(testArray[1]).toMatchObject(expectedResult[1]);
       expect(testArray[2]).toMatchObject(expectedResult[2]);
@@ -553,23 +586,60 @@ describe('<ParserComponent /> Unit Tests', () => {
         fileType: FileType.csv,
         data: data,
         showTimeline: false,
+        formatString: 'YYYY-MM-DD'
       };
     });
 
-    it('handles regular data', () => {
+    it('should work properly when given regular data', () => {
       const t1 = pc.inferTypes(data);
       // test string
-      expect(t1[2].drawType).toBe(enumDrawType.occurrence);
+      try {
+        if (t1 !== undefined) {
+          expect(t1[2].drawType).toBe(enumDrawType.occurrence);
+        }
+      } catch (error) {
+        fail(); // fail if error thrown
+      }
       // test number
-      expect(t1[0].drawType).toBe(enumDrawType.any);
+      try {
+        if (t1 !== undefined) {
+          expect(t1[0].drawType).toBe(enumDrawType.any);
+        }
+      } catch (error) {
+        fail(); // fail if error thrown
+      }
       // test date
-      expect(t1[1].drawType).toBe(enumDrawType.any);
+      try {
+        if (t1 !== undefined) {
+          expect(t1[1].drawType).toBe(enumDrawType.any);
+        }
+      } catch (error) {
+        fail(); // fail if error thrown
+      }
     });
     it('handles inconsistent data', () => {
       data[0] = {money: 'word', heart_attacks: '2016-07-03', animals: 0};
       const t1 = pc.inferTypes(data);
       // test string
-      expect(t1[2].drawType).toBe(enumDrawType.occurrence);
+      try {
+        if (t1 !== undefined) {
+          expect(t1[2].drawType).toBe(enumDrawType.occurrence);
+        }
+      } catch (error) {
+        fail(); // fail if error thrown
+      }
+    });
+    it('should throw exception when given empty data(undefined)', () => {
+      const data1 = new Array(0);
+      pc.state = {prompt: 'data1',
+        fileType: FileType.csv,
+        data: data1,
+        showTimeline: false,
+        formatString: '',
+      };
+      expect(() => {
+        pc.inferTypes(data1);
+      }).toThrow('data is empty');
     });
   });
 
@@ -771,12 +841,12 @@ describe('<ParserComponent /> Unit Tests', () => {
     });
     it('sortDate called within method', async () => {
       // check sortDate is called
-      await comp.instance().parseCsv(event);
+      await comp.instance().parse(event);
       expect(sortDataSpy).toHaveBeenCalled();
     });
     it('isValid called within method', async () => {
       // check isValid is called
-      await comp.instance().parseCsv(event);
+      await comp.instance().parse(event);
       expect(isValidSpy).toHaveBeenCalled();
     });
     it('this.state is set', () => {

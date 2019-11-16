@@ -1,0 +1,88 @@
+name: Electron Build
+
+on:
+  release:
+    # Only use the types keyword to narrow down the activity types that will trigger your workflow.
+    types: [created, edited]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macOS-latest]
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: 10.x
+    - name: Install deps
+      env:
+        CI: true
+      run: |
+        npm install
+
+    # Linux and Windows
+    - name: Build Linux and Windows
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        docker run --rm \
+          --env-file <(env | grep -iE 'DEBUG|NODE_|ELECTRON_|YARN_|NPM_|CI|GITHUB|BUILD_') \
+          -v ${PWD}:/project \
+          electronuserland/builder:wine \
+          /bin/bash -c "npm run package-win-linux"
+      env:
+        CI: true
+    - name: Upload AppImage
+      uses: actions/upload-release-asset@v1.0.1
+      if: matrix.os == 'ubuntu-latest'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        # See: https://help.github.com/en/actions/automating-your-workflow-with-github-actions/contexts-and-expression-syntax-for-github-actions#github-context
+        # and: https://developer.github.com/v3/activity/events/types/#releaseevent
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ./dist/timeline-0.1.0.AppImage
+        asset_name: timeline-0.1.0.AppImage
+        asset_content_type: application/octet-stream
+    - name: Upload Snap
+      uses: actions/upload-release-asset@v1.0.1
+      if: matrix.os == 'ubuntu-latest'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ./dist/timeline_0.1.0_amd64.snap
+        asset_name: timeline_0.1.0_amd64.snap
+        asset_content_type: application/octet-stream
+    - name: Upload Windows Setup
+      uses: actions/upload-release-asset@v1.0.1
+      if: matrix.os == 'ubuntu-latest'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: "./dist/timeline Setup 0.1.0.exe"
+        asset_name: "timeline Setup 0.1.0.exe"
+        asset_content_type: application/vnd.microsoft.portable-executable
+
+    # MacOS
+    - name: Build MacOS
+      if: matrix.os == 'macOS-latest'
+      env:
+        CI: true
+      run: |
+        npm run package-macos
+    - name: Upload dmg
+      uses: actions/upload-release-asset@v1.0.1
+      if: matrix.os == 'macOS-latest'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ./dist/timeline-0.1.0.dmg
+        asset_name: timeline-0.1.0.dmg
+        asset_content_type: application/octet-stream

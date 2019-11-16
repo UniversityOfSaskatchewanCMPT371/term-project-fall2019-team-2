@@ -50,6 +50,8 @@ let x: any;
 let y: any;
 
 let extent: [[number, number], [number, number]];
+// tracks the switch statement for what should be drawn
+let view: string;
 
 let plot: any;
 
@@ -78,6 +80,7 @@ export default class TimelineComponent
       xColumn: '',
       xColumn2: '',
       loading: true,
+      view: 'occurrence',
     };
 
     this.drawTimeline = this.drawTimeline.bind(this);
@@ -299,7 +302,7 @@ export default class TimelineComponent
             </select>
 
             <label>
-              X-Axis
+              Starting Range
             </label>
             <select id="xSelect"
               value={this.state.xColumn}
@@ -315,8 +318,7 @@ export default class TimelineComponent
             </select>
 
             <label>
-              X-Axis
-              2
+              Ending Range
             </label>
             <select id="x2Select"
               value={this.state.xColumn2}
@@ -351,14 +353,17 @@ export default class TimelineComponent
     if (toggle === 0) {
       toggle = 1;
       prompt = 'Switch to Occurrence Timeline';
+      view = 'interval';
     } else {
       toggle = 0;
       prompt = 'Switch to Interval Timeline';
+      view = 'occurrence';
     }
 
     this.setState(() => ({
       toggleTimeline: toggle,
       togglePrompt: prompt,
+      view: view,
     }), () => {
       this.resetTimeline();
     });
@@ -519,19 +524,45 @@ export default class TimelineComponent
    * @return {void}: Nothing
    */
   private drawLabels(): void {
-    this.svg.append('text')
-        .attr('transform',
-            `translate(${width/2},${height + marginTop + 20})`)
-        .style('text-anchor', 'middle')
-        .text(this.state.xColumn);
+    switch (view) {
+      case 'occurrence':
+        this.svg.append('text')
+            .attr('transform',
+                `translate(${width / 2},${height + marginTop + 20})`)
+            .style('text-anchor', 'start')
+            .text(this.state.xColumn);
 
-    this.svg.append('text')
-        .attr('transform', 'rotate(-90)')
-        .attr('y', 0 - marginLeft)
-        .attr('x', 0 - (height / 2))
-        .attr('dy', '1em')
-        .style('text-anchor', 'middle')
-        .text(this.state.yColumn);
+        this.svg.append('text')
+            .attr('transform', 'rotate(-90)')
+            .attr('y', 0 - marginLeft)
+            .attr('x', 0 - (height / 2))
+            .attr('dy', '1em')
+            .style('text-anchor', 'middle')
+            .text(this.state.yColumn);
+        break;
+
+      case 'interval':
+        this.svg.append('text')
+            .attr('transform',
+                `translate(${(width / 2) + 10},${height + marginTop + 20})`)
+            .style('text-anchor', 'start')
+            .text('end: ' + this.state.xColumn2);
+
+        this.svg.append('text')
+            .attr('transform',
+                `translate(${width / 2},${height + marginTop + 20})`)
+            .style('text-anchor', 'end')
+            .text('start: ' + this.state.xColumn + ',');
+
+        this.svg.append('text')
+            .attr('transform', 'rotate(-90)')
+            .attr('y', 0 - marginLeft)
+            .attr('x', 0 - (height / 2))
+            .attr('dy', '1em')
+            .style('text-anchor', 'middle')
+            .text(this.state.yColumn);
+        break;
+    }
   }
 
   /**
@@ -539,38 +570,78 @@ export default class TimelineComponent
    * @return {void}: Nothing
    */
   private registerEvents(): void {
+    let currKey: string = '';
+    let movingTimeout: number = -1;
+
+    const startMoving = (op: string) => {
+      if (movingTimeout === -1) {
+        loop(op);
+      }
+    };
+
+    // helper() that loops until key is released
+    const loop = (op: string) => {
+      // moveChart depending on operation
+      if (op === '-' || op === 's') {
+        // Zoom out
+        const identity = d3.zoomIdentity
+            .scale(Math.max(scaleMin, this.scale * scaleZoomOut));
+
+        this.svg.transition().ease(d3.easeLinear).duration(300)
+            .call(this.zoom.transform, identity);
+        // Ensure the new scale is saved with a limit on the minimum
+        //  zoomed out scope
+        this.scale = Math.max(scaleMin, this.scale * scaleZoomOut);
+      } else if (op === '+' || op === 'w') {
+        // Zoom In
+        const identity = d3.zoomIdentity
+            .scale(this.scale * scaleZoomIn);
+
+        this.svg.transition().ease(d3.easeLinear).duration(300)
+            .call(this.zoom.transform, identity);
+        // Ensure the new scale is saved
+        this.scale = this.scale * scaleZoomIn;
+      } else if (op === 'ArrowLeft') {
+        // Pan Left
+        deltaX = Math.min(0, deltaX + deltaPan);
+        console.log(deltaX);
+        this.moveChart();
+      } else if (op === 'ArrowRight') {
+        // Pan Right
+        deltaX -= deltaPan;
+        this.moveChart();
+      }
+      movingTimeout = setTimeout(loop, 25, op);
+    };
+
     // Handle keypresses
     d3.select('body')
-        .on('keypress', () => {
-          if (d3.event.key === '-' || d3.event.key === 's') {
-            // Zoom out
-            const identity = d3.zoomIdentity
-                .scale(Math.max(scaleMin, this.scale * scaleZoomOut));
-
-            this.svg.transition().ease(d3.easeLinear).duration(300)
-                .call(this.zoom.transform, identity);
-            // Ensure the new scale is saved with a limit on the minimum
-            //  zoomed out scope
-            this.scale = Math.max(scaleMin, this.scale * scaleZoomOut);
-          } else if (d3.event.key === '+' || d3.event.key === 'w') {
-            // Zoom in
-            const identity = d3.zoomIdentity
-                .scale(this.scale * scaleZoomIn);
-
-            this.svg.transition().ease(d3.easeLinear).duration(300)
-                .call(this.zoom.transform, identity);
-            // Ensure the new scale is saved
-            this.scale = this.scale * scaleZoomIn;
-          } else if (d3.event.key === 'a') {
-            // Pan left
-            deltaX = Math.min(0, deltaX + deltaPan);
-            console.log(deltaX);
-            this.moveChart();
-          } else if (d3.event.key === 'd') {
-            // Pan right
-            deltaX -= deltaPan;
-            this.moveChart();
+        .on('keydown', () => {
+          if (currKey === '') {
+            if (d3.event.key === '-' || d3.event.key === 's') {
+              // zoom out
+              currKey = d3.event.key;
+            } else if (d3.event.key === '+' || d3.event.key === 'w') {
+              // Zoom in
+              currKey = d3.event.key;
+            } else if (d3.event.key === 'ArrowLeft') {
+              // Pan left
+              currKey = d3.event.key;
+            } else if (d3.event.key === 'ArrowRight') {
+              // Pan right
+              currKey = d3.event.key;
+            }
+            if (currKey !== '') {
+              startMoving(currKey);
+            }
           }
+        });
+
+    d3.select('body')
+        .on('keyup', () => {
+          clearTimeout(movingTimeout);
+          movingTimeout = -1;
+          currKey = '';
         });
   }
 

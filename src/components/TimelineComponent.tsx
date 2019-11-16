@@ -9,6 +9,13 @@ import Column
 import * as TimSort
   from 'timsort';
 
+/**
+ * an enum to help track which chart is being displayed
+ */
+export enum ViewType {
+  interval, occurrence
+}
+
 const marginTop: number = 0;
 const marginBottom: number = 170;
 const marginLeft: number = 70;
@@ -29,7 +36,7 @@ let fullHeight: number = 0;
 let height: number = 0;
 let width: number = 0;
 const barWidth: number = 50;
-const barBuffer: number = 5;
+const barBuffer: number = 15;
 let numBars: number = 0;
 let dataIdx: number = 0;
 let deltaX: number = 0;
@@ -41,7 +48,7 @@ let yColumns: Column[];
 
 let csvData: Object[];
 let data: Array<object>;
-let ordinals;
+// let ordinals;
 let minDate: any;
 let maxDate: any;
 
@@ -51,7 +58,7 @@ let y: any;
 
 let extent: [[number, number], [number, number]];
 // tracks the switch statement for what should be drawn
-let view: string;
+let view: ViewType;
 
 let plot: any;
 
@@ -74,13 +81,12 @@ export default class TimelineComponent
       marginBottom: 170,
       marginLeft: 40,
       marginRight: 20,
-      toggleTimeline: 0,
       togglePrompt: 'Switch to Interval Timeline',
       yColumn: '',
       xColumn: '',
       xColumn2: '',
       loading: true,
-      view: 'occurrence',
+      view: ViewType.occurrence,
     };
 
     this.drawTimeline = this.drawTimeline.bind(this);
@@ -346,23 +352,21 @@ export default class TimelineComponent
    * Purpose: toggles between interval and occurrence timelines
    */
   toggleTimeline() {
-    let toggle: number = this.state.toggleTimeline;
     let prompt = this.state.togglePrompt;
-    if (toggle === 0) {
-      toggle = 1;
+    if (view === ViewType.occurrence) {
       prompt = 'Switch to Occurrence Timeline';
-      view = 'interval';
+      view = ViewType.interval;
     } else {
-      toggle = 0;
       prompt = 'Switch to Interval Timeline';
-      view = 'occurrence';
+      view = ViewType.occurrence;
     }
 
-    this.setState(() => ({
-      toggleTimeline: toggle,
-      togglePrompt: prompt,
-      view: view,
-    }), () => {
+    this.setState(() => {
+      return {
+        togglePrompt: prompt,
+        view: view,
+      };
+    }, () => {
       this.resetTimeline();
     });
   }
@@ -390,6 +394,7 @@ export default class TimelineComponent
     xColumn2 = this.state.xColumn2;
     fullHeight = this.state.height;
     fullWidth = this.state.width;
+    view = this.state.view;
 
     height = fullHeight - (marginBottom + marginTop);
 
@@ -404,7 +409,7 @@ export default class TimelineComponent
     csvData = this.state.data.arrayOfData;
 
     data = csvData.slice(0, numBars);
-    ordinals = data.map((d: any) => d[xColumn]);
+    // ordinals = data.map((d: any) => d[xColumn]);
 
     // @ts-ignore
     minDate = new Date(d3.min(
@@ -420,9 +425,11 @@ export default class TimelineComponent
         .domain([minDate, maxDate])
         .range([0, 50 * csvData.length]);
 
-    x = d3.scaleLinear()
-        .domain([0, ordinals.length])
-        .rangeRound([0, width]);
+    x = d3.scaleBand()
+        // may need this in the future for spacing so leaving in
+        // .padding(1)
+        .domain(data.map((d: any) => d[xColumn]))
+        .range([0, width]).round(true);
 
     // This has to be used so sonarcloud doesn't freak out about unused
     // variables -.-
@@ -531,7 +538,7 @@ export default class TimelineComponent
    */
   private drawLabels(): void {
     switch (view) {
-      case 'occurrence':
+      case ViewType.occurrence:
         this.svg.append('text')
             .attr('transform',
                 `translate(${width / 2},${height + marginTop + 20})`)
@@ -547,7 +554,7 @@ export default class TimelineComponent
             .text(this.state.yColumn);
         break;
 
-      case 'interval':
+      case ViewType.interval:
         this.svg.append('text')
             .attr('transform',
                 `translate(${(width / 2) + 10},${height + marginTop + 20})`)
@@ -776,15 +783,15 @@ export default class TimelineComponent
 
     // d3.selectAll('#xaxis').remove();
 
-    if (this.state.toggleTimeline === 0) {
+    if (this.state.view === ViewType.occurrence) {
       d3.selectAll('.bar')
-          .attr('x', (d, i) => this.scale * barWidth * (i + dataIdx))
-          .attr('width', this.scale * barWidth);
+          .attr('x', (d, i) => barWidth * (i + dataIdx))
+          .attr('width', barWidth);
 
       d3.selectAll('.xtick')
           .attr('transform', (d: any, i) => 'translate(' +
-              ((this.scale * barWidth * (d['index'] + dataIdx)) +
-                  ((this.scale * barWidth) / 2)) + ',' + height + ')');
+              ((barWidth * (d['index'] + dataIdx)) +
+                  ((barWidth) / 2)) + ',' + height + ')');
     } else {
       d3.selectAll('.bar')
           .attr('x', (d: any, i: number) =>
@@ -810,11 +817,14 @@ export default class TimelineComponent
    * @param {any} selection: the selection for the object to draw
    */
   drawEventMagnitude(selection: any): void {
+    // this needs to change, currently close to desired behaviour
+    // but data not linked to labels
+    const spacing = 48.5;
     selection.append('rect')
-        .attr('class', 'bar')
+        .attr('class', 'line pin')
         .attr('x', (d: any, i: number) =>
-          (this.scale * barWidth * (i + dataIdx)))
-        .attr('width', this.scale * barWidth)
+          (spacing * (i + dataIdx)))
+        .attr('width', 2)
         .attr('y', (d: any) => y(d[yColumn]))
         .attr('height', (d: any) => {
           const newHeight = (height - y(d[yColumn]));
@@ -823,7 +833,15 @@ export default class TimelineComponent
           } else {
             return (height - y(d[yColumn]));
           }
-        })
+        });
+    // Circles
+    selection.append('circle')
+        .attr('cx', (d: any, i: number) =>
+          (spacing*(i + dataIdx)))
+        .attr('cy', (d: any) => y(d[yColumn]))
+        .attr('r', '5')
+        .style('fill', '#69b3a2')
+        .attr('stroke', 'black')
         .on('mouseover', this.ttOver)
         .on('mousemove', this.ttMove)
         .on('mouseleave', this.ttLeave);
@@ -869,7 +887,7 @@ export default class TimelineComponent
           return d['index'];
         })
         .join(
-            (enter: any) => this.state.toggleTimeline === 0 ?
+            (enter: any) => this.state.view === ViewType.occurrence ?
                 this.drawEventMagnitude(enter) :
                 this.drawIntervalMagnitude(enter),
             (update: any) => update,
@@ -897,7 +915,7 @@ export default class TimelineComponent
                   .attr('class', 'xtick')
                   .attr('opacity', 1)
                   .attr('transform', (d: any, i: number) => {
-                    if (this.state.toggleTimeline === 0) {
+                    if (this.state.view === ViewType.occurrence) {
                       return 'translate(' +
                           ((this.scale * barWidth * (d.index + dataIdx)) +
                           ((this.scale * barWidth) / 2)) + ',' + height + ')';
@@ -937,7 +955,8 @@ export default class TimelineComponent
     // finds starting index
     dataIdx = Math.floor(-deltaX / (this.scale * barWidth));
     data = csvData.slice(dataIdx, numBars + dataIdx);
-    ordinals = data.map((d: any) => d[xColumn]);
+    // may use in the future
+    // ordinals = data.map((d: any) => d[xColumn]);
 
     this.updateBars();
   }

@@ -48,7 +48,7 @@ let yColumns: Column[];
 
 let csvData: Object[];
 let data: Array<object>;
-let ordinals;
+// let ordinals;
 let minDate: any;
 let maxDate: any;
 

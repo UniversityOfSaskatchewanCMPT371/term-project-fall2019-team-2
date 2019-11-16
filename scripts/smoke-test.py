@@ -34,7 +34,7 @@ class SmokeTests(unittest.TestCase):
     driver = self.driver
     driver.get(f"file:///{self.TEST_FILE}")
     self.assertEqual("React App", driver.title)
-    elem = driver.find_element_by_xpath('//*[@id="root"]/div/div/label')
+    elem = driver.find_element_by_xpath('//*[@id="root"]/div/div/div[1]/div[1]/label')
     self.assertEqual("Select a CSV file:", elem.text)
 
   def test_input_on_homepage(self):
@@ -43,7 +43,7 @@ class SmokeTests(unittest.TestCase):
     """
     driver = self.driver
     driver.get(f"file:///{self.TEST_FILE}")
-    elem = driver.find_element_by_xpath('//*[@id="root"]/div/div/input')
+    elem = driver.find_element_by_xpath('//*[@id="root"]/div/div/div[1]/div[1]/input')
     self.assertEqual("file", elem.get_attribute("type"))
 
   def test_adding_csv(self):
@@ -52,7 +52,7 @@ class SmokeTests(unittest.TestCase):
     """
     driver = self.driver
     driver.get(f"file:///{self.TEST_FILE}")
-    elem = driver.find_element_by_xpath('//*[@id="root"]/div/div/input')
+    elem = driver.find_element_by_xpath('//*[@id="root"]/div/div/div[1]/div[1]/input')
     elem.send_keys(os.getcwd() + "/scripts/test.csv")
 
     # Check for the pin graph
@@ -60,7 +60,7 @@ class SmokeTests(unittest.TestCase):
     self.assertNotEqual(0, len(pin_graph))
 
     # Ensure the switch to interval timeline exists
-    switch_button = driver.find_element_by_xpath('//*[@id="root"]/div/div/div/div/div/div[1]/button')
+    switch_button = driver.find_element_by_xpath('//*[@id="root"]/div/div/div[2]/div/div/div/div/div[1]/button')
     self.assertEqual("Switch to Interval Timeline", switch_button.text)
 
     # Ensure a y-axis dropdown exists

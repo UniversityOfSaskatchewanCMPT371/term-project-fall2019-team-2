@@ -30,7 +30,8 @@ Smoke tests are run on every push to the repository using Jest on each individua
 the HTML was rendered correctly.
 
 Furthermore, we test the final build output by using a Python script with Selenium to ensure our production
-build has the homepage that we expect. You can find the script and more details in [this directory](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID4/scripts)
+build was generated as we expect it. You can find the script and more details in [this directory](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID4/scripts). The smoke test script itself is
+well documented and can be found [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID4/scripts/smoke-test.py).
 
 ## Builds
 
@@ -44,7 +45,8 @@ automatically have build artifacts in the following formats attached to it:
 - .dmg setup file for MacOS
 
 In order to create the builds on all the platforms we use a docker image with wine on Linux and run the build
-natively on MacOS for the Mac builds.
+natively on MacOS for the Mac builds. These automatically listen for a tag or release event on github and will
+upload the build artifacts to the release page. You can find the list of releases [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/releases).
 
 For viewing our current code climate and test coverage, refer to sonarcloud [here](https://sonarcloud.io/dashboard?id=cmpt371-team2) which is updated on every push to the repository.
 

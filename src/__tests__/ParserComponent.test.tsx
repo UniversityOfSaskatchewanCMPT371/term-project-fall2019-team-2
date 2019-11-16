@@ -235,7 +235,7 @@ describe('Csv FileEvents processed correctly\n', () => {
 
     // todo: add tests for to check sorting by month, day, time
     it('.csv with unsorted dates accepted & data sorted by date\n',
-      async () => {
+        async () => {
           const unsortedMultiDateFile: File = new File(
               // todo: add more date formats
               ['Date,SomeNum,SomeString\n' +

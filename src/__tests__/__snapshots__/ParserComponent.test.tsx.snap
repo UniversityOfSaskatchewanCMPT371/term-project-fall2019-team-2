@@ -38,3 +38,42 @@ Object {
   "index": 2,
 }
 `;
+
+exports[`Csv FileEvents processed correctly
+ .csv with different valid date formats accepted
+ .csv with unsorted dates accepted & data sorted by date
+ 1`] = `
+Object {
+  "Date": "06-01-1994",
+  "Date_num": Any<Number>,
+  "SomeNum": 5,
+  "SomeString": "efg",
+  "index": 1,
+}
+`;
+
+exports[`Csv FileEvents processed correctly
+ .csv with different valid date formats accepted
+ .csv with unsorted dates accepted & data sorted by date
+ 2`] = `
+Object {
+  "Date": "November 5 1997",
+  "Date_num": Any<Number>,
+  "SomeNum": 1,
+  "SomeString": "hij",
+  "index": 2,
+}
+`;
+
+exports[`Csv FileEvents processed correctly
+ .csv with different valid date formats accepted
+ .csv with unsorted dates accepted & data sorted by date
+ 3`] = `
+Object {
+  "Date": "04/12/1998",
+  "Date_num": Any<Number>,
+  "SomeNum": 4,
+  "SomeString": "abcd",
+  "index": 0,
+}
+`;

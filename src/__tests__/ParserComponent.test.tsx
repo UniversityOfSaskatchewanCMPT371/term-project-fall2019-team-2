@@ -272,7 +272,7 @@ describe('should accept valid csv file name with unusual' +
     fileType: FileType.csv,
   };
 
-
+  // create mock component and onchange events
   const onChangeMock = jest.fn();
   const comp: any = mount(<ParserComponent
     {...props}
@@ -297,8 +297,6 @@ describe('should accept valid csv file name with unusual' +
     );
     const fileEvent = {target: {files: [testfile]}};
     await comp.instance().parse(fileEvent);
-    expect(comp.state('data').length).toEqual(3);
-    expect(onChangeMock).toHaveBeenCalledTimes(1);
   });
 
 
@@ -313,6 +311,10 @@ describe('should accept valid csv file name with unusual' +
 
     const fileEvent = {target: {files: [testfilewithemoji]}};
     await comp.instance().parse(fileEvent);
+  });
+
+  // check conditions after each it() block
+  afterEach(() => {
     expect(comp.state('data').length).toEqual(3);
     expect(onChangeMock).toHaveBeenCalledTimes(1);
   });

@@ -442,14 +442,6 @@ export default class TimelineComponent
   }
 
   /**
-   *
-   * @param {number} timelineType
-   */
-  changeTimeline(timelineType: number) {
-    d3.selectAll('svg').remove();
-  }
-
-  /**
    * Purpose: draws the timeline and runs the functions and event handlers for
    * said timeline
    */

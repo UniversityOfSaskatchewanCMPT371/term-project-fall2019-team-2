@@ -302,6 +302,7 @@ export default class TimelineComponent
               </InputGroup.Prepend>
               <Form.Control
                 as = "select"
+                id = "ySelect"
                 value={this.state.yColumn}
                 onChange={(e) => {
                   this.changeColumn(e, 'yColumn');
@@ -320,6 +321,7 @@ export default class TimelineComponent
               </InputGroup.Prepend>
               <Form.Control
                 as = "select"
+                id = "xSelect"
                 value={this.state.xColumn}
                 onChange={(e) => {
                   this.changeColumn(e, 'xColumn');
@@ -338,6 +340,7 @@ export default class TimelineComponent
               </InputGroup.Prepend>
               <Form.Control
                 as = "select"
+                id = "x2Select"
                 value={this.state.xColumn}
                 onChange={(e) => {
                   this.changeColumn(e, 'xColumn2');

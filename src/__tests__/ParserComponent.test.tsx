@@ -279,6 +279,12 @@ describe('should accept valid csv file name with unusual' +
     onChange={onChangeMock}
   />);
 
+  // clear the on change event mock and the enzyme component
+  beforeEach(() => {
+    onChangeMock.mockClear();
+    comp.setState({data: []});
+  });
+
   it('file name with \\', async () => {
     const testfile: File = new File(
         ['Date,SomeNum,SomeString\n' +
@@ -295,9 +301,6 @@ describe('should accept valid csv file name with unusual' +
     expect(onChangeMock).toHaveBeenCalledTimes(1);
   });
 
-  // clear the on change event mock and the enzyme component
-  onChangeMock.mockClear();
-  comp.setState({data: []});
 
   it('file name with emoji that use unicode', async () => {
     const testfilewithemoji: File = new File(['Date,SomeNum,SomeString\n' +

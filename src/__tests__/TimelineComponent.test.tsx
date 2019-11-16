@@ -11,6 +11,13 @@ import Data
 import Column
   from '../components/Column';
 
+describe('Timeline is correctly resized when user uses ' +
+    'mousewheel to zoom in', ()=>{
+  it('', ()=>{
+
+  });
+});
+
 
 // To be used by developers
 describe('<TimelineComponent /> Unit Tests', () => {

@@ -36,13 +36,13 @@ describe('<ParserComponent /> renders correctly', () => {
   });
 });
 
-describe('Csv FileEvents processed correctly', () => {
+describe('Csv FileEvents processed correctly\n', () => {
   const props = {
     prompt: 'test: ',
     fileType: FileType.csv,
   };
 
-  it('Onchange event triggered when file selected', async () => {
+  it('Onchange event triggered when file selected\n', async () => {
     const onChangeMock = jest.fn();
     const testFile: File = new File(
         ['abcdef'],
@@ -161,7 +161,7 @@ describe('Csv FileEvents processed correctly', () => {
     });
   });
 
-  it('.csv file with no temporal data is rejected', async () => {
+  it('.csv file with no temporal data is rejected\n', async () => {
     const onChangeMock = jest.fn();
     const noDateFile: File = new File(
         ['H1,H2,H3,H4\n' +
@@ -185,7 +185,7 @@ describe('Csv FileEvents processed correctly', () => {
     // expect(fileUsed.name).toBe(noDateFile.name);
   });
 
-  describe('.csv with different valid date formats accepted', () => {
+  describe('.csv with different valid date formats accepted\n', () => {
     const onChangeMock = jest.fn();
     const comp: any = mount(<ParserComponent
       {...props}
@@ -206,7 +206,7 @@ describe('Csv FileEvents processed correctly', () => {
       expect(compData.length).toBe(3);
     });
 
-    it('.csv with sorted dates accepted', async () => {
+    it('.csv with sorted dates accepted\n', async () => {
       const multiDateFile: File = new File(
           // todo: add more date formats
           ['Date,SomeNum,SomeString\n' +
@@ -234,33 +234,34 @@ describe('Csv FileEvents processed correctly', () => {
     });
 
     // todo: add tests for to check sorting by month, day, time
-    it('.csv with unsorted dates accepted & data sorted by date', async () => {
-      const unsortedMultiDateFile: File = new File(
-          // todo: add more date formats
-          ['Date,SomeNum,SomeString\n' +
-                  '04/12/1998,4,abcd\n' +
-                  '06-01-1994,5,efg\n' +
-                  'November 5 1997,1,hij\n' +
-                  ''],
-          'test.csv',
-          {type: '.csv,text/csv'},
-      );
-      const fileEvent = {target: {files: [unsortedMultiDateFile]}};
+    it('.csv with unsorted dates accepted & data sorted by date\n',
+        async () => {
+          const unsortedMultiDateFile: File = new File(
+              // todo: add more date formats
+              ['Date,SomeNum,SomeString\n' +
+                      '04/12/1998,4,abcd\n' +
+                      '06-01-1994,5,efg\n' +
+                      'November 5 1997,1,hij\n' +
+                      ''],
+              'test.csv',
+              {type: '.csv,text/csv'},
+          );
+          const fileEvent = {target: {files: [unsortedMultiDateFile]}};
 
 
-      // no error should be thrown!!!
-      try {
-        expect(await comp.instance().parse(fileEvent)).toBe(undefined);
-      } catch (e) {
-        fail(); // fail if error thrown
-      }
-      // data should be updated to contain csv info
-      compData = comp.state('data');
-      // Check that the object contains all the data from the csv
-      compData.forEach((date) => {
-        expect(date).toMatchSnapshot({Date_num: expect.any(Number)});
-      });
-    });
+          // no error should be thrown!!!
+          try {
+            expect(await comp.instance().parse(fileEvent)).toBe(undefined);
+          } catch (e) {
+            fail(); // fail if error thrown
+          }
+          // data should be updated to contain csv info
+          compData = comp.state('data');
+          // Check that the object contains all the data from the csv
+          compData.forEach((date) => {
+            expect(date).toMatchSnapshot({Date_num: expect.any(Number)});
+          });
+        });
   });
 });
 

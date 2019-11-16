@@ -29,7 +29,7 @@ let fullHeight: number = 0;
 let height: number = 0;
 let width: number = 0;
 const barWidth: number = 50;
-const barBuffer: number = 5;
+const barBuffer: number = 15;
 let numBars: number = 0;
 let dataIdx: number = 0;
 let deltaX: number = 0;
@@ -415,9 +415,10 @@ export default class TimelineComponent
         .domain([minDate, maxDate])
         .range([0, 50 * csvData.length]);
 
-    x = d3.scaleLinear()
-        .domain([0, ordinals.length])
-        .rangeRound([0, width]);
+    x = d3.scaleBand()
+        .padding(0.2)
+        .domain(data.map((d: any) => d[xColumn]))
+        .range([0, width]).round(true);
 
     // This has to be used so sonarcloud doesn't freak out about unused
     // variables -.-
@@ -766,10 +767,10 @@ export default class TimelineComponent
    */
   drawEventMagnitude(selection: any): void {
     selection.append('rect')
-        .attr('class', 'bar')
+        .attr('class', 'line')
         .attr('x', (d: any, i: number) =>
-          (this.scale * barWidth * (i + dataIdx)))
-        .attr('width', this.scale * barWidth)
+          (2 * (i + dataIdx)))
+        .attr('width', 2)
         .attr('y', (d: any) => y(d[yColumn]))
         .attr('height', (d: any) => {
           const newHeight = (height - y(d[yColumn]));
@@ -782,6 +783,34 @@ export default class TimelineComponent
         .on('mouseover', this.ttOver)
         .on('mousemove', this.ttMove)
         .on('mouseleave', this.ttLeave);
+
+    // selection.append('pins')
+    //     .append('line')
+    //     .attr('x1', (d: any, i: number) =>
+    //       (this.scale * barWidth * (i + dataIdx)))
+    //     .attr('x2', function(d: any) {
+    //       return x(d.Country);
+    //     })
+    //     .attr('y1', function(d: any) {
+    //       return y(d.Value);
+    //     })
+    //     .attr('y2', y(0))
+    //     .attr('stroke', 'grey');
+
+    // Circles
+    // selection.append('pinTops')
+    //     .data(data)
+    //     .enter()
+    //     .append('circle')
+    //     .attr('cx', function(d: any) {
+    //       return x(d.Country);
+    //     })
+    //     .attr('cy', function(d: any) {
+    //       return y(d.Value);
+    //     })
+    //     .attr('r', '4')
+    //     .style('fill', '#69b3a2')
+    //     .attr('stroke', 'black');
   }
 
   /**

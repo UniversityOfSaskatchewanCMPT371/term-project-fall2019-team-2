@@ -34,7 +34,7 @@ class SmokeTests(unittest.TestCase):
     driver = self.driver
     driver.get(f"file:///{self.TEST_FILE}")
     self.assertEqual("React App", driver.title)
-    elem = driver.find_element_by_xpath('//*[@id="root"]/div/div/div[1]/div[1]/input')
+    elem = driver.find_element_by_xpath('//*[@id="root"]/div/div/label')
     self.assertEqual("Select a CSV file:", elem.text)
 
   def test_input_on_homepage(self):
@@ -52,7 +52,7 @@ class SmokeTests(unittest.TestCase):
     """
     driver = self.driver
     driver.get(f"file:///{self.TEST_FILE}")
-    elem = driver.find_element_by_xpath('//*[@id="root"]/div/div/input')
+    elem = driver.find_element_by_xpath('//*[@id="root"]/div/div/div[1]/div[1]/input')
     elem.send_keys(os.getcwd() + "/scripts/test.csv")
 
     # Check for the bar graph

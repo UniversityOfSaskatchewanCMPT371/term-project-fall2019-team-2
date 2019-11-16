@@ -141,16 +141,26 @@ exports[`<TimelineComponent /> R2 Tests
 <g clip-path=\\"url(#barsBox)\\">
 <g id=\\"barsLayer\\">
 <g class=\\"plot\\" id=\\"bars\\">
-<rect class=\\"bar\\" x=\\"0\\" width=\\"50\\" y=\\"419.4852605640208\\" height=\\"178.5147394359792\\">
+<rect class=\\"line pin\\" x=\\"0\\" width=\\"2\\" y=\\"419.4852605640208\\" height=\\"178.5147394359792\\">
 </rect>
-<rect class=\\"bar\\" x=\\"50\\" width=\\"50\\" y=\\"45.45221988871617\\" height=\\"552.5477801112838\\">
+<rect class=\\"line pin\\" x=\\"48.5\\" width=\\"2\\" y=\\"45.45221988871617\\" height=\\"552.5477801112838\\">
 </rect>
-<rect class=\\"bar\\" x=\\"100\\" width=\\"50\\" y=\\"0\\" height=\\"598\\">
+<rect class=\\"line pin\\" x=\\"97\\" width=\\"2\\" y=\\"0\\" height=\\"598\\">
 </rect>
-<rect class=\\"bar\\" x=\\"150\\" width=\\"50\\" y=\\"598\\" height=\\"0\\">
+<rect class=\\"line pin\\" x=\\"145.5\\" width=\\"2\\" y=\\"598\\" height=\\"0\\">
 </rect>
-<rect class=\\"bar\\" x=\\"200\\" width=\\"50\\" y=\\"221.82608227113172\\" height=\\"376.1739177288683\\">
+<rect class=\\"line pin\\" x=\\"194\\" width=\\"2\\" y=\\"221.82608227113172\\" height=\\"376.1739177288683\\">
 </rect>
+<circle cx=\\"0\\" cy=\\"419.4852605640208\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+</circle>
+<circle cx=\\"48.5\\" cy=\\"45.45221988871617\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+</circle>
+<circle cx=\\"97\\" cy=\\"0\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+</circle>
+<circle cx=\\"145.5\\" cy=\\"598\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+</circle>
+<circle cx=\\"194\\" cy=\\"221.82608227113172\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+</circle>
 <g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(25,598)\\">
 <line stroke=\\"blue\\" y2=\\"6\\">
 </line>
@@ -240,6 +250,10 @@ exports[`<TimelineComponent /> R2 Tests
 </text>
 </g>
 </g>
+<text transform=\\"translate(467,618)\\" style=\\"text-anchor: start;\\">Order Date
+</text>
+<text transform=\\"rotate(-90)\\" y=\\"-70\\" x=\\"-299\\" dy=\\"1em\\" style=\\"text-anchor: middle;\\">Order ID
+</text>
 </g>
 </svg>
 "

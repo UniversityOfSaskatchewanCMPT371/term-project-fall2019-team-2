@@ -572,7 +572,6 @@ describe('<TimelineComponent /> Unit Tests', () => {
   describe('Change Column', () => {
     it('Checks that data is sorted and re-drawn when a column ' +
         'dropdown is selected', () => {
-      console.log(wrapper.find('select').at().debug());
       wrapper.find('#ySelect').first()
           .simulate('change', {target: {value: 'Unit Price'}});
 

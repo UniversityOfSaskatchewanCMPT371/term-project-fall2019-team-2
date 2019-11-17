@@ -297,7 +297,7 @@ describe('Csv FileEvents processed correctly\n', () => {
 
     // CURRENTLY FAILING
     // Throws 'Data is EMPTY' error instead...
-    // expect(sortDataSpy).toThrow('The file uploaded has no dates.');
+    expect(sortDataSpy).toThrow('The file uploaded has no dates.');
 
     // make sure alert was created
     expect(windowSpy).toHaveBeenCalled();

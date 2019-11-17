@@ -353,8 +353,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
               this.columnTypes = this.inferTypes(this.state.data);
               this.sortData(this.state.data);
             } catch (e) {
-              alert('data is EMPTY');
-              console.log('data is empty');
+              alert(e.toString());
+              console.log(e.toString());
             }
           }
           resolver(true);

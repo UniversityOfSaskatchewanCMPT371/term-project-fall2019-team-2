@@ -292,19 +292,19 @@ export default class TimelineComponent
         <p><em>loading...</em></p> :
         <div>
           <div>
-            <Button variant="primary"
+            <Button variant='primary'
               onClick={this.toggleTimeline}>{this.state.togglePrompt}</Button>
             <label>
               Y-Axis
             </label>
             <InputGroup>
               <InputGroup.Prepend>
-                <InputGroup.Text id="inputGroup
-                Prepend">yColumn</InputGroup.Text>
+                <InputGroup.Text id='inputGroup
+                Prepend'>yColumn</InputGroup.Text>
               </InputGroup.Prepend>
               <Form.Control
-                as = "select"
-                id = "ySelect"
+                as = 'select'
+                id = 'ySelect'
                 value={this.state.yColumn}
                 onChange={(e) => {
                   this.changeColumn(e, 'yColumn');
@@ -318,12 +318,12 @@ export default class TimelineComponent
               </Form.Control>
 
               <InputGroup.Prepend>
-                <InputGroup.Text id="inputGroup
-                Prepend">xColumn</InputGroup.Text>
+                <InputGroup.Text id='inputGroup
+                Prepend'>xColumn</InputGroup.Text>
               </InputGroup.Prepend>
               <Form.Control
-                as = "select"
-                id = "xSelect"
+                as = 'select'
+                id = 'xSelect'
                 value={this.state.xColumn}
                 onChange={(e) => {
                   this.changeColumn(e, 'xColumn');
@@ -337,12 +337,12 @@ export default class TimelineComponent
               </Form.Control>
 
               <InputGroup.Prepend>
-                <InputGroup.Text id="inputGroup
-                Prepend">Ending Range</InputGroup.Text>
+                <InputGroup.Text id='inputGroup
+                Prepend'>Ending Range</InputGroup.Text>
               </InputGroup.Prepend>
               <Form.Control
-                as = "select"
-                id = "x2Select"
+                as = 'select'
+                id = 'x2Select'
                 value={this.state.xColumn}
                 onChange={(e) => {
                   this.changeColumn(e, 'xColumn2');
@@ -356,7 +356,7 @@ export default class TimelineComponent
               </Form.Control>
             </InputGroup>
           </div>
-          <div id="svgtarget">
+          <div id='svgtarget'>
           </div>
         </div>
         ;

@@ -83,7 +83,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
                     };
                   });
                 }}>
-                <option selected value="">Open this select menu</option>
+                <option value="">Open this select menu</option>
                 <option value="YYYY-MM-DD">YYYY-MM-DD</option>
                 <option value="MM-DD-YYYY">MM-DD-YYYY</option>
                 <option value="DD-MM-YYYY">DD-MM-YYYY</option>
@@ -134,7 +134,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
     sortData(data: Array<object>): boolean {
       let doneTheWork = false;
       /* loop goes through each key and saves the 1 with a date in first row */
-      if (data[0] !== undefined && data.length > 0) {
+      if (data !== undefined && data.length > 0) {
         for (const [key, value] of Object.entries(data[0])) {
           if (!doneTheWork) {
             const date1 = moment(String(value));

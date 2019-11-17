@@ -13,7 +13,6 @@ const App: React.FC = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link href="#home">Select a CSV File</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Navbar>

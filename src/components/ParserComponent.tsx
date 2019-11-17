@@ -289,6 +289,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * @param {Object} fileEvent: the event passed into this component
      */
     async parse(fileEvent: any) {
+      console.log('parse()');
       this.setState(() => {
         return {
           showTimeline: false,

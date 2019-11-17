@@ -173,200 +173,199 @@ describe('Csv FileEvents processed correctly\n', () => {
         await wrapper.instance().parse(fileEvent);
       });
     });
-  });
+    describe('T1.3: .csv with different valid date formats accepted\n', () => {
+      const onChangeMock = jest.fn();
+      const comp: any = mount(<ParserComponent
+        {...props}
+        onChange={onChangeMock}
+      />);
+      let compData: Array<object>;
 
-  describe('T1.3: .csv with different valid date formats accepted\n', () => {
-    const onChangeMock = jest.fn();
-    const comp: any = mount(<ParserComponent
-      {...props}
-      onChange={onChangeMock}
-    />);
-    let compData: Array<object>;
+      beforeEach(() => {
+        onChangeMock.mockClear();
+        comp.setState({data: []});
+        compData = comp.state('data');
+        expect(compData.length).toBe(0);
+      });
 
-    beforeEach(() => {
-      onChangeMock.mockClear();
-      comp.setState({data: []});
-      compData = comp.state('data');
-      expect(compData.length).toBe(0);
+      afterEach(() => {
+        // onChange should be called once, and it should get to parseCsv()
+        expect(onChangeMock).toHaveBeenCalledTimes(1);
+        expect(compData.length).toBe(3);
+      });
+
+      it('.csv with sorted dates accepted\n', async () => {
+        const multiDateFile: File = new File(
+            ['Date,SomeNum,SomeString\n' +
+            '04/04/1995,4,abcd\n' +
+            '06-07-1996,5,efg\n' +
+            'November 5 1997,1,hij\n' +
+            ''],
+            'multiDateTest.csv',
+            {type: '.csv,text/csv'},
+        );
+        const fileEvent = {target: {files: [multiDateFile]}};
+
+        // no error should be thrown!!!
+        try {
+          expect(await comp.instance().parse(fileEvent)).toBe(undefined);
+        } catch (error) {
+          fail(); // fail if error thrown
+        }
+        // data should be updated to contain csv info
+        compData = comp.state('data');
+        // Check that the object contains all the data from the csv
+        compData.forEach((date) => {
+          expect(date).toMatchSnapshot({Date_num: expect.any(Number)});
+        });
+      });
+
+      // todo: add tests for to check sorting by month, day, time
+      it('.csv with unsorted dates accepted & data sorted by date\n',
+          async () => {
+            const unsortedMultiDateFile: File = new File(
+                // This tests YYYY-MM-DD format
+                ['Date,SomeNum,SomeString\n' +
+                '1998-04-04,4,abcd\n' +
+                '1994-04-04,5,efg\n' +
+                '1997-04-04,1,hij\n' +
+                ''],
+                'test.csv',
+                {type: '.csv,text/csv'},
+            );
+            const fileEvent = {target: {files: [unsortedMultiDateFile]}};
+
+
+            // no error should be thrown!!!
+            try {
+              expect(await comp.instance().parse(fileEvent)).toBe(undefined);
+            } catch (e) {
+              fail(); // fail if error thrown
+            }
+            // data should be updated to contain csv info
+            compData = comp.state('data');
+            // Check that the object contains all the data from the csv
+            compData.forEach((date) => {
+              expect(date).toMatchSnapshot({Date_num: expect.any(Number)});
+            });
+          });
     });
 
-    afterEach(() => {
-      // onChange should be called once, and it should get to parseCsv()
-      expect(onChangeMock).toHaveBeenCalledTimes(1);
+    it('T1.4: .csv file with no temporal data is rejected\n', async () => {
+      // create spies
+      const inferTypesSpy =
+        jest.spyOn(ParserComponent.prototype, 'inferTypes');
+      const sortDataSpy =
+        jest.spyOn(ParserComponent.prototype, 'sortData');
+      const isValidSpy =
+        jest.spyOn(ParserComponent.prototype, 'isValid');
+      const parseCsvSpy =
+        jest.spyOn(ParserComponent.prototype, 'parseCsv');
+      const windowSpy =
+        jest.spyOn(window, 'alert');
+
+      const onChangeMock = jest.fn();
+      const wrapper: any = mount(
+          <ParserComponent
+            {...props}
+            onChange={onChangeMock}
+          />
+      );
+      let compData: Array<object> = [];
+
+      // test file with no dates
+      const noDateFile: File = new File(
+          ['H1,H2,H3,H4\n' +
+          'a,b,c,d\n' +
+          'e,f,g,h\n' +
+          'i,j,k,l\n'],
+          'test.csv',
+          {type: '.csv,text/csv'},);
+
+      // fileEvent
+      const fileEvent = {target: {files: [noDateFile]}};
+
+      await wrapper.instance().parse(fileEvent);
+
+      // Make sure isValid, parseCsv, inferTypes, & sortData was called
+      expect(isValidSpy).toHaveBeenCalled();
+      expect(parseCsvSpy).toHaveBeenCalled();
+      expect(inferTypesSpy).toHaveBeenCalled();
+      expect(sortDataSpy).toHaveBeenCalled();
+
+      // These should not throw errors
+      expect(parseCsvSpy).not.toThrow();
+      // for some reason these 2 throw errors :/
+      // expect(isValidSpy).not.toThrow();
+      // expect(inferTypesSpy).not.toThrow();
+
+      // Throws 'Data is EMPTY' error instead...
+      expect(sortDataSpy).toThrow('The file uploaded has no dates.');
+
+      // make sure alert was created
+      expect(windowSpy).toHaveBeenCalled();
+
+      compData = wrapper.state('data');
       expect(compData.length).toBe(3);
     });
 
-    it('.csv with sorted dates accepted\n', async () => {
-      const multiDateFile: File = new File(
-          ['Date,SomeNum,SomeString\n' +
-          '04/04/1995,4,abcd\n' +
-          '06-07-1996,5,efg\n' +
-          'November 5 1997,1,hij\n' +
-          ''],
-          'multiDateTest.csv',
-          {type: '.csv,text/csv'},
-      );
-      const fileEvent = {target: {files: [multiDateFile]}};
+    describe('T1.9: should accept valid csv file name with unusual' +
+      ' chars in file name', () => {
+      const props = {
+        prompt: 'test: ',
+        fileType: FileType.csv,
+      };
 
-      // no error should be thrown!!!
-      try {
-        expect(await comp.instance().parse(fileEvent)).toBe(undefined);
-      } catch (error) {
-        fail(); // fail if error thrown
-      }
-      // data should be updated to contain csv info
-      compData = comp.state('data');
-      // Check that the object contains all the data from the csv
-      compData.forEach((date) => {
-        expect(date).toMatchSnapshot({Date_num: expect.any(Number)});
+      // create mock component and onchange events
+      const onChangeMock = jest.fn();
+      const comp: any = mount(<ParserComponent
+        {...props}
+        onChange={onChangeMock}
+      />);
+
+      // clear the on change event mock and the enzyme component
+      beforeEach(() => {
+        onChangeMock.mockClear();
+        comp.setState({data: []});
+      });
+
+      it('file name with \\', async () => {
+        const testfile: File = new File(
+            ['Date,SomeNum,SomeString\n' +
+            '04/12/1998,4,abcd\n' +
+            '06-01-1994,5,efg\n' +
+            'November 5 1997,1,hij\n' +
+            ''],
+            'test\\.csv',
+            {type: '.csv,text/csv'},
+        );
+        const fileEvent = {target: {files: [testfile]}};
+        await comp.instance().parse(fileEvent);
+      });
+
+
+      it('file name with emoji that use unicode', async () => {
+        const testfilewithemoji: File = new File(
+            ['Date,SomeNum,SomeString\n' +
+                    '04/12/1998,4,abcd\n' +
+                    '06-01-1994,5,efg\n' +
+                    'November 5 1997,1,hij\n' +
+                    ''],
+            '😁😁😁😁.csv',
+            {type: '.csv,text/csv'},);
+
+        const fileEvent = {target: {files: [testfilewithemoji]}};
+        await comp.instance().parse(fileEvent);
+      });
+
+      // check conditions after each it() block
+      afterEach(() => {
+        expect(comp.state('data').length).toEqual(3);
+        expect(onChangeMock).toHaveBeenCalledTimes(1);
       });
     });
-
-    // todo: add tests for to check sorting by month, day, time
-    it('.csv with unsorted dates accepted & data sorted by date\n',
-        async () => {
-          const unsortedMultiDateFile: File = new File(
-              // This tests YYYY-MM-DD format
-              ['Date,SomeNum,SomeString\n' +
-              '1998-04-04,4,abcd\n' +
-              '1994-04-04,5,efg\n' +
-              '1997-04-04,1,hij\n' +
-              ''],
-              'test.csv',
-              {type: '.csv,text/csv'},
-          );
-          const fileEvent = {target: {files: [unsortedMultiDateFile]}};
-
-
-          // no error should be thrown!!!
-          try {
-            expect(await comp.instance().parse(fileEvent)).toBe(undefined);
-          } catch (e) {
-            fail(); // fail if error thrown
-          }
-          // data should be updated to contain csv info
-          compData = comp.state('data');
-          // Check that the object contains all the data from the csv
-          compData.forEach((date) => {
-            expect(date).toMatchSnapshot({Date_num: expect.any(Number)});
-          });
-        });
-  });
-
-  it('T1.4: .csv file with no temporal data is rejected\n', async () => {
-    // create spies
-    const inferTypesSpy =
-      jest.spyOn(ParserComponent.prototype, 'inferTypes');
-    const sortDataSpy =
-      jest.spyOn(ParserComponent.prototype, 'sortData');
-    const isValidSpy =
-      jest.spyOn(ParserComponent.prototype, 'isValid');
-    const parseCsvSpy =
-      jest.spyOn(ParserComponent.prototype, 'parseCsv');
-    const windowSpy =
-      jest.spyOn(window, 'alert');
-
-    const onChangeMock = jest.fn();
-    const wrapper: any = mount(
-        <ParserComponent
-          {...props}
-          onChange={onChangeMock}
-        />
-    );
-    let compData: Array<object> = [];
-
-    // test file with no dates
-    const noDateFile: File = new File(
-        ['H1,H2,H3,H4\n' +
-                'a,b,c,d\n' +
-                'e,f,g,h\n' +
-                'i,j,k,l\n'],
-        'test.csv',
-        {type: '.csv,text/csv'},);
-
-    // fileEvent
-    const fileEvent = {target: {files: [noDateFile]}};
-
-    await wrapper.instance().parse(fileEvent);
-
-    // Make sure isValid, parseCsv, inferTypes, & sortData was called
-    expect(isValidSpy).toHaveBeenCalled();
-    expect(parseCsvSpy).toHaveBeenCalled();
-    expect(inferTypesSpy).toHaveBeenCalled();
-    expect(sortDataSpy).toHaveBeenCalled();
-
-    // These should not throw errors
-    expect(parseCsvSpy).not.toThrow();
-    // for some reason these 2 throw errors :/
-    // expect(isValidSpy).not.toThrow();
-    // expect(inferTypesSpy).not.toThrow();
-
-    // Throws 'Data is EMPTY' error instead...
-    expect(sortDataSpy).toThrow('The file uploaded has no dates.');
-
-    // make sure alert was created
-    expect(windowSpy).toHaveBeenCalled();
-
-    compData = wrapper.state('data');
-    expect(compData.length).toBe(3);
   });
 });
-
-describe('should accept valid csv file name with unusual' +
-    ' chars in file name', () => {
-  const props = {
-    prompt: 'test: ',
-    fileType: FileType.csv,
-  };
-
-  // create mock component and onchange events
-  const onChangeMock = jest.fn();
-  const comp: any = mount(<ParserComponent
-    {...props}
-    onChange={onChangeMock}
-  />);
-
-  // clear the on change event mock and the enzyme component
-  beforeEach(() => {
-    onChangeMock.mockClear();
-    comp.setState({data: []});
-  });
-
-  it('file name with \\', async () => {
-    const testfile: File = new File(
-        ['Date,SomeNum,SomeString\n' +
-        '04/12/1998,4,abcd\n' +
-        '06-01-1994,5,efg\n' +
-        'November 5 1997,1,hij\n' +
-        ''],
-        'test\\.csv',
-        {type: '.csv,text/csv'},
-    );
-    const fileEvent = {target: {files: [testfile]}};
-    await comp.instance().parse(fileEvent);
-  });
-
-
-  it('file name with emoji that use unicode', async () => {
-    const testfilewithemoji: File = new File(['Date,SomeNum,SomeString\n' +
-        '04/12/1998,4,abcd\n' +
-        '06-01-1994,5,efg\n' +
-        'November 5 1997,1,hij\n' +
-        ''],
-    '😁😁😁😁.csv',
-    {type: '.csv,text/csv'},);
-
-    const fileEvent = {target: {files: [testfilewithemoji]}};
-    await comp.instance().parse(fileEvent);
-  });
-
-  // check conditions after each it() block
-  afterEach(() => {
-    expect(comp.state('data').length).toEqual(3);
-    expect(onChangeMock).toHaveBeenCalledTimes(1);
-  });
-});
-
 
 // To be used by the developers
 describe('<ParserComponent /> Unit Tests', () => {

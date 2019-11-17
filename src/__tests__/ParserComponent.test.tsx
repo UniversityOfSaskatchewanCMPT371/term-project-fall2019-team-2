@@ -20,6 +20,7 @@ describe('<ParserComponent /> renders correctly', () => {
 
     expect(comp.contains(prompt)).toBeTruthy();
     expect(comp.exists('input')).toBeTruthy();
+    expect(comp.exists('select')).toBeTruthy();
     expect(comp.find('input').prop('accept')).toContain('.csv,text/csv');
   });
 

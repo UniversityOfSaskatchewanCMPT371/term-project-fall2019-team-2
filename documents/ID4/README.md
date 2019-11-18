@@ -10,19 +10,19 @@
 - [Selenium Tests](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/pull/114)
 
 ## Mini-Milestones
-
+[Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID4/documents/ID4/ID4%20Mini%20Milestones.pdf is the document outlining the mini-milestones for next deliverable.
 
 ## Risk Report
 
 
 ## Reviews Conducted
-
+[Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID4/documents/reviews/riskDocReviewID4.pdf) is the document which holds the formal review for ID4.
 
 ## Design and Requirements Documents
-
+Design and requirements documnents did not change from ID3 to ID4.
 
 ## Meetings With Stakeholders
-
+[This](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID4/documents/meetings/2019_11_17_StakeholderID4%20(1).pdf) document outlines our stakeholder meeting, and what was discussed 
 
 ## Testing
 

@@ -538,6 +538,22 @@ describe('<TimelineComponent /> Unit Tests', () => {
     });
   });
 
+  describe('getIntervalMagnitudeData()', () => {
+    it('checks that getIntervalMagnitudeData is called when needed ',
+        () => {
+          const button = wrapper.find('button');
+          button.simulate('click');
+
+          wrapper.instance().drawTimeline();
+          const event = new KeyboardEvent('keydown', {'key': 'ArrowRight'});
+          document.body.dispatchEvent(event);
+          wrapper.instance().moveChart();
+          wrapper.instance().updateChart();
+          expect(wrapper.state('view')).toBe(ViewType.interval);
+        });
+  });
+
+
   describe('ttOver()', () => {
     it('checks that ttOver throws an error if it is called on the ' +
         'incorrect type of event', () => {
@@ -600,7 +616,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
       expect(updateBarsSpy).toHaveBeenCalled();
       console.log(document.body.innerHTML);
       // console.log(wrapper.)
-      expect(d3.selectAll('.line.pin').size()).toBe(5);
+      expect(d3.selectAll('.pin-line').size()).toBe(5);
       wrapper.instance().drawIntervalMagnitude(d3.selectAll('.bar'));
       expect(drawIntervalMagnitudeSpy).toHaveBeenCalled();
       //
@@ -633,8 +649,35 @@ describe('<TimelineComponent /> Unit Tests', () => {
   });
 
   describe('moveChart()', () => {
-    it('dummy test', () => {
-      // todo: devs need to write unit tests
+    it('dummy test', async () => {
+      wrapper.instance().drawTimeline();
+      const event = new MouseEvent('mousemove',
+          {
+            clientX: 1000,
+            button: 0,
+            buttons: 1,
+            clientY: 1000,
+            movementX: -100,
+          });
+      // const dragBehaviour = d3.behavior.drag();
+      // console.log(document.getElementById('barsLayer'));
+      // document.getElementById('barsLayer').dispatchEvent(event);
+      // console.log(document.getElementById('barsLayer'));
+      // wrapper.instance().dragged();
+
+      // await new Promise((res) => setTimeout(() => {
+      //   wrapper.update();
+      //   //console.log(wrapper.html());
+      //   wrapper.find('#barsLayer')
+      //     .simulate('drag', {
+      //     sourceEvent: {
+      //       x: 100,
+      //       y: 100,
+      //       movementX: -100,
+      //     }
+      //   });
+      //   res(true);
+      // }, 1000));
     });
   });
 

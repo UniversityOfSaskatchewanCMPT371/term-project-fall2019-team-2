@@ -330,20 +330,24 @@ describe('Csv FileEvents processed correctly\n', () => {
         comp.setState({data: []});
       });
 
+      // check conditions after each it() block
+      afterEach(() => {
+        expect(comp.state('data').length).toEqual(3);
+        expect(onChangeMock).toHaveBeenCalledTimes(1);
+      });
+
       it('file name with \\', async () => {
         const testfile: File = new File(
             ['Date,SomeNum,SomeString\n' +
             '04/12/1998,4,abcd\n' +
             '06-01-1994,5,efg\n' +
-            'November 5 1997,1,hij\n' +
-            ''],
+            'November 5 1997,1,hij\n'],
             'test\\.csv',
             {type: '.csv,text/csv'},
         );
         const fileEvent = {target: {files: [testfile]}};
         await comp.instance().parse(fileEvent);
       });
-
 
       it('file name with emoji that use unicode', async () => {
         const testfilewithemoji: File = new File(
@@ -357,12 +361,6 @@ describe('Csv FileEvents processed correctly\n', () => {
 
         const fileEvent = {target: {files: [testfilewithemoji]}};
         await comp.instance().parse(fileEvent);
-      });
-
-      // check conditions after each it() block
-      afterEach(() => {
-        expect(comp.state('data').length).toEqual(3);
-        expect(onChangeMock).toHaveBeenCalledTimes(1);
       });
     });
   });

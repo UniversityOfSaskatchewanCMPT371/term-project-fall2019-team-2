@@ -289,7 +289,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * @param {Object} fileEvent: the event passed into this component
      */
     async parse(fileEvent: any) {
-      console.log('parse()');
       this.setState(() => {
         return {
           showTimeline: false,
@@ -304,7 +303,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
         }
       } catch (e) {
         alert('Wrong file type was uploaded.');
-        console.log('Wrong file was uploaded.');
       }
 
       this.setState(() => {
@@ -355,7 +353,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
               this.sortData(this.state.data);
             } catch (e) {
               alert(e.toString());
-              console.log(e.toString());
             }
           }
           resolver(true);

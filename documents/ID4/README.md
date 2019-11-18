@@ -10,7 +10,7 @@
 - [Selenium Tests](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/pull/114)
 
 ## Mini-Milestones
-[Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID4/documents/ID4/ID4%20Mini%20Milestones.pdf is the document outlining the mini-milestones for next deliverable.
+[Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID4/documents/ID4/ID4%20Mini%20Milestones.pdf) is the document outlining the mini-milestones for next deliverable.
 
 ## Risk Report
 
@@ -32,6 +32,8 @@ the HTML was rendered correctly.
 Furthermore, we test the final build output by using a Python script with Selenium to ensure our production
 build was generated as we expect it. You can find the script and more details in [this directory](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID4/scripts). The smoke test script itself is
 well documented and can be found [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID4/scripts/smoke-test.py).
+
+[Here](https://docs.google.com/spreadsheets/d/1ZnNRrXKV4FqdfMf8I6ga-5IDUYAZFbtIXiw5_pEGHTY/edit#gid=0) is the current test matrix, and [here](https://docs.google.com/document/d/1rNxqIHSwTNACn8huHzSecRMWONxPcy9TrRf6I3TA6Ww/edit) is the current test design document used by the testing team.
 
 ## Builds
 

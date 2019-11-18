@@ -227,9 +227,9 @@ describe('Csv FileEvents processed correctly\n', () => {
             const unsortedMultiDateFile: File = new File(
                 // This tests YYYY-MM-DD format
                 ['Date,SomeNum,SomeString\n' +
-                '1998-04-04,4,abcd\n' +
-                '1994-04-04,5,efg\n' +
-                '1997-04-04,1,hij\n' +
+                '04-04-1997,4,abcd\n' +
+                '04-04-1993,5,efg\n' +
+                '04-04-1995,1,hij\n' +
                 ''],
                 'test.csv',
                 {type: '.csv,text/csv'},

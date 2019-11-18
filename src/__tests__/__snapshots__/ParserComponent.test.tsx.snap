@@ -41,3 +41,45 @@ Object {
   "index": 2,
 }
 `;
+
+exports[`Csv FileEvents processed correctly
+ R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ .csv with unsorted dates accepted & data sorted by date
+ 1`] = `
+Object {
+  "Date": "04-04-1993",
+  "Date_num": Any<Number>,
+  "SomeNum": 5,
+  "SomeString": "efg",
+  "index": 1,
+}
+`;
+
+exports[`Csv FileEvents processed correctly
+ R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ .csv with unsorted dates accepted & data sorted by date
+ 2`] = `
+Object {
+  "Date": "04-04-1995",
+  "Date_num": Any<Number>,
+  "SomeNum": 1,
+  "SomeString": "hij",
+  "index": 2,
+}
+`;
+
+exports[`Csv FileEvents processed correctly
+ R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ .csv with unsorted dates accepted & data sorted by date
+ 3`] = `
+Object {
+  "Date": "04-04-1997",
+  "Date_num": Any<Number>,
+  "SomeNum": 4,
+  "SomeString": "abcd",
+  "index": 0,
+}
+`;

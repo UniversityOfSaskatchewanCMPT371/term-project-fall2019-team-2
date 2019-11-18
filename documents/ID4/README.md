@@ -13,7 +13,7 @@
 [Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID4/documents/ID4/ID4%20Mini%20Milestones.pdf) is the document outlining the mini-milestones for next deliverable.
 
 ## Risk Report
-
+[Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID4/documents/ID4/ID4RiskAnalysis.pdf) is the risk report for ID4.
 
 ## Reviews Conducted
 [Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID4/documents/reviews/riskDocReviewID4.pdf) is the document which holds the formal review for ID4.

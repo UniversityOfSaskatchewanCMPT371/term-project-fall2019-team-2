@@ -626,16 +626,16 @@ describe('<TimelineComponent /> Unit Tests', () => {
   describe('Change Column', () => {
     it('Checks that data is sorted and re-drawn when a column ' +
         'dropdown is selected', () => {
-      wrapper.find('#ySelect')
+      wrapper.find('#ySelect').first()
           .simulate('change', {target: {value: 'Unit Price'}});
 
-      wrapper.find('#xSelect')
+      wrapper.find('#xSelect').first()
           .simulate('change', {target: {value: 'Units Sold'}});
 
-      wrapper.find('#xSelect')
+      wrapper.find('#xSelect').first()
           .simulate('change', {target: {value: 'Ship Date'}});
 
-      wrapper.find('#x2Select')
+      wrapper.find('#x2Select').first()
           .simulate('change', {target: {value: 'Order Date'}});
 
       expect(updateBarsSpy).toHaveBeenCalled();

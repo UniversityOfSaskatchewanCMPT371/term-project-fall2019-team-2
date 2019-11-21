@@ -1,5 +1,9 @@
 import Data from './Data';
-import {ViewType} from './TimelineComponent';
+import {ViewType} from './TimelineModel';
+import Column
+    from "./Column";
+
+
 
 interface TimelineInterface {
     data: Data;
@@ -25,3 +29,4 @@ export interface TimelineState {
     loading: boolean;
     view: ViewType;
 }
+

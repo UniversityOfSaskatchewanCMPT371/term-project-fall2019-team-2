@@ -58,7 +58,7 @@ let maxDate: any;
 let timeScale: any;
 let x: any;
 let y: any;
-
+//
 let extent: [[number, number], [number, number]];
 // tracks the switch statement for what should be drawn
 let view: ViewType;

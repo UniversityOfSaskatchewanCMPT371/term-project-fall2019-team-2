@@ -87,10 +87,10 @@ export default class ParserComponent extends React.Component<ParserInterface,
                 <option value="YYYY-MM-DD">YYYY-MM-DD</option>
                 <option value="MM-DD-YYYY">MM-DD-YYYY</option>
                 <option value="DD-MM-YYYY">DD-MM-YYYY</option>
-                <option value="DD-MMMM-YYYY">DD-MM-YYYY</option>
-                <option value="MMMM-DD-YYYY">DD-MM-YYYY</option>
-                <option value="DD-MM-YY">DD-MM-YYYY</option>
-                <option value="MM-DD-YY">DD-MM-YYYY</option>
+                <option value="DD-MMMM-YYYY">DD-MMMM-YYYY</option>
+                <option value="MMMM-DD-YYYY">MMMM-DD-YYYY</option>
+                <option value="DD-MM-YY">DD-MM-YY</option>
+                <option value="MM-DD-YY">MM-DD-YY</option>
               </select>
             </div>
           </div>

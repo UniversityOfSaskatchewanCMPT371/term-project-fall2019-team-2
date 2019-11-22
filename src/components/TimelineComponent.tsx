@@ -4,20 +4,18 @@ import TimelineInterface, {TimelineState} from './TimelineInterface';
 import * as d3
   from 'd3';
 import './Timeline.css';
-import Column
-  from './Column';
 import * as TimSort
   from 'timsort';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
-// import {TimelineModel} from './TimelineModel';
-import {TimelineModel} from './TimelineModel';
-import m = TimelineModel;
+import TimelineModel from './TimelineModel';
 
 export enum ViewType {
   interval, occurrence
 }
+
+const m = new TimelineModel();
 
 /**
  * Purpose: renders and updates a timeline to the screen
@@ -304,7 +302,7 @@ export default class TimelineComponent
             <Form.Control
               as='select'
               id='x2Select'
-              value={this.state.xColumn}
+              value={this.state.xColumn2}
               onChange={(e) => {
                 this.changeColumn(e, 'xColumn2');
               }}>
@@ -393,12 +391,12 @@ export default class TimelineComponent
     // ordinals = data.map((d: any) => d[xColumn]);
 
     // @ts-ignore
-    minDate = new Date(d3.min(
+    m.minDate = new Date(d3.min(
         [d3.min(m.csvData, (d: any) => Date.parse(d[m.xColumn])),
           d3.min(m.csvData, (d: any) => Date.parse(d[m.xColumn2]))]));
 
     // @ts-ignore
-    maxDate = new Date(d3.max(
+    m.maxDate = new Date(d3.max(
         [d3.min(m.csvData, (d: any) => Date.parse(d[m.xColumn])),
           d3.max(m.csvData, (d: any) => Date.parse(d[m.xColumn2]))]));
 
@@ -420,11 +418,11 @@ export default class TimelineComponent
         .domain([d3.min(m.csvData,
             (d) => {
               // @ts-ignore
-              return d[yColumn];
+              return d[m.yColumn];
             }),
         d3.max(m.csvData, (d) => {
           // @ts-ignore
-          return d[yColumn];
+          return d[m.yColumn];
         })])
         .range([m.height, 0]);
 

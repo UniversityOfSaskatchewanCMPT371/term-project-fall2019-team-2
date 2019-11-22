@@ -1,8 +1,7 @@
 import Data from './Data';
-import {ViewType} from './TimelineModel';
+import {ViewType} from './TimelineComponent';
 import Column
-    from "./Column";
-
+  from './Column';
 
 
 interface TimelineInterface {

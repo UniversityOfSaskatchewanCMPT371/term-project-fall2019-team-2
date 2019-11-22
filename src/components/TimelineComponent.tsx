@@ -139,7 +139,7 @@ export default class TimelineComponent
                 xColumn2: col.key,
               };
             });
-            xColumn2 = col.key;
+            m.xColumn2 = col.key;
             xColumn2Set = true;
           }
         }
@@ -268,7 +268,7 @@ export default class TimelineComponent
                 this.changeColumn(e, 'yColumn');
               }}>
               {
-                yColumns.map((col: any, i: number) =>
+                m.yColumns.map((col: any, i: number) =>
                   <option
                     key={i}
                     value={col.key}>{col.key}</option>)
@@ -288,7 +288,7 @@ export default class TimelineComponent
                 this.changeColumn(e, 'xColumn');
               }}>
               {
-                xColumns.map((col: any, i: number) =>
+                m.xColumns.map((col: any, i: number) =>
                   <option
                     key={i}
                     value={col.key}>{col.key}</option>)
@@ -309,7 +309,7 @@ export default class TimelineComponent
                 this.changeColumn(e, 'xColumn2');
               }}>
               {
-                xColumns.map((col: any, i: number) =>
+                m.xColumns.map((col: any, i: number) =>
                   <option
                     key={i}
                     value={col.key}>{col.key}</option>)
@@ -334,18 +334,18 @@ export default class TimelineComponent
    */
   toggleTimeline() {
     let prompt = this.state.togglePrompt;
-    if (view === ViewType.occurrence) {
+    if (m.view === ViewType.occurrence) {
       prompt = 'Switch to Occurrence Timeline';
-      view = ViewType.interval;
+      m.view = ViewType.interval;
     } else {
       prompt = 'Switch to Interval Timeline';
-      view = ViewType.occurrence;
+      m.view = ViewType.occurrence;
     }
 
     this.setState(() => {
       return {
         togglePrompt: prompt,
-        view: view,
+        view: m.view,
       };
     }, () => {
       this.resetTimeline();
@@ -370,66 +370,66 @@ export default class TimelineComponent
    * Purpose: sets the initial values for rendering the actual timeline
    */
   initTimeline() {
-    yColumn = this.state.yColumn;
-    xColumn = this.state.xColumn;
-    xColumn2 = this.state.xColumn2;
-    fullHeight = this.state.height;
-    fullWidth = this.state.width;
-    view = this.state.view;
+    m.yColumn = this.state.yColumn;
+    m.xColumn = this.state.xColumn;
+    m.xColumn2 = this.state.xColumn2;
+    m.fullHeight = this.state.height;
+    m.fullWidth = this.state.width;
+    m.view = this.state.view;
 
-    height = fullHeight - (marginBottom + marginTop);
+    m.height = m.fullHeight - (m.marginBottom + m.marginTop);
 
-    width = fullWidth - (marginLeft + marginRight);
+    m.width = m.fullWidth - (m.marginLeft + m.marginRight);
 
-    numBars = Math.floor(width / barWidth) +
-      barBuffer;// small pixel buffer to ensure smooth transitions
+    m.numBars = Math.floor(m.width / m.barWidth) +
+      m.barBuffer;// small pixel buffer to ensure smooth transitions
 
-    dataIdx = 0;
-    deltaX = 0;
+    m.dataIdx = 0;
+    m.deltaX = 0;
     this.scale = 1;
-    csvData = this.state.data.arrayOfData;
+    m.csvData = this.state.data.arrayOfData;
 
-    data = csvData.slice(0, numBars);
+    m.data = m.csvData.slice(0, m.numBars);
     // ordinals = data.map((d: any) => d[xColumn]);
 
     // @ts-ignore
     minDate = new Date(d3.min(
-        [d3.min(csvData, (d: any) => Date.parse(d[xColumn])),
-          d3.min(csvData, (d: any) => Date.parse(d[xColumn2]))]));
+        [d3.min(m.csvData, (d: any) => Date.parse(d[m.xColumn])),
+          d3.min(m.csvData, (d: any) => Date.parse(d[m.xColumn2]))]));
 
     // @ts-ignore
     maxDate = new Date(d3.max(
-        [d3.min(csvData, (d: any) => Date.parse(d[xColumn])),
-          d3.max(csvData, (d: any) => Date.parse(d[xColumn2]))]));
+        [d3.min(m.csvData, (d: any) => Date.parse(d[m.xColumn])),
+          d3.max(m.csvData, (d: any) => Date.parse(d[m.xColumn2]))]));
 
-    timeScale = d3.scaleTime()
-        .domain([minDate, maxDate])
-        .range([0, 50 * csvData.length]);
+    m.timeScale = d3.scaleTime()
+        .domain([m.minDate, m.maxDate])
+        .range([0, 50 * m.csvData.length]);
 
-    x = d3.scaleBand()
+    m.x = d3.scaleBand()
     // may need this in the future for spacing so leaving in
     // .padding(1)
-        .domain(data.map((d: any) => d[xColumn]))
-        .range([0, width]).round(true);
+        .domain(m.data.map((d: any) => d[m.xColumn]))
+        .range([0, m.width]).round(true);
 
     // This has to be used so sonarcloud doesn't freak out about unused
     // variables -.-
-    console.log(x(0));
+    console.log(m.x(0));
 
-    y = d3.scaleLinear()
-        .domain([d3.min(csvData,
+    m.y = d3.scaleLinear()
+        .domain([d3.min(m.csvData,
             (d) => {
               // @ts-ignore
               return d[yColumn];
             }),
-        d3.max(csvData, (d) => {
+        d3.max(m.csvData, (d) => {
           // @ts-ignore
           return d[yColumn];
         })])
-        .range([height, 0]);
+        .range([m.height, 0]);
 
-    extent = [[marginLeft, marginTop],
-      [width - marginRight, height - marginTop]];
+    m.extent = [[m.marginLeft, m.marginTop],
+      [m.width - m.marginRight, m.height - m.marginTop]];
   }
 
   /**
@@ -447,33 +447,33 @@ export default class TimelineComponent
   drawTimeline() {
     this.zoom = d3.zoom()
         .scaleExtent([1, 20]) // zoom range
-        .translateExtent(extent)
-        .extent(extent)
+        .translateExtent(m.extent)
+        .extent(m.extent)
         .on('zoom', this.updateChart);
     // .on('zoom.transform', this.updateChart);
 
     this.svg = d3.select('#svgtarget')
         .append('svg')
-        .attr('width', width)
-        .attr('height', height + marginTop +
-        marginBottom)
+        .attr('width', m.width)
+        .attr('height', m.height + m.marginTop +
+        m.marginBottom)
     // @ts-ignore
         .call(this.zoom)
         .append('g')
-        .attr('transform', `translate(${marginLeft}, ${marginTop})`);
+        .attr('transform', `translate(${m.marginLeft}, ${m.marginTop})`);
 
     this.svg.append('rect')
-        .attr('width', width)
-        .attr('height', height)
+        .attr('width', m.width)
+        .attr('height', m.height)
         .style('fill', 'none');
 
     this.svg.append('defs')
         .append('clipPath')
         .attr('id', 'barsBox')
         .append('rect')
-        .attr('width', width)
-        .attr('height', height + marginTop +
-        marginBottom)
+        .attr('width', m.width)
+        .attr('height', m.height + m.marginTop +
+        m.marginBottom)
         .attr('x', 0)
         .attr('y', 0);
 
@@ -492,7 +492,7 @@ export default class TimelineComponent
     axisLayer.append('g')
         .style('color', 'red')
         .attr('class', 'y axis')
-        .call(d3.axisLeft(y))
+        .call(d3.axisLeft(m.y))
         .append('text')
         .attr('transform', 'rotate(-90)')
         .attr('y', 6)
@@ -501,7 +501,7 @@ export default class TimelineComponent
         .style('color', 'red')
         .text('yColumn');
 
-    plot = barsLayer.append('g')
+    m.plot = barsLayer.append('g')
         .attr('class', 'plot')
         .attr('id', 'bars');
 
@@ -518,18 +518,18 @@ export default class TimelineComponent
    * @return {void}: Nothing
    */
   private drawLabels(): void {
-    switch (view) {
+    switch (m.view) {
       case ViewType.occurrence:
         this.svg.append('text')
             .attr('transform',
-                `translate(${width / 2},${height + marginTop + 20})`)
+                `translate(${m.width / 2},${m.height + m.marginTop + 20})`)
             .style('text-anchor', 'start')
             .text(this.state.xColumn);
 
         this.svg.append('text')
             .attr('transform', 'rotate(-90)')
-            .attr('y', 0 - marginLeft)
-            .attr('x', 0 - (height / 2))
+            .attr('y', 0 - m.marginLeft)
+            .attr('x', 0 - (m.height / 2))
             .attr('dy', '1em')
             .style('text-anchor', 'middle')
             .text(this.state.yColumn);
@@ -538,20 +538,21 @@ export default class TimelineComponent
       case ViewType.interval:
         this.svg.append('text')
             .attr('transform',
-                `translate(${(width / 2) + 10},${height + marginTop + 20})`)
+                `translate(${(m.width / 2) + 10},${m.height +
+                m.marginTop + 20})`)
             .style('text-anchor', 'start')
             .text('end: ' + this.state.xColumn2);
 
         this.svg.append('text')
             .attr('transform',
-                `translate(${width / 2},${height + marginTop + 20})`)
+                `translate(${m.width / 2},${m.height + m.marginTop + 20})`)
             .style('text-anchor', 'end')
             .text('start: ' + this.state.xColumn + ',');
 
         this.svg.append('text')
             .attr('transform', 'rotate(-90)')
-            .attr('y', 0 - marginLeft)
-            .attr('x', 0 - (height / 2))
+            .attr('y', 0 - m.marginLeft)
+            .attr('x', 0 - (m.height / 2))
             .attr('dy', '1em')
             .style('text-anchor', 'middle')
             .text(this.state.yColumn);
@@ -579,30 +580,30 @@ export default class TimelineComponent
       if (op === '-' || op === 's') {
         // Zoom out
         const identity = d3.zoomIdentity
-            .scale(Math.max(scaleMin, this.scale * scaleZoomOut));
+            .scale(Math.max(m.scaleMin, this.scale * m.scaleZoomOut));
 
         this.svg.transition().ease(d3.easeLinear).duration(300)
             .call(this.zoom.transform, identity);
         // Ensure the new scale is saved with a limit on the minimum
         //  zoomed out scope
-        this.scale = Math.max(scaleMin, this.scale * scaleZoomOut);
+        this.scale = Math.max(m.scaleMin, this.scale * m.scaleZoomOut);
       } else if (op === '+' || op === 'w') {
         // Zoom In
         const identity = d3.zoomIdentity
-            .scale(this.scale * scaleZoomIn);
+            .scale(this.scale * m.scaleZoomIn);
 
         this.svg.transition().ease(d3.easeLinear).duration(300)
             .call(this.zoom.transform, identity);
         // Ensure the new scale is saved
-        this.scale = this.scale * scaleZoomIn;
+        this.scale = this.scale * m.scaleZoomIn;
       } else if (op === 'ArrowLeft') {
         // Pan Left
-        deltaX = Math.min(0, deltaX + deltaPan);
+        m.deltaX = Math.min(0, m.deltaX + m.deltaPan);
         // console.log(deltaX);
         this.moveChart();
       } else if (op === 'ArrowRight') {
         // Pan Right
-        deltaX -= deltaPan;
+        m.deltaX -= m.deltaPan;
         this.moveChart();
       }
       movingTimeout = setTimeout(loop, 25, op);
@@ -792,7 +793,8 @@ export default class TimelineComponent
 
       d3.selectAll('.xtick')
           .attr('transform', (d: any, i: number) =>
-            `translate(${this.scale * m.timeScale(new Date(d.text))},${m.height})`);
+            `translate(${this.scale * m.timeScale(new Date(d.text))},
+            ${m.height})`);
     }
 
     if (d3.event !== null && d3.event.sourceEvent !== null &&

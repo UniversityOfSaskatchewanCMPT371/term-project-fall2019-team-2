@@ -8,6 +8,9 @@
 
 - [Electron Builds](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/pull/109)
 - [Selenium Tests](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/pull/114)
+- [Date Options and Test Cases](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/pull/92)
+- [Plotting as pin-heads](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/pull/117)
+- [Integration Tests](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/pull/99)
 
 ## Mini-Milestones
 

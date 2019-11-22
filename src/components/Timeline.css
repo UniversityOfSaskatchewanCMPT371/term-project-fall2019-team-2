@@ -5,3 +5,6 @@
 .bar:hover {
     fill: orangered ;
 }
+label{
+    padding: 1%;
+}

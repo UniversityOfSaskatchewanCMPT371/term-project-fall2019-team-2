@@ -310,7 +310,7 @@ describe('Csv FileEvents processed correctly\n', () => {
       expect(compData.length).toBe(3);
     });
 
-    describe('T1.9: should accept valid csv file name with unusual' +
+    xdescribe('T1.9: should accept valid csv file name with unusual' +
       ' chars in file name', () => {
       const props = {
         prompt: 'test: ',

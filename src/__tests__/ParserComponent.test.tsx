@@ -17,10 +17,10 @@ describe('<ParserComponent /> renders correctly', () => {
           {...props}
           fileType={FileType.csv}
         />);
-
     expect(comp.contains(prompt)).toBeTruthy();
     expect(comp.exists('input')).toBeTruthy();
     expect(comp.find('input').prop('accept')).toContain('.csv,text/csv');
+
   });
 
   it('renders a <ParseComponent /> to select a .tl', () => {
@@ -263,6 +263,41 @@ describe('Csv FileEvents processed correctly\n', () => {
           });
         });
   });
+});
+
+describe('Incorrect file formatting is rejected\n',()=>{
+    const props = {
+        prompt: 'test: ',
+        fileType: FileType.csv,
+    };
+
+    const onChangeMock = jest.fn();
+    const comp: any = mount(
+        <ParserComponent
+            {...props}
+            onChange={onChangeMock}
+        />
+    );
+
+    beforeEach(() => {
+        onChangeMock.mockClear();
+        comp.setState({data: []});
+    });
+
+    //using 0
+
+    //using $
+
+    //special characters
+
+    //unescaped delimiter
+
+    //unescaped double quote
+
+    afterEach(() => {
+        expect(comp.state('data').length).toEqual(3);
+        expect(onChangeMock).toHaveBeenCalledTimes(1);
+    });
 });
 
 describe('should accept valid csv file name with unusual' +

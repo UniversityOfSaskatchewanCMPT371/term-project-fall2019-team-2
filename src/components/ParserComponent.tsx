@@ -225,13 +225,18 @@ export default class ParserComponent extends React.Component<ParserInterface,
               if (typeof val === 'string') {
                 const date = moment(val);
                 const isValid = date.isValid();
+                console.log(date + "is valid");
                 if (isValid) {
                   curColTypes['numDate'] += 1;
-                } else {
+                  console.log("current # of column types:" + curColTypes);
+                }
+                else {
                   throw val;
+                  console.info(val + "is not a valid file");
                 }
               } else {
                 throw val;
+                console.info(val + "is not a string");
               }
             } catch {
               // @ts-ignore

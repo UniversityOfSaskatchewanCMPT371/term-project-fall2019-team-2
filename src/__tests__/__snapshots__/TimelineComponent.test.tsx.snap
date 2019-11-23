@@ -112,8 +112,8 @@ exports[`<TimelineComponent /> R2 Tests
                 </InputGroupText>
               </div>
             </InputGroupPrepend>
-            <FormControl as=\\"select\\" id=\\"x2Select\\" value=\\"Order Date\\" onChange={[Function: onChange]}>
-              <select value=\\"Order Date\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"x2Select\\" className=\\"form-control\\">
+            <FormControl as=\\"select\\" id=\\"x2Select\\" value=\\"Order ID\\" onChange={[Function: onChange]}>
+              <select value=\\"Order ID\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"x2Select\\" className=\\"form-control\\">
                 <option value=\\"Order Date\\">
                   Order Date
                 </option>

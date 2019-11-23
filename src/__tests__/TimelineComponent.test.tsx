@@ -155,6 +155,7 @@ describe('<TimelineComponent /> R2 Tests\n', () => {
 
   it('T2.1 Snapshot Test\n', () => {
     // This just makes the snapshot more readable
+    // since it originally print in 1 huge line
     const svgTarget: any = document.getElementById('svgtarget');
     let svgHTML: string = '';
     if (svgTarget) {

@@ -6,6 +6,11 @@ import Column
 
 import {ViewType} from './TimelineComponent';
 
+/**
+ * Purpose: this class is used to store the variables necessary for the
+ * TimelineComponent to render timelines. The primary purpose of this class is
+ * to allow for greater modularity in the TimelineComponent.
+ */
 export default class TimelineModel {
   public marginTop: number = 0;
   public marginBottom: number = 170;
@@ -52,6 +57,9 @@ export default class TimelineModel {
   public view: ViewType;
   public plot: any;
 
+  /**
+   * Purpose: constructor with default values based on our current layout.
+   */
   constructor() {
     this.marginTop = 0;
     this.marginBottom = 170;
@@ -72,16 +80,16 @@ export default class TimelineModel {
     this.numBars = 0;
     this.dataIdx = 0;
     this.deltaX = 0;
-    this.xColumn = "";
-    this.xColumn2 = "";
-    this.yColumn = "";
+    this.xColumn = '';
+    this.xColumn2 = '';
+    this.yColumn = '';
     this.xColumns = [];
     this.yColumns = [];
 
     this.csvData = [];
     this.data = [];
 
-    this.extent = [[0,0],[0,0]];
+    this.extent = [[0, 0], [0, 0]];
     this.view = ViewType.occurrence;
   }
 }

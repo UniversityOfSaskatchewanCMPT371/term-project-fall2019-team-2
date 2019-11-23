@@ -14,8 +14,10 @@
     "@types/node": "12.7.12",
     "@types/react": "16.9.5",
     "@types/react-dom": "16.9.1",
+    "@types/react-test-renderer": "^16.9.1",
     "@types/timsort": "^0.3.0",
     "bootstrap": "^4.3.1",
+    "cross-env": "6.0.2",
     "d3": "^5.12.0",
     "d3-dsv": "^1.1.1",
     "d3-time-format": "^2.1.3",
@@ -28,12 +30,12 @@
     "react": "^16.10.2",
     "react-bootstrap": "^1.0.0-beta.14",
     "react-dom": "^16.10.2",
+    "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0",
-    "react-test-renderer": "^16.10.2",
+    "react-test-renderer": "^16.12.0",
     "sinon": "^7.5.0",
-    "typescript": "^3.6.3",
-    "cross-env": "6.0.2"
+    "typescript": "^3.6.3"
   },
   "scripts": {
     "start": "react-scripts start",

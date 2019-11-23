@@ -350,14 +350,15 @@ describe('<TimelineComponent /> R3 Tests\n', ()=>{
   // zoom in events for keydown & keyup
   const zoomInEventDown = new KeyboardEvent('keydown', {'key': '+'});
   const zoomInEventUp = new KeyboardEvent('keyup', {'key': '+'});
+
   it('T3.1 Snapshot Test\n', () => {
     expect(wrapper.instance().getScale()).toBe(1.0);
 
     // check scale for zoomInEventDown and zoomInEventUp separately
     document.body.dispatchEvent(zoomInEventDown);
+    document.body.dispatchEvent(zoomInEventUp);
     const tempScaleEventDown = wrapper.instance().getScale();
     expect(tempScaleEventDown).toBeGreaterThan(1.0);
-    document.body.dispatchEvent(zoomInEventUp);
 
     // find d3 svg element
     const svgTarget: any = document.getElementById('svgtarget');

@@ -134,7 +134,6 @@ describe('R1 Tests\n', () => {
 
     // called before every it()
     beforeEach(() => {
-      console.log('beforeEach()');
       // make sure everything is cleared before running test
       reset();
 
@@ -217,27 +216,25 @@ describe('R1 Tests\n', () => {
   describe('T1.3: .csv with different valid date formats accepted\n', () => {
     // replaces afterEach() -> was behaving weirdly with async()
     const expectHelper = async (fEvent: object) => {
-      try {
-        await wrapper.instance().parse(fEvent);
-      } catch (e) {
-        // data should be updated to contain csv info
-        compData = wrapper.state('data');
-        // Check that the object contains all the data from the csv
-        compData.forEach((date) => {
-          expect(date).toMatchSnapshot({Date_num: expect.any(Number)});
-        });
+      await wrapper.instance().parse(fEvent);
 
-        // onChange should be called once
-        expect(onChangeMock).toHaveBeenCalledTimes(1);
-        expect(compData.length).toBe(3);
+      // data should be updated to contain csv info
+      compData = wrapper.state('data');
 
-        // spies that should have been called
-        expect(parseSpy).toHaveBeenCalledTimes(1);
-        expect(parseCsvSpy).toHaveBeenCalledTimes(1);
-        expect(isValidSpy).toHaveBeenCalledTimes(1);
-        expect(inferTypesSpy).toHaveBeenCalledTimes(1);
-        expect(sortDataSpy).toHaveBeenCalledTimes(1);
-      }
+      // Check that the object contains all the data from the csv
+      compData.forEach((date) => {
+        expect(date).toMatchSnapshot({Date_num: expect.any(Number)});
+      });
+
+      // onChange should be called once
+      expect(onChangeMock).toHaveBeenCalledTimes(1);
+      expect(compData.length).toBe(3);
+      // spies that should have been called
+      expect(parseSpy).toHaveBeenCalledTimes(1);
+      expect(parseCsvSpy).toHaveBeenCalledTimes(1);
+      expect(isValidSpy).toHaveBeenCalledTimes(1);
+      expect(inferTypesSpy).toHaveBeenCalled();
+      expect(sortDataSpy).toHaveBeenCalledTimes(1);
     };
 
     beforeEach(() => {
@@ -337,15 +334,11 @@ describe('R1 Tests\n', () => {
     });
 
     const expectHelper = async (fEvent: object) => {
-      try {
-        console.log(fEvent);
-        await wrapper.instance().parse(fEvent);
-        console.log(fEvent);
-      } catch (e) {
-        expect(parseSpy).toHaveBeenCalledTimes(1);
-        expect(wrapper.state('data').length).toEqual(3);
-        expect(onChangeMock).toHaveBeenCalledTimes(1);
-      }
+      await wrapper.instance().parse(fEvent);
+
+      expect(parseSpy).toHaveBeenCalledTimes(1);
+      expect(wrapper.state('data').length).toEqual(3);
+      expect(onChangeMock).toHaveBeenCalledTimes(1);
     };
 
     it('file name with \\', async () => {

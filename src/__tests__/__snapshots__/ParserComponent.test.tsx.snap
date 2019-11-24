@@ -1,9 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Csv FileEvents processed correctly
- R1 Tests
+exports[`R1 Tests
  T1.3: .csv with different valid date formats accepted
- .csv with sorted dates accepted
+ should parse .csv with sorted dates
  1`] = `
 Object {
   "Date": "04/04/1995",
@@ -14,10 +13,9 @@ Object {
 }
 `;
 
-exports[`Csv FileEvents processed correctly
- R1 Tests
+exports[`R1 Tests
  T1.3: .csv with different valid date formats accepted
- .csv with sorted dates accepted
+ should parse .csv with sorted dates
  2`] = `
 Object {
   "Date": "06-07-1996",
@@ -28,10 +26,9 @@ Object {
 }
 `;
 
-exports[`Csv FileEvents processed correctly
- R1 Tests
+exports[`R1 Tests
  T1.3: .csv with different valid date formats accepted
- .csv with sorted dates accepted
+ should parse .csv with sorted dates
  3`] = `
 Object {
   "Date": "November 5 1997",
@@ -42,10 +39,9 @@ Object {
 }
 `;
 
-exports[`Csv FileEvents processed correctly
- R1 Tests
+exports[`R1 Tests
  T1.3: .csv with different valid date formats accepted
- .csv with unsorted dates accepted & data sorted by date
+ should parse .csv with unsorted dates & sort data by date
  1`] = `
 Object {
   "Date": "04-04-1993",
@@ -56,10 +52,9 @@ Object {
 }
 `;
 
-exports[`Csv FileEvents processed correctly
- R1 Tests
+exports[`R1 Tests
  T1.3: .csv with different valid date formats accepted
- .csv with unsorted dates accepted & data sorted by date
+ should parse .csv with unsorted dates & sort data by date
  2`] = `
 Object {
   "Date": "04-04-1995",
@@ -70,10 +65,9 @@ Object {
 }
 `;
 
-exports[`Csv FileEvents processed correctly
- R1 Tests
+exports[`R1 Tests
  T1.3: .csv with different valid date formats accepted
- .csv with unsorted dates accepted & data sorted by date
+ should parse .csv with unsorted dates & sort data by date
  3`] = `
 Object {
   "Date": "04-04-1997",

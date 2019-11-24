@@ -39,7 +39,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
     this.inferTypes = this.inferTypes.bind(this);
     this.parseCsv = this.parseCsv.bind(this);
     this.parse = this.parse.bind(this);
-    this.inferTypes = this.inferTypes.bind(this);
   }
 
   /**
@@ -83,7 +82,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
                   };
                 });
               }}>
-              <option selected value="">Open this select menu</option>
+              <option value="">Open this select menu</option>
               <option value="YYYY-MM-DD">YYYY-MM-DD</option>
               <option value="MM-DD-YYYY">MM-DD-YYYY</option>
               <option value="DD-MM-YYYY">DD-MM-YYYY</option>
@@ -110,15 +109,17 @@ export default class ParserComponent extends React.Component<ParserInterface,
    * valid
    */
   isValid(upFile?: File): boolean {
+    console.log('isValid()');
     if (upFile !== undefined) {
       const typeOfFile = upFile.name.substr(upFile.name.length - 4);
       if (typeOfFile === '.csv') {
         return typeOfFile === '.csv';
       } else {
+        console.log('file object defined but is invalid');
         throw new Error('Wrong file type was uploaded.');
       }
     }
-    throw new Error('Wrong file type was uploaded.');
+    throw new Error('File object undefined');
   }
 
   /**
@@ -303,7 +304,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
       }
     } catch (e) {
       alert('Wrong file type was uploaded.');
-      console.log('Wrong file was uploaded.');
+      console.log('Wrong file type was uploaded.');
     }
 
     this.setState(() => {

@@ -4,6 +4,7 @@ import ParserComponent, {CountTypes} from '../components/ParserComponent';
 import ParserInterface, {FileType} from '../components/ParserInterface';
 import {enumDrawType} from '../components/Column';
 
+
 describe('<ParserComponent /> renders correctly', () => {
   const prompt = <label>test: </label>;
   const props = {
@@ -37,332 +38,340 @@ describe('<ParserComponent /> renders correctly', () => {
   });
 });
 
-describe('Csv FileEvents processed correctly\n', () => {
+it('should trigger onChange event when file selected', async () => {
   const props = {
     prompt: 'test: ',
     fileType: FileType.csv,
   };
+  const onChangeMock = jest.fn();
+  const testFile: File = new File(
+      ['abcdef'],
+      'test.csv',
+      {type: '.csv,text/csv'},);
 
-  it('Onchange event triggered when file selected\n', async () => {
-    const onChangeMock = jest.fn();
-    const testFile: File = new File(
-        ['abcdef'],
-        'test.csv',
-        {type: '.csv,text/csv'},);
-
-    const event = {target: {files: [testFile]}};
-    const comp = mount(
-        <ParserComponent
-          {...props}
-          onChange={onChangeMock}
-        />);
-
-    comp.find('input').simulate('change', event);
-    const fileUsed: File = onChangeMock.mock.calls[0][0];
-    expect(fileUsed.name).toBe(testFile.name);
-    expect(onChangeMock).toHaveBeenCalledTimes(1);
-  });
-
-  describe('R1 Tests\n', () => {
-    describe('T1.1: Incompatible File types not accepted\n', () => {
-      // vars used
-      let inferTypesSpy: any;
-      let sortDataSpy: any;
-      let isValidSpy: any;
-      let parseCsvSpy: any;
-      let windowSpy: any;
-      let wrapper: any;
-      let compData: Array<object>;
-      const onChangeMock = jest.fn();
-
-      // jest doesn't implement window.alert & will throw an error
-      // this suppresses that error (can still check that alert is created)
-      window.alert = () => {};
-
-      beforeEach(() => {
-        // create spies
-        inferTypesSpy =
-          jest.spyOn(ParserComponent.prototype, 'inferTypes');
-        sortDataSpy =
-          jest.spyOn(ParserComponent.prototype, 'sortData');
-        isValidSpy =
-          jest.spyOn(ParserComponent.prototype, 'isValid');
-        parseCsvSpy =
-          jest.spyOn(ParserComponent.prototype, 'parseCsv');
-        windowSpy =
-          jest.spyOn(window, 'alert');
-
-        wrapper = mount(
-            <ParserComponent
-              {...props}
-              onChange={onChangeMock}
-            />
-        );
-
-        // make sure everything is cleared before running test
-        onChangeMock.mockClear();
-        compData = [];
-      });
-
-      // Called after every it()
-      afterEach(() => {
-        // Make sure isValid was called & error was thrown
-        expect(isValidSpy).toHaveBeenCalled();
-        expect(isValidSpy).toThrow('Wrong file type was uploaded.');
-
-        // make sure sortData, parseCsv, & inferTypes were not called
-        expect(parseCsvSpy).not.toHaveBeenCalled();
-        expect(sortDataSpy).not.toHaveBeenCalled();
-        expect(inferTypesSpy).not.toHaveBeenCalled();
-
-        // make sure alert was created
-        expect(windowSpy).toHaveBeenCalled();
-
-        // Check that ParserComponent data is still empty
-        compData = wrapper.state('data');
-        expect(onChangeMock).not.toHaveBeenCalled();
-        expect(compData.length).toBe(0);
-      });
-
-      it('.pdf rejected', async () => {
-        const pdfTestFile: File = new File(
-            ['test'],
-            'test.pdf',
-            {type: '.pdf,application/pdf'},
-        );
-        const fileEvent: any = {target: {files: [pdfTestFile]}};
-        await wrapper.instance().parse(fileEvent);
-      });
-
-      it('.txt rejected', async () => {
-        const txtTestFile: File = new File(
-            ['abcdef'],
-            'test.txt',
-            {type: '.txt, text/plain'},
-        );
-        const fileEvent: any = {target: {files: [txtTestFile]}};
-        await wrapper.instance().parse(fileEvent);
-      });
-
-      it('.doc rejected', async () => {
-        const docTestFile: File = new File(
-            [''],
-            'test.doc',
-            {type: '.doc, application/msword'},
-        );
-        const fileEvent: any = {target: {files: [docTestFile]}};
-        await wrapper.instance().parse(fileEvent);
-      });
-
-      it('.css rejected', async () => {
-        const cssTestFile: File = new File(
-            [''],
-            'test.css',
-            {type: '.css, text/css'},
-        );
-        const fileEvent: any = {target: {files: [cssTestFile]}};
-        await wrapper.instance().parse(fileEvent);
-      });
-
-      it('.js rejected', async () => {
-        const jsTestFile: File = new File(
-            ['abcdefg'],
-            'test.js',
-            {type: '.js, text/javascript'},
-        );
-        const fileEvent: any = {target: {files: [jsTestFile]}};
-        await wrapper.instance().parse(fileEvent);
-      });
-    });
-    describe('T1.3: .csv with different valid date formats accepted\n', () => {
-      const onChangeMock = jest.fn();
-      const comp: any = mount(<ParserComponent
+  const event = {target: {files: [testFile]}};
+  const comp = mount(
+      <ParserComponent
         {...props}
         onChange={onChangeMock}
       />);
-      let compData: Array<object>;
 
-      beforeEach(() => {
-        onChangeMock.mockClear();
-        comp.setState({data: []});
-        compData = comp.state('data');
-        expect(compData.length).toBe(0);
-      });
+  comp.find('input').simulate('change', event);
+  const fileUsed: File = onChangeMock.mock.calls[0][0];
+  expect(fileUsed.name).toBe(testFile.name);
+  expect(onChangeMock).toHaveBeenCalledTimes(1);
+});
 
-      afterEach(() => {
-        // onChange should be called once, and it should get to parseCsv()
-        expect(onChangeMock).toHaveBeenCalledTimes(1);
-        expect(compData.length).toBe(3);
-      });
+describe('R1 Tests\n', () => {
+  const csvProps = {
+    prompt: 'test: ',
+    fileType: FileType.csv,
+  };
 
-      it('.csv with sorted dates accepted\n', async () => {
-        const multiDateFile: File = new File(
-            ['Date,SomeNum,SomeString\n' +
-            '04/04/1995,4,abcd\n' +
-            '06-07-1996,5,efg\n' +
-            'November 5 1997,1,hij\n' +
-            ''],
-            'multiDateTest.csv',
-            {type: '.csv,text/csv'},
-        );
-        const fileEvent = {target: {files: [multiDateFile]}};
+  // store original console.warn
+  const originalWarn = console.warn;
 
-        // no error should be thrown!!!
-        try {
-          expect(await comp.instance().parse(fileEvent)).toBe(undefined);
-        } catch (error) {
-          fail(); // fail if error thrown
-        }
-        // data should be updated to contain csv info
-        compData = comp.state('data');
-        // Check that the object contains all the data from the csv
-        compData.forEach((date) => {
-          expect(date).toMatchSnapshot({Date_num: expect.any(Number)});
-        });
-      });
+  // array to store console output
+  const consoleOutput: any[] = [];
 
-      // todo: add tests for to check sorting by month, day, time
-      it('.csv with unsorted dates accepted & data sorted by date\n',
-          async () => {
-            const unsortedMultiDateFile: File = new File(
-                // This tests YYYY-MM-DD format
-                ['Date,SomeNum,SomeString\n' +
-                '04-04-1997,4,abcd\n' +
-                '04-04-1993,5,efg\n' +
-                '04-04-1995,1,hij\n' +
-                ''],
-                'test.csv',
-                {type: '.csv,text/csv'},
-            );
-            const fileEvent = {target: {files: [unsortedMultiDateFile]}};
+  // function to receive console.warn output
+  console.warn = (output: any) => consoleOutput.push(output);
 
+  // vars that are used in most of the tests
+  const onChangeMock: any = jest.fn();
+  let compData: Array<object>;
+  let wrapper: any;
+  let fileEvent: any;
 
-            // no error should be thrown!!!
-            try {
-              expect(await comp.instance().parse(fileEvent)).toBe(undefined);
-            } catch (e) {
-              fail(); // fail if error thrown
-            }
-            // data should be updated to contain csv info
-            compData = comp.state('data');
-            // Check that the object contains all the data from the csv
-            compData.forEach((date) => {
-              expect(date).toMatchSnapshot({Date_num: expect.any(Number)});
-            });
-          });
-    });
+  // create spies
+  const inferTypesSpy: any =
+      jest.spyOn(ParserComponent.prototype, 'inferTypes');
+  const sortDataSpy: any =
+      jest.spyOn(ParserComponent.prototype, 'sortData');
+  let isValidSpy: any =
+      jest.spyOn(ParserComponent.prototype, 'isValid');
+  const parseCsvSpy: any =
+      jest.spyOn(ParserComponent.prototype, 'parseCsv');
+  const parseSpy: any =
+      jest.spyOn(ParserComponent.prototype, 'parse');
+  let windowSpy: any =
+      jest.spyOn(window, 'alert');
 
-    it('T1.4: .csv file with no temporal data is rejected\n', async () => {
-      // create spies
-      const inferTypesSpy =
-        jest.spyOn(ParserComponent.prototype, 'inferTypes');
-      const sortDataSpy =
-        jest.spyOn(ParserComponent.prototype, 'sortData');
-      const isValidSpy =
-        jest.spyOn(ParserComponent.prototype, 'isValid');
-      const parseCsvSpy =
-        jest.spyOn(ParserComponent.prototype, 'parseCsv');
-      const windowSpy =
+  // jest doesn't implement window.alert & will throw an error
+  // this suppresses that error (can still check that an alert is created)
+  window.alert = () => {};
+
+  const reset = () => {
+    // clear spies
+    inferTypesSpy.mockClear();
+    sortDataSpy.mockClear();
+    isValidSpy.mockClear();
+    parseCsvSpy.mockClear();
+    parseSpy.mockClear();
+    windowSpy.mockClear();
+
+    // needs to be done so spy on window.alert for each test
+    windowSpy =
         jest.spyOn(window, 'alert');
 
-      const onChangeMock = jest.fn();
-      const wrapper: any = mount(
+    // clean up other stuff
+    onChangeMock.mockClear();
+    compData = [];
+    fileEvent = undefined;
+  };
+
+  describe('T1.1: Incompatible file types not accepted\n', () => {
+    // helper to reduce repeating code
+    const isValidCheck = async (fEvent: object) => {
+      try {
+        await wrapper.instance().parse(fEvent);
+      } catch (e) {
+        // Make sure isValid was called & error was thrown
+        expect(isValidSpy).toHaveBeenCalledTimes(1);
+        expect(isValidSpy).toThrow('Wrong file type was uploaded.');
+      }
+    };
+
+    // called before every it()
+    beforeEach(() => {
+      console.log('beforeEach()');
+      // make sure everything is cleared before running test
+      reset();
+
+      wrapper = mount(
           <ParserComponent
-            {...props}
+            {...csvProps}
             onChange={onChangeMock}
           />
       );
-      let compData: Array<object> = [];
+    });
 
-      // test file with no dates
-      const noDateFile: File = new File(
-          ['H1,H2,H3,H4\n' +
-          'a,b,c,d\n' +
-          'e,f,g,h\n' +
-          'i,j,k,l\n'],
-          'test.csv',
-          {type: '.csv,text/csv'},);
-
-      // fileEvent
-      const fileEvent = {target: {files: [noDateFile]}};
-
-      await wrapper.instance().parse(fileEvent);
-
-      // Make sure isValid, parseCsv, inferTypes, & sortData was called
-      expect(isValidSpy).toHaveBeenCalled();
-      expect(parseCsvSpy).toHaveBeenCalled();
-      expect(inferTypesSpy).toHaveBeenCalled();
-      expect(sortDataSpy).toHaveBeenCalled();
-
-      // These should not throw errors
-      expect(parseCsvSpy).not.toThrow();
-      // for some reason these 2 throw errors :/
-      // expect(isValidSpy).not.toThrow();
-      // expect(inferTypesSpy).not.toThrow();
-
-      // Throws 'Data is EMPTY' error instead...
-      expect(sortDataSpy).toThrow('The file uploaded has no dates.');
+    // Called after every it()
+    afterEach(() => {
+      // make sure sortData, parseCsv, & inferTypes were not called
+      expect(parseCsvSpy).not.toHaveBeenCalled();
+      expect(sortDataSpy).not.toHaveBeenCalled();
+      expect(inferTypesSpy).not.toHaveBeenCalled();
 
       // make sure alert was created
       expect(windowSpy).toHaveBeenCalled();
 
+      // Check that ParserComponent data is still empty
       compData = wrapper.state('data');
-      expect(compData.length).toBe(3);
+      expect(onChangeMock).not.toHaveBeenCalled();
+      expect(compData.length).toBe(0);
     });
 
-    xdescribe('T1.9: should accept valid csv file name with unusual' +
-      ' chars in file name', () => {
-      const props = {
-        prompt: 'test: ',
-        fileType: FileType.csv,
-      };
+    it('.pdf rejected', async () => {
+      const pdfTestFile: File = new File(
+          ['test'],
+          'test.pdf',
+          {type: '.pdf,application/pdf'},
+      );
+      fileEvent = {target: {files: [pdfTestFile]}};
 
-      // create mock component and onchange events
-      const onChangeMock = jest.fn();
-      const comp: any = mount(<ParserComponent
-        {...props}
+      await isValidCheck(fileEvent);
+    });
+
+    it('.txt rejected', async () => {
+      const txtTestFile: File = new File(
+          ['abcdef'],
+          'test.txt',
+          {type: '.txt, text/plain'},
+      );
+      fileEvent = {target: {files: [txtTestFile]}};
+      await isValidCheck(fileEvent);
+    });
+
+    it('.doc rejected', async () => {
+      const docTestFile: File = new File(
+          [''],
+          'test.doc',
+          {type: '.doc, application/msword'},
+      );
+      fileEvent = {target: {files: [docTestFile]}};
+      await isValidCheck(fileEvent);
+    });
+
+    it('.css rejected', async () => {
+      const cssTestFile: File = new File(
+          [''],
+          'test.css',
+          {type: '.css, text/css'},
+      );
+      fileEvent = {target: {files: [cssTestFile]}};
+      await isValidCheck(fileEvent);
+    });
+
+    it('.js rejected', async () => {
+      const jsTestFile: File = new File(
+          ['abcdefg'],
+          'test.js',
+          {type: '.js, text/javascript'},
+      );
+      fileEvent = {target: {files: [jsTestFile]}};
+      await isValidCheck(fileEvent);
+    });
+  });
+
+  describe('T1.3: .csv with different valid date formats accepted\n', () => {
+    // replaces afterEach() -> was behaving weirdly with async()
+    const expectHelper = async (fEvent: object) => {
+      try {
+        await wrapper.instance().parse(fEvent);
+      } catch (e) {
+        // data should be updated to contain csv info
+        compData = wrapper.state('data');
+        // Check that the object contains all the data from the csv
+        compData.forEach((date) => {
+          expect(date).toMatchSnapshot({Date_num: expect.any(Number)});
+        });
+
+        // onChange should be called once
+        expect(onChangeMock).toHaveBeenCalledTimes(1);
+        expect(compData.length).toBe(3);
+
+        // spies that should have been called
+        expect(parseSpy).toHaveBeenCalledTimes(1);
+        expect(parseCsvSpy).toHaveBeenCalledTimes(1);
+        expect(isValidSpy).toHaveBeenCalledTimes(1);
+        expect(inferTypesSpy).toHaveBeenCalledTimes(1);
+        expect(sortDataSpy).toHaveBeenCalledTimes(1);
+      }
+    };
+
+    beforeEach(() => {
+      reset();
+      wrapper = mount(<ParserComponent
+        {...csvProps}
         onChange={onChangeMock}
       />);
+    });
 
-      // clear the on change event mock and the enzyme component
-      beforeEach(() => {
-        onChangeMock.mockClear();
-        comp.setState({data: []});
-      });
+    it('should parse .csv with sorted dates\n', async () => {
+      const multiDateFile: File = new File(
+          ['Date,SomeNum,SomeString\n' +
+          '04/04/1995,4,abcd\n' +
+          '06-07-1996,5,efg\n' +
+          'November 5 1997,1,hij\n' +
+          ''],
+          'multiDateTest.csv',
+          {type: '.csv,text/csv'},
+      );
+      fileEvent = {target: {files: [multiDateFile]}};
 
-      // check conditions after each it() block
-      afterEach(() => {
-        expect(comp.state('data').length).toEqual(3);
+      await expectHelper(fileEvent);
+    });
+
+    it('should parse .csv with unsorted dates & sort data by date\n',
+        async () => {
+          const unsortedMultiDateFile: File = new File(
+              // This tests YYYY-MM-DD format
+              ['Date,SomeNum,SomeString\n' +
+              '04-04-1997,4,abcd\n' +
+              '04-04-1993,5,efg\n' +
+              '04-04-1995,1,hij\n' +
+              ''],
+              'test.csv',
+              {type: '.csv,text/csv'},
+          );
+          fileEvent = {target: {files: [unsortedMultiDateFile]}};
+
+          await expectHelper(fileEvent);
+        });
+  });
+
+  it('T1.4: .csv file with no temporal data is rejected\n', async () => {
+    reset();
+    wrapper = mount(
+        <ParserComponent
+          {...csvProps}
+          onChange={onChangeMock}
+        />
+    );
+
+    // test file with no dates
+    const noDateFile: File = new File(
+        ['H1,H2,H3,H4\n' +
+        'a,b,c,d\n' +
+        'e,f,g,h\n' +
+        'i,j,k,l\n'],
+        'test.csv',
+        {type: '.csv,text/csv'},);
+
+    // fileEvent
+    const fileEvent = {target: {files: [noDateFile]}};
+
+    await wrapper.instance().parse(fileEvent);
+
+    // make sure alert was created
+    expect(windowSpy).toHaveBeenCalled();
+
+    // Make sure isValid, parseCsv, inferTypes, & sortData was called
+    expect(isValidSpy).toHaveBeenCalledTimes(1);
+    expect(parseCsvSpy).toHaveBeenCalledTimes(1);
+    expect(inferTypesSpy).toHaveBeenCalledTimes(1);
+    expect(sortDataSpy).toHaveBeenCalledTimes(1);
+
+    // These should not throw errors
+    expect(parseCsvSpy).not.toThrow();
+    expect(isValidSpy).not.toThrow('Wrong file type was uploaded.');
+    expect(inferTypesSpy).not.toThrow('data is empty');
+
+    expect(sortDataSpy).toThrow('The file uploaded has no dates.');
+
+    compData = wrapper.state('data');
+    expect(compData.length).toBe(3);
+  });
+
+  describe('T1.9: should accept valid csv file name with unusual' +
+      ' chars in file name', () => {
+    // clear the on change event mock and the enzyme component
+    beforeEach(() => {
+      onChangeMock.mockClear();
+
+      wrapper = mount(<ParserComponent
+        {...csvProps}
+        onChange={onChangeMock}
+      />);
+    });
+
+    const expectHelper = async (fEvent: object) => {
+      try {
+        console.log(fEvent);
+        await wrapper.instance().parse(fEvent);
+      } catch (e) {
+        expect(wrapper.state('data').length).toEqual(3);
         expect(onChangeMock).toHaveBeenCalledTimes(1);
-      });
+      }
+    };
 
-      xit('file name with \\', async () => {
-        const testfile: File = new File(
-            ['Date,SomeNum,SomeString\n' +
-                    '04-04-1997,4,abcd\n' +
-                    '04-04-1993,5,efg\n' +
-                    '04-04-1995,1,hij\n' +
-                    ''],
-            'test\\.csv',
-            {type: '.csv,text/csv'},
-        );
-        const fileEvent = {target: {files: [testfile]}};
-        await comp.instance().parse(fileEvent);
-      });
+    it('file name with \\', async () => {
+      const testfile: File = new File(
+          ['Date,SomeNum,SomeString\n' +
+          '04-04-1997,4,abcd\n' +
+          '04-04-1993,5,efg\n' +
+          '04-04-1995,1,hij\n' +
+          ''],
+          'test\\.csv',
+          {type: '.csv,text/csv'},
+      );
+      const fileEvent = {target: {files: [testfile]}};
+      await expectHelper(fileEvent);
+    });
 
-      xit('file name with emoji that use unicode', async () => {
-        const testfilewithemoji: File = new File(
-            ['Date,SomeNum,SomeString\n' +
-                    '04-04-1997,4,abcd\n' +
-                    '04-04-1993,5,efg\n' +
-                    '04-04-1995,1,hij\n' +
-                    ''],
-            '😁😁😁😁.csv',
-            {type: '.csv,text/csv'},);
+    it('file name with emoji that use unicode', async () => {
+      const testfilewithemoji: File = new File(
+          ['Date,SomeNum,SomeString\n' +
+          '04-04-1997,4,abcd\n' +
+          '04-04-1993,5,efg\n' +
+          '04-04-1995,1,hij\n' +
+          ''],
+          '😁😁😁😁.csv',
+          {type: '.csv,text/csv'},);
 
-        const fileEvent = {target: {files: [testfilewithemoji]}};
-        await comp.instance().parse(fileEvent);
-      });
+      const fileEvent = {target: {files: [testfilewithemoji]}};
+      await expectHelper(fileEvent);
     });
   });
 });
@@ -383,11 +392,6 @@ describe('<ParserComponent /> Unit Tests', () => {
     });
   });
 
-  describe('componentDidMount()', () => {
-    it('dummy test', () => {
-      // todo: devs need to write unit tests
-    });
-  });
 
   describe('isValid()', () => {
     const wrapper = mount(<ParserComponent prompt={'Select ' +
@@ -405,7 +409,7 @@ describe('<ParserComponent /> Unit Tests', () => {
     it('should throw exception when given undefined', () => {
       expect(() => {
         instance.isValid(undefined);
-      }).toThrow('Wrong file type was uploaded.');
+      }).toThrow('File object undefined');
     });
     it('should return true when given csv.csv', () => {
       const testFile: File = new File(

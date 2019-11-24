@@ -367,10 +367,6 @@ export default class TimelineComponent
    * D3 element we use for storing the graph.
    */
   private svg: any;
-  /**
-   * Stores the current scale
-   */
-  // private scale = 1;
 
   /**
    * Purpose: sets the initial values for rendering the actual timeline
@@ -419,7 +415,7 @@ export default class TimelineComponent
         .range([0, m.width]).round(true);
 
     // This has to be used so sonarcloud doesn't freak out about unused
-    // variables -.-
+    // variables
     console.log(m.x(0));
 
     m.y = d3.scaleLinear()
@@ -436,14 +432,6 @@ export default class TimelineComponent
 
     m.extent = [[m.marginLeft, m.marginTop],
       [m.width - m.marginRight, m.height - m.marginTop]];
-  }
-
-  /**
-   *
-   * @param {number} timelineType
-   */
-  changeTimeline(timelineType: number) {
-    d3.selectAll('svg').remove();
   }
 
   /**
@@ -511,7 +499,6 @@ export default class TimelineComponent
         .attr('id', 'bars');
 
     // Labels
-    // this.drawLabels();
     timelineType.drawLabels(this.svg);
 
     this.updateBars();
@@ -525,46 +512,6 @@ export default class TimelineComponent
    */
   private drawLabels(): void {
     timelineType.drawLabels(this.svg);
-    // switch (m.view) {
-    //   case ViewType.event:
-    //     this.svg.append('text')
-    //         .attr('transform',
-    //             `translate(${m.width / 2},${m.height + m.marginTop + 20})`)
-    //         .style('text-anchor', 'start')
-    //         .text(this.state.xColumn);
-    //
-    //     this.svg.append('text')
-    //         .attr('transform', 'rotate(-90)')
-    //         .attr('y', 0 - m.marginLeft)
-    //         .attr('x', 0 - (m.height / 2))
-    //         .attr('dy', '1em')
-    //         .style('text-anchor', 'middle')
-    //         .text(this.state.yColumn);
-    //     break;
-    //
-    //   case ViewType.interval:
-    //     this.svg.append('text')
-    //         .attr('transform',
-    //             `translate(${(m.width / 2) + 10},${m.height +
-    //             m.marginTop + 20})`)
-    //         .style('text-anchor', 'start')
-    //         .text('end: ' + this.state.xColumn2);
-    //
-    //     this.svg.append('text')
-    //         .attr('transform',
-    //             `translate(${m.width / 2},${m.height + m.marginTop + 20})`)
-    //         .style('text-anchor', 'end')
-    //         .text('start: ' + this.state.xColumn + ',');
-    //
-    //     this.svg.append('text')
-    //         .attr('transform', 'rotate(-90)')
-    //         .attr('y', 0 - m.marginLeft)
-    //         .attr('x', 0 - (m.height / 2))
-    //         .attr('dy', '1em')
-    //         .style('text-anchor', 'middle')
-    //         .text(this.state.yColumn);
-    //     break;
-    // }
   }
 
   /**
@@ -713,7 +660,7 @@ export default class TimelineComponent
    * Purpose: updates the position of the Tooltip
    * Timeline Scope: all elements
    * @param {number} xPos: the current x position of the mouse
-   * @param {number} yPos: the current y postion of the mouse
+   * @param {number} yPos: the current y position of the mouse
    */
   ttUpdatePos(xPos: number, yPos: number) {
     const Tooltip = d3.select('.tooltip');
@@ -722,8 +669,7 @@ export default class TimelineComponent
       // @ts-ignore
       const ttBox = Tooltip.node()!.getBoundingClientRect();
 
-      Tooltip
-          .style('left', (xPos + 70) + 'px');
+      Tooltip.style('left', (xPos + 70) + 'px');
 
       if ((yPos + ttBox.height) > m.fullHeight) {
         yPos = (m.fullHeight - ttBox.height);
@@ -805,65 +751,7 @@ export default class TimelineComponent
    * Purpose: used to update which bars are being rendered to the screen
    */
   updateBars() {
-    // @ts-ignore
-    const ticks: [any] = [];
-    // noinspection TypeScriptValidateJSTypes
-    m.plot.selectAll('.bar')
-        .data(m.data, function(d: any, i: any, group: any) {
-          return d['index'];
-        })
-        .join((enter: any) =>
-          timelineType.draw(enter, this.ttOver, this.ttMove, this.ttLeave),
-        (update: any) => update,
-        (exit: any) => exit.remove()
-        );
-
-    // plot every 5th date
-    m.data.forEach(function(d: any, i: number) {
-      if (((i + m.dataIdx) % 5) === 0) {
-        ticks.push({
-          id: d['index'],
-          index: i,
-          text: d[m.xColumn],
-        });
-      }
-    });
-
-    m.plot.selectAll('.xtick')
-        .data(ticks, function(d: any, i: any, group: any) {
-          return d.id;
-        })
-        .join(
-            (enter: any) => {
-              const tick = enter.append('g')
-                  .attr('class', 'xtick')
-                  .attr('opacity', 1)
-                  .attr('transform', (d: any, i: number) => {
-                    if (this.state.view === ViewType.event) {
-                      return 'translate(' +
-                  ((m.scale * m.barWidth * (d.index + m.dataIdx)) +
-                    ((m.scale * m.barWidth) / 2)) + ',' + m.height + ')';
-                    } else {
-                      return `translate(${m.timeScale(new Date(d.text))} ,
-                    ${m.height})`;
-                    }
-                  });
-
-              tick.append('line')
-                  .attr('stroke', 'blue')
-                  .attr('y2', 6);
-
-              tick.append('text')
-                  .text((d: any) => d.text)
-                  .style('text-anchor', 'end')
-                  .style('font-size', '1rem')
-                  .attr('dx', '-.8em')
-                  .attr('dy', '.15em')
-                  .attr('transform', 'rotate(-90)');
-            },
-            (update: any) => update,
-            (exit: { remove: () => void; }) => exit.remove()
-        );
+    timelineType.updateBars(this.ttOver, this.ttMove, this.ttLeave);
   }
 
   /**
@@ -892,7 +780,7 @@ export default class TimelineComponent
    */
   moveChart() {
     d3.select('#barsLayer')
-        .attr('transform', (d) => {
+        .attr('transform', () => {
           return `translate(${m.deltaX},0)`;
         });
 
@@ -913,15 +801,12 @@ export default class TimelineComponent
    * Purpose: called when the timeline is dragged by the user
    */
   dragged() {
-    // console.log(d3.event);
     this.ttUpdatePos(d3.event.sourceEvent.x, d3.event.sourceEvent.y);
 
     m.deltaX += d3.event.sourceEvent.movementX;
     if (m.deltaX > 0) {
       m.deltaX = 0;
     }
-    // console.log(d3.event);
-    // console.log(`deltaX:${deltaX}`);
     this.moveChart();
   }
 

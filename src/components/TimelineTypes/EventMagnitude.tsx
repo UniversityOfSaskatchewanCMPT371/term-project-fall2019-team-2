@@ -1,13 +1,12 @@
-import TimelineModel from '../TimelineModel';
+import TimelineTypeInterface, {TimelineType} from './TimelineTypeInterface';
 import * as d3 from 'd3';
-import TimelineTypeInterface from './TimelineTypeInterface';
-
 /**
  * Purpose: to provide methods specific and relevant to drawing an
  * EventMagnitude timeline
  */
-export default class EventMagnitude implements TimelineTypeInterface {
-  m: TimelineModel;
+export default class EventMagnitude extends TimelineType
+  implements TimelineTypeInterface {
+  // m: TimelineModel;
 
   /**
    * Purpose: draws an element as Event with a Magnitude
@@ -76,14 +75,19 @@ export default class EventMagnitude implements TimelineTypeInterface {
           (this.m.scale * this.m.barWidth * (i + this.m.dataIdx)));
 
     d3.selectAll('.xtick')
-        .attr('transform', (d: any, i) => 'translate(' +
+        .attr('transform', (d: any) => 'translate(' +
         ((this.m.scale * this.m.barWidth * (d['index'] + this.m.dataIdx)) +
           ((this.m.scale * this.m.barWidth) / 2)) + ',' + this.m.height + ')');
   }
 
+  /**
+   * Purpose: draws the initial axis labels when the timeline is first rendered
+   * @param {any} svg: the SVG element
+   */
   drawLabels(svg: any): void {
     svg.append('text')
         .attr('transform',
+            // eslint-disable-next-line max-len
             `translate(${this.m.width / 2},${this.m.height + this.m.marginTop + 20})`)
         .style('text-anchor', 'start')
         .text(this.m.xColumn);
@@ -98,11 +102,13 @@ export default class EventMagnitude implements TimelineTypeInterface {
   }
 
   /**
-   * Purpose: constructor
-   * @param {TimelineModel} newModel: the TimelineModel to pass into the
-   * EventMagnitude object
+   * Purpose: gets the translation for an x-axis tick
+   * @param {any} datum: the datum to draw the x-axis tick for
+   * @return {string}: the translations string
    */
-  constructor(newModel: TimelineModel) {
-    this.m = newModel;
+  getTickTranslate(datum: any): string {
+    return 'translate(' +
+      ((this.m.scale * this.m.barWidth * (datum.index + this.m.dataIdx)) +
+        ((this.m.scale * this.m.barWidth) / 2)) + ',' + this.m.height + ')';
   }
 }

@@ -480,8 +480,8 @@ exports[`<TimelineComponent /> R2 Tests
 </rect>
 <rect class=\\"bar\\" x=\\"125\\" width=\\"0\\" y=\\"221.82608227113172\\" height=\\"376.1739177288683\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
 </rect>
-<g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(125 ,
-                    598)\\">
+<g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(125,
+      598)\\">
 <line stroke=\\"blue\\" y2=\\"6\\">
 </line>
 <text style=\\"text-anchor: end; font-size: 1rem;\\" dx=\\"-.8em\\" dy=\\".15em\\" transform=\\"rotate(-90)\\">1/1/2010

@@ -1,4 +1,4 @@
-import TimelineModel from './TimelineModel';
+import TimelineModel from '../TimelineModel';
 
 
 interface TimelineTypeInterface {
@@ -53,6 +53,9 @@ export class EventMagnitude implements TimelineTypeInterface {
           .on('mouseover', ttOver)
           .on('mousemove', ttMove)
           .on('mouseleave', ttLeave);
+
+      console.log('EventMagnitude.draw(): ');
+      console.log(bar);
     }
 
     /**

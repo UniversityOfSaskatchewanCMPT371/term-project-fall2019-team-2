@@ -12,9 +12,6 @@ exports[`<TimelineComponent /> R2 Tests
             Switch to Interval Timeline
           </button>
         </Button>
-        <label>
-          Y-Axis
-        </label>
         <InputGroup>
           <div className=\\"input-group\\">
             <InputGroupPrepend>
@@ -314,9 +311,6 @@ exports[`<TimelineComponent /> R2 Tests
             Switch to Interval Timeline
           </button>
         </Button>
-        <label>
-          Y-Axis
-        </label>
         <InputGroup>
           <div className=\\"input-group\\">
             <InputGroupPrepend>

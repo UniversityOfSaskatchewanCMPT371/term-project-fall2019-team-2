@@ -11,14 +11,14 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
 import TimelineModel from './TimelineModel';
 import TimelineTypeInterface, {EventMagnitude, IntervalMagnitude}
-  from './TimelineTypeInterface';
+  from './TimelineTypes/TimelineTypeInterface';
 
 export enum ViewType {
   interval, event
 }
 
 const m = new TimelineModel();
-const timelineType: TimelineTypeInterface = new EventMagnitude(m);
+let timelineType: TimelineTypeInterface = new EventMagnitude(m);
 
 /**
  * Purpose: renders and updates a timeline to the screen
@@ -332,13 +332,28 @@ export default class TimelineComponent
    */
   toggleTimeline() {
     let prompt = this.state.togglePrompt;
-    if (m.view === ViewType.event) {
-      prompt = 'Switch to Occurrence Timeline';
-      m.view = ViewType.interval;
-    } else {
-      prompt = 'Switch to Interval Timeline';
-      m.view = ViewType.event;
+
+    switch (m.view) {
+      case ViewType.event:
+        prompt = 'Switch to Occurrence Timeline';
+        m.view = ViewType.interval;
+        timelineType = new IntervalMagnitude(m);
+        break;
+
+      case ViewType.interval:
+        prompt = 'Switch to Interval Timeline';
+        m.view = ViewType.event;
+        timelineType = new EventMagnitude(m);
+        break;
     }
+
+    // if (m.view === ViewType.event) {
+    //   prompt = 'Switch to Occurrence Timeline';
+    //   m.view = ViewType.interval;
+    // } else {
+    //   prompt = 'Switch to Interval Timeline';
+    //   m.view = ViewType.event;
+    // }
 
     this.setState(() => {
       return {
@@ -448,7 +463,6 @@ export default class TimelineComponent
         .translateExtent(m.extent)
         .extent(m.extent)
         .on('zoom', this.updateChart);
-    // .on('zoom.transform', this.updateChart);
 
     this.svg = d3.select('#svgtarget')
         .append('svg')
@@ -759,23 +773,11 @@ export default class TimelineComponent
       console.warn('d3.event was null');
     }
 
-    // const newX = d3.event.transform.rescaleX(x);
-    // const newY = d3.event.transform.rescaleY(y);
-
-    // d3.selectAll('#xaxis').remove();
-
     if (this.state.view === ViewType.event) {
-      // d3.selectAll('.bar')
-      //     .attr('x', (d, i) => (this.scale * barWidth * (i + dataIdx)));
-      //     // .attr('width', barWidth);
-
       d3.selectAll('.pin-line')
           .attr('x', (d, i) => (this.scale * m.barWidth * (i + m.dataIdx)));
-      // .attr('width', barWidth);
       d3.selectAll('.pin-head')
           .attr('cx', (d, i) => (this.scale * m.barWidth * (i + m.dataIdx)));
-      // .attr('width', barWidth);
-
 
       d3.selectAll('.xtick')
           .attr('transform', (d: any, i) => 'translate(' +
@@ -797,7 +799,6 @@ export default class TimelineComponent
 
     if (d3.event !== null && d3.event.sourceEvent !== null &&
       d3.event.sourceEvent.type === 'mousemove') {
-      // console.log('updatechart');
       this.dragged();
     } else {
       this.moveChart();
@@ -805,68 +806,25 @@ export default class TimelineComponent
   }
 
   /**
-   * Purpose: draws an element as Event with a Magnitude
+   * Purpose: draws an element as Event with a Magnitude. This function is old
+   * and has been replaced by the TimelineTypeInterface, it only still exists
+   * because some tests rely on it and a workaround has not yet been
+   * figured out.
    * @param {any} selection: the selection for the object to draw
    */
   drawEventMagnitude(selection: any): void {
-    const bar = selection.append('g')
-        .attr('class', 'bar');
-
-    bar.append('rect')
-        .attr('class', 'pin-line')
-        .attr('x', (d: any, i: number) =>
-          (this.scale * m.barWidth * (i + m.dataIdx)))
-        .attr('width', 2)
-        .attr('y', (d: any) => m.y(d[m.yColumn]))
-        .attr('height', (d: any) => {
-          const newHeight = (m.height - m.y(d[m.yColumn]));
-          if (newHeight < 0) {
-            return 0;
-          } else {
-            return (m.height - m.y(d[m.yColumn]));
-          }
-        });
-    // Circles
-    bar.append('circle')
-        .attr('class', 'pin-head')
-        .attr('cx', (d: any, i: number) =>
-          (this.scale * m.barWidth * (i + m.dataIdx)))
-        .attr('cy', (d: any) => m.y(d[m.yColumn]))
-        .attr('r', '5')
-        .style('fill', '#69b3a2')
-        .attr('stroke', 'black')
-        .on('mouseover', this.ttOver)
-        .on('mousemove', this.ttMove)
-        .on('mouseleave', this.ttLeave);
+    timelineType.draw(selection, this.ttOver, this.ttMove, this.ttLeave);
   }
 
   /**
-   *
+   * Purpose: draws an element as Event with a Magnitude. This function is old
+   * and has been replaced by the TimelineTypeInterface, it only still exists
+   * because some tests rely on it and a workaround has not yet been
+   * figured out.
    * @param {any} selection
    */
   drawIntervalMagnitude(selection: any): void {
-    selection.append('rect')
-        .attr('class', 'bar')
-        .attr('x', (d: any, i: number) =>
-          (this.scale * m.timeScale(new Date(d[m.xColumn]))))
-    // (scale * barWidth * (i + dataIdx)))
-        .attr('width', (d: any, i: number) =>
-          (m.timeScale(new Date(d[m.xColumn2])) -
-          m.timeScale(new Date(d[m.xColumn]))))
-        .attr('y', (d: any) => m.y(d[m.yColumn]))
-        .attr('height', (d: any) => {
-          const newHeight = (m.height - m.y(d[m.yColumn]));
-          if (newHeight < 0) {
-            return 0;
-          } else {
-            return (m.height - m.y(d[m.yColumn]));
-          }
-        })
-        .style('fill', '#61a3a9')
-        .style('opacity', 0.2)
-        .on('mouseover', this.ttOver)
-        .on('mousemove', this.ttMove)
-        .on('mouseleave', this.ttLeave);
+    timelineType.draw(selection, this.ttOver, this.ttMove, this.ttLeave);
   }
 
   /**
@@ -875,17 +833,15 @@ export default class TimelineComponent
   updateBars() {
     // @ts-ignore
     const ticks: [any] = [];
+    // noinspection TypeScriptValidateJSTypes
     m.plot.selectAll('.bar')
         .data(m.data, function(d: any, i: any, group: any) {
           return d['index'];
         })
-        .join(
-            (enter: any) => this.state.view === ViewType.event ?
-          this.drawEventMagnitude(enter) :
-          this.drawIntervalMagnitude(enter),
-            (update: any) => update,
-
-            (exit: any) => exit.remove()
+        .join((enter: any) =>
+          timelineType.draw(enter, this.ttOver, this.ttMove, this.ttLeave),
+        (update: any) => update,
+        (exit: any) => exit.remove()
         );
 
     // plot every 5th date
@@ -938,64 +894,22 @@ export default class TimelineComponent
 
   /**
    * Purpose: updates dataIdx, data, and ordinals when drawing an EventMagnitude
-   * Timeline
+   * Timeline. This function is old and has been replaced by the
+   * TimelineTypeInterface, it only still exists because some tests rely on it
+   * and a workaround has not yet been figured out.
    */
   getEventMagnitudeData() {
-    // finds starting index
-    m.dataIdx = Math.floor(- m.deltaX / (this.scale * m.barWidth));
-    m.data = m.csvData.slice(m.dataIdx, m.numBars + m.dataIdx);
-    // ordinals = data.map((d: any) => d[xColumn]);
+    timelineType.getData();
   }
 
   /**
    * Purpose: updates dataIdx, data, and ordinals when drawing an
-   * IntervalMagnitude Timeline
+   * IntervalMagnitude Timeline. This function is old and has been replaced by
+   * the TimelineTypeInterface, it only still exists because some tests rely on
+   * it and a workaround has not yet been figured out.
    */
   getIntervalMagnitudeData() {
-    let dataIdxEnd: number;
-    const keyInt1 = m.xColumn + '_num';
-    const keyInt2 = m.xColumn2 + '_num';
-    let consecutive = true;
-
-    for (dataIdxEnd = m.dataIdx; dataIdxEnd < m.csvData.length; dataIdxEnd++) {
-      const elem: any = m.csvData[dataIdxEnd];
-
-      if (!elem.hasOwnProperty(keyInt1)) {
-        elem[keyInt1] = Date.parse(elem[m.xColumn]);
-      }
-
-      if (!elem.hasOwnProperty(keyInt2)) {
-        elem[keyInt2] = Date.parse(elem[m.xColumn2]);
-      }
-
-      // We can only increment dataIdx if the preceding elements have also been
-      // moved off of the current screen area, otherwise elements will be
-      // removed prematurely
-      if (consecutive &&
-        ((this.scale * m.timeScale(elem[keyInt1])) < - m.deltaX &&
-          (this.scale * m.timeScale(elem[keyInt2])) < - m.deltaX)) {
-        m.dataIdx++;
-      } else {
-        consecutive = false;
-      }
-
-      // console.log('timeScale: ' + timeScale(elem[keyInt1]));
-      // If this is true, then the x position of the start of the bar and end of
-      // the bar are currently outside of the viewing area
-      if (!((this.scale * m.timeScale(elem[keyInt1])) < (-m.deltaX + m.width) ||
-        (((this.scale * m.timeScale(elem[keyInt2])) <= - m.deltaX + m.width) &&
-          ((this.scale * m.timeScale(elem[keyInt2])) > - m.deltaX)))) {
-        break;
-      }
-      // if(!(scale * timeScale(new Date(elem[xColumn])) > -deltaX ||
-      //     scale * timeScale(new Date(elem[xColumn2])) > -deltaX)) {
-      //   break;
-      // }
-    }
-    // console.log('dataIdx: ' + dataIdx);
-    // console.log('dataIdxEnd: ' + dataIdxEnd);
-
-    m.data = m.csvData.slice(m.dataIdx, dataIdxEnd + m.barBuffer);
+    timelineType.getData();
   }
 
   /**
@@ -1008,17 +922,7 @@ export default class TimelineComponent
           return `translate(${m.deltaX},0)`;
         });
 
-
-    this.state.view === ViewType.event ?
-      this.getEventMagnitudeData() :
-      this.getIntervalMagnitudeData();
-
-    // finds starting index
-    // dataIdx = Math.floor(-deltaX / (this.scale * barWidth));
-    // data = csvData.slice(dataIdx, numBars + dataIdx);
-    // may use in the future
-    // ordinals = data.map((d: any) => d[xColumn]);
-
+    timelineType.getData();
     this.updateBars();
   }
 

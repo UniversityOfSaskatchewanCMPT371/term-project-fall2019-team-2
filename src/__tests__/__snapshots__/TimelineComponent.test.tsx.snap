@@ -162,8 +162,8 @@ exports[`<TimelineComponent /> R2 Tests
  T2.1 Snapshot Test
  2`] = `
 "<svg width=\\"934\\" height=\\"768\\">
-<g transform=\\"translate(70.0000000000, 
-        0.0000000000)\\">
+<g transform=\\"translate(70.0000, 
+        0.0000)\\">
 <rect width=\\"934\\" height=\\"598\\" style=\\"fill: none;\\">
 </rect>
 <defs>
@@ -205,7 +205,7 @@ exports[`<TimelineComponent /> R2 Tests
 <circle class=\\"pin-head\\" cx=\\"200.0000\\" cy=\\"221.8261\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
 </circle>
 </g>
-<g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(25.0000000000,598.0000000000)\\">
+<g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(25.0000,598.0000)\\">
 <line stroke=\\"blue\\" y2=\\"6\\">
 </line>
 <text style=\\"text-anchor: end; font-size: 1rem;\\" dx=\\"-.8em\\" dy=\\".15em\\" transform=\\"rotate(-90)\\">1/1/2010
@@ -294,10 +294,10 @@ exports[`<TimelineComponent /> R2 Tests
 </text>
 </g>
 </g>
-<text transform=\\"translate(467.0000000000,
-                618.0000000000)\\" style=\\"text-anchor: start;\\">Order Date
+<text transform=\\"translate(467.0000,
+                618.0000)\\" style=\\"text-anchor: start;\\">Order Date
 </text>
-<text transform=\\"rotate(-90)\\" y=\\"-70\\" x=\\"-299\\" dy=\\"1em\\" style=\\"text-anchor: middle;\\">Order ID
+<text transform=\\"rotate(-90)\\" y=\\"-70.0000\\" x=\\"-299.0000\\" dy=\\"1em\\" style=\\"text-anchor: middle;\\">Order ID
 </text>
 </g>
 </svg>
@@ -466,8 +466,8 @@ exports[`<TimelineComponent /> R2 Tests
  T2.4 Snapshot Test
  2`] = `
 "<svg width=\\"934\\" height=\\"768\\">
-<g transform=\\"translate(70.0000000000, 
-        0.0000000000)\\">
+<g transform=\\"translate(70.0000, 
+        0.0000)\\">
 <rect width=\\"934\\" height=\\"598\\" style=\\"fill: none;\\">
 </rect>
 <defs>
@@ -489,8 +489,8 @@ exports[`<TimelineComponent /> R2 Tests
 </rect>
 <rect class=\\"bar\\" x=\\"125.0000\\" width=\\"0.0000\\" y=\\"221.8261\\" height=\\"376.1739\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
 </rect>
-<g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(125.0000000000 ,
-                    598.0000000000)\\">
+<g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(125.0000 ,
+                    598.0000)\\">
 <line stroke=\\"blue\\" y2=\\"6\\">
 </line>
 <text style=\\"text-anchor: end; font-size: 1rem;\\" dx=\\"-.8em\\" dy=\\".15em\\" transform=\\"rotate(-90)\\">1/1/2010
@@ -579,13 +579,13 @@ exports[`<TimelineComponent /> R2 Tests
 </text>
 </g>
 </g>
-<text transform=\\"translate(477.0000000000,
-                618.0000000000)\\" style=\\"text-anchor: start;\\">end: Order ID
+<text transform=\\"translate(477.0000,
+                618.0000)\\" style=\\"text-anchor: start;\\">end: Order ID
 </text>
-<text transform=\\"translate(467.0000000000,
-                618.0000000000)\\" style=\\"text-anchor: end;\\">start: Order Date,
+<text transform=\\"translate(467.0000,
+                618.0000)\\" style=\\"text-anchor: end;\\">start: Order Date,
 </text>
-<text transform=\\"rotate(-90)\\" y=\\"-70\\" x=\\"-299\\" dy=\\"1em\\" style=\\"text-anchor: middle;\\">Order ID
+<text transform=\\"rotate(-90)\\" y=\\"-70.0000\\" x=\\"-299.0000\\" dy=\\"1em\\" style=\\"text-anchor: middle;\\">Order ID
 </text>
 </g>
 </svg>

@@ -41,45 +41,6 @@ Object {
 
 exports[`R1 Tests
  T1.3: .csv with different valid date formats accepted
- should parse .csv with sorted dates
- 4`] = `
-Object {
-  "Date": "04/04/1995",
-  "Date_num": Any<Number>,
-  "SomeNum": 4,
-  "SomeString": "abcd",
-  "index": 0,
-}
-`;
-
-exports[`R1 Tests
- T1.3: .csv with different valid date formats accepted
- should parse .csv with sorted dates
- 5`] = `
-Object {
-  "Date": "06-07-1996",
-  "Date_num": Any<Number>,
-  "SomeNum": 5,
-  "SomeString": "efg",
-  "index": 1,
-}
-`;
-
-exports[`R1 Tests
- T1.3: .csv with different valid date formats accepted
- should parse .csv with sorted dates
- 6`] = `
-Object {
-  "Date": "November 5 1997",
-  "Date_num": Any<Number>,
-  "SomeNum": 1,
-  "SomeString": "hij",
-  "index": 2,
-}
-`;
-
-exports[`R1 Tests
- T1.3: .csv with different valid date formats accepted
  should parse .csv with unsorted dates & sort data by date
  1`] = `
 Object {

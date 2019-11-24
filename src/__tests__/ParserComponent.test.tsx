@@ -314,7 +314,6 @@ describe('R1 Tests\n', () => {
     expect(sortDataSpy).toHaveBeenCalledTimes(1);
 
     // These should not throw errors
-    expect(parseCsvSpy).not.toThrow();
     expect(isValidSpy).not.toThrow('Wrong file type was uploaded.');
     expect(inferTypesSpy).not.toThrow('data is empty');
 
@@ -328,8 +327,9 @@ describe('R1 Tests\n', () => {
       ' chars in file name', () => {
     // clear the on change event mock and the enzyme component
     beforeEach(() => {
+      reset();
       onChangeMock.mockClear();
-
+      fileEvent = undefined;
       wrapper = mount(<ParserComponent
         {...csvProps}
         onChange={onChangeMock}
@@ -340,7 +340,9 @@ describe('R1 Tests\n', () => {
       try {
         console.log(fEvent);
         await wrapper.instance().parse(fEvent);
+        console.log(fEvent);
       } catch (e) {
+        expect(parseSpy).toHaveBeenCalledTimes(1);
         expect(wrapper.state('data').length).toEqual(3);
         expect(onChangeMock).toHaveBeenCalledTimes(1);
       }
@@ -354,9 +356,9 @@ describe('R1 Tests\n', () => {
           '04-04-1995,1,hij\n' +
           ''],
           'test\\.csv',
-          {type: '.csv,text/csv'},
+          {type: '.csv,text/csv'}
       );
-      const fileEvent = {target: {files: [testfile]}};
+      fileEvent = {target: {files: [testfile]}};
       await expectHelper(fileEvent);
     });
 
@@ -365,12 +367,11 @@ describe('R1 Tests\n', () => {
           ['Date,SomeNum,SomeString\n' +
           '04-04-1997,4,abcd\n' +
           '04-04-1993,5,efg\n' +
-          '04-04-1995,1,hij\n' +
-          ''],
+          '04-04-1995,1,hij\n'],
           '😁😁😁😁.csv',
-          {type: '.csv,text/csv'},);
+          {type: '.csv,text/csv'});
 
-      const fileEvent = {target: {files: [testfilewithemoji]}};
+      fileEvent = {target: {files: [testfilewithemoji]}};
       await expectHelper(fileEvent);
     });
   });

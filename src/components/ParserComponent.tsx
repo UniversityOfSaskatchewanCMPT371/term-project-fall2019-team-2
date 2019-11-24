@@ -322,6 +322,10 @@ export default class ParserComponent extends React.Component<ParserInterface,
    * @param {Object} fileEvent: the event passed into this component
    */
   async parseCsv(fileEvent: any) {
+    console.log(fileEvent);
+    if (fileEvent === undefined) {
+      console.log('WHYYYYYYYYYYYYYYY?');
+    }
     const csvFile = fileEvent.target.files[0];
 
     // for testing
@@ -362,6 +366,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
       };
 
       fileReader.onloadend = handleFileRead;
+      console.log('boop1');
       fileReader.readAsText(csvFile);
     });
   }

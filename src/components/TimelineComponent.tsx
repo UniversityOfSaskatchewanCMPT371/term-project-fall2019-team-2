@@ -773,10 +773,12 @@ export default class TimelineComponent
       //     // .attr('width', barWidth);
 
       d3.selectAll('.pin-line')
-          .attr('x', (d, i) => (this.scale * m.barWidth * (i + m.dataIdx)));
+          .attr('x', (d, i) => ((this.scale * m.barWidth * (i + m.dataIdx))
+              .toFixed(4)));
       // .attr('width', barWidth);
       d3.selectAll('.pin-head')
-          .attr('cx', (d, i) => (this.scale * m.barWidth * (i + m.dataIdx)));
+          .attr('cx', (d, i) => ((this.scale * m.barWidth * (i + m.dataIdx))
+              .toFixed(4)));
       // .attr('width', barWidth);
 
 
@@ -788,10 +790,11 @@ export default class TimelineComponent
     } else {
       d3.selectAll('.bar')
           .attr('x', (d: any, i: number) =>
-            this.scale * m.timeScale(new Date(d[m.xColumn])))
+            (this.scale * m.timeScale(new Date(d[m.xColumn])))
+                .toFixed(4))
           .attr('width', (d: any, i: number) =>
-            this.scale * (m.timeScale(new Date(d[m.xColumn2])) -
-          m.timeScale(new Date(d[m.xColumn]))));
+            (this.scale * (m.timeScale(new Date(d[m.xColumn2])) -
+          m.timeScale(new Date(d[m.xColumn])))).toFixed(4));
 
       d3.selectAll('.xtick')
           .attr('transform', (d: any, i: number) =>
@@ -821,23 +824,23 @@ export default class TimelineComponent
     bar.append('rect')
         .attr('class', 'pin-line')
         .attr('x', (d: any, i: number) =>
-          (this.scale * m.barWidth * (i + m.dataIdx)))
+          ((this.scale * m.barWidth * (i + m.dataIdx)).toFixed(4)))
         .attr('width', 2)
-        .attr('y', (d: any) => m.y(d[m.yColumn]))
+        .attr('y', (d: any) => (m.y(d[m.yColumn])).toFixed(4))
         .attr('height', (d: any) => {
           const newHeight = (m.height - m.y(d[m.yColumn]));
           if (newHeight < 0) {
             return 0;
           } else {
-            return (m.height - m.y(d[m.yColumn]));
+            return ((m.height - m.y(d[m.yColumn])).toFixed(4));
           }
         });
     // Circles
     bar.append('circle')
         .attr('class', 'pin-head')
         .attr('cx', (d: any, i: number) =>
-          (this.scale * m.barWidth * (i + m.dataIdx)))
-        .attr('cy', (d: any) => m.y(d[m.yColumn]))
+          ((this.scale * m.barWidth * (i + m.dataIdx)).toFixed(4)))
+        .attr('cy', (d: any) => (m.y(d[m.yColumn])).toFixed(4))
         .attr('r', '5')
         .style('fill', '#69b3a2')
         .attr('stroke', 'black')
@@ -854,18 +857,18 @@ export default class TimelineComponent
     selection.append('rect')
         .attr('class', 'bar')
         .attr('x', (d: any, i: number) =>
-          (this.scale * m.timeScale(new Date(d[m.xColumn]))))
+          ((this.scale * m.timeScale(new Date(d[m.xColumn]))).toFixed(4)))
     // (scale * barWidth * (i + dataIdx)))
         .attr('width', (d: any, i: number) =>
-          (m.timeScale(new Date(d[m.xColumn2])) -
-          m.timeScale(new Date(d[m.xColumn]))))
-        .attr('y', (d: any) => m.y(d[m.yColumn]))
+          ((m.timeScale(new Date(d[m.xColumn2])) -
+          m.timeScale(new Date(d[m.xColumn]))).toFixed(4)))
+        .attr('y', (d: any) => (m.y(d[m.yColumn])).toFixed(4))
         .attr('height', (d: any) => {
           const newHeight = (m.height - m.y(d[m.yColumn]));
           if (newHeight < 0) {
             return 0;
           } else {
-            return (m.height - m.y(d[m.yColumn]));
+            return ((m.height - m.y(d[m.yColumn])).toFixed(4));
           }
         })
         .style('fill', '#61a3a9')

@@ -176,33 +176,33 @@ exports[`<TimelineComponent /> R2 Tests
 <g id=\\"barsLayer\\">
 <g class=\\"plot\\" id=\\"bars\\">
 <g class=\\"bar\\">
-<rect class=\\"pin-line\\" x=\\"0\\" width=\\"2\\" y=\\"419.48526056402073\\" height=\\"178.51473943597927\\">
+<rect class=\\"pin-line\\" x=\\"0.0000\\" width=\\"2\\" y=\\"419.4853\\" height=\\"178.5147\\">
 </rect>
-<circle class=\\"pin-head\\" cx=\\"0\\" cy=\\"419.48526056402073\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+<circle class=\\"pin-head\\" cx=\\"0.0000\\" cy=\\"419.4853\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
 </circle>
 </g>
 <g class=\\"bar\\">
-<rect class=\\"pin-line\\" x=\\"50\\" width=\\"2\\" y=\\"45.452219888716144\\" height=\\"552.5477801112838\\">
+<rect class=\\"pin-line\\" x=\\"50.0000\\" width=\\"2\\" y=\\"45.4522\\" height=\\"552.5478\\">
 </rect>
-<circle class=\\"pin-head\\" cx=\\"50\\" cy=\\"45.452219888716144\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+<circle class=\\"pin-head\\" cx=\\"50.0000\\" cy=\\"45.4522\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
 </circle>
 </g>
 <g class=\\"bar\\">
-<rect class=\\"pin-line\\" x=\\"100\\" width=\\"2\\" y=\\"0\\" height=\\"598\\">
+<rect class=\\"pin-line\\" x=\\"100.0000\\" width=\\"2\\" y=\\"0.0000\\" height=\\"598.0000\\">
 </rect>
-<circle class=\\"pin-head\\" cx=\\"100\\" cy=\\"0\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+<circle class=\\"pin-head\\" cx=\\"100.0000\\" cy=\\"0.0000\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
 </circle>
 </g>
 <g class=\\"bar\\">
-<rect class=\\"pin-line\\" x=\\"150\\" width=\\"2\\" y=\\"598\\" height=\\"0\\">
+<rect class=\\"pin-line\\" x=\\"150.0000\\" width=\\"2\\" y=\\"598.0000\\" height=\\"0.0000\\">
 </rect>
-<circle class=\\"pin-head\\" cx=\\"150\\" cy=\\"598\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+<circle class=\\"pin-head\\" cx=\\"150.0000\\" cy=\\"598.0000\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
 </circle>
 </g>
 <g class=\\"bar\\">
-<rect class=\\"pin-line\\" x=\\"200\\" width=\\"2\\" y=\\"221.82608227113175\\" height=\\"376.1739177288682\\">
+<rect class=\\"pin-line\\" x=\\"200.0000\\" width=\\"2\\" y=\\"221.8261\\" height=\\"376.1739\\">
 </rect>
-<circle class=\\"pin-head\\" cx=\\"200\\" cy=\\"221.82608227113175\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+<circle class=\\"pin-head\\" cx=\\"200.0000\\" cy=\\"221.8261\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
 </circle>
 </g>
 <g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(25.0000000000,598.0000000000)\\">
@@ -479,15 +479,15 @@ exports[`<TimelineComponent /> R2 Tests
 <g clip-path=\\"url(#barsBox)\\">
 <g id=\\"barsLayer\\">
 <g class=\\"plot\\" id=\\"bars\\">
-<rect class=\\"bar\\" x=\\"125\\" width=\\"0\\" y=\\"419.48526056402073\\" height=\\"178.51473943597927\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
+<rect class=\\"bar\\" x=\\"125.0000\\" width=\\"0.0000\\" y=\\"419.4853\\" height=\\"178.5147\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
 </rect>
-<rect class=\\"bar\\" x=\\"125\\" width=\\"0\\" y=\\"45.452219888716144\\" height=\\"552.5477801112838\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
+<rect class=\\"bar\\" x=\\"125.0000\\" width=\\"0.0000\\" y=\\"45.4522\\" height=\\"552.5478\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
 </rect>
-<rect class=\\"bar\\" x=\\"125\\" width=\\"0\\" y=\\"0\\" height=\\"598\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
+<rect class=\\"bar\\" x=\\"125.0000\\" width=\\"0.0000\\" y=\\"0.0000\\" height=\\"598.0000\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
 </rect>
-<rect class=\\"bar\\" x=\\"125\\" width=\\"0\\" y=\\"598\\" height=\\"0\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
+<rect class=\\"bar\\" x=\\"125.0000\\" width=\\"0.0000\\" y=\\"598.0000\\" height=\\"0.0000\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
 </rect>
-<rect class=\\"bar\\" x=\\"125\\" width=\\"0\\" y=\\"221.82608227113175\\" height=\\"376.1739177288682\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
+<rect class=\\"bar\\" x=\\"125.0000\\" width=\\"0.0000\\" y=\\"221.8261\\" height=\\"376.1739\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
 </rect>
 <g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(125.0000000000 ,
                     598.0000000000)\\">

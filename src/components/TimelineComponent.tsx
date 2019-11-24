@@ -458,7 +458,8 @@ export default class TimelineComponent
     // @ts-ignore
         .call(this.zoom)
         .append('g')
-        .attr('transform', `translate(${m.marginLeft}, ${m.marginTop})`);
+        .attr('transform', `translate(${(m.marginLeft).toFixed(10)}, 
+        ${(m.marginTop).toFixed(10)})`);
 
     this.svg.append('rect')
         .attr('width', m.width)
@@ -520,7 +521,8 @@ export default class TimelineComponent
       case ViewType.occurrence:
         this.svg.append('text')
             .attr('transform',
-                `translate(${m.width / 2},${m.height + m.marginTop + 20})`)
+                `translate(${(m.width / 2).toFixed(10)},
+                ${(m.height + m.marginTop + 20).toFixed(10)})`)
             .style('text-anchor', 'start')
             .text(this.state.xColumn);
 
@@ -536,14 +538,15 @@ export default class TimelineComponent
       case ViewType.interval:
         this.svg.append('text')
             .attr('transform',
-                `translate(${(m.width / 2) + 10},${m.height +
-                m.marginTop + 20})`)
+                `translate(${((m.width / 2) + 10).toFixed(10)},
+                ${(m.height + m.marginTop + 20).toFixed(10)})`)
             .style('text-anchor', 'start')
             .text('end: ' + this.state.xColumn2);
 
         this.svg.append('text')
             .attr('transform',
-                `translate(${m.width / 2},${m.height + m.marginTop + 20})`)
+                `translate(${(m.width / 2).toFixed(10)},
+                ${(m.height + m.marginTop + 20).toFixed(10)})`)
             .style('text-anchor', 'end')
             .text('start: ' + this.state.xColumn + ',');
 
@@ -779,8 +782,9 @@ export default class TimelineComponent
 
       d3.selectAll('.xtick')
           .attr('transform', (d: any, i) => 'translate(' +
-          ((this.scale * m.barWidth * (d['index'] + m.dataIdx)) +
-            ((this.scale * m.barWidth) / 2)) + ',' + m.height + ')');
+              (((this.scale * m.barWidth * (d['index'] + m.dataIdx)) +
+            ((this.scale * m.barWidth) / 2))).toFixed(10) + ',' +
+              (m.height).toFixed(10) + ')');
     } else {
       d3.selectAll('.bar')
           .attr('x', (d: any, i: number) =>
@@ -791,8 +795,9 @@ export default class TimelineComponent
 
       d3.selectAll('.xtick')
           .attr('transform', (d: any, i: number) =>
-            `translate(${this.scale * m.timeScale(new Date(d.text))},
-            ${m.height})`);
+            `translate(${(this.scale * m.timeScale(new Date(d.text)))
+                .toFixed(10)},
+            ${(m.height).toFixed(10)})`);
     }
 
     if (d3.event !== null && d3.event.sourceEvent !== null &&
@@ -912,11 +917,13 @@ export default class TimelineComponent
                   .attr('transform', (d: any, i: number) => {
                     if (this.state.view === ViewType.occurrence) {
                       return 'translate(' +
-                  ((this.scale * m.barWidth * (d.index + m.dataIdx)) +
-                    ((this.scale * m.barWidth) / 2)) + ',' + m.height + ')';
+                          (((this.scale * m.barWidth * (d.index + m.dataIdx)) +
+                    ((this.scale * m.barWidth) / 2))).toFixed(10) +
+                          ',' + (m.height).toFixed(10) + ')';
                     } else {
-                      return `translate(${m.timeScale(new Date(d.text))} ,
-                    ${m.height})`;
+                      return `translate(${(m.timeScale(new Date(d.text)))
+                          .toFixed(10)} ,
+                    ${(m.height).toFixed(10)})`;
                     }
                   });
 

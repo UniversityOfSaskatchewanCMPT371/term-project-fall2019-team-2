@@ -414,7 +414,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
       expect(wrapper.state('marginRight')).toEqual(20);
       expect(wrapper.state('togglePrompt'))
           .toEqual('Switch to Interval Timeline');
-      expect(wrapper.state('view')).toEqual(ViewType.occurrence);
+      expect(wrapper.state('view')).toEqual(ViewType.event);
     });
   });
 
@@ -450,7 +450,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
       expect(initTimelineSpy).toHaveBeenCalled();
       expect(drawTimelineSpy).toHaveBeenCalled();
       expect(drawIntervalMagnitudeSpy).toHaveBeenCalled();
-      expect(wrapper.state('view')).toEqual(ViewType.occurrence);
+      expect(wrapper.state('view')).toEqual(ViewType.event);
     });
   });
 

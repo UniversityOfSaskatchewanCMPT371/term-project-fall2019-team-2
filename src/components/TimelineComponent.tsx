@@ -10,12 +10,15 @@ import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
 import TimelineModel from './TimelineModel';
+import TimelineTypeInterface, {EventMagnitude, IntervalMagnitude}
+  from './TimelineTypeInterface';
 
 export enum ViewType {
-  interval, occurrence
+  interval, event
 }
 
 const m = new TimelineModel();
+const timelineType: TimelineTypeInterface = new EventMagnitude(m);
 
 /**
  * Purpose: renders and updates a timeline to the screen
@@ -41,7 +44,7 @@ export default class TimelineComponent
       xColumn: '',
       xColumn2: '',
       loading: true,
-      view: ViewType.occurrence,
+      view: ViewType.event,
     };
 
     this.drawTimeline = this.drawTimeline.bind(this);
@@ -249,9 +252,6 @@ export default class TimelineComponent
           <Button
             variant='primary'
             onClick={this.toggleTimeline}>{this.state.togglePrompt}</Button>
-          <label>
-            Y-Axis
-          </label>
           <InputGroup>
             <InputGroup.Prepend>
               <InputGroup.Text
@@ -332,12 +332,12 @@ export default class TimelineComponent
    */
   toggleTimeline() {
     let prompt = this.state.togglePrompt;
-    if (m.view === ViewType.occurrence) {
+    if (m.view === ViewType.event) {
       prompt = 'Switch to Occurrence Timeline';
       m.view = ViewType.interval;
     } else {
       prompt = 'Switch to Interval Timeline';
-      m.view = ViewType.occurrence;
+      m.view = ViewType.event;
     }
 
     this.setState(() => {
@@ -517,7 +517,7 @@ export default class TimelineComponent
    */
   private drawLabels(): void {
     switch (m.view) {
-      case ViewType.occurrence:
+      case ViewType.event:
         this.svg.append('text')
             .attr('transform',
                 `translate(${m.width / 2},${m.height + m.marginTop + 20})`)
@@ -764,7 +764,7 @@ export default class TimelineComponent
 
     // d3.selectAll('#xaxis').remove();
 
-    if (this.state.view === ViewType.occurrence) {
+    if (this.state.view === ViewType.event) {
       // d3.selectAll('.bar')
       //     .attr('x', (d, i) => (this.scale * barWidth * (i + dataIdx)));
       //     // .attr('width', barWidth);
@@ -811,7 +811,6 @@ export default class TimelineComponent
   drawEventMagnitude(selection: any): void {
     const bar = selection.append('g')
         .attr('class', 'bar');
-
 
     bar.append('rect')
         .attr('class', 'pin-line')
@@ -881,7 +880,7 @@ export default class TimelineComponent
           return d['index'];
         })
         .join(
-            (enter: any) => this.state.view === ViewType.occurrence ?
+            (enter: any) => this.state.view === ViewType.event ?
           this.drawEventMagnitude(enter) :
           this.drawIntervalMagnitude(enter),
             (update: any) => update,
@@ -910,7 +909,7 @@ export default class TimelineComponent
                   .attr('class', 'xtick')
                   .attr('opacity', 1)
                   .attr('transform', (d: any, i: number) => {
-                    if (this.state.view === ViewType.occurrence) {
+                    if (this.state.view === ViewType.event) {
                       return 'translate(' +
                   ((this.scale * m.barWidth * (d.index + m.dataIdx)) +
                     ((this.scale * m.barWidth) / 2)) + ',' + m.height + ')';
@@ -1010,7 +1009,7 @@ export default class TimelineComponent
         });
 
 
-    this.state.view === ViewType.occurrence ?
+    this.state.view === ViewType.event ?
       this.getEventMagnitudeData() :
       this.getIntervalMagnitudeData();
 

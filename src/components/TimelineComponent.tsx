@@ -10,8 +10,9 @@ import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
 import TimelineModel from './TimelineModel';
-import TimelineTypeInterface, {EventMagnitude, IntervalMagnitude}
-  from './TimelineTypes/TimelineTypeInterface';
+import TimelineTypeInterface from './TimelineTypes/TimelineTypeInterface';
+import EventMagnitude from './TimelineTypes/EventMagnitude';
+import IntervalMagnitude from './TimelineTypes/IntervalMagnitude';
 
 export enum ViewType {
   interval, event
@@ -75,7 +76,7 @@ export default class TimelineComponent
    * @return {number}: The scale
    */
   getScale(): number {
-    return this.scale;
+    return m.scale;
   }
 
   /**
@@ -347,14 +348,6 @@ export default class TimelineComponent
         break;
     }
 
-    // if (m.view === ViewType.event) {
-    //   prompt = 'Switch to Occurrence Timeline';
-    //   m.view = ViewType.interval;
-    // } else {
-    //   prompt = 'Switch to Interval Timeline';
-    //   m.view = ViewType.event;
-    // }
-
     this.setState(() => {
       return {
         togglePrompt: prompt,
@@ -377,7 +370,7 @@ export default class TimelineComponent
   /**
    * Stores the current scale
    */
-  private scale = 1;
+  // private scale = 1;
 
   /**
    * Purpose: sets the initial values for rendering the actual timeline
@@ -399,7 +392,7 @@ export default class TimelineComponent
 
     m.dataIdx = 0;
     m.deltaX = 0;
-    this.scale = 1;
+    m.scale = 1;
     m.csvData = this.state.data.arrayOfData;
 
     m.data = m.csvData.slice(0, m.numBars);
@@ -518,7 +511,8 @@ export default class TimelineComponent
         .attr('id', 'bars');
 
     // Labels
-    this.drawLabels();
+    // this.drawLabels();
+    timelineType.drawLabels(this.svg);
 
     this.updateBars();
 
@@ -530,46 +524,47 @@ export default class TimelineComponent
    * @return {void}: Nothing
    */
   private drawLabels(): void {
-    switch (m.view) {
-      case ViewType.event:
-        this.svg.append('text')
-            .attr('transform',
-                `translate(${m.width / 2},${m.height + m.marginTop + 20})`)
-            .style('text-anchor', 'start')
-            .text(this.state.xColumn);
-
-        this.svg.append('text')
-            .attr('transform', 'rotate(-90)')
-            .attr('y', 0 - m.marginLeft)
-            .attr('x', 0 - (m.height / 2))
-            .attr('dy', '1em')
-            .style('text-anchor', 'middle')
-            .text(this.state.yColumn);
-        break;
-
-      case ViewType.interval:
-        this.svg.append('text')
-            .attr('transform',
-                `translate(${(m.width / 2) + 10},${m.height +
-                m.marginTop + 20})`)
-            .style('text-anchor', 'start')
-            .text('end: ' + this.state.xColumn2);
-
-        this.svg.append('text')
-            .attr('transform',
-                `translate(${m.width / 2},${m.height + m.marginTop + 20})`)
-            .style('text-anchor', 'end')
-            .text('start: ' + this.state.xColumn + ',');
-
-        this.svg.append('text')
-            .attr('transform', 'rotate(-90)')
-            .attr('y', 0 - m.marginLeft)
-            .attr('x', 0 - (m.height / 2))
-            .attr('dy', '1em')
-            .style('text-anchor', 'middle')
-            .text(this.state.yColumn);
-        break;
-    }
+    timelineType.drawLabels(this.svg);
+    // switch (m.view) {
+    //   case ViewType.event:
+    //     this.svg.append('text')
+    //         .attr('transform',
+    //             `translate(${m.width / 2},${m.height + m.marginTop + 20})`)
+    //         .style('text-anchor', 'start')
+    //         .text(this.state.xColumn);
+    //
+    //     this.svg.append('text')
+    //         .attr('transform', 'rotate(-90)')
+    //         .attr('y', 0 - m.marginLeft)
+    //         .attr('x', 0 - (m.height / 2))
+    //         .attr('dy', '1em')
+    //         .style('text-anchor', 'middle')
+    //         .text(this.state.yColumn);
+    //     break;
+    //
+    //   case ViewType.interval:
+    //     this.svg.append('text')
+    //         .attr('transform',
+    //             `translate(${(m.width / 2) + 10},${m.height +
+    //             m.marginTop + 20})`)
+    //         .style('text-anchor', 'start')
+    //         .text('end: ' + this.state.xColumn2);
+    //
+    //     this.svg.append('text')
+    //         .attr('transform',
+    //             `translate(${m.width / 2},${m.height + m.marginTop + 20})`)
+    //         .style('text-anchor', 'end')
+    //         .text('start: ' + this.state.xColumn + ',');
+    //
+    //     this.svg.append('text')
+    //         .attr('transform', 'rotate(-90)')
+    //         .attr('y', 0 - m.marginLeft)
+    //         .attr('x', 0 - (m.height / 2))
+    //         .attr('dy', '1em')
+    //         .style('text-anchor', 'middle')
+    //         .text(this.state.yColumn);
+    //     break;
+    // }
   }
 
   /**
@@ -592,22 +587,22 @@ export default class TimelineComponent
       if (op === '-' || op === 's') {
         // Zoom out
         const identity = d3.zoomIdentity
-            .scale(Math.max(m.scaleMin, this.scale * m.scaleZoomOut));
+            .scale(Math.max(m.scaleMin, m.scale * m.scaleZoomOut));
 
         this.svg.transition().ease(d3.easeLinear).duration(300)
             .call(this.zoom.transform, identity);
         // Ensure the new scale is saved with a limit on the minimum
         //  zoomed out scope
-        this.scale = Math.max(m.scaleMin, this.scale * m.scaleZoomOut);
+        m.scale = Math.max(m.scaleMin, m.scale * m.scaleZoomOut);
       } else if (op === '+' || op === 'w') {
         // Zoom In
         const identity = d3.zoomIdentity
-            .scale(this.scale * m.scaleZoomIn);
+            .scale(m.scale * m.scaleZoomIn);
 
         this.svg.transition().ease(d3.easeLinear).duration(300)
             .call(this.zoom.transform, identity);
         // Ensure the new scale is saved
-        this.scale = this.scale * m.scaleZoomIn;
+        m.scale = m.scale * m.scaleZoomIn;
       } else if (op === 'ArrowLeft') {
         // Pan Left
         m.deltaX = Math.min(0, m.deltaX + m.deltaPan);
@@ -768,34 +763,13 @@ export default class TimelineComponent
   updateChart() {
     // recover the new scale
     if (d3.event !== null) {
-      this.scale = d3.event.transform.k;
+      m.scale = d3.event.transform.k;
+      console.log(d3.event);
     } else {
       console.warn('d3.event was null');
     }
 
-    if (this.state.view === ViewType.event) {
-      d3.selectAll('.pin-line')
-          .attr('x', (d, i) => (this.scale * m.barWidth * (i + m.dataIdx)));
-      d3.selectAll('.pin-head')
-          .attr('cx', (d, i) => (this.scale * m.barWidth * (i + m.dataIdx)));
-
-      d3.selectAll('.xtick')
-          .attr('transform', (d: any, i) => 'translate(' +
-          ((this.scale * m.barWidth * (d['index'] + m.dataIdx)) +
-            ((this.scale * m.barWidth) / 2)) + ',' + m.height + ')');
-    } else {
-      d3.selectAll('.bar')
-          .attr('x', (d: any, i: number) =>
-            this.scale * m.timeScale(new Date(d[m.xColumn])))
-          .attr('width', (d: any, i: number) =>
-            this.scale * (m.timeScale(new Date(d[m.xColumn2])) -
-          m.timeScale(new Date(d[m.xColumn]))));
-
-      d3.selectAll('.xtick')
-          .attr('transform', (d: any, i: number) =>
-            `translate(${this.scale * m.timeScale(new Date(d.text))},
-            ${m.height})`);
-    }
+    timelineType.applyZoom();
 
     if (d3.event !== null && d3.event.sourceEvent !== null &&
       d3.event.sourceEvent.type === 'mousemove') {
@@ -867,8 +841,8 @@ export default class TimelineComponent
                   .attr('transform', (d: any, i: number) => {
                     if (this.state.view === ViewType.event) {
                       return 'translate(' +
-                  ((this.scale * m.barWidth * (d.index + m.dataIdx)) +
-                    ((this.scale * m.barWidth) / 2)) + ',' + m.height + ')';
+                  ((m.scale * m.barWidth * (d.index + m.dataIdx)) +
+                    ((m.scale * m.barWidth) / 2)) + ',' + m.height + ')';
                     } else {
                       return `translate(${m.timeScale(new Date(d.text))} ,
                     ${m.height})`;

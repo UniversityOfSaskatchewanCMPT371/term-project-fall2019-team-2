@@ -88,7 +88,7 @@ describe('R1 Tests\n', () => {
       jest.spyOn(ParserComponent.prototype, 'inferTypes');
   const sortDataSpy: any =
       jest.spyOn(ParserComponent.prototype, 'sortData');
-  let isValidSpy: any =
+  const isValidSpy: any =
       jest.spyOn(ParserComponent.prototype, 'isValid');
   const parseCsvSpy: any =
       jest.spyOn(ParserComponent.prototype, 'parseCsv');

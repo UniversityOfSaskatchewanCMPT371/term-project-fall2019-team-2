@@ -356,7 +356,7 @@ describe('<TimelineComponent /> R3 Tests\n', ()=>{
   const zoomOutEventUp = new KeyboardEvent('keyup', {'key': '-'});
 
 
-  it('T3.1 Snapshot Test\n', () => {
+  it('T3.3 Snapshot Test\n', () => {
     expect(wrapper.instance().getScale()).toBe(1.0);
 
     // check scale for zoomInEventDown and zoomInEventUp separately
@@ -376,7 +376,7 @@ describe('<TimelineComponent /> R3 Tests\n', ()=>{
     expect(svgHTML).toMatchSnapshot();
   });
 
-  it('T3.2 Snapshot test', ()=>{
+  it('T3.4 Snapshot test', ()=>{
     // zoom in first so could test zoom backout
     document.body.dispatchEvent(zoomInEventDown);
     document.body.dispatchEvent(zoomInEventUp);

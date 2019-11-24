@@ -588,7 +588,7 @@ exports[`<TimelineComponent /> R2 Tests
 `;
 
 exports[`<TimelineComponent /> R3 Tests
- T3.1 Snapshot Test
+ T3.3 Snapshot Test
  1`] = `
 "<TimelineComponent data={{...}}>
   <div>
@@ -746,7 +746,7 @@ exports[`<TimelineComponent /> R3 Tests
 `;
 
 exports[`<TimelineComponent /> R3 Tests
- T3.1 Snapshot Test
+ T3.3 Snapshot Test
  2`] = `
 "<svg width=\\"934\\" height=\\"768\\">
 <g transform=\\"translate(70, 0)\\">
@@ -890,7 +890,7 @@ exports[`<TimelineComponent /> R3 Tests
 `;
 
 exports[`<TimelineComponent /> R3 Tests
- T3.1 Snapshot Test
+ T3.3 Snapshot Test
  3`] = `
 "<svg width=\\"934\\" height=\\"768\\">
 <g transform=\\"translate(70, 0)\\">
@@ -1034,7 +1034,7 @@ exports[`<TimelineComponent /> R3 Tests
 `;
 
 exports[`<TimelineComponent /> R3 Tests
- T3.2 Snapshot test 1`] = `
+ T3.4 Snapshot test 1`] = `
 "<TimelineComponent data={{...}}>
   <div>
     <div>
@@ -1191,7 +1191,7 @@ exports[`<TimelineComponent /> R3 Tests
 `;
 
 exports[`<TimelineComponent /> R3 Tests
- T3.2 Snapshot test 2`] = `
+ T3.4 Snapshot test 2`] = `
 "<svg width=\\"934\\" height=\\"768\\">
 <g transform=\\"translate(70, 0)\\">
 <rect width=\\"934\\" height=\\"598\\" style=\\"fill: none;\\">
@@ -1334,7 +1334,7 @@ exports[`<TimelineComponent /> R3 Tests
 `;
 
 exports[`<TimelineComponent /> R3 Tests
- T3.2 Snapshot test 3`] = `
+ T3.4 Snapshot test 3`] = `
 "<svg width=\\"934\\" height=\\"768\\">
 <g transform=\\"translate(70, 0)\\">
 <rect width=\\"934\\" height=\\"598\\" style=\\"fill: none;\\">

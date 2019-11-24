@@ -351,6 +351,10 @@ describe('<TimelineComponent /> R3 Tests\n', ()=>{
   // zoom in events for keydown & keyup
   const zoomInEventDown = new KeyboardEvent('keydown', {'key': '+'});
   const zoomInEventUp = new KeyboardEvent('keyup', {'key': '+'});
+  // zoom out events for keydown & keyup
+  const zoomOutEventDown = new KeyboardEvent('keydown', {'key': '-'});
+  const zoomOutEventUp = new KeyboardEvent('keyup', {'key': '-'});
+
 
   it('T3.1 Snapshot Test\n', () => {
     expect(wrapper.instance().getScale()).toBe(1.0);
@@ -360,6 +364,27 @@ describe('<TimelineComponent /> R3 Tests\n', ()=>{
     document.body.dispatchEvent(zoomInEventUp);
     const tempScaleEventDown = wrapper.instance().getScale();
     expect(tempScaleEventDown).toBeGreaterThan(1.0);
+
+    // find d3 svg element
+    const svgTarget: any = document.getElementById('svgtarget');
+    let svgHTML: string = '';
+    if (svgTarget) {
+      svgHTML = prettyHTML(svgTarget.innerHTML);
+    }
+
+    // Check that svg created by d3 matches snapshot
+    expect(svgHTML).toMatchSnapshot();
+  });
+
+  it('T3.2 Snapshot test', ()=>{
+    // zoom in first so could test zoom backout
+    document.body.dispatchEvent(zoomInEventDown);
+    document.body.dispatchEvent(zoomInEventUp);
+    expect(wrapper.instance().getScale()).toBeGreaterThan(1.0);
+    // zoom back out
+    document.body.dispatchEvent(zoomOutEventDown);
+    document.body.dispatchEvent(zoomOutEventUp);
+    expect(wrapper.instance().getScale()).toBe(1.0);
 
     // find d3 svg element
     const svgTarget: any = document.getElementById('svgtarget');

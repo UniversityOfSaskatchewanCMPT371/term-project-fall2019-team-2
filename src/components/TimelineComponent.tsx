@@ -500,6 +500,17 @@ export default class TimelineComponent
         .style('color', 'red')
         .text('yColumn');
 
+    d3.selectAll('.tick').each(function(this: any, d: any, i: number) {
+      // eslint-disable-next-line no-invalid-this
+      const transform = d3.select(this).attr('transform');
+      const newX =
+          Number.parseFloat(transform.split(',')[1].split(')')[0]).toFixed(4);
+
+      console.log(newX);
+      // eslint-disable-next-line no-invalid-this
+      d3.select(this).attr('transform', `translate(0,${newX})`);
+    });
+
     m.plot = barsLayer.append('g')
         .attr('class', 'plot')
         .attr('id', 'bars');

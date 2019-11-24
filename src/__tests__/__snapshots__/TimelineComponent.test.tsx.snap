@@ -218,73 +218,73 @@ exports[`<TimelineComponent /> R2 Tests
 <g style=\\"color: red;\\" class=\\"y axis\\" fill=\\"none\\" font-size=\\"10\\" font-family=\\"sans-serif\\" text-anchor=\\"end\\">
 <path class=\\"domain\\" stroke=\\"currentColor\\" d=\\"M-6,598.5H0.5V0.5H-6\\">
 </path>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,583.3875042617942)\\">
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,583.3875)\\">
 <line stroke=\\"currentColor\\" x2=\\"-6\\">
 </line>
 <text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">350,000,000
 </text>
 </g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,531.0850872294376)\\">
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,531.0851)\\">
 <line stroke=\\"currentColor\\" x2=\\"-6\\">
 </line>
 <text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">400,000,000
 </text>
 </g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,478.78267019708096)\\">
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,478.7827)\\">
 <line stroke=\\"currentColor\\" x2=\\"-6\\">
 </line>
 <text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">450,000,000
 </text>
 </g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,426.48025316472433)\\">
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,426.4803)\\">
 <line stroke=\\"currentColor\\" x2=\\"-6\\">
 </line>
 <text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">500,000,000
 </text>
 </g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,374.1778361323677)\\">
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,374.1778)\\">
 <line stroke=\\"currentColor\\" x2=\\"-6\\">
 </line>
 <text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">550,000,000
 </text>
 </g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,321.87541910001113)\\">
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,321.8754)\\">
 <line stroke=\\"currentColor\\" x2=\\"-6\\">
 </line>
 <text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">600,000,000
 </text>
 </g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,269.5730020676545)\\">
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,269.5730)\\">
 <line stroke=\\"currentColor\\" x2=\\"-6\\">
 </line>
 <text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">650,000,000
 </text>
 </g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,217.2705850352979)\\">
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,217.2706)\\">
 <line stroke=\\"currentColor\\" x2=\\"-6\\">
 </line>
 <text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">700,000,000
 </text>
 </g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,164.96816800294124)\\">
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,164.9682)\\">
 <line stroke=\\"currentColor\\" x2=\\"-6\\">
 </line>
 <text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">750,000,000
 </text>
 </g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,112.66575097058458)\\">
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,112.6658)\\">
 <line stroke=\\"currentColor\\" x2=\\"-6\\">
 </line>
 <text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">800,000,000
 </text>
 </g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,60.36333393822799)\\">
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,60.3633)\\">
 <line stroke=\\"currentColor\\" x2=\\"-6\\">
 </line>
 <text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">850,000,000
 </text>
 </g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,8.060916905871336)\\">
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,8.0609)\\">
 <line stroke=\\"currentColor\\" x2=\\"-6\\">
 </line>
 <text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">900,000,000
@@ -503,73 +503,73 @@ exports[`<TimelineComponent /> R2 Tests
 <g style=\\"color: red;\\" class=\\"y axis\\" fill=\\"none\\" font-size=\\"10\\" font-family=\\"sans-serif\\" text-anchor=\\"end\\">
 <path class=\\"domain\\" stroke=\\"currentColor\\" d=\\"M-6,598.5H0.5V0.5H-6\\">
 </path>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,583.3875042617942)\\">
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,583.3875)\\">
 <line stroke=\\"currentColor\\" x2=\\"-6\\">
 </line>
 <text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">350,000,000
 </text>
 </g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,531.0850872294376)\\">
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,531.0851)\\">
 <line stroke=\\"currentColor\\" x2=\\"-6\\">
 </line>
 <text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">400,000,000
 </text>
 </g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,478.78267019708096)\\">
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,478.7827)\\">
 <line stroke=\\"currentColor\\" x2=\\"-6\\">
 </line>
 <text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">450,000,000
 </text>
 </g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,426.48025316472433)\\">
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,426.4803)\\">
 <line stroke=\\"currentColor\\" x2=\\"-6\\">
 </line>
 <text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">500,000,000
 </text>
 </g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,374.1778361323677)\\">
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,374.1778)\\">
 <line stroke=\\"currentColor\\" x2=\\"-6\\">
 </line>
 <text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">550,000,000
 </text>
 </g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,321.87541910001113)\\">
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,321.8754)\\">
 <line stroke=\\"currentColor\\" x2=\\"-6\\">
 </line>
 <text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">600,000,000
 </text>
 </g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,269.5730020676545)\\">
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,269.5730)\\">
 <line stroke=\\"currentColor\\" x2=\\"-6\\">
 </line>
 <text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">650,000,000
 </text>
 </g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,217.2705850352979)\\">
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,217.2706)\\">
 <line stroke=\\"currentColor\\" x2=\\"-6\\">
 </line>
 <text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">700,000,000
 </text>
 </g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,164.96816800294124)\\">
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,164.9682)\\">
 <line stroke=\\"currentColor\\" x2=\\"-6\\">
 </line>
 <text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">750,000,000
 </text>
 </g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,112.66575097058458)\\">
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,112.6658)\\">
 <line stroke=\\"currentColor\\" x2=\\"-6\\">
 </line>
 <text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">800,000,000
 </text>
 </g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,60.36333393822799)\\">
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,60.3633)\\">
 <line stroke=\\"currentColor\\" x2=\\"-6\\">
 </line>
 <text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">850,000,000
 </text>
 </g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,8.060916905871336)\\">
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,8.0609)\\">
 <line stroke=\\"currentColor\\" x2=\\"-6\\">
 </line>
 <text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">900,000,000

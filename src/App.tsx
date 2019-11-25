@@ -19,9 +19,9 @@ const App: React.FC = () => {
           </Navbar.Collapse>
         </Navbar>
         <ParserComponent
-            prompt={'Select a CSV file: '}
-            fileType={FileType.csv}
-            onChange={function() {}}
+          prompt={'Select a CSV file: '}
+          fileType={FileType.csv}
+          onChange={function() {}}
         />
       </Container>
     </div>

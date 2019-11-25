@@ -28,6 +28,19 @@ export default class IntervalOccurrence extends TimelineType
    * @param {any} svg: the SVG element
    */
   drawLabels(svg: any): void {
+    svg.append('text')
+        .attr('transform',
+            `translate(${(this.m.width / 2) + 10},${this.m.height +
+        this.m.marginTop + 20})`)
+        .style('text-anchor', 'start')
+        .text('end: ' + this.m.xColumn2);
+
+    svg.append('text')
+        .attr('transform',
+        // eslint-disable-next-line max-len
+            `translate(${this.m.width / 2},${this.m.height + this.m.marginTop + 20})`)
+        .style('text-anchor', 'end')
+        .text('start: ' + this.m.xColumn + ',');
   }
 
   /**
@@ -46,5 +59,4 @@ export default class IntervalOccurrence extends TimelineType
     return `translate(${this.m.timeScale(new Date(datum.text))},
       ${this.m.height})`;
   }
-
 }

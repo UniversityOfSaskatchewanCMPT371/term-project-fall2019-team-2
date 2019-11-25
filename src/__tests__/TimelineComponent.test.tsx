@@ -11,6 +11,8 @@ import Data
 import Column
   from '../components/Column';
 
+import pretty from 'pretty';
+
 describe('<TimelineComponent /> R2 Tests\n', () => {
   // sample data for Timeline component
   const data: Data = new Data('path/to/file', [
@@ -414,7 +416,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
       expect(wrapper.state('marginRight')).toEqual(20);
       expect(wrapper.state('togglePrompt'))
           .toEqual('Switch to Interval Timeline');
-      expect(wrapper.state('view')).toEqual(ViewType.occurrence);
+      expect(wrapper.state('view')).toEqual(ViewType.event);
     });
   });
 
@@ -438,7 +440,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
           .toEqual('Switch to Occurrence Timeline');
       expect(initTimelineSpy).toHaveBeenCalled();
       expect(drawTimelineSpy).toHaveBeenCalled();
-      expect(drawEventMagnitudeSpy).toHaveBeenCalled();
+      expect(updateBarsSpy).toHaveBeenCalled();
       expect(wrapper.state('view')).toEqual(ViewType.interval);
 
       button.simulate('click');
@@ -449,8 +451,8 @@ describe('<TimelineComponent /> Unit Tests', () => {
           .toEqual('Switch to Interval Timeline');
       expect(initTimelineSpy).toHaveBeenCalled();
       expect(drawTimelineSpy).toHaveBeenCalled();
-      expect(drawIntervalMagnitudeSpy).toHaveBeenCalled();
-      expect(wrapper.state('view')).toEqual(ViewType.occurrence);
+      expect(updateBarsSpy).toHaveBeenCalled();
+      expect(wrapper.state('view')).toEqual(ViewType.event);
     });
   });
 
@@ -614,9 +616,6 @@ describe('<TimelineComponent /> Unit Tests', () => {
     it('dummy test', () => {
       expect(drawTimelineSpy).toHaveBeenCalled();
       expect(updateBarsSpy).toHaveBeenCalled();
-      console.log(document.body.innerHTML);
-      // console.log(wrapper.)
-      expect(d3.selectAll('.pin-line').size()).toBe(5);
       wrapper.instance().drawIntervalMagnitude(d3.selectAll('.bar'));
       expect(drawIntervalMagnitudeSpy).toHaveBeenCalled();
       //

@@ -13,12 +13,15 @@ import TimelineModel from './TimelineModel';
 import TimelineTypeInterface from './TimelineTypes/TimelineTypeInterface';
 import EventMagnitude from './TimelineTypes/EventMagnitude';
 import IntervalMagnitude from './TimelineTypes/IntervalMagnitude';
+import {resolveAny} from 'dns';
+import EventOccurrence
+  from './TimelineTypes/EventOccurrence';
 
 export enum ViewType {
-  IntervalMagnitude,
-  IntervalOccurrence,
-  EventMagnitude,
-  EventOccurrence
+  IntervalMagnitude= 0,
+  IntervalOccurrence = 1,
+  EventMagnitude = 2,
+  EventOccurrence = 3
 }
 
 const m = new TimelineModel();
@@ -53,6 +56,7 @@ export default class TimelineComponent
 
     this.drawTimeline = this.drawTimeline.bind(this);
     this.toggleTimeline = this.toggleTimeline.bind(this);
+    this.changeTimelineType = this.changeTimelineType.bind(this);
     this.initTimeline = this.initTimeline.bind(this);
     this.ttOverHelper = this.ttOverHelper.bind(this);
     this.ttOver = this.ttOver.bind(this);
@@ -255,7 +259,40 @@ export default class TimelineComponent
         <div>
           <Button
             variant='primary'
-            onClick={this.toggleTimeline}>{this.state.togglePrompt}</Button>
+            onClick={this.toggleTimeline}>{this.state.togglePrompt}
+          </Button>
+          
+          <InputGroup>
+            <InputGroup.Prepend>
+              <InputGroup.Text
+                  id='inputGroup
+                Prepend'>Timeline Type</InputGroup.Text>
+            </InputGroup.Prepend>
+            
+            <Form.Control
+                as='select'
+                id='timelineTypeSelect'
+                // value={ViewType[this.state.view]}
+                onChange={(e) => {
+                  this.changeTimelineType(e);
+                }}>
+              <option selected value={ViewType.IntervalMagnitude}>
+                Interval Magnitude
+              </option>
+              <option value={ViewType.IntervalOccurrence}>
+                Interval Occurrence
+              </option>
+              <option value={ViewType.EventMagnitude}>
+                Event Magnitude
+              </option>
+              <option value={ViewType.EventOccurrence}>
+                Event Occurrence
+              </option>
+            </Form.Control>
+            
+          </InputGroup>
+          
+          
           <InputGroup>
             <InputGroup.Prepend>
               <InputGroup.Text
@@ -354,6 +391,44 @@ export default class TimelineComponent
     this.setState(() => {
       return {
         togglePrompt: prompt,
+        view: m.view,
+      };
+    }, () => {
+      this.resetTimeline();
+    });
+  }
+  
+  /**
+   * Purpose: changes the timeline type to the one desired by the user
+   * @param {any} e: the event to pass into the function
+   */
+  changeTimelineType(e: any) {
+    const val = Number.parseInt(e.target.value);
+    console.log(e.target.value);
+    console.log(ViewType[val]);
+    console.log(m.view);
+    m.view = val;
+    
+    switch (m.view) {
+      case ViewType.IntervalMagnitude:
+        timelineType = new IntervalMagnitude(m);
+        break;
+        
+      case ViewType.IntervalOccurrence:
+        // timelineType = new IntervalMagnitude(m);
+        break;
+    
+      case ViewType.EventMagnitude:
+        timelineType = new EventMagnitude(m);
+        break;
+  
+      case ViewType.EventOccurrence:
+        timelineType = new EventOccurrence(m);
+        break;
+    }
+  
+    this.setState(() => {
+      return {
         view: m.view,
       };
     }, () => {

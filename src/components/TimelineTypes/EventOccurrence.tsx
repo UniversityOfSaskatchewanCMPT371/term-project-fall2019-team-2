@@ -1,27 +1,30 @@
 import TimelineTypeInterface, {TimelineType} from './TimelineTypeInterface';
 import * as d3 from 'd3';
 
-
+/**
+ * Purpose: to provide methods specific and relevant to drawing an
+ * EventOccurrence timeline
+ */
 export default class EventOccurrence extends TimelineType
-    implements TimelineTypeInterface{
-  
+  implements TimelineTypeInterface {
   /**
    * Purpose: modify the representation of the timeline when a zoom is fired
    */
   applyZoom() {
     d3.selectAll('.pin-line')
         .attr('x', (d, i) =>
-            (this.m.scale * this.m.barWidth * (i + this.m.dataIdx)));
-    d3.selectAll('.pin-head')
-        .attr('cx', (d, i) =>
-            (this.m.scale * this.m.barWidth * (i + this.m.dataIdx)));
-    
+          (this.m.scale * this.m.barWidth * (i + this.m.dataIdx)));
+    d3.selectAll('.pin-text')
+        .attr('x', (d, i) =>
+          (this.m.scale * this.m.barWidth * (i + this.m.dataIdx)));
+
     d3.selectAll('.xtick')
         .attr('transform', (d: any) => 'translate(' +
             ((this.m.scale * this.m.barWidth * (d['index'] + this.m.dataIdx)) +
-                ((this.m.scale * this.m.barWidth) / 2)) + ',' + this.m.height + ')');
+                ((this.m.scale * this.m.barWidth) / 2)) + ',' +
+            this.m.height + ')');
   }
-  
+
   /**
    * Purpose: draws an element as Event with a Magnitude
    * @param {any} selection: the selection for the object to draw
@@ -32,46 +35,56 @@ export default class EventOccurrence extends TimelineType
   draw(selection: any, ttOver: any, ttMove: any, ttLeave: any): void {
     const bar = selection.append('g')
         .attr('class', 'bar');
-    
+
     bar.append('rect')
         .attr('class', 'pin-line')
         .attr('x', (d: any, i: number) =>
-            (this.m.scale * this.m.barWidth * (i + this.m.dataIdx)))
+          (this.m.scale * this.m.barWidth * (i + this.m.dataIdx)))
         .attr('width', 2)
-        .attr('y', (d: any) => this.m.y(d[this.m.yColumn]))
+        .attr('y', (d: any, i: number) =>
+          this.m.y(d[this.m.yColumn]))
         .attr('height', (d: any) => {
           const newHeight = (this.m.height - this.m.y(d[this.m.yColumn]));
-          if (newHeight < 0) {
-            return 0;
-          } else {
-            return (this.m.height - this.m.y(d[this.m.yColumn]));
-          }
+          return newHeight < 0 ? 0 : newHeight;
         });
-    
+    // bar.append('rect')
+    //     .attr('class', 'pin-line')
+    //     .attr('x', (d: any, i: number) =>
+    //       (this.m.scale * this.m.barWidth * (i + this.m.dataIdx)))
+    //     .attr('width', 2)
+    //     .attr('y', (d: any, i: number) => ((this.m.height / 2)
+    //         - (((i + this.m.dataIdx)%2) * (this.m.height / 10))))
+    //     .attr('height', (d:any, i: number) => ((this.m.height / 2)
+    //         + (((i + this.m.dataIdx)%2) * (this.m.height / 10))));
+    // .attr('height', (d: any) => {
+    //   const newHeight = (this.m.height - this.m.y(d[this.m.yColumn]));
+    //   return newHeight < 0 ? 0 : newHeight;
+    // });
+
     bar.append('text')
         .text((d: any) => d[this.m.yColumn])
-        .style('text-anchor', 'end')
+        .attr('class', 'pin-text')
+        .style('text-anchor', 'start')
         .style('font-size', '1rem')
-        .attr('dx', '-.8em')
-        .attr('dy', '.15em')
-        .attr('transform', 'rotate(-90)');
-    // // Circles
-    // bar.append('circle')
-    //     .attr('class', 'pin-head')
-    //     .attr('cx', (d: any, i: number) =>
-    //         (this.m.scale * this.m.barWidth * (i + this.m.dataIdx)))
-    //     .attr('cy', (d: any) => this.m.y(d[this.m.yColumn]))
-    //     .attr('r', '5')
-    //     .style('fill', '#69b3a2')
-    //     .attr('stroke', 'black')
-    //     .on('mouseover', ttOver)
-    //     .on('mousemove', ttMove)
-    //     .on('mouseleave', ttLeave);
-    
+        .attr('x', (d: any, i: number) =>
+          (this.m.scale * this.m.barWidth * (i + this.m.dataIdx)))
+        .attr('y', (d: any, i: number) =>
+          this.m.y(d[this.m.yColumn]));
+
+    // bar.append('text')
+    //     .text((d: any) => d[this.m.yColumn])
+    //     .attr('class', 'pin-text')
+    //     .style('text-anchor', 'start')
+    //     .style('font-size', '1rem')
+    //     .attr('x', (d: any, i: number) =>
+    //       (this.m.scale * this.m.barWidth * (i + this.m.dataIdx)))
+    //     .attr('y', (d: any, i: number) => ((this.m.height / 2)
+    //         - (((i + this.m.dataIdx)%2) * (this.m.height / 10))));
+
     console.log('EventMagnitude.draw(): ');
     console.log(bar);
   }
-  
+
   /**
    * Purpose: draws the initial axis labels when the timeline is first rendered
    * @param {any} svg: the SVG element
@@ -83,7 +96,7 @@ export default class EventOccurrence extends TimelineType
             `translate(${this.m.width / 2},${this.m.height + this.m.marginTop + 20})`)
         .style('text-anchor', 'start')
         .text(this.m.xColumn);
-    
+
     svg.append('text')
         .attr('transform', 'rotate(-90)')
         .attr('y', 0 - this.m.marginLeft)
@@ -92,7 +105,7 @@ export default class EventOccurrence extends TimelineType
         .style('text-anchor', 'middle')
         .text(this.m.yColumn);
   }
-  
+
   /**
    * Purpose: updates dataIdx, data, and ordinals when drawing an
    * EventMagnitude Timeline
@@ -104,7 +117,7 @@ export default class EventOccurrence extends TimelineType
     this.m.data =
         this.m.csvData.slice(this.m.dataIdx, this.m.numBars + this.m.dataIdx);
   }
-  
+
   /**
    * Purpose: gets the translation for an x-axis tick
    * @param {any} datum: the datum to draw the x-axis tick for
@@ -114,5 +127,17 @@ export default class EventOccurrence extends TimelineType
     return 'translate(' +
         ((this.m.scale * this.m.barWidth * (datum.index + this.m.dataIdx)) +
             ((this.m.scale * this.m.barWidth) / 2)) + ',' + this.m.height + ')';
+  }
+
+  /**
+   * Purpose: determines which columns are appropriate for the y axis
+   * @param {string} primType: the primType to compare
+   * @return {boolean}: a boolean indicating if the primType is appropriate
+   * for the y axis
+   */
+  checkYPrimType(primType: string): boolean {
+    return (primType === 'date' ||
+        primType === 'number' ||
+        primType === 'string');
   }
 }

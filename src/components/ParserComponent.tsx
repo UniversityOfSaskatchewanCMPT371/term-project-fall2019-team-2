@@ -10,6 +10,12 @@ import Data
   from './Data';
 import * as TimSort from 'timsort';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import fs
+  from 'fs';
+import $ from 'jquery';
+import {loadTestCsv} from './Utilities';
+
+console.log(process.env.NODE_ENV);
 
 /**
  * Purpose: react component responsible for receiving and parsing file data
@@ -46,6 +52,13 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * Waits until component mounts
      */
     componentDidMount(): void {
+      // Autoloads a file for local testing
+      if (process.env.NODE_ENV === 'development') {
+        loadTestCsv().then((res) => {
+          console.log(res);
+          this.parse(res);
+        });
+      }
     }
 
     /**

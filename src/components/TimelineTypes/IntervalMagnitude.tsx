@@ -140,4 +140,15 @@ export default class IntervalMagnitude extends TimelineType
     return `translate(${this.m.timeScale(new Date(datum.text))},
       ${this.m.height})`;
   }
+
+  /**
+   * Purpose: determines which columns are appropriate for the y axis
+   * @param {string} primType: the primType to compare
+   * @return {boolean}: a boolean indicating if the primType is appropriate
+   * for the y axis
+   */
+  checkYPrimType(primType: string): boolean {
+    return (primType === 'date' ||
+        primType === 'number');
+  }
 }

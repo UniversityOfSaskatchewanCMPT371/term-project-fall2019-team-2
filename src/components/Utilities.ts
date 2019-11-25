@@ -1,4 +1,6 @@
 import osizeof from 'object-sizeof';
+import $
+  from 'jquery';
 
 const kb = 1024;
 const mb = 1048576;
@@ -110,4 +112,24 @@ export function sizeofObj(obj: any): string {
   }
 
   return str;
+}
+
+/**
+ * Purpose: returns a fake file event with a local file as the data source.
+ * This function is only used in development so that we don't have to manually
+ * select a file to upload every time we save.
+ */
+export async function loadTestCsv(): Promise<any> {
+  const fileName = '10000_Sales_Records.csv';
+
+  const filedata = await $.ajax({
+    url: '/' + fileName,
+  });
+
+  return {
+    target: {
+      files: [new File([filedata], fileName,
+          {type: '.csv,text/csv'})]
+    }
+  };
 }

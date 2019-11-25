@@ -1,5 +1,4 @@
-import React
-  from 'react';
+import React from 'react';
 import TimelineInterface, {TimelineState} from './TimelineInterface';
 import * as d3
   from 'd3';
@@ -13,9 +12,10 @@ import TimelineModel from './TimelineModel';
 import TimelineTypeInterface from './TimelineTypes/TimelineTypeInterface';
 import EventMagnitude from './TimelineTypes/EventMagnitude';
 import IntervalMagnitude from './TimelineTypes/IntervalMagnitude';
-import {resolveAny} from 'dns';
 import EventOccurrence
   from './TimelineTypes/EventOccurrence';
+import assert from 'assert';
+
 
 export enum ViewType {
   IntervalMagnitude= 0,
@@ -108,6 +108,7 @@ export default class TimelineComponent
 
       m.yColumns = [];
       m.xColumns = [];
+      m.columns = cols;
 
       // iterate through columns and set default values
       for (let i = 0; i < cols.length; i++) {
@@ -219,18 +220,21 @@ export default class TimelineComponent
           yColumn: val,
         };
       });
+      m.yColumn = val;
     } else if (column === 'xColumn') {
       this.setState(() => {
         return {
           xColumn: val,
         };
       }, () => this.sortData(val));
+      m.xColumn = val;
     } else if (column === 'xColumn2') {
       this.setState(() => {
         return {
           xColumn2: val,
         };
       });
+      m.xColumn2 = val;
     }
 
     this.resetTimeline();
@@ -261,38 +265,38 @@ export default class TimelineComponent
             variant='primary'
             onClick={this.toggleTimeline}>{this.state.togglePrompt}
           </Button>
-          
+
           <InputGroup>
             <InputGroup.Prepend>
               <InputGroup.Text
-                  id='inputGroup
+                id='inputGroup
                 Prepend'>Timeline Type</InputGroup.Text>
             </InputGroup.Prepend>
-            
+
             <Form.Control
-                as='select'
-                id='timelineTypeSelect'
-                // value={ViewType[this.state.view]}
-                onChange={(e) => {
-                  this.changeTimelineType(e);
-                }}>
-              <option selected value={ViewType.IntervalMagnitude}>
+              as='select'
+              id='timelineTypeSelect'
+              // value={ViewType[this.state.view]}
+              onChange={(e) => {
+                this.changeTimelineType(e);
+              }}>
+              <option value={ViewType.IntervalMagnitude}>
                 Interval Magnitude
               </option>
               <option value={ViewType.IntervalOccurrence}>
                 Interval Occurrence
               </option>
-              <option value={ViewType.EventMagnitude}>
+              <option selected value={ViewType.EventMagnitude}>
                 Event Magnitude
               </option>
               <option value={ViewType.EventOccurrence}>
                 Event Occurrence
               </option>
             </Form.Control>
-            
+
           </InputGroup>
-          
-          
+
+
           <InputGroup>
             <InputGroup.Prepend>
               <InputGroup.Text
@@ -302,9 +306,10 @@ export default class TimelineComponent
             <Form.Control
               as='select'
               id='ySelect'
-              value={this.state.yColumn}
-              onChange={(e) => {
-                this.changeColumn(e, 'yColumn');
+              // value={this.state.yColumn}
+              value={m.yColumn}
+              onChange={async (e) => {
+                await this.changeColumn(e, 'yColumn');
               }}>
               {
                 m.yColumns.map((col: any, i: number) =>
@@ -363,7 +368,7 @@ export default class TimelineComponent
     ;
     // @ts-ignore
     return (
-      <div>
+      <div id='timelineComponentDiv'>
         {contents}
       </div>);
   }
@@ -397,7 +402,7 @@ export default class TimelineComponent
       this.resetTimeline();
     });
   }
-  
+
   /**
    * Purpose: changes the timeline type to the one desired by the user
    * @param {any} e: the event to pass into the function
@@ -408,25 +413,25 @@ export default class TimelineComponent
     console.log(ViewType[val]);
     console.log(m.view);
     m.view = val;
-    
+
     switch (m.view) {
       case ViewType.IntervalMagnitude:
         timelineType = new IntervalMagnitude(m);
         break;
-        
+
       case ViewType.IntervalOccurrence:
         // timelineType = new IntervalMagnitude(m);
         break;
-    
+
       case ViewType.EventMagnitude:
         timelineType = new EventMagnitude(m);
         break;
-  
+
       case ViewType.EventOccurrence:
         timelineType = new EventOccurrence(m);
         break;
     }
-  
+
     this.setState(() => {
       return {
         view: m.view,
@@ -450,13 +455,30 @@ export default class TimelineComponent
    * Purpose: sets the initial values for rendering the actual timeline
    */
   initTimeline() {
-    m.yColumn = this.state.yColumn;
-    m.xColumn = this.state.xColumn;
-    m.xColumn2 = this.state.xColumn2;
-    m.fullHeight = this.state.height;
+    const elem: any = d3.select('#svgtarget');
+    let newHeight = this.state.height;
+
+    console.log(elem);
+    if (elem !== null && elem.node() !== null) {
+      const rect = elem.node().getBoundingClientRect();
+      // this is the proper height for our timeline
+      newHeight = window.innerHeight - rect.top;
+
+      // Update the height
+      this.setState(() => {
+        return {
+          height: newHeight,
+        };
+      });
+    }
+
+    // m.yColumn = this.state.yColumn;
+    // m.xColumn = this.state.xColumn;
+    // m.xColumn2 = this.state.xColumn2;
+    // this.state.height cannot be trusted to be accurate
+    m.fullHeight = newHeight;
     m.fullWidth = this.state.width;
     m.view = this.state.view;
-
     m.height = m.fullHeight - (m.marginBottom + m.marginTop);
 
     m.width = m.fullWidth - (m.marginLeft + m.marginRight);
@@ -496,17 +518,26 @@ export default class TimelineComponent
     // variables
     console.log(m.x(0));
 
-    m.y = d3.scaleLinear()
-        .domain([d3.min(m.csvData,
-            (d) => {
-              // @ts-ignore
-              return d[m.yColumn];
-            }),
-        d3.max(m.csvData, (d) => {
-          // @ts-ignore
-          return d[m.yColumn];
-        })])
-        .range([m.height, 0]);
+    if (m.view == ViewType.IntervalMagnitude ||
+        m.view == ViewType.EventMagnitude) {
+      m.y = d3.scaleLinear()
+          .domain([d3.min(m.csvData,
+              (d) => {
+                // @ts-ignore
+                return d[m.yColumn];
+              }),
+          d3.max(m.csvData, (d) => {
+            // @ts-ignore
+            return d[m.yColumn];
+          })])
+          .range([m.height, 0]);
+    } else {
+      assert(m.csvData.length > 0);
+      m.y = d3.scaleBand()
+          .domain(d3.map(m.csvData, (d: any) => d[m.yColumn]).keys())
+          .range([m.height, 0]);
+    }
+
 
     m.extent = [[m.marginLeft, m.marginTop],
       [m.width - m.marginRight, m.height - m.marginTop]];

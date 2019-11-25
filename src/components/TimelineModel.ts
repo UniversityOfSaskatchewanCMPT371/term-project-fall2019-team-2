@@ -43,6 +43,7 @@ export default class TimelineModel {
   public yColumn: string;
   public xColumns: Column[];
   public yColumns: Column[];
+  public columns: Column[];
 
   public csvData: Object[];
   public data: Array<object>;
@@ -88,6 +89,7 @@ export default class TimelineModel {
     this.yColumn = '';
     this.xColumns = [];
     this.yColumns = [];
+    this.columns = [];
 
     this.csvData = [];
     this.data = [];

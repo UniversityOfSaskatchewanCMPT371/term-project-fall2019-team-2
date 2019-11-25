@@ -15,7 +15,10 @@ import EventMagnitude from './TimelineTypes/EventMagnitude';
 import IntervalMagnitude from './TimelineTypes/IntervalMagnitude';
 
 export enum ViewType {
-  interval, event
+  IntervalMagnitude,
+  IntervalOccurrence,
+  EventMagnitude,
+  EventOccurrence
 }
 
 const m = new TimelineModel();
@@ -45,7 +48,7 @@ export default class TimelineComponent
       xColumn: '',
       xColumn2: '',
       loading: true,
-      view: ViewType.event,
+      view: ViewType.EventMagnitude,
     };
 
     this.drawTimeline = this.drawTimeline.bind(this);
@@ -335,15 +338,15 @@ export default class TimelineComponent
     let prompt = this.state.togglePrompt;
 
     switch (m.view) {
-      case ViewType.event:
+      case ViewType.EventMagnitude:
         prompt = 'Switch to Occurrence Timeline';
-        m.view = ViewType.interval;
+        m.view = ViewType.IntervalMagnitude;
         timelineType = new IntervalMagnitude(m);
         break;
 
-      case ViewType.interval:
+      case ViewType.IntervalMagnitude:
         prompt = 'Switch to Interval Timeline';
-        m.view = ViewType.event;
+        m.view = ViewType.EventMagnitude;
         timelineType = new EventMagnitude(m);
         break;
     }

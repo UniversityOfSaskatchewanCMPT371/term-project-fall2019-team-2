@@ -416,7 +416,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
       expect(wrapper.state('marginRight')).toEqual(20);
       expect(wrapper.state('togglePrompt'))
           .toEqual('Switch to Interval Timeline');
-      expect(wrapper.state('view')).toEqual(ViewType.event);
+      expect(wrapper.state('view')).toEqual(ViewType.EventMagnitude);
     });
   });
 
@@ -441,7 +441,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
       expect(initTimelineSpy).toHaveBeenCalled();
       expect(drawTimelineSpy).toHaveBeenCalled();
       expect(updateBarsSpy).toHaveBeenCalled();
-      expect(wrapper.state('view')).toEqual(ViewType.interval);
+      expect(wrapper.state('view')).toEqual(ViewType.IntervalMagnitude);
 
       button.simulate('click');
 
@@ -452,7 +452,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
       expect(initTimelineSpy).toHaveBeenCalled();
       expect(drawTimelineSpy).toHaveBeenCalled();
       expect(updateBarsSpy).toHaveBeenCalled();
-      expect(wrapper.state('view')).toEqual(ViewType.event);
+      expect(wrapper.state('view')).toEqual(ViewType.EventMagnitude);
     });
   });
 
@@ -551,7 +551,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
           document.body.dispatchEvent(event);
           wrapper.instance().moveChart();
           wrapper.instance().updateChart();
-          expect(wrapper.state('view')).toBe(ViewType.interval);
+          expect(wrapper.state('view')).toBe(ViewType.IntervalMagnitude);
         });
   });
 

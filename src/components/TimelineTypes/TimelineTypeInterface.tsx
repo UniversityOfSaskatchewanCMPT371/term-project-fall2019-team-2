@@ -81,6 +81,7 @@ export abstract class TimelineType implements TimelineTypeInterface {
       }
     });
 
+    // noinspection TypeScriptValidateJSTypes
     this.m.plot.selectAll('.xtick')
         .data(ticks, function(d: any) {
           return d.id;

@@ -356,8 +356,6 @@ describe('<TimelineComponent /> Unit Tests', () => {
         jest.spyOn(TimelineComponent.prototype, 'ttUpdatePos');
     ttLeaveSpy =
         jest.spyOn(TimelineComponent.prototype, 'ttLeave');
-    // timelineTypeDrawSpy =
-    //   jest.spyOn(TimelineComponent.timelineType, 'timelineType.Draw');
     drawEventMagnitudeSpy =
         jest.spyOn(TimelineComponent.prototype, 'drawEventMagnitude');
     drawIntervalMagnitudeSpy =
@@ -442,7 +440,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
           .toEqual('Switch to Occurrence Timeline');
       expect(initTimelineSpy).toHaveBeenCalled();
       expect(drawTimelineSpy).toHaveBeenCalled();
-      // expect(drawEventMagnitudeSpy).toHaveBeenCalled();
+      expect(updateBarsSpy).toHaveBeenCalled();
       expect(wrapper.state('view')).toEqual(ViewType.interval);
 
       button.simulate('click');
@@ -453,7 +451,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
           .toEqual('Switch to Interval Timeline');
       expect(initTimelineSpy).toHaveBeenCalled();
       expect(drawTimelineSpy).toHaveBeenCalled();
-      // expect(drawIntervalMagnitudeSpy).toHaveBeenCalled();
+      expect(updateBarsSpy).toHaveBeenCalled();
       expect(wrapper.state('view')).toEqual(ViewType.event);
     });
   });
@@ -618,10 +616,6 @@ describe('<TimelineComponent /> Unit Tests', () => {
     it('dummy test', () => {
       expect(drawTimelineSpy).toHaveBeenCalled();
       expect(updateBarsSpy).toHaveBeenCalled();
-      console.log(pretty(document.body.innerHTML, {ocd: true}));
-      // For some reason this test always fails when you run "All Tests" but
-      // works fine when you run it on it's own?
-      // expect(d3.selectAll('.pin-line').size()).toBe(5);
       wrapper.instance().drawIntervalMagnitude(d3.selectAll('.bar'));
       expect(drawIntervalMagnitudeSpy).toHaveBeenCalled();
       //

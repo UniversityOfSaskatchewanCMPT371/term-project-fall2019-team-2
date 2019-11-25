@@ -21,6 +21,22 @@ export default class IntervalOccurrence extends TimelineType
    * @param {any} ttLeave: tooltip leave function
    */
   draw(selection: any, ttOver: any, ttMove: any, ttLeave: any): void {
+    // Show the main vertical line
+    selection.append('line')
+        .attr('x1', function(d) {
+          return (x(d.value.min));
+        })
+        .attr('x2', function(d) {
+          return (x(d.value.max));
+        })
+        .attr('y1', function(d) {
+          return (y(d.key) + y.bandwidth()/2);
+        })
+        .attr('y2', function(d) {
+          return (y(d.key) + y.bandwidth()/2);
+        })
+        .attr('stroke', 'black')
+        .style('width', 40);
   }
 
   /**

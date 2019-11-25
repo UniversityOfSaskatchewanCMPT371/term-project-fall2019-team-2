@@ -236,7 +236,6 @@ export default class TimelineComponent
       });
       m.xColumn2 = val;
     }
-
     this.resetTimeline();
   }
 
@@ -295,7 +294,6 @@ export default class TimelineComponent
             </Form.Control>
 
           </InputGroup>
-
 
           <InputGroup>
             <InputGroup.Prepend>

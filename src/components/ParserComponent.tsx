@@ -10,7 +10,7 @@ import Data
   from './Data';
 import * as TimSort from 'timsort';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+let FileType = '';
 /**
  * Purpose: react component responsible for receiving and parsing file data
  */
@@ -82,6 +82,13 @@ export default class ParserComponent extends React.Component<ParserInterface,
                       formatString: val,
                     };
                   });
+                  const unsortedMultiDateFile: File = new File(
+                      [FileType],
+                      'test.csv',
+                      {type: this.props.fileType.mimeName},
+                  );
+                  const fileEvent = {target: {files: [unsortedMultiDateFile]}};
+                  this.parse(fileEvent);
                 }}>
                 <option selected value="">Open this select menu</option>
                 <option value="YYYY-MM-DD">YYYY-MM-DD</option>
@@ -307,7 +314,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
         }
       } catch (e) {
         alert('Wrong file type was uploaded.');
-        console.log('Wrong file was uploaded.');
+        console.log('Wrong file type was uploaded.');
       }
 
       this.setState(() => {
@@ -344,6 +351,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
 
                   return d;
                 });
+            FileType = fileReader.result;
 
             // set state of the parser component
             this.setState((state) => {

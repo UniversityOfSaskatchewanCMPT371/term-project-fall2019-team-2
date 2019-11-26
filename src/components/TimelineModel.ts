@@ -26,6 +26,8 @@ export default class TimelineModel {
   public deltaPan = 50;
   // The minimum possible scale
   public scaleMin = 1.0;
+  // The current scale
+  public scale = 1.0;
 
   public fullWidth: number = 0;
   public fullHeight: number = 0;
@@ -70,6 +72,7 @@ export default class TimelineModel {
     this.scaleZoomIn = 1.1;
     this.deltaPan = 50;
     this.scaleMin = 1.0;
+    this.scale = 1.0;
 
     this.fullWidth = 0;
     this.fullHeight = 0;
@@ -90,6 +93,6 @@ export default class TimelineModel {
     this.data = [];
 
     this.extent = [[0, 0], [0, 0]];
-    this.view = ViewType.occurrence;
+    this.view = ViewType.event;
   }
 }

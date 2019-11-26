@@ -798,6 +798,7 @@ export default class TimelineComponent
     this.ttUpdatePos(d3.event.x, d3.event.y);
   }
 
+
   /**
    * Purpose: called when the cursor moves off of a bar
    * Timeline Scope: all elements

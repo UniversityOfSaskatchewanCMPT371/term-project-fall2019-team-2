@@ -5,6 +5,10 @@ import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 
 /**
+ * Note: Testing for this file is done manually view Test TI.1
+ */
+
+/**
  * The Error Boundary Class wraps all components to provide a custom error
  * handling component. This allows for user feedback on render breaking errors.
  */
@@ -30,8 +34,8 @@ ErrorBoundaryInterface> {
 
   /**
    * Set the new state from an error.
-   * Pre-Conditions: This component wraps a child component.
-   * Post-Conditions: This component will need to be re-rendered and will
+   * Pre-Conditions: None
+   * Post-Conditions: This component will be re-rendered and will
    * likely replace the child components.
    * @param {Error} error The error that occurred.
    * @return {any} A dictionary of the new state with hasError set to true
@@ -42,8 +46,8 @@ ErrorBoundaryInterface> {
 
   /**
    * Called if the error was caught by this component.
-   * Pre-Conditions: This component wraps a child component.
-   * Post-Conditions: This component will need to be re-rendered and will
+   * Pre-Conditions: None
+   * Post-Conditions: This component will be re-rendered and will
    * likely replace the child components.
    * @param {Error} error The error caught
    * @param {any} errorInfo The additional information about the error

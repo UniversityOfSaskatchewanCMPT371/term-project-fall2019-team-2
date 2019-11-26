@@ -6,6 +6,10 @@ import {close, getCurrentHub} from '@sentry/browser';
 import moment from 'moment';
 
 /**
+ * Note this file is covered by Manual Test TI.2
+ */
+
+/**
  * The Telemetry Popup which asks for user consent to collect
  * telemetry.
  * Pre-Conditions: The user has not already set the telemetry
@@ -19,6 +23,7 @@ export default function TelemetryModal() {
   const cookies = new Cookies();
   const prompt = cookies.get('telemetry');
 
+  // The assertion is handled here to check if the cookie has been set.
   const [show, setShow] = useState(prompt === undefined);
   const handleClose = () => {
     setShow(false);

@@ -4,66 +4,22 @@ import TimelineInterface, {TimelineState} from './TimelineInterface';
 import * as d3
   from 'd3';
 import './Timeline.css';
-import Column
-  from './Column';
 import * as TimSort
   from 'timsort';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
+import TimelineModel from './TimelineModel';
+import TimelineTypeInterface from './TimelineTypes/TimelineTypeInterface';
+import EventMagnitude from './TimelineTypes/EventMagnitude';
+import IntervalMagnitude from './TimelineTypes/IntervalMagnitude';
 
-/**
- * an enum to help track which chart is being displayed
- */
 export enum ViewType {
-  interval, occurrence
+  interval, event
 }
 
-const marginTop: number = 0;
-const marginBottom: number = 170;
-const marginLeft: number = 70;
-const marginRight: number = 20;
-
-// Zooming and Panning using the keyboard
-// 10% zoomed out
-const scaleZoomOut = 0.9;
-// 10% zoomed in
-const scaleZoomIn = 1.1;
-// The default starting panned position
-const deltaPan = 50;
-// The minimum possible scale
-const scaleMin = 1.0;
-
-let fullWidth: number = 0;
-let fullHeight: number = 0;
-let height: number = 0;
-let width: number = 0;
-const barWidth: number = 50;
-const barBuffer: number = 15;
-let numBars: number = 0;
-let dataIdx: number = 0;
-let deltaX: number = 0;
-let xColumn: string;
-let xColumn2: string;
-let yColumn: string;
-let xColumns: Column[];
-let yColumns: Column[];
-
-let csvData: Object[];
-let data: Array<object>;
-// let ordinals;
-let minDate: any;
-let maxDate: any;
-
-let timeScale: any;
-let x: any;
-let y: any;
-
-let extent: [[number, number], [number, number]];
-// tracks the switch statement for what should be drawn
-let view: ViewType;
-
-let plot: any;
+const m = new TimelineModel();
+let timelineType: TimelineTypeInterface = new EventMagnitude(m);
 
 /**
  * Purpose: renders and updates a timeline to the screen
@@ -89,7 +45,7 @@ export default class TimelineComponent
       xColumn: '',
       xColumn2: '',
       loading: true,
-      view: ViewType.occurrence,
+      view: ViewType.event,
     };
 
     this.drawTimeline = this.drawTimeline.bind(this);
@@ -120,7 +76,7 @@ export default class TimelineComponent
    * @return {number}: The scale
    */
   getScale(): number {
-    return this.scale;
+    return m.scale;
   }
 
   /**
@@ -128,7 +84,7 @@ export default class TimelineComponent
    * @return {number}: The deltaX
    */
   getDeltaX(): number {
-    return deltaX;
+    return m.deltaX;
   }
 
   /**
@@ -137,14 +93,14 @@ export default class TimelineComponent
    */
   componentDidMount(): void {
     if (this.state.data.columns !== null &&
-        this.state.data.columns !== undefined) {
+      this.state.data.columns !== undefined) {
       const cols = this.state.data.columns;
       let yColumnSet = false;
       let xColumnSet = false;
       let xColumn2Set = false;
 
-      yColumns = [];
-      xColumns = [];
+      m.yColumns = [];
+      m.xColumns = [];
 
       // iterate through columns and set default values
       for (let i = 0; i < cols.length; i++) {
@@ -152,27 +108,27 @@ export default class TimelineComponent
         // Plotting occurrence data isn't yet supported, so we are only
         // interested in plotting magnitude data for the y-axis
         if (col.primType === 'number') {
-          yColumns.push(col);
+          m.yColumns.push(col);
           if (!yColumnSet) {
             this.setState(() => {
               return {
                 yColumn: col.key,
               };
             });
-            yColumn = col.key;
+            m.yColumn = col.key;
             yColumnSet = true;
           }
         }
 
         if (col.primType === 'date' || col.primType === 'number') {
-          xColumns.push(col);
+          m.xColumns.push(col);
           if (!xColumnSet) {
             this.setState(() => {
               return {
                 xColumn: col.key,
               };
             });
-            xColumn = col.key;
+            m.xColumn = col.key;
             xColumnSet = true;
             // continue so the next if isn't evaluated on the same element
             continue;
@@ -185,7 +141,7 @@ export default class TimelineComponent
                 xColumn2: col.key,
               };
             });
-            xColumn2 = col.key;
+            m.xColumn2 = col.key;
             xColumn2Set = true;
           }
         }
@@ -289,77 +245,82 @@ export default class TimelineComponent
    */
   render() {
     const contents = this.state.loading ?
-        <p><em>loading...</em></p> :
+      <p>
+        <em>loading...</em>
+      </p> :
+      <div>
         <div>
-          <div>
-            <Button variant='primary'
-              onClick={this.toggleTimeline}>{this.state.togglePrompt}</Button>
-            <label>
-              Y-Axis
-            </label>
-            <InputGroup>
-              <InputGroup.Prepend>
-                <InputGroup.Text id='inputGroup
+          <Button
+            variant='primary'
+            onClick={this.toggleTimeline}>{this.state.togglePrompt}</Button>
+          <InputGroup>
+            <InputGroup.Prepend>
+              <InputGroup.Text
+                id='inputGroup
                 Prepend'>yColumn</InputGroup.Text>
-              </InputGroup.Prepend>
-              <Form.Control
-                as = 'select'
-                id = 'ySelect'
-                value={this.state.yColumn}
-                onChange={(e) => {
-                  this.changeColumn(e, 'yColumn');
-                }}>
-                {
-                  yColumns.map((col: any, i: number) =>
-                    <option
-                      key={i}
-                      value={col.key}>{col.key}</option>)
-                }
-              </Form.Control>
+            </InputGroup.Prepend>
+            <Form.Control
+              as='select'
+              id='ySelect'
+              value={this.state.yColumn}
+              onChange={(e) => {
+                this.changeColumn(e, 'yColumn');
+              }}>
+              {
+                m.yColumns.map((col: any, i: number) =>
+                  <option
+                    key={i}
+                    value={col.key}>{col.key}</option>)
+              }
+            </Form.Control>
 
-              <InputGroup.Prepend>
-                <InputGroup.Text id='inputGroup
+            <InputGroup.Prepend>
+              <InputGroup.Text
+                id='inputGroup
                 Prepend'>xColumn</InputGroup.Text>
-              </InputGroup.Prepend>
-              <Form.Control
-                as = 'select'
-                id = 'xSelect'
-                value={this.state.xColumn}
-                onChange={(e) => {
-                  this.changeColumn(e, 'xColumn');
-                }}>
-                {
-                  xColumns.map((col: any, i: number) =>
-                    <option
-                      key={i}
-                      value={col.key}>{col.key}</option>)
-                }
-              </Form.Control>
+            </InputGroup.Prepend>
+            <Form.Control
+              as='select'
+              id='xSelect'
+              value={this.state.xColumn}
+              onChange={(e) => {
+                this.changeColumn(e, 'xColumn');
+              }}>
+              {
+                m.xColumns.map((col: any, i: number) =>
+                  <option
+                    key={i}
+                    value={col.key}>{col.key}</option>)
+              }
+            </Form.Control>
 
-              <InputGroup.Prepend>
-                <InputGroup.Text id='inputGroup
-                Prepend'>Ending Range</InputGroup.Text>
-              </InputGroup.Prepend>
-              <Form.Control
-                as = 'select'
-                id = 'x2Select'
-                value={this.state.xColumn}
-                onChange={(e) => {
-                  this.changeColumn(e, 'xColumn2');
-                }}>
-                {
-                  xColumns.map((col: any, i: number) =>
-                    <option
-                      key={i}
-                      value={col.key}>{col.key}</option>)
-                }
-              </Form.Control>
-            </InputGroup>
-          </div>
-          <div id='svgtarget'>
-          </div>
+            <InputGroup.Prepend>
+              <InputGroup.Text
+                id='inputGroup
+                Prepend'>Ending
+                Range</InputGroup.Text>
+            </InputGroup.Prepend>
+            <Form.Control
+              as='select'
+              id='x2Select'
+              value={this.state.xColumn2}
+              onChange={(e) => {
+                this.changeColumn(e, 'xColumn2');
+              }}>
+              {
+                m.xColumns.map((col: any, i: number) =>
+                  <option
+                    key={i}
+                    value={col.key}>{col.key}</option>)
+              }
+            </Form.Control>
+          </InputGroup>
         </div>
-        ;
+        <div
+          id='svgtarget'>
+        </div>
+      </div>
+    ;
     // @ts-ignore
     return (
       <div>
@@ -372,18 +333,25 @@ export default class TimelineComponent
    */
   toggleTimeline() {
     let prompt = this.state.togglePrompt;
-    if (view === ViewType.occurrence) {
-      prompt = 'Switch to Occurrence Timeline';
-      view = ViewType.interval;
-    } else {
-      prompt = 'Switch to Interval Timeline';
-      view = ViewType.occurrence;
+
+    switch (m.view) {
+      case ViewType.event:
+        prompt = 'Switch to Occurrence Timeline';
+        m.view = ViewType.interval;
+        timelineType = new IntervalMagnitude(m);
+        break;
+
+      case ViewType.interval:
+        prompt = 'Switch to Interval Timeline';
+        m.view = ViewType.event;
+        timelineType = new EventMagnitude(m);
+        break;
     }
 
     this.setState(() => {
       return {
         togglePrompt: prompt,
-        view: view,
+        view: m.view,
       };
     }, () => {
       this.resetTimeline();
@@ -399,83 +367,71 @@ export default class TimelineComponent
    * D3 element we use for storing the graph.
    */
   private svg: any;
-  /**
-   * Stores the current scale
-   */
-  private scale = 1;
 
   /**
    * Purpose: sets the initial values for rendering the actual timeline
    */
   initTimeline() {
-    yColumn = this.state.yColumn;
-    xColumn = this.state.xColumn;
-    xColumn2 = this.state.xColumn2;
-    fullHeight = this.state.height;
-    fullWidth = this.state.width;
-    view = this.state.view;
+    m.yColumn = this.state.yColumn;
+    m.xColumn = this.state.xColumn;
+    m.xColumn2 = this.state.xColumn2;
+    m.fullHeight = this.state.height;
+    m.fullWidth = this.state.width;
+    m.view = this.state.view;
 
-    height = fullHeight - (marginBottom + marginTop);
+    m.height = m.fullHeight - (m.marginBottom + m.marginTop);
 
-    width = fullWidth - (marginLeft + marginRight);
+    m.width = m.fullWidth - (m.marginLeft + m.marginRight);
 
-    numBars = Math.floor(width / barWidth) +
-        barBuffer;// small pixel buffer to ensure smooth transitions
+    m.numBars = Math.floor(m.width / m.barWidth) +
+      m.barBuffer;// small pixel buffer to ensure smooth transitions
 
-    dataIdx = 0;
-    deltaX = 0;
-    this.scale = 1;
-    csvData = this.state.data.arrayOfData;
+    m.dataIdx = 0;
+    m.deltaX = 0;
+    m.scale = 1;
+    m.csvData = this.state.data.arrayOfData;
 
-    data = csvData.slice(0, numBars);
+    m.data = m.csvData.slice(0, m.numBars);
     // ordinals = data.map((d: any) => d[xColumn]);
 
     // @ts-ignore
-    minDate = new Date(d3.min(
-        [d3.min(csvData, (d: any) => Date.parse(d[xColumn])),
-          d3.min(csvData, (d: any) => Date.parse(d[xColumn2]))]));
+    m.minDate = new Date(d3.min(
+        [d3.min(m.csvData, (d: any) => Date.parse(d[m.xColumn])),
+          d3.min(m.csvData, (d: any) => Date.parse(d[m.xColumn2]))]));
 
     // @ts-ignore
-    maxDate = new Date(d3.max(
-        [d3.min(csvData, (d: any) => Date.parse(d[xColumn])),
-          d3.max(csvData, (d: any) => Date.parse(d[xColumn2]))]));
+    m.maxDate = new Date(d3.max(
+        [d3.min(m.csvData, (d: any) => Date.parse(d[m.xColumn])),
+          d3.max(m.csvData, (d: any) => Date.parse(d[m.xColumn2]))]));
 
-    timeScale = d3.scaleTime()
-        .domain([minDate, maxDate])
-        .range([0, 50 * csvData.length]);
+    m.timeScale = d3.scaleTime()
+        .domain([m.minDate, m.maxDate])
+        .range([0, 50 * m.csvData.length]);
 
-    x = d3.scaleBand()
-        // may need this in the future for spacing so leaving in
-        // .padding(1)
-        .domain(data.map((d: any) => d[xColumn]))
-        .range([0, width]).round(true);
+    m.x = d3.scaleBand()
+    // may need this in the future for spacing so leaving in
+    // .padding(1)
+        .domain(m.data.map((d: any) => d[m.xColumn]))
+        .range([0, m.width]).round(true);
 
     // This has to be used so sonarcloud doesn't freak out about unused
-    // variables -.-
-    console.log(x(0));
+    // variables
+    console.log(m.x(0));
 
-    y = d3.scaleLinear()
-        .domain([d3.min(csvData,
+    m.y = d3.scaleLinear()
+        .domain([d3.min(m.csvData,
             (d) => {
               // @ts-ignore
-              return d[yColumn];
+              return d[m.yColumn];
             }),
-        d3.max(csvData, (d) => {
+        d3.max(m.csvData, (d) => {
           // @ts-ignore
-          return d[yColumn];
+          return d[m.yColumn];
         })])
-        .range([height, 0]);
+        .range([m.height, 0]);
 
-    extent = [[marginLeft, marginTop],
-      [width - marginRight, height - marginTop]];
-  }
-
-  /**
-   *
-   * @param {number} timelineType
-   */
-  changeTimeline(timelineType: number) {
-    d3.selectAll('svg').remove();
+    m.extent = [[m.marginLeft, m.marginTop],
+      [m.width - m.marginRight, m.height - m.marginTop]];
   }
 
   /**
@@ -485,33 +441,32 @@ export default class TimelineComponent
   drawTimeline() {
     this.zoom = d3.zoom()
         .scaleExtent([1, 20]) // zoom range
-        .translateExtent(extent)
-        .extent(extent)
+        .translateExtent(m.extent)
+        .extent(m.extent)
         .on('zoom', this.updateChart);
-    // .on('zoom.transform', this.updateChart);
 
     this.svg = d3.select('#svgtarget')
         .append('svg')
-        .attr('width', width)
-        .attr('height', height + marginTop +
-            marginBottom)
-        // @ts-ignore
+        .attr('width', m.width)
+        .attr('height', m.height + m.marginTop +
+        m.marginBottom)
+    // @ts-ignore
         .call(this.zoom)
         .append('g')
-        .attr('transform', `translate(${marginLeft}, ${marginTop})`);
+        .attr('transform', `translate(${m.marginLeft}, ${m.marginTop})`);
 
     this.svg.append('rect')
-        .attr('width', width)
-        .attr('height', height)
+        .attr('width', m.width)
+        .attr('height', m.height)
         .style('fill', 'none');
 
     this.svg.append('defs')
         .append('clipPath')
         .attr('id', 'barsBox')
         .append('rect')
-        .attr('width', width)
-        .attr('height', height + marginTop +
-            marginBottom)
+        .attr('width', m.width)
+        .attr('height', m.height + m.marginTop +
+        m.marginBottom)
         .attr('x', 0)
         .attr('y', 0);
 
@@ -530,7 +485,7 @@ export default class TimelineComponent
     axisLayer.append('g')
         .style('color', 'red')
         .attr('class', 'y axis')
-        .call(d3.axisLeft(y))
+        .call(d3.axisLeft(m.y))
         .append('text')
         .attr('transform', 'rotate(-90)')
         .attr('y', 6)
@@ -539,12 +494,12 @@ export default class TimelineComponent
         .style('color', 'red')
         .text('yColumn');
 
-    plot = barsLayer.append('g')
+    m.plot = barsLayer.append('g')
         .attr('class', 'plot')
         .attr('id', 'bars');
 
     // Labels
-    this.drawLabels();
+    timelineType.drawLabels(this.svg);
 
     this.updateBars();
 
@@ -556,45 +511,7 @@ export default class TimelineComponent
    * @return {void}: Nothing
    */
   private drawLabels(): void {
-    switch (view) {
-      case ViewType.occurrence:
-        this.svg.append('text')
-            .attr('transform',
-                `translate(${width / 2},${height + marginTop + 20})`)
-            .style('text-anchor', 'start')
-            .text(this.state.xColumn);
-
-        this.svg.append('text')
-            .attr('transform', 'rotate(-90)')
-            .attr('y', 0 - marginLeft)
-            .attr('x', 0 - (height / 2))
-            .attr('dy', '1em')
-            .style('text-anchor', 'middle')
-            .text(this.state.yColumn);
-        break;
-
-      case ViewType.interval:
-        this.svg.append('text')
-            .attr('transform',
-                `translate(${(width / 2) + 10},${height + marginTop + 20})`)
-            .style('text-anchor', 'start')
-            .text('end: ' + this.state.xColumn2);
-
-        this.svg.append('text')
-            .attr('transform',
-                `translate(${width / 2},${height + marginTop + 20})`)
-            .style('text-anchor', 'end')
-            .text('start: ' + this.state.xColumn + ',');
-
-        this.svg.append('text')
-            .attr('transform', 'rotate(-90)')
-            .attr('y', 0 - marginLeft)
-            .attr('x', 0 - (height / 2))
-            .attr('dy', '1em')
-            .style('text-anchor', 'middle')
-            .text(this.state.yColumn);
-        break;
-    }
+    timelineType.drawLabels(this.svg);
   }
 
   /**
@@ -617,30 +534,30 @@ export default class TimelineComponent
       if (op === '-' || op === 's') {
         // Zoom out
         const identity = d3.zoomIdentity
-            .scale(Math.max(scaleMin, this.scale * scaleZoomOut));
+            .scale(Math.max(m.scaleMin, m.scale * m.scaleZoomOut));
 
         this.svg.transition().ease(d3.easeLinear).duration(300)
             .call(this.zoom.transform, identity);
         // Ensure the new scale is saved with a limit on the minimum
         //  zoomed out scope
-        this.scale = Math.max(scaleMin, this.scale * scaleZoomOut);
+        m.scale = Math.max(m.scaleMin, m.scale * m.scaleZoomOut);
       } else if (op === '+' || op === 'w') {
         // Zoom In
         const identity = d3.zoomIdentity
-            .scale(this.scale * scaleZoomIn);
+            .scale(m.scale * m.scaleZoomIn);
 
         this.svg.transition().ease(d3.easeLinear).duration(300)
             .call(this.zoom.transform, identity);
         // Ensure the new scale is saved
-        this.scale = this.scale * scaleZoomIn;
+        m.scale = m.scale * m.scaleZoomIn;
       } else if (op === 'ArrowLeft') {
         // Pan Left
-        deltaX = Math.min(0, deltaX + deltaPan);
+        m.deltaX = Math.min(0, m.deltaX + m.deltaPan);
         // console.log(deltaX);
         this.moveChart();
       } else if (op === 'ArrowRight') {
         // Pan Right
-        deltaX -= deltaPan;
+        m.deltaX -= m.deltaPan;
         this.moveChart();
       }
       movingTimeout = setTimeout(loop, 25, op);
@@ -651,16 +568,16 @@ export default class TimelineComponent
         .on('keydown', () => {
           if (currKey === '') {
             if (d3.event.key === '-' || d3.event.key === 's') {
-              // zoom out
+            // zoom out
               currKey = d3.event.key;
             } else if (d3.event.key === '+' || d3.event.key === 'w') {
-              // Zoom in
+            // Zoom in
               currKey = d3.event.key;
             } else if (d3.event.key === 'ArrowLeft') {
-              // Pan left
+            // Pan left
               currKey = d3.event.key;
             } else if (d3.event.key === 'ArrowRight') {
-              // Pan right
+            // Pan right
               currKey = d3.event.key;
             }
             if (currKey !== '') {
@@ -702,7 +619,7 @@ export default class TimelineComponent
     let tooltip: string = '';
     keys.forEach(function(key) {
       tooltip += '<strong>' + key + '</strong> <span style=\'color:red\'>' +
-          d[key] + '</span><br/>';
+        d[key] + '</span><br/>';
     });
 
     Tooltip.html(tooltip);
@@ -710,8 +627,8 @@ export default class TimelineComponent
     if (Tooltip.node() !== null) {
       const ttBox = Tooltip.node()!.getBoundingClientRect();
 
-      if ((ttBox.top + ttBox.height) > height) {
-        Tooltip.style('top', (fullHeight - ttBox.height) + 'px');
+      if ((ttBox.top + ttBox.height) > m.height) {
+        Tooltip.style('top', (m.fullHeight - ttBox.height) + 'px');
       }
 
       Tooltip.style('opacity', 1);
@@ -743,7 +660,7 @@ export default class TimelineComponent
    * Purpose: updates the position of the Tooltip
    * Timeline Scope: all elements
    * @param {number} xPos: the current x position of the mouse
-   * @param {number} yPos: the current y postion of the mouse
+   * @param {number} yPos: the current y position of the mouse
    */
   ttUpdatePos(xPos: number, yPos: number) {
     const Tooltip = d3.select('.tooltip');
@@ -752,11 +669,10 @@ export default class TimelineComponent
       // @ts-ignore
       const ttBox = Tooltip.node()!.getBoundingClientRect();
 
-      Tooltip
-          .style('left', (xPos + 70) + 'px');
+      Tooltip.style('left', (xPos + 70) + 'px');
 
-      if ((yPos + ttBox.height) > fullHeight) {
-        yPos = (fullHeight - ttBox.height);
+      if ((yPos + ttBox.height) > m.fullHeight) {
+        yPos = (m.fullHeight - ttBox.height);
       }
       if (yPos < 0) {
         yPos = 0;
@@ -793,49 +709,16 @@ export default class TimelineComponent
   updateChart() {
     // recover the new scale
     if (d3.event !== null) {
-      this.scale = d3.event.transform.k;
+      m.scale = d3.event.transform.k;
+      console.log(d3.event);
     } else {
       console.warn('d3.event was null');
     }
 
-    // const newX = d3.event.transform.rescaleX(x);
-    // const newY = d3.event.transform.rescaleY(y);
-
-    // d3.selectAll('#xaxis').remove();
-
-    if (this.state.view === ViewType.occurrence) {
-      // d3.selectAll('.bar')
-      //     .attr('x', (d, i) => (this.scale * barWidth * (i + dataIdx)));
-      //     // .attr('width', barWidth);
-
-      d3.selectAll('.pin-line')
-          .attr('x', (d, i) => (this.scale * barWidth * (i + dataIdx)));
-      // .attr('width', barWidth);
-      d3.selectAll('.pin-head')
-          .attr('cx', (d, i) => (this.scale * barWidth * (i + dataIdx)));
-      // .attr('width', barWidth);
-
-
-      d3.selectAll('.xtick')
-          .attr('transform', (d: any, i) => 'translate(' +
-              ((this.scale * barWidth * (d['index'] + dataIdx)) +
-                  ((this.scale * barWidth) / 2)) + ',' + height + ')');
-    } else {
-      d3.selectAll('.bar')
-          .attr('x', (d: any, i: number) =>
-            this.scale * timeScale(new Date(d[xColumn])))
-          .attr('width', (d: any, i: number) =>
-            this.scale * (timeScale(new Date(d[xColumn2])) -
-              timeScale(new Date(d[xColumn]))));
-
-      d3.selectAll('.xtick')
-          .attr('transform', (d: any, i: number) =>
-            `translate(${this.scale * timeScale(new Date(d.text))},${height})`);
-    }
+    timelineType.applyZoom();
 
     if (d3.event !== null && d3.event.sourceEvent !== null &&
       d3.event.sourceEvent.type === 'mousemove') {
-      // console.log('updatechart');
       this.dragged();
     } else {
       this.moveChart();
@@ -843,198 +726,52 @@ export default class TimelineComponent
   }
 
   /**
-   * Purpose: draws an element as Event with a Magnitude
+   * Purpose: draws an element as Event with a Magnitude. This function is old
+   * and has been replaced by the TimelineTypeInterface, it only still exists
+   * because some tests rely on it and a workaround has not yet been
+   * figured out.
    * @param {any} selection: the selection for the object to draw
    */
   drawEventMagnitude(selection: any): void {
-    const bar = selection.append('g')
-        .attr('class', 'bar');
-
-
-    bar.append('rect')
-        .attr('class', 'pin-line')
-        .attr('x', (d: any, i: number) =>
-          (this.scale * barWidth * (i + dataIdx)))
-        .attr('width', 2)
-        .attr('y', (d: any) => y(d[yColumn]))
-        .attr('height', (d: any) => {
-          const newHeight = (height - y(d[yColumn]));
-          if (newHeight < 0) {
-            return 0;
-          } else {
-            return (height - y(d[yColumn]));
-          }
-        });
-    // Circles
-    bar.append('circle')
-        .attr('class', 'pin-head')
-        .attr('cx', (d: any, i: number) =>
-          (this.scale * barWidth * (i + dataIdx)))
-        .attr('cy', (d: any) => y(d[yColumn]))
-        .attr('r', '5')
-        .style('fill', '#69b3a2')
-        .attr('stroke', 'black')
-        .on('mouseover', this.ttOver)
-        .on('mousemove', this.ttMove)
-        .on('mouseleave', this.ttLeave);
+    timelineType.draw(selection, this.ttOver, this.ttMove, this.ttLeave);
   }
 
   /**
-   *
+   * Purpose: draws an element as Event with a Magnitude. This function is old
+   * and has been replaced by the TimelineTypeInterface, it only still exists
+   * because some tests rely on it and a workaround has not yet been
+   * figured out.
    * @param {any} selection
    */
   drawIntervalMagnitude(selection: any): void {
-    selection.append('rect')
-        .attr('class', 'bar')
-        .attr('x', (d: any, i: number) =>
-          (this.scale * timeScale(new Date(d[xColumn]))))
-        // (scale * barWidth * (i + dataIdx)))
-        .attr('width', (d: any, i: number) =>
-          (timeScale(new Date(d[xColumn2])) -
-                timeScale(new Date(d[xColumn]))))
-        .attr('y', (d: any) => y(d[yColumn]))
-        .attr('height', (d: any) => {
-          const newHeight = (height - y(d[yColumn]));
-          if (newHeight < 0) {
-            return 0;
-          } else {
-            return (height - y(d[yColumn]));
-          }
-        })
-        .style('fill', '#61a3a9')
-        .style('opacity', 0.2)
-        .on('mouseover', this.ttOver)
-        .on('mousemove', this.ttMove)
-        .on('mouseleave', this.ttLeave);
+    timelineType.draw(selection, this.ttOver, this.ttMove, this.ttLeave);
   }
 
   /**
    * Purpose: used to update which bars are being rendered to the screen
    */
   updateBars() {
-    // @ts-ignore
-    const ticks: [any] = [];
-    plot.selectAll('.bar')
-        .data(data, function(d: any, i: any, group: any) {
-          return d['index'];
-        })
-        .join(
-            (enter: any) => this.state.view === ViewType.occurrence ?
-                this.drawEventMagnitude(enter) :
-                this.drawIntervalMagnitude(enter),
-            (update: any) => update,
-
-            (exit: any) => exit.remove()
-        );
-
-    // plot every 5th date
-    data.forEach(function(d: any, i: number) {
-      if (((i + dataIdx) % 5) === 0) {
-        ticks.push({
-          id: d['index'],
-          index: i,
-          text: d[xColumn],
-        });
-      }
-    });
-
-    plot.selectAll('.xtick')
-        .data(ticks, function(d: any, i: any, group: any) {
-          return d.id;
-        })
-        .join(
-            (enter: any) => {
-              const tick = enter.append('g')
-                  .attr('class', 'xtick')
-                  .attr('opacity', 1)
-                  .attr('transform', (d: any, i: number) => {
-                    if (this.state.view === ViewType.occurrence) {
-                      return 'translate(' +
-                          ((this.scale * barWidth * (d.index + dataIdx)) +
-                          ((this.scale * barWidth) / 2)) + ',' + height + ')';
-                    } else {
-                      return `translate(${timeScale(new Date(d.text))} ,
-                    ${height})`;
-                    }
-                  });
-
-              tick.append('line')
-                  .attr('stroke', 'blue')
-                  .attr('y2', 6);
-
-              tick.append('text')
-                  .text((d: any) => d.text)
-                  .style('text-anchor', 'end')
-                  .style('font-size', '1rem')
-                  .attr('dx', '-.8em')
-                  .attr('dy', '.15em')
-                  .attr('transform', 'rotate(-90)');
-            },
-            (update: any) => update,
-            (exit: { remove: () => void; }) => exit.remove()
-        );
+    timelineType.updateBars(this.ttOver, this.ttMove, this.ttLeave);
   }
 
   /**
    * Purpose: updates dataIdx, data, and ordinals when drawing an EventMagnitude
-   * Timeline
+   * Timeline. This function is old and has been replaced by the
+   * TimelineTypeInterface, it only still exists because some tests rely on it
+   * and a workaround has not yet been figured out.
    */
   getEventMagnitudeData() {
-    // finds starting index
-    dataIdx = Math.floor(-deltaX / (this.scale * barWidth));
-    data = csvData.slice(dataIdx, numBars + dataIdx);
-    // ordinals = data.map((d: any) => d[xColumn]);
+    timelineType.getData();
   }
 
   /**
    * Purpose: updates dataIdx, data, and ordinals when drawing an
-   * IntervalMagnitude Timeline
+   * IntervalMagnitude Timeline. This function is old and has been replaced by
+   * the TimelineTypeInterface, it only still exists because some tests rely on
+   * it and a workaround has not yet been figured out.
    */
   getIntervalMagnitudeData() {
-    let dataIdxEnd: number;
-    const keyInt1 = xColumn + '_num';
-    const keyInt2 = xColumn2 + '_num';
-    let consecutive = true;
-
-    for (dataIdxEnd = dataIdx; dataIdxEnd < csvData.length; dataIdxEnd++) {
-      const elem: any = csvData[dataIdxEnd];
-
-      if (!elem.hasOwnProperty(keyInt1)) {
-        elem[keyInt1] = Date.parse(elem[xColumn]);
-      }
-
-      if (!elem.hasOwnProperty(keyInt2)) {
-        elem[keyInt2] = Date.parse(elem[xColumn2]);
-      }
-
-      // We can only increment dataIdx if the preceding elements have also been
-      // moved off of the current screen area, otherwise elements will be
-      // removed prematurely
-      if (consecutive &&
-          ((this.scale * timeScale(elem[keyInt1])) < -deltaX &&
-          (this.scale * timeScale(elem[keyInt2])) < -deltaX)) {
-        dataIdx++;
-      } else {
-        consecutive = false;
-      }
-
-      // console.log('timeScale: ' + timeScale(elem[keyInt1]));
-      // If this is true, then the x position of the start of the bar and end of
-      // the bar are currently outside of the viewing area
-      if (!((this.scale * timeScale(elem[keyInt1])) < (-deltaX + width) ||
-          (((this.scale * timeScale(elem[keyInt2])) <= -deltaX + width) &&
-              ((this.scale * timeScale(elem[keyInt2])) > -deltaX)))) {
-        break;
-      }
-      // if(!(scale * timeScale(new Date(elem[xColumn])) > -deltaX ||
-      //     scale * timeScale(new Date(elem[xColumn2])) > -deltaX)) {
-      //   break;
-      // }
-    }
-    // console.log('dataIdx: ' + dataIdx);
-    // console.log('dataIdxEnd: ' + dataIdxEnd);
-
-    data = csvData.slice(dataIdx, dataIdxEnd + barBuffer);
+    timelineType.getData();
   }
 
   /**
@@ -1043,21 +780,11 @@ export default class TimelineComponent
    */
   moveChart() {
     d3.select('#barsLayer')
-        .attr('transform', (d) => {
-          return `translate(${deltaX},0)`;
+        .attr('transform', () => {
+          return `translate(${m.deltaX},0)`;
         });
 
-
-    this.state.view === ViewType.occurrence ?
-      this.getEventMagnitudeData() :
-      this.getIntervalMagnitudeData();
-
-    // finds starting index
-    // dataIdx = Math.floor(-deltaX / (this.scale * barWidth));
-    // data = csvData.slice(dataIdx, numBars + dataIdx);
-    // may use in the future
-    // ordinals = data.map((d: any) => d[xColumn]);
-
+    timelineType.getData();
     this.updateBars();
   }
 
@@ -1074,15 +801,12 @@ export default class TimelineComponent
    * Purpose: called when the timeline is dragged by the user
    */
   dragged() {
-    // console.log(d3.event);
     this.ttUpdatePos(d3.event.sourceEvent.x, d3.event.sourceEvent.y);
 
-    deltaX += d3.event.sourceEvent.movementX;
-    if (deltaX > 0) {
-      deltaX = 0;
+    m.deltaX += d3.event.sourceEvent.movementX;
+    if (m.deltaX > 0) {
+      m.deltaX = 0;
     }
-    // console.log(d3.event);
-    // console.log(`deltaX:${deltaX}`);
     this.moveChart();
   }
 
@@ -1093,4 +817,4 @@ export default class TimelineComponent
   dragEnded(caller: any) {
     d3.select(caller).classed('active', false);
   }
-}
+};

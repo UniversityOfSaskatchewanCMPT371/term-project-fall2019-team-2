@@ -13,13 +13,14 @@ import TimelineModel from './TimelineModel';
 import TimelineTypeInterface from './TimelineTypes/TimelineTypeInterface';
 import EventMagnitude from './TimelineTypes/EventMagnitude';
 import IntervalMagnitude from './TimelineTypes/IntervalMagnitude';
+import IntervalOccurrence from './TimelineTypes/IntervalOccurrence';
 
 export enum ViewType {
   interval, event, intervalOccurrence
 }
 
 const m = new TimelineModel();
-let timelineType: TimelineTypeInterface = new EventMagnitude(m);
+let timelineType: TimelineTypeInterface = new IntervalOccurrence(m);
 
 /**
  * Purpose: renders and updates a timeline to the screen
@@ -344,7 +345,7 @@ export default class TimelineComponent
       case ViewType.interval:
         prompt = 'Switch to IntervalOccurrence Timeline';
         m.view = ViewType.intervalOccurrence;
-        timelineType = new EventMagnitude(m);
+        timelineType = new IntervalOccurrence(m);
         break;
 
       case ViewType.intervalOccurrence:

@@ -1,5 +1,5 @@
 import TimelineTypeInterface, {TimelineType}
-  from './TimelineTypes/TimelineTypeInterface';
+  from './TimelineTypeInterface';
 
 /**
  * Purpose: provides methods relevant to drawing intervalOccurrence
@@ -23,18 +23,12 @@ export default class IntervalOccurrence extends TimelineType
   draw(selection: any, ttOver: any, ttMove: any, ttLeave: any): void {
     // Show the main vertical line
     selection.append('line')
-        .attr('x1', function(d) {
-          return (x(d.value.min));
-        })
-        .attr('x2', function(d) {
-          return (x(d.value.max));
-        })
-        .attr('y1', function(d) {
-          return (y(d.key) + y.bandwidth()/2);
-        })
-        .attr('y2', function(d) {
-          return (y(d.key) + y.bandwidth()/2);
-        })
+        .attr('x', (d: any) =>
+          this.m.timeScale(new Date(d[this.m.xColumn])))
+        .attr('x2', (d: any) =>
+          this.m.timeScale(new Date(d[this.m.xColumn2])))
+        .attr('y1', (this.m.height/2))
+        .attr('y2', (this.m.height/2))
         .attr('stroke', 'black')
         .style('width', 40);
   }

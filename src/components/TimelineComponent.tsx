@@ -489,17 +489,20 @@ export default class TimelineComponent
     const axisLayer = this.svg.append('g')
         .attr('id', 'axisLayer');
 
-    axisLayer.append('g')
-        .style('color', 'red')
-        .attr('class', 'y axis')
-        .call(d3.axisLeft(m.y))
-        .append('text')
-        .attr('transform', 'rotate(-90)')
-        .attr('y', 6)
-        .attr('dy', '.71em')
-        .style('text-anchor', 'end')
-        .style('color', 'red')
-        .text('yColumn');
+    if (timelineType instanceof EventMagnitude ||
+      timelineType instanceof IntervalMagnitude) {
+      axisLayer.append('g')
+          .style('color', 'black')
+          .attr('class', 'y axis')
+          .call(d3.axisLeft(m.y))
+          .append('text')
+          .attr('transform', 'rotate(-90)')
+          .attr('y', 6)
+          .attr('dy', '.71em')
+          .style('text-anchor', 'end')
+          .style('color', 'red')
+          .text('yColumn');
+    }
 
     m.plot = barsLayer.append('g')
         .attr('class', 'plot')
@@ -625,7 +628,7 @@ export default class TimelineComponent
     const keys = Object.keys(d);
     let tooltip: string = '';
     keys.forEach(function(key) {
-      tooltip += '<strong>' + key + '</strong> <span style=\'color:red\'>' +
+      tooltip += '<strong>' + key + '</strong> <span style=\'color:#000000\'>' +
         d[key] + '</span><br/>';
     });
 

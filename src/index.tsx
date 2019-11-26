@@ -12,7 +12,7 @@ const cookies = new Cookies();
 if (cookies.get('telemetry') !== false) {
   init({
     dsn: process.env.REACT_APP_SENTRY_DSN,
-    release: 'timeline@' + process.env.REACT_APP_VERSION
+    release: `timeline@${process.env.REACT_APP_VERSION}`
   });
 }
 

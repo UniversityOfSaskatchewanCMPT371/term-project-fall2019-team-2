@@ -21,16 +21,39 @@ export default class IntervalOccurrence extends TimelineType
    * @param {any} ttLeave: tooltip leave function
    */
   draw(selection: any, ttOver: any, ttMove: any, ttLeave: any): void {
+    const lineHeight = this.m.height/2;
     // Show the main vertical line
     selection.append('line')
         .attr('x', (d: any) =>
           this.m.timeScale(new Date(d[this.m.xColumn])))
         .attr('x2', (d: any) =>
           this.m.timeScale(new Date(d[this.m.xColumn2])))
-        .attr('y1', (this.m.height/2))
-        .attr('y2', (this.m.height/2))
+        .attr('y1', (lineHeight))
+        .attr('y2', (lineHeight))
         .attr('stroke', 'black')
         .style('width', 40);
+
+    // shows the intervals
+    selection.append('rect')
+        .attr('class', 'bar')
+        .attr('x', (d: any) =>
+          (this.m.scale * this.m.timeScale(new Date(d[this.m.xColumn]))))
+        .attr('width', (d: any) =>
+          (this.m.timeScale(new Date(d[this.m.xColumn2])) -
+          this.m.timeScale(new Date(d[this.m.xColumn]))))
+        .attr('y', (d: any, i: number) => {
+          if (i % 2 === 0) {
+            return this.m.height/4;
+          } else {
+            return this.m.height/2;
+          }
+        })
+        .attr('height', (this.m.height/4))
+        .style('fill', '#61a3a9')
+        .style('opacity', 0.2)
+        .on('mouseover', ttOver)
+        .on('mousemove', ttMove)
+        .on('mouseleave', ttLeave);
   }
 
   /**

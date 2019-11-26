@@ -40,7 +40,8 @@
     "react-scripts": "3.2.0",
     "react-test-renderer": "^16.10.2",
     "sinon": "^7.5.0",
-    "typescript": "^3.6.3"
+    "typescript": "^3.6.3",
+    "universal-cookie": "^4.0.2"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -4,8 +4,22 @@ import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import App from './App';
+import {init} from '@sentry/browser';
+import Cookies from 'universal-cookie';
+import ErrorBoundary from './components/ErrowBoundary';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const cookies = new Cookies();
+if (cookies.get('telemetry') !== false) {
+  init({
+    dsn: process.env.REACT_APP_SENTRY_DSN,
+    release: 'timeline@' + process.env.REACT_APP_VERSION
+  });
+}
+
+ReactDOM.render(<ErrorBoundary
+  error={new Error('Unknown')}>
+  <App />
+</ErrorBoundary>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

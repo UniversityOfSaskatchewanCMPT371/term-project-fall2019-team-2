@@ -1,3 +1,4 @@
+import {strict as assert} from 'assert';
 /**
  * Purpose: the class responsible for storing the information about which data
  * is drawn.  By default it stores only information about the range that the
@@ -50,6 +51,8 @@ export default class Filter {
    */
   public addPredicate(predicate: () => boolean) {
     this.listOfPreds.push(predicate);
+    // pred should be in listOfPreds now
+    assert.equal(this.listOfPreds[this.listOfPreds.length - 1], predicate);
   }
 
   /**
@@ -60,6 +63,8 @@ export default class Filter {
    * @param {number} index: the index of the predicate to remove
    */
   public removePredicate(index: number) {
-    this.listOfPreds.splice(index, 1);
+    const removed: Array<() => boolean> = this.listOfPreds.splice(index, 1);
+    // pred shouldn't be in listOfPreds anymore
+    assert.equal(this.listOfPreds.find(removed[0]), undefined);
   }
 }

@@ -91,8 +91,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
                   this.parse(fileEvent);
                 }}>
                 <option selected value="">Select a Date Format</option>
-                <option value="YYYY-MM-DD">YYYY-MM-DD</option>
-                <option value="YYYY-DD-MM">YYYY-MM-DD</option>
                 <option value="X">Days from Event</option>
                 <option value="MM-DD-YYYY">MM-DD-YYYY</option>
                 <option value="DD-MM-YYYY">DD-MM-YYYY</option>

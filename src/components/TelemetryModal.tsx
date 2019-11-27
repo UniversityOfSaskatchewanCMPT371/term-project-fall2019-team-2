@@ -44,6 +44,10 @@ export default function TelemetryModal() {
     }
   };
 
+  /**
+   * Uses Modal's from the Bootstrap react project to draw with animations.
+   * A modal is basically a popup dialog.
+   */
   return (
     <>
       <Modal show={show} onHide={handleClose}>

@@ -356,10 +356,8 @@ describe('<ParserComponent /> Unit Tests', () => {
       );
       expect(instance.isValid(testFile)).toBeTruthy();
     });
-    it('should throw exception when given undefined', () => {
-      expect(() => {
-        instance.isValid(undefined);
-      }).toThrow('Wrong file type was uploaded.');
+    it('should return false when given undefined', () => {
+      expect(instance.isValid(undefined)).toBeFalsy();
     });
     it('should return true when given csv.csv', () => {
       const testFile: File = new File(
@@ -375,9 +373,7 @@ describe('<ParserComponent /> Unit Tests', () => {
           'test.pdf',
           {type: '.pdf,application/pdf'},
       );
-      expect(() => {
-        instance.isValid(testFile);
-      }).toThrow('Wrong file type was uploaded.');
+      expect(instance.isValid(testFile)).toBeFalsy();
     });
     it('should throw exception when given non csv file with name csv', () => {
       const testFile: File = new File(
@@ -385,9 +381,7 @@ describe('<ParserComponent /> Unit Tests', () => {
           'csv.pdf',
           {type: '.pdf,application/pdf'},
       );
-      expect(() => {
-        instance.isValid(testFile);
-      }).toThrow('Wrong file type was uploaded.');
+      expect(instance.isValid(testFile)).toBeFalsy();
     });
   });
 
@@ -399,16 +393,16 @@ describe('<ParserComponent /> Unit Tests', () => {
     it('should sort data by date when ' +
         'given data with id, name and date where date is in form m/d/y' +
         'with invalid date going to the first spot', () => {
-      const testArray: {id: number, name: string, Date: string}[] = [
-        {'id': 1, 'name': 'name1', 'Date': '4/5/2010'},
-        {'id': 2, 'name': 'name2', 'Date': '2/31/1992'},
-        {'id': 3, 'name': 'name3', 'Date': '12/21/1992'}];
+      const testArray: {name: string, Date: string}[] = [
+        {'name': 'name1', 'Date': '4/5/2010'},
+        {'name': 'name2', 'Date': '2/31/1992'},
+        {'name': 'name3', 'Date': '12/21/1992'}];
       instance.setState({formatString: 'M D YYYY'});
       instance.sortData(testArray);
-      const expectedResult: {id: number, name: string, Date: string}[] = [
-        {'id': 2, 'name': 'name2', 'Date': '2/31/1992'},
-        {'id': 3, 'name': 'name3', 'Date': '12/21/1992'},
-        {'id': 1, 'name': 'name1', 'Date': '4/5/2010'}];
+      const expectedResult: {name: string, Date: string}[] = [
+        {'name': 'name2', 'Date': '2/31/1992'},
+        {'name': 'name3', 'Date': '12/21/1992'},
+        {'name': 'name1', 'Date': '4/5/2010'}];
       expect(testArray[0]).toMatchObject(expectedResult[0]);
       expect(testArray[1]).toMatchObject(expectedResult[1]);
       expect(testArray[2]).toMatchObject(expectedResult[2]);
@@ -416,18 +410,18 @@ describe('<ParserComponent /> Unit Tests', () => {
 
     it('should sort data by the first date ' +
         'column when given data with 2 date columns', () => {
-      const testArray: {id: number, Date: string, Date1: string}[] = [
-        {'id': 1, 'Date': '1/1/2001', 'Date1': '4/5/2010'},
-        {'id': 2, 'Date': '1/1/2003', 'Date1': '4/5/1992'},
-        {'id': 3, 'Date': '1/1/2000', 'Date1': '12/21/1992'},
-        {'id': 4, 'Date': '1/1/2002', 'Date1': '12/21/1993'}];
+      const testArray: {Date: string, Date1: string}[] = [
+        {'Date': '1/1/2001', 'Date1': '4/5/2010'},
+        {'Date': '1/1/2003', 'Date1': '4/5/1992'},
+        {'Date': '1/1/2000', 'Date1': '12/21/1992'},
+        {'Date': '1/1/2002', 'Date1': '12/21/1993'}];
       instance.setState({formatString: 'M D YYYY'});
       instance.sortData(testArray);
-      const expectedResult: {id: number, Date: string, Date1: string}[] = [
-        {'id': 3, 'Date': '1/1/2000', 'Date1': '12/21/1992'},
-        {'id': 1, 'Date': '1/1/2001', 'Date1': '4/5/2010'},
-        {'id': 4, 'Date': '1/1/2002', 'Date1': '12/21/1993'},
-        {'id': 2, 'Date': '1/1/2003', 'Date1': '4/5/1992'}];
+      const expectedResult: {Date: string, Date1: string}[] = [
+        {'Date': '1/1/2000', 'Date1': '12/21/1992'},
+        {'Date': '1/1/2001', 'Date1': '4/5/2010'},
+        {'Date': '1/1/2002', 'Date1': '12/21/1993'},
+        {'Date': '1/1/2003', 'Date1': '4/5/1992'}];
       expect(testArray[0]).toMatchObject(expectedResult[0]);
       expect(testArray[1]).toMatchObject(expectedResult[1]);
       expect(testArray[2]).toMatchObject(expectedResult[2]);

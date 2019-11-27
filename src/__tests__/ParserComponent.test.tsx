@@ -68,14 +68,15 @@ describe('R1 Tests\n', () => {
     fileType: FileType.csv,
   };
 
+  // Uncomment to ignore warnings & make console easier to read
   // store original console.warn
-  const originalWarn = console.warn;
+  // const originalWarn = console.warn;
 
   // array to store console output
-  const consoleOutput: any[] = [];
+  // const consoleOutput: any[] = [];
 
   // function to receive console.warn output
-  console.warn = (output: any) => consoleOutput.push(output);
+  // console.warn = (output: any) => consoleOutput.push(output);
 
   // vars that are used in most of the tests
   const onChangeMock: any = jest.fn();

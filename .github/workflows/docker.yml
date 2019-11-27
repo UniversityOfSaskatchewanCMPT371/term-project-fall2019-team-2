@@ -19,12 +19,27 @@ jobs:
     - name: Deploy a docker image
       env:
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
       run: |
         # Everything after the very last slash / for a valid tag
-        docker build . --tag braunson/cmpt371:${GITHUB_REF##*/} --tag braunson/cmpt371:latest
+        docker build . --build-arg REACT_APP_SENTRY_DSN=${REACT_APP_SENTRY_DSN} --build-arg REACT_APP_VERSION=$(git rev-parse --short HEAD) --tag braunson/cmpt371:${GITHUB_REF##*/} --tag braunson/cmpt371:latest
         echo ${DOCKER_PASSWORD} | docker login --username braunson --password-stdin
         docker push braunson/cmpt371:${GITHUB_REF##*/}
         docker push braunson/cmpt371:latest
+
+    # Upload source maps
+    - name: Upload source maps
+      env:
+        SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+      if: github.ref == 'refs/heads/master' || contains(github.ref, 'tags/') || github.ref == 'refs/heads/develop'
+      run: |
+        export RELEASE_VERSION=$(git rev-parse --short HEAD)
+        curl -o sentry-cli https://github.com/getsentry/sentry-cli/releases/download/1.49.0/sentry-cli-Linux-x86_64
+        ./sentry-cli releases new $RELEASE_VERSION
+        ./sentry-cli releases files $RELEASE_VERSION upload-sourcemaps --ext ts --ext map build/static/js
+        ./sentry-cli releases files $RELEASE_VERSION upload-sourcemaps --ext ts --ext map src
+        ./sentry-cli releases set-commits --auto $RELEASE_VERSION
+        ./sentry-cli releases finalize $RELEASE_VERSION
 
     - name: Deploy to server (test)
       if: github.ref == 'refs/heads/master' || contains(github.ref, 'tags/')

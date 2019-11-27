@@ -10,6 +10,7 @@ import Data
   from './Data';
 import * as TimSort from 'timsort';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {strict as assert} from 'assert';
 
 /**
  * Purpose: react component responsible for receiving and parsing file data
@@ -110,11 +111,14 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * valid
      */
     isValid(upFile?: File): boolean {
+      assert.notEqual(upFile, null);
       if (upFile !== undefined) {
         const typeOfFile = upFile.name.substr(upFile.name.length - 4);
         if (typeOfFile === '.csv') {
+          assert.equal(upFile.type, '.csv,text/csv');
           return typeOfFile === '.csv';
         } else {
+          assert.notEqual(upFile.type, '.csv,text/csv');
           throw new Error('Wrong file type was uploaded.');
         }
       }
@@ -132,9 +136,13 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * @return {boolean}: array of sorted data
      */
     sortData(data: Array<object>): boolean {
+      assert.notEqual(data, null);
+      assert.notEqual(data, []);
+
       let doneTheWork = false;
       /* loop goes through each key and saves the 1 with a date in first row */
       if (data[0] !== undefined && data.length > 0) {
+        assert.notEqual(data[0], null);
         for (const [key, value] of Object.entries(data[0])) {
           if (!doneTheWork) {
             const date1 = moment(String(value));
@@ -176,6 +184,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
         }
       }
       if (doneTheWork) {
+        // state should be updated
+        assert.notEqual(this.state.data, []);
         return true;
       } else {
         throw new Error('The file uploaded has no dates.');
@@ -189,11 +199,13 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * @return {[CountTypes]}: a list of objects
      */
     createTypeCountingObjects(fieldLength: number): CountTypes[] {
+      assert(fieldLength > 0);
       const typesForEachCol = [];
       // instantiate object for each column
       for (let i = 0; i < fieldLength; i++) {
         typesForEachCol.push(new CountTypes());
       }
+      assert.notEqual(typesForEachCol, []);
       return typesForEachCol;
     }
 
@@ -208,20 +220,30 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * @return {Array}: a list of objects of type Column
      */
     inferTypes(data: Array<object>): Array<Column> | undefined {
+      // data should contain something (according to the precondition)
+      assert.notEqual(data, undefined);
+      assert.notEqual(data, null);
+      assert.notEqual(data, []);
+
       if (this.state.data.length > 0) {
+        assert.notEqual(this.state.data[0], null);
         const listFields = Object.keys(this.state.data[0]);
+        assert.notEqual(listFields, null);
+        assert(listFields.length > 0);
         // instantiate objects to track the types of data
         const typesForEachCol =
             this.createTypeCountingObjects(listFields.length);
         // check half the values to find if the data is consistent
         [0, Math.floor(this.state.data.length / 2)].forEach((element) => {
           const row: object = this.state.data[element];
+          assert.notEqual(row, null);
           // look at each field and categorize
           for (let i = 0; i < listFields.length; i++) {
             const curColTypes = typesForEachCol[i];
             try {
               // @ts-ignore
               const val = row[listFields[i]];
+              assert.notEqual(val, undefined);
               if (typeof val === 'string') {
                 const date = moment(val);
                 const isValid = date.isValid();
@@ -275,8 +297,12 @@ export default class ParserComponent extends React.Component<ParserInterface,
           }
         }
         );
+        // if there is data then arrayOfColumns shouldn't be empty
+        assert.notEqual(arrayOfColumns, []);
         return arrayOfColumns;
       } else {
+        assert(this.state.data.length === 0);
+        // should probably return undefined here?
         throw new Error('data is empty');
       }
     }
@@ -289,6 +315,20 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * @param {Object} fileEvent: the event passed into this component
      */
     async parse(fileEvent: any) {
+      // sorry, i went a little insane
+      // fileEvent is an object containing target files
+      assert.notEqual(fileEvent, undefined);
+      assert.notEqual(fileEvent, null);
+      // check target obj
+      assert.notEqual(fileEvent.target, null);
+      assert.notEqual(fileEvent.target, undefined);
+      // check files obj (Array<File>)
+      assert.notEqual(fileEvent.target.files, null);
+      assert.notEqual(fileEvent.target.files, undefined);
+      // check File obj (file being uploaded)
+      assert.notEqual(fileEvent.target.files[0], null);
+      assert.notEqual(fileEvent.target.files[0], undefined);
+
       this.setState(() => {
         return {
           showTimeline: false,
@@ -306,6 +346,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
         console.log('Wrong file was uploaded.');
       }
 
+      // only show timeline if there is data
+      assert.notEqual(this.state.data, []);
       this.setState(() => {
         return {
           showTimeline: true,
@@ -321,7 +363,14 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * @param {Object} fileEvent: the event passed into this component
      */
     async parseCsv(fileEvent: any) {
+      // check fileEvent (should probs just pass in the File from parse()...
+      assert.notEqual(fileEvent, undefined);
+      assert.notEqual(fileEvent, null);
+
       const csvFile = fileEvent.target.files[0];
+
+      assert.notEqual(csvFile, undefined);
+      assert.notEqual(csvFile, null);
 
       // for testing
       this.props.onChange(fileEvent.target.files[0]);
@@ -350,6 +399,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
               };
             });
             try {
+              // shouldn't pass empty array into inferTypes or sortData :/
+              assert.notStrictEqual(this.state.data, []);
               this.columnTypes = this.inferTypes(this.state.data);
               this.sortData(this.state.data);
             } catch (e) {

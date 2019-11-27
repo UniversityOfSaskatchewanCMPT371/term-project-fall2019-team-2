@@ -342,7 +342,7 @@ describe('<TimelineComponent /> R3 Tests\n', ()=>{
     expect(wrapper.debug()).toMatchSnapshot();
 
     // check d3 svgs match the snapshot
-    const svgTarget: any = document.getElementById('svgtarget');
+    const svgTarget: any = document.getElementById('barsLayer');
     let svgHTML: string = '';
     if (svgTarget) {
       svgHTML = prettyHTML(svgTarget.innerHTML);
@@ -358,17 +358,23 @@ describe('<TimelineComponent /> R3 Tests\n', ()=>{
   const zoomOutEventUp = new KeyboardEvent('keyup', {'key': '-'});
 
 
-  it('T3.3 Snapshot Test\n', () => {
+  it('T3.3 Snapshot Test\n', async () => {
     expect(wrapper.instance().getScale()).toBe(1.0);
 
     // check scale for zoomInEventDown and zoomInEventUp separately
-    document.body.dispatchEvent(zoomInEventDown);
-    document.body.dispatchEvent(zoomInEventUp);
+    for (let i = 0; i < 5; i++) {
+      document.body.dispatchEvent(zoomInEventDown);
+      document.body.dispatchEvent(zoomInEventUp);
+    }
     const tempScaleEventDown = wrapper.instance().getScale();
+    console.log(tempScaleEventDown);
     expect(tempScaleEventDown).toBeGreaterThan(1.0);
 
+    // update svg to reflect scale: do not use drawTimeline()
+    wrapper.instance().updateChart();
+
     // find d3 svg element
-    const svgTarget: any = document.getElementById('svgtarget');
+    const svgTarget: any = document.getElementById('barsLayer');
     let svgHTML: string = '';
     if (svgTarget) {
       svgHTML = prettyHTML(svgTarget.innerHTML);
@@ -379,18 +385,41 @@ describe('<TimelineComponent /> R3 Tests\n', ()=>{
   });
 
   it('T3.4 Snapshot test', ()=>{
-    // zoom in first so could test zoom backout
-    document.body.dispatchEvent(zoomInEventDown);
-    document.body.dispatchEvent(zoomInEventUp);
-    expect(wrapper.instance().getScale()).toBeGreaterThan(1.0);
-    // zoom back out
-    document.body.dispatchEvent(zoomOutEventDown);
-    document.body.dispatchEvent(zoomOutEventUp);
+    // check if initial scale is 1
     expect(wrapper.instance().getScale()).toBe(1.0);
+    // zoom in first so could test zoom backout
+    for (let i = 0; i < 5; i++) {
+      document.body.dispatchEvent(zoomInEventDown);
+      document.body.dispatchEvent(zoomInEventUp);
+    }
+    expect(wrapper.instance().getScale()).toBeGreaterThan(1.0);
+
+    // update svg to reflect scale: do not use drawTimeline()
+    wrapper.instance().updateChart();
 
     // find d3 svg element
-    const svgTarget: any = document.getElementById('svgtarget');
+    let svgTarget: any = document.getElementById('barsLayer');
     let svgHTML: string = '';
+    if (svgTarget) {
+      svgHTML = prettyHTML(svgTarget.innerHTML);
+    }
+
+    // Check that svg created by d3 matches snapshot
+    expect(svgHTML).toMatchSnapshot();
+
+    // zoom back out
+    for (let i = 0; i < 5; i++) {
+      document.body.dispatchEvent(zoomOutEventDown);
+      document.body.dispatchEvent(zoomOutEventUp);
+    }
+    expect(wrapper.instance().getScale()).toBe(1.0);
+
+    // update svg to reflect scale: do not use drawTimeline()
+    wrapper.instance().updateChart();
+
+    // find d3 svg element
+    svgTarget = document.getElementById('barsLayer');
+    svgHTML = '';
     if (svgTarget) {
       svgHTML = prettyHTML(svgTarget.innerHTML);
     }

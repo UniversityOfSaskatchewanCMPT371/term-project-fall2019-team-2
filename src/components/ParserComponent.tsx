@@ -141,20 +141,17 @@ export default class ParserComponent extends React.Component<ParserInterface,
             if (!isNaN(Number(date1)) && isNaN(Number(value))) {
               doneTheWork = true;
               const formatString = this.state.formatString;
-              console.log("format string:" + formatString);
 
               const keyInt = `${key}_num`;
 
               TimSort.sort(data, function(a: any, b: any) {
                 let val: any;
                 if (!a.hasOwnProperty(keyInt)) {
-                  console.info("a has no property at "+keyInt);
-
                   val = moment(a[key], formatString);
                   if (val.isValid()) {
                     a[keyInt] = val.valueOf();
                   } else {
-                    console.info("the value for a is invalid");
+                    console.info("TimSort.sort: the value for a is invalid");
                     a[keyInt] = -1;
                   }
                 }
@@ -164,11 +161,11 @@ export default class ParserComponent extends React.Component<ParserInterface,
                   if (val.isValid()) {
                     b[keyInt] = val.valueOf();
                   } else {
-                    console.warn("the value for b is invalid");
+                    console.warn("TimSort.sort: the value for b is invalid");
                     b[keyInt] = -1;
                   }
                 }
-                console.log("b has no property");
+                console.log("TimSort.sort: b has no property");
                 return (a[keyInt] - b[keyInt]);
               });
 
@@ -184,7 +181,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
       if (doneTheWork) {
         return true;
       } else {
-        throw new Error('The file uploaded has no dates.');
+        throw new Error('sortData: The file uploaded has no dates.');
       }
     }
 
@@ -200,7 +197,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
       for (let i = 0; i < fieldLength; i++) {
         typesForEachCol.push(new CountTypes());
       }
-      console.info("Counttype Objects:"+typesForEachCol);
       return typesForEachCol;
     }
 
@@ -237,11 +233,11 @@ export default class ParserComponent extends React.Component<ParserInterface,
                   curColTypes['numDate'] += 1;
                 }
                 else {
-                  console.error(val + "is not a valid file");
+                  console.error("inferTypes:" + val + "is not a valid file");
                   throw val;
                 }
               } else {
-                console.warn(val + "is not a string");
+                console.warn("inferTypes:" + val + "is not a string");
                 throw val;
 
               }
@@ -249,7 +245,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
               // @ts-ignore
               const type = typeof row[listFields[i]];
               if (type !== 'string' && type !== 'number') {
-                console.warn("incongruent type:" + curColTypes);
+                console.warn("inferTypes: incongruent type:" + curColTypes);
                 curColTypes['numIncongruent'] += 1;
               }
               // logs all the types that are seen
@@ -286,7 +282,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
           } else if (mostCommonType === 'date') {
             // create a Column with date data
             // eslint-disable-next-line max-len
-            console.info("most common type is date");
+            console.info('most common type is date');
             newCol = new Column(mostCommonType, enumDrawType.any, listFields[indx]);
             arrayOfColumns[indx] = newCol;
             indx++;
@@ -317,7 +313,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
       try {
         if (this.props.fileType.mimeName === '.csv' +
             ',text/csv' && this.isValid(temp)) {
-          console.log("Target file is a .csv")
+          console.log('Target file is a .csv')
           await this.parseCsv(fileEvent);
         }
       } catch (e) {

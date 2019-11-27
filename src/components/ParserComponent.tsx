@@ -124,9 +124,15 @@ export default class ParserComponent extends React.Component<ParserInterface,
     isValid(upFile?: File): boolean {
       if (upFile !== undefined) {
         const typeOfFile = upFile.name.substr(upFile.name.length - 4);
-        return !!(this.props.fileType.mimeName === '.csv' +
-            ',text/csv' && typeOfFile === '.csv');
+        if (this.props.fileType.mimeName === '.csv' +
+            ',text/csv' && typeOfFile === '.csv') {
+          return true;
+        } else {
+          alert('Wrong file type was uploaded.');
+          return false;
+        }
       }
+      alert('Wrong file type was uploaded.');
       return false;
     }
 
@@ -308,8 +314,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
       if (this.props.fileType.mimeName === '.csv' +
             ',text/csv' && this.isValid(temp)) {
         await this.parseCsv(fileEvent);
-      } else {
-        alert('Wrong file type was uploaded.');
       }
 
       this.setState(() => {

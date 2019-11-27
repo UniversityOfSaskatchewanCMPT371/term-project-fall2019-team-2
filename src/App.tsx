@@ -4,7 +4,6 @@ import ParserComponent from './components/ParserComponent';
 import {FileType} from './components/ParserInterface';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import {Container} from 'react-bootstrap';
 
 const App: React.FC = () => {
   return (

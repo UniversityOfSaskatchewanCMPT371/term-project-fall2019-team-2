@@ -10,9 +10,6 @@ import Data
   from './Data';
 import * as TimSort from 'timsort';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import fs
-  from 'fs';
-import $ from 'jquery';
 import {loadTestCsv} from './Utilities';
 
 console.log(process.env.NODE_ENV);

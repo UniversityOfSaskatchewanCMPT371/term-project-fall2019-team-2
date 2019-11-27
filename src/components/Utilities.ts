@@ -86,7 +86,6 @@ export function sizeofObj(obj: any): string {
   let sizeLen:number = 0;
   const sizes: string[] = [];
   const vals: string[] = [];
-  let totalSize:number = 0;
 
   keys.push('total');
   keyLen = maxStrLen(keys) + 1;
@@ -96,7 +95,6 @@ export function sizeofObj(obj: any): string {
     for (const key in obj) {
       if (key !== null) {
         const size = osizeof(key) + osizeof(obj[key]);
-        totalSize += size;
         sizes.push(`[${formatSize(size)}]: `);
         vals.push(`${obj[key]}\n`);
       }

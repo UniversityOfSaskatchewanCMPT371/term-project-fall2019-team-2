@@ -516,8 +516,8 @@ export default class TimelineComponent
     // variables
     console.log(m.x(0));
 
-    if (m.view == ViewType.IntervalMagnitude ||
-        m.view == ViewType.EventMagnitude) {
+    if (m.view === ViewType.IntervalMagnitude ||
+        m.view === ViewType.EventMagnitude) {
       m.y = d3.scaleLinear()
           .domain([d3.min(m.csvData,
               (d) => {

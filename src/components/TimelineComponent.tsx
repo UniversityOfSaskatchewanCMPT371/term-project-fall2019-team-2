@@ -544,6 +544,8 @@ export default class TimelineComponent
   /**
    * Purpose: draws the timeline and runs the functions and event handlers for
    * said timeline
+   * @precondition : initTimeline has already been called
+   * @postcondition : the Timeline and it's axis have been drawn.
    */
   drawTimeline() {
     this.zoom = d3.zoom()
@@ -797,7 +799,6 @@ export default class TimelineComponent
     // event is a mouseEvent
     this.ttUpdatePos(d3.event.x, d3.event.y);
   }
-
 
   /**
    * Purpose: called when the cursor moves off of a bar

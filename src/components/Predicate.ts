@@ -1,3 +1,4 @@
+import {strict as assert} from 'assert';
 /**
  * Predicate class which stores metadata about a predicate function
  * and evaluates that function.
@@ -25,6 +26,7 @@ export default class Predicate {
    * @return {string} The name of the predicate function
    */
   public getName(): string {
+    assert.notEqual(this.name, undefined);
     return this.name;
   }
 
@@ -39,6 +41,9 @@ export default class Predicate {
    * @return {boolean} The result of the function evaluated
    */
   public evaluate(point: Object): boolean {
+    // point object should be defined
+    assert.notEqual(point, null);
+    assert.notEqual(point, undefined);
     return this.func(point);
   }
 }

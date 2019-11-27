@@ -93,7 +93,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
                 <option selected value="">Select a Date Format</option>
                 <option value="X">Days from Event</option>
                 <option value="MM-DD-YYYY">MM-DD-YYYY</option>
-                <option value="DD-MM-YYYY">DD-MM-YYYY</option>
                 <option value="DD-MMMM-YYYY">DD-MMMM-YYYY</option>
                 <option value="MMMM-DD-YYYY">MMMM-DD-YYYY</option>
                 <option value="MMM-DD-YYYY">MMMM-DD-YYYY</option>

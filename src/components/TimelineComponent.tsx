@@ -195,6 +195,7 @@ export default class TimelineComponent
         });
       }
     }
+    console.error('sortData(): this.state.data has no columns');
   }
 
   /**

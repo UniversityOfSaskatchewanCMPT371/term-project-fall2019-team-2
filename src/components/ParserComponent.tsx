@@ -225,26 +225,33 @@ export default class ParserComponent extends React.Component<ParserInterface,
               if (typeof val === 'string') {
                 const date = moment(val);
                 const isValid = date.isValid();
+                console.log(date + "is valid");
                 if (isValid) {
                   curColTypes['numDate'] += 1;
-                } else {
+                }
+                else {
                   throw val;
+                  console.error(val + "is not a valid file");
                 }
               } else {
                 throw val;
+                console.info(val + "is not a string");
               }
             } catch {
               // @ts-ignore
               const type = typeof row[listFields[i]];
               if (type !== 'string' && type !== 'number') {
+                console.warn("incongruent type:" + curColTypes);
                 curColTypes['numIncongruent'] += 1;
               }
               // logs all the types that are seen
               if (type === 'string') {
                 curColTypes['numString'] += 1;
-              } else {
+              }
+              else {
                 curColTypes['numNumber'] += 1;
               }
+              console.log(curColTypes);
             }
           }
         });
@@ -256,12 +263,14 @@ export default class ParserComponent extends React.Component<ParserInterface,
           let newCol: Column;
           if (mostCommonType === 'string') {
             // create a Column object with occurrence data
+            console.info("most common type is string");
             newCol = new Column(mostCommonType,
                 enumDrawType.occurrence, listFields[indx]);
             arrayOfColumns[indx] = newCol;
             indx++;
           } else if (mostCommonType === 'number') {
             // create a Column with interval, point or magnitude data
+            console.info("most common type is number");
             newCol = new Column(mostCommonType,
                 enumDrawType.any, listFields[indx]);
             arrayOfColumns[indx] = newCol;
@@ -269,6 +278,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
           } else if (mostCommonType === 'date') {
             // create a Column with date data
             // eslint-disable-next-line max-len
+            console.info("most common type is date");
             newCol = new Column(mostCommonType, enumDrawType.any, listFields[indx]);
             arrayOfColumns[indx] = newCol;
             indx++;

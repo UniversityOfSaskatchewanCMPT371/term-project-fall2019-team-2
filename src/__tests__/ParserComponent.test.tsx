@@ -397,7 +397,7 @@ describe('<ParserComponent /> Unit Tests', () => {
         {'name': 'name1', 'Date': '4/5/2010'},
         {'name': 'name2', 'Date': '2/31/1992'},
         {'name': 'name3', 'Date': '12/21/1992'}];
-      instance.setState({formatString: 'M D YYYY'});
+      instance.setState({formatString: 'MM DD YYYY'});
       instance.sortData(testArray);
       const expectedResult: {name: string, Date: string}[] = [
         {'name': 'name2', 'Date': '2/31/1992'},
@@ -415,7 +415,7 @@ describe('<ParserComponent /> Unit Tests', () => {
         {'Date': '1/1/2003', 'Date1': '4/5/1992'},
         {'Date': '1/1/2000', 'Date1': '12/21/1992'},
         {'Date': '1/1/2002', 'Date1': '12/21/1993'}];
-      instance.setState({formatString: 'M D YYYY'});
+      instance.setState({formatString: 'MM DD YYYY'});
       instance.sortData(testArray);
       const expectedResult: {Date: string, Date1: string}[] = [
         {'Date': '1/1/2000', 'Date1': '12/21/1992'},
@@ -428,17 +428,6 @@ describe('<ParserComponent /> Unit Tests', () => {
       expect(testArray[3]).toMatchObject(expectedResult[3]);
     });
 
-    it('should throw exception when given data with no dates', () => {
-      const testArray: {id: number, name: string, job: string}[] = [
-        {'id': 1, 'name': 'name1', 'job': 'job1'},
-        {'id': 2, 'name': 'name2', 'job': 'job2'},
-        {'id': 3, 'name': 'name3', 'job': 'job3'},
-        {'id': 4, 'name': 'name4', 'job': 'job4'}];
-      expect(() => {
-        instance.sortData(testArray);
-      }).toThrow('The file uploaded has no dates.');
-    });
-
     it('should throw exception when given an empty file with no data', () => {
       const testArray: {id: number, name: string, job: string}[] = [];
       expect(() => {
@@ -448,18 +437,18 @@ describe('<ParserComponent /> Unit Tests', () => {
 
     it('should sort the data by dates when given ' +
         'dates written in a form like November 23, 2019', () => {
-      const testArray: {id: number, name: string, Date: string}[] = [
-        {'id': 1, 'name': 'name1', 'Date': 'November 23, 2019'},
-        {'id': 2, 'name': 'name2', 'Date': 'January 1, 2019'},
-        {'id': 3, 'name': 'name3', 'Date': 'December 31, 2019'},
-        {'id': 4, 'name': 'name4', 'Date': 'February 5, 2019'}];
-      instance.setState({formatString: 'MMMM D YYYY'});
+      const testArray: {name: string, Date: string}[] = [
+        {'name': 'name1', 'Date': 'November 23, 2019'},
+        {'name': 'name2', 'Date': 'January 1, 2019'},
+        {'name': 'name3', 'Date': 'December 31, 2019'},
+        {'name': 'name4', 'Date': 'February 5, 2019'}];
+      instance.setState({formatString: 'MMMM DD YYYY'});
       instance.sortData(testArray);
-      const expectedResult: {id: number, name: string, Date: string}[] = [
-        {'id': 2, 'name': 'name2', 'Date': 'January 1, 2019'},
-        {'id': 4, 'name': 'name4', 'Date': 'February 5, 2019'},
-        {'id': 1, 'name': 'name1', 'Date': 'November 23, 2019'},
-        {'id': 3, 'name': 'name3', 'Date': 'December 31, 2019'}];
+      const expectedResult: {name: string, Date: string}[] = [
+        {'name': 'name2', 'Date': 'January 1, 2019'},
+        {'name': 'name4', 'Date': 'February 5, 2019'},
+        {'name': 'name1', 'Date': 'November 23, 2019'},
+        {'name': 'name3', 'Date': 'December 31, 2019'}];
       expect(testArray[0]).toMatchObject(expectedResult[0]);
       expect(testArray[1]).toMatchObject(expectedResult[1]);
       expect(testArray[2]).toMatchObject(expectedResult[2]);
@@ -468,18 +457,18 @@ describe('<ParserComponent /> Unit Tests', () => {
 
     it('should sort the data by dates when given ' +
         'dates written in a form like November 23 2019 (no comma)', () => {
-      const testArray: {id: number, name: string, Date: string}[] = [
-        {'id': 1, 'name': 'name1', 'Date': 'November 23 2019'},
-        {'id': 2, 'name': 'name2', 'Date': 'January 1 2019'},
-        {'id': 3, 'name': 'name3', 'Date': 'December 31 2019'},
-        {'id': 4, 'name': 'name4', 'Date': 'February 5 2019'}];
-      instance.setState({formatString: 'MMMM D YYYY'});
+      const testArray: {name: string, Date: string}[] = [
+        {'name': 'name1', 'Date': 'November 23 2019'},
+        {'name': 'name2', 'Date': 'January 1 2019'},
+        {'name': 'name3', 'Date': 'December 31 2019'},
+        {'name': 'name4', 'Date': 'February 5 2019'}];
+      instance.setState({formatString: 'MMMM DD YYYY'});
       instance.sortData(testArray);
-      const expectedResult: {id: number, name: string, Date: string}[] = [
-        {'id': 2, 'name': 'name2', 'Date': 'January 1 2019'},
-        {'id': 4, 'name': 'name4', 'Date': 'February 5 2019'},
-        {'id': 1, 'name': 'name1', 'Date': 'November 23 2019'},
-        {'id': 3, 'name': 'name3', 'Date': 'December 31 2019'}];
+      const expectedResult: {name: string, Date: string}[] = [
+        {'name': 'name2', 'Date': 'January 1 2019'},
+        {'name': 'name4', 'Date': 'February 5 2019'},
+        {'name': 'name1', 'Date': 'November 23 2019'},
+        {'name': 'name3', 'Date': 'December 31 2019'}];
       expect(testArray[0]).toMatchObject(expectedResult[0]);
       expect(testArray[1]).toMatchObject(expectedResult[1]);
       expect(testArray[2]).toMatchObject(expectedResult[2]);
@@ -488,18 +477,18 @@ describe('<ParserComponent /> Unit Tests', () => {
 
     it('should sort data when given ' +
         'dates written in a form like 23 november 2019', () => {
-      const testArray: {id: number, name: string, Date: string}[] = [
-        {'id': 1, 'name': 'name1', 'Date': '23 november 2019'},
-        {'id': 2, 'name': 'name2', 'Date': '1 january 2019'},
-        {'id': 3, 'name': 'name3', 'Date': '31 december 2019'},
-        {'id': 4, 'name': 'name4', 'Date': '5 february 2019'}];
-      instance.setState({formatString: 'D MMMM YYYY'});
+      const testArray: {name: string, Date: string}[] = [
+        {'name': 'name1', 'Date': '23 november 2019'},
+        {'name': 'name2', 'Date': '1 january 2019'},
+        {'name': 'name3', 'Date': '31 december 2019'},
+        {'name': 'name4', 'Date': '5 february 2019'}];
+      instance.setState({formatString: 'DD MMMM YYYY'});
       instance.sortData(testArray);
-      const expectedResult: {id: number, name: string, Date: string}[] = [
-        {'id': 2, 'name': 'name2', 'Date': '1 january 2019'},
-        {'id': 4, 'name': 'name4', 'Date': '5 february 2019'},
-        {'id': 1, 'name': 'name1', 'Date': '23 november 2019'},
-        {'id': 3, 'name': 'name3', 'Date': '31 december 2019'}];
+      const expectedResult: {name: string, Date: string}[] = [
+        {'name': 'name2', 'Date': '1 january 2019'},
+        {'name': 'name4', 'Date': '5 february 2019'},
+        {'name': 'name1', 'Date': '23 november 2019'},
+        {'name': 'name3', 'Date': '31 december 2019'}];
       expect(testArray[0]).toMatchObject(expectedResult[0]);
       expect(testArray[1]).toMatchObject(expectedResult[1]);
       expect(testArray[2]).toMatchObject(expectedResult[2]);
@@ -508,38 +497,58 @@ describe('<ParserComponent /> Unit Tests', () => {
 
     it('should return sorted data with invalid date moved to the front' +
         'when given data with an invalid date(february 31, 2019)', () => {
-      const testArray: {id: number, name: string, Date: string}[] = [
-        {'id': 3, 'name': 'name3', 'Date': 'December 1, 2019'},
-        {'id': 4, 'name': 'name4', 'Date': 'february 31, 2019'},
-        {'id': 1, 'name': 'name1', 'Date': 'January 1, 2019'},
-        {'id': 2, 'name': 'name2', 'Date': 'January 30, 2019'}];
-      instance.setState({formatString: 'MMMM D YYYY'});
+      const testArray: {name: string, Date: string}[] = [
+        {'name': 'name3', 'Date': 'December 1, 2019'},
+        {'name': 'name4', 'Date': 'february 31, 2019'},
+        {'name': 'name1', 'Date': 'January 1, 2019'},
+        {'name': 'name2', 'Date': 'January 30, 2019'}];
+      instance.setState({formatString: 'MMMM DD YYYY'});
       instance.sortData(testArray);
-      const expectedResult: {id: number, name: string, Date: string}[] = [
-        {'id': 4, 'name': 'name4', 'Date': 'february 31, 2019'},
-        {'id': 1, 'name': 'name1', 'Date': 'January 1, 2019'},
-        {'id': 2, 'name': 'name2', 'Date': 'January 30, 2019'},
-        {'id': 3, 'name': 'name3', 'Date': 'December 1, 2019'}];
+      const expectedResult: {name: string, Date: string}[] = [
+        {'name': 'name4', 'Date': 'february 31, 2019'},
+        {'name': 'name1', 'Date': 'January 1, 2019'},
+        {'name': 'name2', 'Date': 'January 30, 2019'},
+        {'name': 'name3', 'Date': 'December 1, 2019'}];
       expect(testArray[0]).toMatchObject(expectedResult[0]);
       expect(testArray[1]).toMatchObject(expectedResult[1]);
       expect(testArray[2]).toMatchObject(expectedResult[2]);
       expect(testArray[3]).toMatchObject(expectedResult[3]);
     });
 
-    it('should return sorted data when given date of different format' +
-          'when given data with an invalid date(february 31, 2019)', () => {
-      const testArray: {id: number, name: string, Date: string}[] = [
-        {'id': 3, 'name': 'name3', 'Date': 'Dec 1, 2019'},
-        {'id': 4, 'name': 'name4', 'Date': 'February 19, 2019'},
-        {'id': 1, 'name': 'name1', 'Date': 'Jan 1, 2019'},
-        {'id': 2, 'name': 'name2', 'Date': 'Jan 30, 2019'}];
-      instance.setState({formatString: 'MMM D YYYY'});
+    it('should sort Data when given ' +
+        'dates with format MMM DD YYYY', () => {
+      const testArray: {name: string, Date: string}[] = [
+        {'name': 'name3', 'Date': 'Dec 1, 2019'},
+        {'name': 'name4', 'Date': 'Feb 19, 2019'},
+        {'name': 'name1', 'Date': 'Jan 1, 2019'},
+        {'name': 'name2', 'Date': 'Jan 30, 2019'}];
+      instance.setState({formatString: 'MMM DD YYYY'});
       instance.sortData(testArray);
-      const expectedResult: {id: number, name: string, Date: string}[] = [
-        {'id': 1, 'name': 'name1', 'Date': 'Jan 1, 2019'},
-        {'id': 2, 'name': 'name2', 'Date': 'Jan 30, 2019'},
-        {'id': 4, 'name': 'name4', 'Date': 'February 19, 2019'},
-        {'id': 3, 'name': 'name3', 'Date': 'Dec 1, 2019'}];
+      const expectedResult: {name: string, Date: string}[] = [
+        {'name': 'name1', 'Date': 'Jan 1, 2019'},
+        {'name': 'name2', 'Date': 'Jan 30, 2019'},
+        {'name': 'name4', 'Date': 'Feb 19, 2019'},
+        {'name': 'name3', 'Date': 'Dec 1, 2019'}];
+      expect(testArray[0]).toMatchObject(expectedResult[0]);
+      expect(testArray[1]).toMatchObject(expectedResult[1]);
+      expect(testArray[2]).toMatchObject(expectedResult[2]);
+      expect(testArray[3]).toMatchObject(expectedResult[3]);
+    });
+
+    it('should return sorted data when given data in ' +
+          'days from event format', () => {
+      const testArray: {name: string, Date: string}[] = [
+        {'name': 'name3', 'Date': '8.4'},
+        {'name': 'name4', 'Date': '10'},
+        {'name': 'name1', 'Date': '2.45254552'},
+        {'name': 'name2', 'Date': '1'}];
+      instance.setState({formatString: 'X'});
+      instance.sortData(testArray);
+      const expectedResult: {name: string, Date: string}[] = [
+        {'name': 'name2', 'Date': '1'},
+        {'name': 'name1', 'Date': '2.45254552'},
+        {'name': 'name3', 'Date': '8.4'},
+        {'name': 'name4', 'Date': '10'}];
       expect(testArray[0]).toMatchObject(expectedResult[0]);
       expect(testArray[1]).toMatchObject(expectedResult[1]);
       expect(testArray[2]).toMatchObject(expectedResult[2]);

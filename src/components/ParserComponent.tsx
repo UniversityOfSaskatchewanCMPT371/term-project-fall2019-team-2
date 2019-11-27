@@ -84,7 +84,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
                   });
                   const mockDateFile: File = new File(
                       [FileContents],
-                      'anyname.csv',
+                      'mockFile.csv',
                       {type: this.props.fileType.mimeName},
                   );
                   const fileEvent = {target: {files: [mockDateFile]}};
@@ -92,11 +92,13 @@ export default class ParserComponent extends React.Component<ParserInterface,
                 }}>
                 <option selected value="">Select a Date Format</option>
                 <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                <option value="YYYY-DD-MM">YYYY-MM-DD</option>
                 <option value="X">Days from Event</option>
                 <option value="MM-DD-YYYY">MM-DD-YYYY</option>
                 <option value="DD-MM-YYYY">DD-MM-YYYY</option>
                 <option value="DD-MMMM-YYYY">DD-MMMM-YYYY</option>
                 <option value="MMMM-DD-YYYY">MMMM-DD-YYYY</option>
+                <option value="MMM-DD-YYYY">MMMM-DD-YYYY</option>
                 <option value="DD-MM-YY">DD-MM-YY</option>
                 <option value="MM-DD-YY">MM-DD-YY</option>
               </select>

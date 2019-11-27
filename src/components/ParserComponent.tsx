@@ -141,16 +141,20 @@ export default class ParserComponent extends React.Component<ParserInterface,
             if (!isNaN(Number(date1)) && isNaN(Number(value))) {
               doneTheWork = true;
               const formatString = this.state.formatString;
+              console.log("format string:" + formatString);
 
               const keyInt = `${key}_num`;
 
               TimSort.sort(data, function(a: any, b: any) {
                 let val: any;
                 if (!a.hasOwnProperty(keyInt)) {
+                  console.info("a has no property at "+keyInt);
+
                   val = moment(a[key], formatString);
                   if (val.isValid()) {
                     a[keyInt] = val.valueOf();
                   } else {
+                    console.info("the value for a is invalid");
                     a[keyInt] = -1;
                   }
                 }
@@ -160,9 +164,11 @@ export default class ParserComponent extends React.Component<ParserInterface,
                   if (val.isValid()) {
                     b[keyInt] = val.valueOf();
                   } else {
+                    console.warn("the value for b is invalid");
                     b[keyInt] = -1;
                   }
                 }
+                console.log("b has no property");
                 return (a[keyInt] - b[keyInt]);
               });
 
@@ -194,6 +200,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
       for (let i = 0; i < fieldLength; i++) {
         typesForEachCol.push(new CountTypes());
       }
+      console.info("Counttype Objects:"+typesForEachCol);
       return typesForEachCol;
     }
 
@@ -230,12 +237,13 @@ export default class ParserComponent extends React.Component<ParserInterface,
                   curColTypes['numDate'] += 1;
                 }
                 else {
-                  throw val;
                   console.error(val + "is not a valid file");
+                  throw val;
                 }
               } else {
+                console.warn(val + "is not a string");
                 throw val;
-                console.info(val + "is not a string");
+
               }
             } catch {
               // @ts-ignore
@@ -309,11 +317,12 @@ export default class ParserComponent extends React.Component<ParserInterface,
       try {
         if (this.props.fileType.mimeName === '.csv' +
             ',text/csv' && this.isValid(temp)) {
+          console.log("Target file is a .csv")
           await this.parseCsv(fileEvent);
         }
       } catch (e) {
         alert('Wrong file type was uploaded.');
-        console.log('Wrong file was uploaded.');
+        console.error('Wrong file was uploaded.');
       }
 
       this.setState(() => {
@@ -364,7 +373,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
               this.sortData(this.state.data);
             } catch (e) {
               alert('data is EMPTY');
-              console.log('data is empty');
+              console.error('data is empty');
             }
           }
           resolver(true);

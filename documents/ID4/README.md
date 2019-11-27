@@ -13,19 +13,19 @@
 - [Integration Tests](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/pull/99)
 
 ## Mini-Milestones
-
+[Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID4/documents/ID4/ID4%20Mini%20Milestones.pdf) is the document outlining the mini-milestones for next deliverable.
 
 ## Risk Report
-
+[Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID4/documents/ID4/ID4RiskAnalysis.pdf) is the risk report for ID4.
 
 ## Reviews Conducted
-
+[Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID4/documents/reviews/riskDocReviewID4.pdf) is the document which holds the formal review for ID4. [Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID4/documents/ID4/eileenCodeReview.pdf.pdf) is the formal review which was carried out during ID4.
 
 ## Design and Requirements Documents
-
+Design and requirements documnents did not change from ID3 to ID4.
 
 ## Meetings With Stakeholders
-
+[This](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID4/documents/meetings/2019_11_17_StakeholderID4%20(1).pdf) document outlines our stakeholder meeting, and what was discussed 
 
 ## Testing
 
@@ -35,6 +35,8 @@ the HTML was rendered correctly.
 Furthermore, we test the final build output by using a Python script with Selenium to ensure our production
 build was generated as we expect it. You can find the script and more details in [this directory](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID4/scripts). The smoke test script itself is
 well documented and can be found [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID4/scripts/smoke-test.py).
+
+[Here](https://docs.google.com/spreadsheets/d/1ZnNRrXKV4FqdfMf8I6ga-5IDUYAZFbtIXiw5_pEGHTY/edit#gid=0) is the current test matrix, and [here](https://docs.google.com/document/d/1rNxqIHSwTNACn8huHzSecRMWONxPcy9TrRf6I3TA6Ww/edit) is the current test design document used by the testing team.
 
 ## Builds
 

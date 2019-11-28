@@ -52,7 +52,8 @@ export default class Filter {
   public addPredicate(predicate: () => boolean) {
     this.listOfPreds.push(predicate);
     // pred should be in listOfPreds now
-    assert.strictEqual(this.listOfPreds[this.listOfPreds.length - 1], predicate);
+    assert.strictEqual(this.listOfPreds[this.listOfPreds.length - 1],
+        predicate);
   }
 
   /**

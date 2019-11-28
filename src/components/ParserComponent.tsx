@@ -151,7 +151,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
       if (data !== undefined && data.length > 0) {
         for (const [key, value] of Object.entries(data[0])) {
           if (!doneTheWork) {
-            const date1 = moment(String(value));
+            const date1 = moment(String(value), this.state.formatString);
             if (moment(date1, this.state.formatString).isValid()) {
               doneTheWork = true;
               const formatString = this.state.formatString;
@@ -361,8 +361,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
               this.columnTypes = this.inferTypes(this.state.data);
               this.sortData(this.state.data);
             } catch (e) {
-              alert('data is EMPTY');
-              console.log('data is empty');
+              alert(e.toString());
+              console.log(e.toString());
             }
           }
           resolver(true);

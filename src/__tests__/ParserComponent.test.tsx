@@ -297,6 +297,7 @@ describe('R1 Tests\n', () => {
         'test.csv',
         {type: '.csv,text/csv'},);
 
+    wrapper.setState({formatString: 'DD-MM-YYYY'});
     // fileEvent
     const fileEvent = {target: {files: [noDateFile]}};
 
@@ -438,16 +439,16 @@ describe('<ParserComponent /> Unit Tests', () => {
     it('should sort data by date when ' +
         'given data with id, name and date where date is in form m/d/y' +
         'with invalid date going to the first spot', () => {
-      const testArray: {name: string, Date: string}[] = [
-        {'name': 'name1', 'Date': '4/5/2010'},
-        {'name': 'name2', 'Date': '2/31/1992'},
-        {'name': 'name3', 'Date': '12/21/1992'}];
-      instance.setState({formatString: 'MM DD YYYY'});
+      const testArray: {Date: string}[] = [
+        {'Date': '4/5/2010'},
+        {'Date': '2/31/1992'},
+        {'Date': '12/21/1992'}];
+      instance.setState({formatString: 'MM-DD-YYYY'});
       instance.sortData(testArray);
-      const expectedResult: {name: string, Date: string}[] = [
-        {'name': 'name2', 'Date': '2/31/1992'},
-        {'name': 'name3', 'Date': '12/21/1992'},
-        {'name': 'name1', 'Date': '4/5/2010'}];
+      const expectedResult: {Date: string}[] = [
+        {'Date': '2/31/1992'},
+        {'Date': '12/21/1992'},
+        {'Date': '4/5/2010'}];
       expect(testArray[0]).toMatchObject(expectedResult[0]);
       expect(testArray[1]).toMatchObject(expectedResult[1]);
       expect(testArray[2]).toMatchObject(expectedResult[2]);
@@ -522,18 +523,18 @@ describe('<ParserComponent /> Unit Tests', () => {
 
     it('should sort data when given ' +
         'dates written in a form like 23 november 2019', () => {
-      const testArray: {name: string, Date: string}[] = [
-        {'name': 'name1', 'Date': '23 november 2019'},
-        {'name': 'name2', 'Date': '1 january 2019'},
-        {'name': 'name3', 'Date': '31 december 2019'},
-        {'name': 'name4', 'Date': '5 february 2019'}];
-      instance.setState({formatString: 'DD MMMM YYYY'});
+      const testArray: {Date: string}[] = [
+        {'Date': '23 november 2019'},
+        {'Date': '1 january 2019'},
+        {'Date': '31 december 2019'},
+        {'Date': '5 february 2019'}];
+      instance.setState({formatString: 'DD-MMMM-YYYY'});
       instance.sortData(testArray);
-      const expectedResult: {name: string, Date: string}[] = [
-        {'name': 'name2', 'Date': '1 january 2019'},
-        {'name': 'name4', 'Date': '5 february 2019'},
-        {'name': 'name1', 'Date': '23 november 2019'},
-        {'name': 'name3', 'Date': '31 december 2019'}];
+      const expectedResult: {Date: string}[] = [
+        {'Date': '1 january 2019'},
+        {'Date': '5 february 2019'},
+        {'Date': '23 november 2019'},
+        {'Date': '31 december 2019'}];
       expect(testArray[0]).toMatchObject(expectedResult[0]);
       expect(testArray[1]).toMatchObject(expectedResult[1]);
       expect(testArray[2]).toMatchObject(expectedResult[2]);
@@ -582,18 +583,18 @@ describe('<ParserComponent /> Unit Tests', () => {
 
     it('should return sorted data when given data in ' +
           'days from event format', () => {
-      const testArray: {name: string, Date: string}[] = [
-        {'name': 'name3', 'Date': '8.4'},
-        {'name': 'name4', 'Date': '10'},
-        {'name': 'name1', 'Date': '2.45254552'},
-        {'name': 'name2', 'Date': '1'}];
+      const testArray: {Date: string}[] = [
+        {'Date': '8.4'},
+        {'Date': '10'},
+        {'Date': '2.45254552'},
+        {'Date': '1'}];
       instance.setState({formatString: 'X'});
       instance.sortData(testArray);
-      const expectedResult: {name: string, Date: string}[] = [
-        {'name': 'name2', 'Date': '1'},
-        {'name': 'name1', 'Date': '2.45254552'},
-        {'name': 'name3', 'Date': '8.4'},
-        {'name': 'name4', 'Date': '10'}];
+      const expectedResult: {Date: string}[] = [
+        {'Date': '1'},
+        {'Date': '2.45254552'},
+        {'Date': '8.4'},
+        {'Date': '10'}];
       expect(testArray[0]).toMatchObject(expectedResult[0]);
       expect(testArray[1]).toMatchObject(expectedResult[1]);
       expect(testArray[2]).toMatchObject(expectedResult[2]);

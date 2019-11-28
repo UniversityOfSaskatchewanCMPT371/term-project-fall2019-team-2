@@ -165,7 +165,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
                     b[keyInt] = -1;
                   }
                 }
-                console.log('TimSort.sort: b has no property');
                 return (a[keyInt] - b[keyInt]);
               });
 

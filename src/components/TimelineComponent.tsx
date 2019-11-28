@@ -226,7 +226,7 @@ export default class TimelineComponent
         };
       });
     }
-
+    console.info('changeColumn(): updating the timeline on browser');
     this.resetTimeline();
   }
 
@@ -379,6 +379,14 @@ export default class TimelineComponent
     m.fullHeight = this.state.height;
     m.fullWidth = this.state.width;
     m.view = this.state.view;
+
+    console.log('initTimeline:\n' +
+        'm.yColumn: '+ m.yColumn+'\n'+
+        'm.xColumn: '+ m.xColumn+'\n'+
+        'm.xColumn2: '+ m.xColumn2+'\n'+
+        'm.fullHeight: '+ m.fullHeight+'\n'+
+        'm.fullWidth: '+ m.fullWidth+'\n'+
+        'm.view: '+ m.view +'\n');
 
     m.height = m.fullHeight - (m.marginBottom + m.marginTop);
 
@@ -635,7 +643,7 @@ export default class TimelineComponent
       Tooltip.style('opacity', 1);
     } else {
       Tooltip.remove();
-      console.warn('Error adding Tooltip to the DOM');
+      console.warn('ttOverHelper: Error adding Tooltip to the DOM');
     }
   }
 
@@ -713,7 +721,7 @@ export default class TimelineComponent
       m.scale = d3.event.transform.k;
       console.log(d3.event);
     } else {
-      console.warn('d3.event was null');
+      console.warn('updateChart: d3.event was null');
     }
 
     timelineType.applyZoom();

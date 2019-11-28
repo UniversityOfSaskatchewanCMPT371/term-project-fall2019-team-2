@@ -1,5 +1,7 @@
 import TimelineTypeInterface, {TimelineType} from './TimelineTypeInterface';
 import * as d3 from 'd3';
+import assert
+  from 'assert';
 
 /**
  * Purpose: to provide methods specific and relevant to drawing an
@@ -48,42 +50,97 @@ export default class IntervalMagnitude extends TimelineType
     const keyInt2 = this.m.xColumn2 + '_num';
     let consecutive = true;
 
-    for (dataIdxEnd = this.m.dataIdx;
-      dataIdxEnd < this.m.csvData.length;
-      dataIdxEnd++) {
-      const elem: any = this.m.csvData[dataIdxEnd];
+    assert(this.m.deltaXDirection === 1 || this.m.deltaXDirection === -1);
 
-      if (!elem.hasOwnProperty(keyInt1)) {
-        elem[keyInt1] = Date.parse(elem[this.m.xColumn]);
-      }
+    // console.log(this.m.deltaXDirection);
+    if (this.m.deltaXDirection === 1) {
+      for (dataIdxEnd = this.m.dataIdx;
+        dataIdxEnd < this.m.csvData.length;
+        dataIdxEnd++) {
+        const elem: any = this.m.csvData[dataIdxEnd];
 
-      if (!elem.hasOwnProperty(keyInt2)) {
-        elem[keyInt2] = Date.parse(elem[this.m.xColumn2]);
-      }
+        if (!elem.hasOwnProperty(keyInt1)) {
+          elem[keyInt1] = Date.parse(elem[this.m.xColumn]);
+        }
 
-      // We can only increment dataIdx if the preceding elements have also
-      // been moved off of the current screen area, otherwise elements will be
-      // removed prematurely
-      if (consecutive &&
-        ((this.m.scale * this.m.timeScale(elem[keyInt1])) < - this.m.deltaX &&
-          (this.m.scale * this.m.timeScale(elem[keyInt2])) < - this.m.deltaX)) {
-        this.m.dataIdx++;
-      } else {
-        consecutive = false;
-      }
+        if (!elem.hasOwnProperty(keyInt2)) {
+          elem[keyInt2] = Date.parse(elem[this.m.xColumn2]);
+        }
 
-      // If this is true, then the x position of the start of the bar and end
-      // of the bar are currently outside of the viewing area
-      /* eslint-disable max-len */
-      if (!((this.m.scale * this.m.timeScale(elem[keyInt1])) < (-this.m.deltaX + this.m.width) ||
-        (((this.m.scale * this.m.timeScale(elem[keyInt2])) <= - this.m.deltaX + this.m.width) &&
-          ((this.m.scale * this.m.timeScale(elem[keyInt2])) > - this.m.deltaX)))) {
-        break;
+        // We can only increment dataIdx if the preceding elements have also
+        // been moved off of the current screen area, otherwise elements will be
+        // removed prematurely
+        /* eslint-disable max-len */
+        if (consecutive &&
+            ((this.m.scale * this.m.timeScale(elem[keyInt1])) < -this.m.deltaX &&
+                (this.m.scale * this.m.timeScale(elem[keyInt2])) < -this.m.deltaX)) {
+          this.m.dataIdx++;
+        } else {
+          consecutive = false;
+        }
+        /* eslint-enable max-len */
+
+        // If this is true, then the x position of the start of the bar and end
+        // of the bar are currently outside of the viewing area
+        /* eslint-disable max-len */
+        if (!((this.m.scale * this.m.timeScale(elem[keyInt1])) < (-this.m.deltaX + this.m.width) ||
+            (((this.m.scale * this.m.timeScale(elem[keyInt2])) <= -this.m.deltaX + this.m.width) &&
+                ((this.m.scale * this.m.timeScale(elem[keyInt2])) > -this.m.deltaX)))) {
+          break;
+        }
+        /* eslint-enable max-len */
       }
-      /* eslint-enable max-len */
+      this.m.data = this.m.csvData.slice(this.m.dataIdx,
+          dataIdxEnd + this.m.barBuffer);
+    } else if (this.m.deltaXDirection === -1) {
+      let dataIdxStart = this.m.dataIdx + this.m.data.length;
+      if (dataIdxStart >= this.m.csvData.length) {
+        dataIdxStart = this.m.csvData.length - 1;
+      }
+      dataIdxEnd = dataIdxStart;
+      for (dataIdxStart;
+        dataIdxStart > 0;
+        dataIdxStart--) {
+        console.log(dataIdxStart);
+        const elem: any = this.m.csvData[dataIdxStart];
+
+        if (!elem.hasOwnProperty(keyInt1)) {
+          elem[keyInt1] = Date.parse(elem[this.m.xColumn]);
+        }
+
+        if (!elem.hasOwnProperty(keyInt2)) {
+          elem[keyInt2] = Date.parse(elem[this.m.xColumn2]);
+        }
+
+        // We can only increment dataIdx if the preceding elements have also
+        // been moved off of the current screen area, otherwise elements will be
+        // removed prematurely
+        /* eslint-disable max-len */
+        if (consecutive &&
+            !((this.m.scale * this.m.timeScale(elem[keyInt1])) < (-this.m.deltaX + this.m.width) ||
+            (((this.m.scale * this.m.timeScale(elem[keyInt2])) <= -this.m.deltaX + this.m.width) &&
+                ((this.m.scale * this.m.timeScale(elem[keyInt2])) > -this.m.deltaX)))) {
+          dataIdxEnd--;
+        } else {
+          consecutive = false;
+        }
+        /* eslint-enable max-len */
+
+        // If this is true, then the x position of the start of the bar and end
+        // of the bar are currently outside of the viewing area
+        /* eslint-disable max-len */
+        if (((this.m.scale * this.m.timeScale(elem[keyInt1])) < -this.m.deltaX &&
+            // right end of block
+            (this.m.scale * this.m.timeScale(elem[keyInt2])) < -this.m.deltaX)) {
+          break;
+        }
+        /* eslint-enable max-len */
+      }
+      console.log(this.m.dataIdx);
+      this.m.data = this.m.csvData.slice(dataIdxStart,
+          dataIdxEnd + this.m.barBuffer);
+      this.m.dataIdx = dataIdxStart;
     }
-    this.m.data = this.m.csvData.slice(this.m.dataIdx,
-        dataIdxEnd + this.m.barBuffer);
   }
 
   /**

@@ -174,19 +174,19 @@ describe('<TimelineComponent /> R2 Tests\n', () => {
           id="timelineTypeSelect"
           className="form-control">
           <option
-            value="Interval Magnitude">Interval
+            value="IntervalMagnitude">Interval
             Magnitude
           </option>
           <option
-            value="Interval Occurrence">Interval
+            value="IntervalOccurrence">Interval
             Occurrence
           </option>
           <option
-            value="Event Magnitude">Event
+            value="EventMagnitude">Event
             Magnitude
           </option>
           <option
-            value="Event Occurrence">Event
+            value="EventOccurrence">Event
             Occurrence
           </option>
         </select>;
@@ -393,25 +393,26 @@ describe('<TimelineComponent /> Unit Tests', () => {
 
   describe('<TimelineComponent /> renders correctly', () => {
     it('checks that the timeline component renders correctly', () => {
+      console.log(pretty(wrapper.html()));
       const select: any =
           // @ts-ignore
           <select
             id="timelineTypeSelect"
             className="form-control">
             <option
-              value="Interval Magnitude">Interval
+              value="IntervalMagnitude">Interval
               Magnitude
             </option>
             <option
-              value="Interval Occurrence">Interval
+              value="IntervalOccurrence">Interval
               Occurrence
             </option>
             <option
-              value="Event Magnitude">Event
+              value="EventMagnitude">Event
               Magnitude
             </option>
             <option
-              value="Event Occurrence">Event
+              value="EventOccurrence">Event
               Occurrence
             </option>
           </select>;
@@ -568,7 +569,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
 
           const select = wrapper.find('#timelineTypeSelect').first();
           select.simulate('change',
-              {target: {value: 'Interval Magnitude'}});
+              {target: {value: 'IntervalMagnitude'}});
 
           wrapper.instance().drawTimeline();
           const event = new KeyboardEvent('keydown', {'key': 'ArrowRight'});
@@ -657,9 +658,9 @@ describe('<TimelineComponent /> Unit Tests', () => {
 
       wrapper.find('#xSelect').first()
           .simulate('change', {target: {value: 'Ship Date'}});
-
-      wrapper.find('#x2Select').first()
-          .simulate('change', {target: {value: 'Order Date'}});
+      //
+      // wrapper.find('#x2Select').first()
+      //     .simulate('change', {target: {value: 'Order Date'}});
 
       expect(updateBarsSpy).toHaveBeenCalled();
     });

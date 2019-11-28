@@ -167,7 +167,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
               doneTheWork = true;
               const formatString = this.state.formatString;
 
-            const keyInt = `${key}_num`;
+              const keyInt = `${key}_num`;
 
               TimSort.sort(data, function(a: any, b: any) {
                 let val: any;

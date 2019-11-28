@@ -38,6 +38,7 @@ export default class TimelineModel {
   public numBars: number = 0;
   public dataIdx: number = 0;
   public deltaX: number = 0;
+  public deltaXDirection: number = 1;
   public xColumn: string;
   public xColumn2: string;
   public yColumn: string;
@@ -85,6 +86,7 @@ export default class TimelineModel {
     this.numBars = 0;
     this.dataIdx = 0;
     this.deltaX = 0;
+    this.deltaXDirection = 1;
     this.xColumn = '';
     this.xColumn2 = '';
     this.yColumn = '';

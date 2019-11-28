@@ -118,7 +118,7 @@ export function sizeofObj(obj: any): string {
  * select a file to upload every time we save.
  */
 export async function loadTestCsv(): Promise<any> {
-  const fileName = '10000_Sales_Records.csv';
+  const fileName = '100_Sales_Records.csv';
 
   const filedata = await $.ajax({
     url: '/' + fileName,

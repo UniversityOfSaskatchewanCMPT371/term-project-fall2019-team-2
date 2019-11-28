@@ -1,5 +1,7 @@
 import TimelineTypeInterface, {TimelineType} from './TimelineTypeInterface';
 import * as d3 from 'd3';
+import * as d3ScaleChromatic
+  from 'd3-scale-chromatic';
 
 /**
  * Purpose: to provide methods specific and relevant to drawing an
@@ -36,27 +38,71 @@ export default class EventOccurrence extends TimelineType
     const bar = selection.append('g')
         .attr('class', 'bar');
 
-    bar.append('rect')
-        .attr('class', 'pin-line')
-        .attr('x', (d: any, i: number) =>
-          (this.m.scale * this.m.barWidth * (i + this.m.dataIdx)))
-        .attr('width', 2)
-        .attr('y', (d: any, i: number) =>
-          this.m.y(d[this.m.yColumn]))
-        .attr('height', (d: any) => {
-          const newHeight = (this.m.height - this.m.y(d[this.m.yColumn]));
-          return newHeight < 0 ? 0 : newHeight;
-        });
+    // console.error(selection.datum());
+    // const newY selection.dataum
+    if (this.m.yColumn2 !== '') {
+      bar.append('rect')
+          .attr('class', 'pin-line')
+          .attr('x', (d: any, i: number) =>
+            (this.m.scale * this.m.barWidth * (i + this.m.dataIdx)))
+          .attr('width', 2)
+          .attr('y', (d: any, i: number) =>
+            this.m.y(d[this.m.yColumn2]) + (this.m.y.bandwidth()/2))
+          .attr('height', (d: any) => {
+            const newHeight = (this.m.height -
+                (this.m.y(d[this.m.yColumn2]) + (this.m.y.bandwidth()/2)));
+            return newHeight < 0 ? 0 : newHeight;
+          });
 
-    bar.append('text')
-        .text((d: any) => d[this.m.yColumn])
-        .attr('class', 'pin-text')
-        .style('text-anchor', 'start')
-        .style('font-size', '1rem')
-        .attr('x', (d: any, i: number) =>
+      // Circles
+      bar.append('circle')
+          .attr('class', 'pin-head')
+          .attr('cx', (d: any, i: number) =>
+            (this.m.scale * this.m.barWidth * (i + this.m.dataIdx)))
+          // .attr('cy', (d: any) => this.m.y(d[this.m.yColumn]))
+          .attr('cy', (d:any) =>
+            this.m.y(d[this.m.yColumn2]) + (this.m.y.bandwidth()/2))
+          .attr('r', '5')
+          .style('fill', (d: any) =>
+            d3ScaleChromatic
+                .interpolateRainbow(this.m.y(d[this.m.yColumn2])))
+          // .style('fill', '#69b3a2')
+          .attr('stroke', 'black')
+          .on('mouseover', ttOver)
+          .on('mousemove', ttMove)
+          .on('mouseleave', ttLeave);
+    } else {
+      bar.append('rect')
+          .attr('class', 'pin-line')
+          .attr('x', (d: any, i: number) =>
+            (this.m.scale * this.m.barWidth * (i + this.m.dataIdx)))
+          .attr('width', 2)
+          .attr('y', (d: any, i: number) =>
+            this.m.y(d[this.m.yColumn]) + (this.m.y.bandwidth()/2))
+          .attr('height', (d: any) => {
+            const newHeight = (this.m.height -
+                (this.m.y(d[this.m.yColumn]) + (this.m.y.bandwidth()/2)));
+            return newHeight < 0 ? 0 : newHeight;
+          });
+    }
+
+    // Circles
+    bar.append('circle')
+        .attr('class', 'pin-head')
+        .attr('cx', (d: any, i: number) =>
           (this.m.scale * this.m.barWidth * (i + this.m.dataIdx)))
-        .attr('y', (d: any, i: number) =>
-          this.m.y(d[this.m.yColumn]));
+        // .attr('cy', (d: any) => this.m.y(d[this.m.yColumn]))
+        .attr('cy', (d:any) =>
+          this.m.y(d[this.m.yColumn]) + (this.m.y.bandwidth()/2))
+        .attr('r', '5')
+        .style('fill', (d: any) =>
+          d3ScaleChromatic
+              .interpolateRainbow(this.m.y(d[this.m.yColumn])))
+        // .style('fill', '#69b3a2')
+        .attr('stroke', 'black')
+        .on('mouseover', ttOver)
+        .on('mousemove', ttMove)
+        .on('mouseleave', ttLeave);
 
     console.log('EventMagnitude.draw(): ');
     console.log(bar);

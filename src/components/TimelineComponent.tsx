@@ -25,10 +25,10 @@ import assert from 'assert';
 import IntervalOccurrence from './TimelineTypes/IntervalOccurrence';
 
 export enum ViewType {
-  IntervalMagnitude= 'Interval Magnitude',
-  IntervalOccurrence = 'Interval Occurrence',
-  EventMagnitude = 'Event Magnitude',
-  EventOccurrence = 'Event Occurrence'
+  IntervalMagnitude = 'IntervalMagnitude',
+  IntervalOccurrence = 'IntervalOccurrence',
+  EventMagnitude = 'EventMagnitude',
+  EventOccurrence = 'EventOccurrence'
 }
 
 const m = new TimelineModel();
@@ -55,6 +55,7 @@ export default class TimelineComponent
       marginRight: 20,
       togglePrompt: 'Switch to Interval Timeline',
       yColumn: '',
+      yColumn2: '',
       xColumn: '',
       xColumn2: '',
       loading: true,
@@ -232,6 +233,13 @@ export default class TimelineComponent
             yColumn: m.yColumn,
           };
         }, () => resolver(true));
+      } else if (column === 'yColumn2') {
+        m.yColumn2 = val;
+        this.setState(() => {
+          return {
+            yColumn2: m.yColumn2,
+          };
+        }, () => resolver(true));
       } else if (column === 'xColumn') {
         m.xColumn = val;
         this.setState(() => {
@@ -272,142 +280,189 @@ export default class TimelineComponent
    * @return {string}: html output to the page
    */
   render() {
+    const yDropdowns = ViewType[this.state.view] === ViewType.EventOccurrence ||
+        ViewType[this.state.view] === ViewType.IntervalOccurrence ?
+        <InputGroup>
+          <InputGroup.Prepend>
+            <InputGroup.Text
+              id='inputGroup
+                Prepend'>First Y Column</InputGroup.Text>
+          </InputGroup.Prepend>
+          <Form.Control
+            as='select'
+            id='ySelect'
+            // value={this.state.yColumn}
+            value={m.yColumn}
+            onChange={async (e) => {
+              await this.changeColumn(e, 'yColumn');
+            }}>
+            {
+              m.yColumns.map((col: any, i: number) =>
+                <option
+                  key={i}
+                  value={col.key}>{col.key}</option>)
+            }
+          </Form.Control>
+
+          <InputGroup.Prepend>
+            <InputGroup.Text
+              id='inputGroup
+                Prepend'>Second Y Column</InputGroup.Text>
+          </InputGroup.Prepend>
+          <Form.Control
+            as='select'
+            id='ySelect2'
+            // value={this.state.yColumn}
+            value={m.yColumn2}
+            onChange={async (e) => {
+              await this.changeColumn(e, 'yColumn2');
+            }}>
+            <option key={''} value={''}>Select another Column</option>
+            {
+              m.yColumns.map((col: any, i: number) =>
+                <option
+                  key={i}
+                  value={col.key}>{col.key}</option>)
+            }
+          </Form.Control>
+
+        </InputGroup> :
+        <InputGroup>
+          <InputGroup.Prepend>
+            <InputGroup.Text
+              id='inputGroup
+                Prepend'>Y Column</InputGroup.Text>
+          </InputGroup.Prepend>
+          <Form.Control
+            as='select'
+            id='ySelect'
+            // value={this.state.yColumn}
+            value={m.yColumn}
+            onChange={async (e) => {
+              await this.changeColumn(e, 'yColumn');
+            }}>
+            {
+              m.yColumns.map((col: any, i: number) =>
+                <option
+                  key={i}
+                  value={col.key}>{col.key}</option>)
+            }
+          </Form.Control>
+        </InputGroup>;
+
+    const xDropdowns =
+        ViewType[this.state.view] === ViewType.IntervalOccurrence ||
+        ViewType[this.state.view] === ViewType.IntervalMagnitude ?
+        <InputGroup>
+          <InputGroup.Prepend>
+            <InputGroup.Text
+              id='inputGroup
+                Prepend'>Starting Range</InputGroup.Text>
+          </InputGroup.Prepend>
+          <Form.Control
+            as='select'
+            id='xSelect'
+            // value={this.state.xColumn}
+            value={m.xColumn}
+            onChange={async (e) => {
+              await this.changeColumn(e, 'xColumn');
+            }}>
+            {
+              m.xColumns.map((col: any, i: number) =>
+                <option
+                  key={i}
+                  value={col.key}>{col.key}</option>)
+            }
+          </Form.Control>
+
+          <InputGroup.Prepend>
+            <InputGroup.Text
+              id='inputGroup
+                Prepend'>Ending
+              Range</InputGroup.Text>
+          </InputGroup.Prepend>
+          <Form.Control
+            as='select'
+            id='x2Select'
+            // value={this.state.xColumn2}
+            value={m.xColumn2}
+            onChange={async (e) => {
+              await this.changeColumn(e, 'xColumn2');
+            }}>
+            {
+              m.xColumns.map((col: any, i: number) =>
+                <option
+                  key={i}
+                  value={col.key}>{col.key}</option>)
+            }
+          </Form.Control>
+        </InputGroup> :
+        <InputGroup>
+          <InputGroup.Prepend>
+            <InputGroup.Text
+              id='inputGroup
+                Prepend'>X Column</InputGroup.Text>
+          </InputGroup.Prepend>
+          <Form.Control
+            as='select'
+            id='xSelect'
+            // value={this.state.xColumn}
+            value={m.xColumn}
+            onChange={async (e) => {
+              await this.changeColumn(e, 'xColumn');
+            }}>
+            {
+              m.xColumns.map((col: any, i: number) =>
+                <option
+                  key={i}
+                  value={col.key}>{col.key}</option>)
+            }
+          </Form.Control>
+        </InputGroup>;
+
+
     const contents = this.state.loading ?
       <p>
         <em>loading...</em>
       </p> :
-      <div>
         <div>
-          {/* <Button*/}
-          {/*  variant='primary'*/}
-          {/*  onClick={this.toggleTimeline}>{this.state.togglePrompt}*/}
-          {/* </Button>*/}
-
-          <InputGroup>
-            <InputGroup.Prepend>
-              <InputGroup.Text
-                id='inputGroup
+          <div>
+            <InputGroup>
+              <InputGroup.Prepend>
+                <InputGroup.Text
+                  id='inputGroup
                 Prepend'>Timeline Type</InputGroup.Text>
-            </InputGroup.Prepend>
+              </InputGroup.Prepend>
 
-            <Form.Control
-              as='select'
-              id='timelineTypeSelect'
-              value={this.state.view}
-              onChange={(e) => {
-                this.changeTimelineType(e);
-              }}>
-              <option value={ViewType.IntervalMagnitude}>
-                Interval Magnitude
-              </option>
-              <option value={ViewType.IntervalOccurrence}>
-                Interval Occurrence
-              </option>
-              <option value={ViewType.EventMagnitude}>
-                Event Magnitude
-              </option>
-              <option value={ViewType.EventOccurrence}>
-                Event Occurrence
-              </option>
-            </Form.Control>
-          </InputGroup>
+              <Form.Control
+                as='select'
+                id='timelineTypeSelect'
+                value={this.state.view}
+                onChange={(e) => {
+                  this.changeTimelineType(e);
+                }}>
+                <option value={ViewType.IntervalMagnitude}>
+                  Interval Magnitude
+                </option>
+                <option value={ViewType.IntervalOccurrence}>
+                  Interval Occurrence
+                </option>
+                <option value={ViewType.EventMagnitude}>
+                  Event Magnitude
+                </option>
+                <option value={ViewType.EventOccurrence}>
+                  Event Occurrence
+                </option>
+              </Form.Control>
+            </InputGroup>
 
-          <InputGroup>
-            <InputGroup.Prepend>
-              <InputGroup.Text
-                id='inputGroup
-                Prepend'>First Y Column</InputGroup.Text>
-            </InputGroup.Prepend>
-            <Form.Control
-              as='select'
-              id='ySelect'
-              // value={this.state.yColumn}
-              value={m.yColumn}
-              onChange={async (e) => {
-                await this.changeColumn(e, 'yColumn');
-              }}>
-              {
-                m.yColumns.map((col: any, i: number) =>
-                  <option
-                    key={i}
-                    value={col.key}>{col.key}</option>)
-              }
-            </Form.Control>
-
-            <InputGroup.Prepend>
-              <InputGroup.Text
-                id='inputGroup
-                Prepend'>Second Y Column</InputGroup.Text>
-            </InputGroup.Prepend>
-            <Form.Control
-              as='select'
-              id='ySelect'
-              // value={this.state.yColumn}
-              value={m.yColumn2}
-              onChange={async (e) => {
-                await this.changeColumn(e, 'yColumn');
-              }}>
-              <option key={''} value={''}>Select another Column</option>
-              {
-                m.yColumns.map((col: any, i: number) =>
-                  <option
-                    key={i}
-                    value={col.key}>{col.key}</option>)
-              }
-            </Form.Control>
-
-          </InputGroup>
-
-          <InputGroup>
-            <InputGroup.Prepend>
-              <InputGroup.Text
-                id='inputGroup
-                Prepend'>xColumn</InputGroup.Text>
-            </InputGroup.Prepend>
-            <Form.Control
-              as='select'
-              id='xSelect'
-              // value={this.state.xColumn}
-              value={m.xColumn}
-              onChange={async (e) => {
-                await this.changeColumn(e, 'xColumn');
-              }}>
-              {
-                m.xColumns.map((col: any, i: number) =>
-                  <option
-                    key={i}
-                    value={col.key}>{col.key}</option>)
-              }
-            </Form.Control>
-
-            <InputGroup.Prepend>
-              <InputGroup.Text
-                id='inputGroup
-                Prepend'>Ending
-                Range</InputGroup.Text>
-            </InputGroup.Prepend>
-            <Form.Control
-              as='select'
-              id='x2Select'
-              // value={this.state.xColumn2}
-              value={m.xColumn2}
-              onChange={async (e) => {
-                await this.changeColumn(e, 'xColumn2');
-              }}>
-              {
-                m.xColumns.map((col: any, i: number) =>
-                  <option
-                    key={i}
-                    value={col.key}>{col.key}</option>)
-              }
-            </Form.Control>
-          </InputGroup>
-        </div>
-        <div style={{marginTop: '10px'}}
-          id='svgtarget'>
-        </div>
-      </div>
-    ;
+            {yDropdowns}
+            {xDropdowns}
+          </div>
+          <div style={{marginTop: '10px'}}
+            id='svgtarget'>
+          </div>
+        </div>;
     // @ts-ignore
     return (
       <div id='timelineComponentDiv'>
@@ -506,7 +561,7 @@ export default class TimelineComponent
   initTimeline() {
     const elem: any = d3.select('#svgtarget');
     let newHeight = this.state.height;
-
+    console.log('working');
     console.log(elem);
     if (elem !== null && elem.node() !== null) {
       const rect = elem.node().getBoundingClientRect();
@@ -567,8 +622,12 @@ export default class TimelineComponent
     // variables
     console.log(m.x(0));
 
-    if (m.view === ViewType.IntervalMagnitude ||
-        m.view === ViewType.EventMagnitude) {
+    console.log(m.view);
+    console.log(ViewType[m.view]);
+
+
+    if (ViewType[m.view] === ViewType.IntervalMagnitude ||
+        ViewType[m.view] === ViewType.EventMagnitude) {
       m.y = d3.scaleLinear()
           .domain([d3.min(m.csvData,
               (d) => {
@@ -582,11 +641,23 @@ export default class TimelineComponent
           .range([m.height, 0]);
     } else {
       assert(m.csvData.length > 0);
+      let domain: any = [];
+
+      if (m.yColumn !== '') {
+        domain = domain.concat(
+            d3.map(m.csvData, (d: any) => d[m.yColumn]).keys());
+      }
+      if (m.yColumn2 !== '') {
+        domain = domain.concat(
+            d3.map(m.csvData, (d: any) => d[m.yColumn2]).keys());
+      }
+      console.log(m.yColumn2);
+
+      console.log(domain);
       m.y = d3.scaleBand()
-          .domain(d3.map(m.csvData, (d: any) => d[m.yColumn]).keys())
+          .domain(domain)
           .range([m.height, 0]);
     }
-
 
     m.extent = [[m.marginLeft, m.marginTop],
       [m.width - m.marginRight, m.height - m.marginTop]];
@@ -640,26 +711,22 @@ export default class TimelineComponent
             .on('end', this.dragEnded));
 
     const axisLayer = this.svg.append('g')
-        .style('color', 'black')
-        .attr('class', 'x axis')
-        // .call(d3.axisBottom(m.x))
-        .append('text')
         .attr('id', 'axisLayer');
 
-    if (m.view === ViewType.EventMagnitude ||
-        m.view === ViewType.IntervalMagnitude) {
-      axisLayer.append('g')
-          .style('color', 'black')
-          .attr('class', 'y axis')
-          .call(d3.axisLeft(m.y))
-          .append('text')
-          .attr('transform', 'rotate(-90)')
-          .attr('y', 6)
-          .attr('dy', '.71em')
-          .style('text-anchor', 'end')
-          .style('color', 'red')
-          .text('yColumn');
-    }
+
+    console.log(ViewType[m.view] === ViewType.EventMagnitude);
+
+    axisLayer.append('g')
+        .style('color', 'black')
+        .attr('class', 'y axis')
+        .call(d3.axisLeft(m.y))
+        .append('text')
+        .attr('transform', 'rotate(-90)')
+        .attr('y', 6)
+        .attr('dy', '.71em')
+        .style('text-anchor', 'end')
+        .style('color', 'red')
+        .text('yColumn');
 
     m.plot = barsLayer.append('g')
         .attr('class', 'plot')
@@ -720,9 +787,11 @@ export default class TimelineComponent
       } else if (op === 'ArrowLeft') {
         // Pan Left
         m.deltaX = Math.min(0, m.deltaX + m.deltaPan);
+        m.deltaXDirection = -1;
         // console.log(deltaX);
         this.moveChart();
       } else if (op === 'ArrowRight') {
+        m.deltaXDirection = 1;
         // Pan Right
         m.deltaX -= m.deltaPan;
         this.moveChart();
@@ -970,6 +1039,12 @@ export default class TimelineComponent
   dragged() {
     this.ttUpdatePos(d3.event.sourceEvent.x, d3.event.sourceEvent.y);
 
+    // console.log('movement: ' + d3.event.sourceEvent.movementX);
+    if (d3.event.sourceEvent.movementX > 0) {
+      m.deltaXDirection = -1;
+    } else if (d3.event.sourceEvent.movementX < 0) {
+      m.deltaXDirection = 1;
+    }
     m.deltaX += d3.event.sourceEvent.movementX;
     if (m.deltaX > 0) {
       m.deltaX = 0;

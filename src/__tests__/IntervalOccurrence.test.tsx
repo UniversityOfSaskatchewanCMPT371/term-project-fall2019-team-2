@@ -15,6 +15,10 @@ import IntervalMagnitude
 import {deflateRaw} from 'zlib';
 import IntervalOccurrence
   from '../components/TimelineTypes/IntervalOccurrence';
+import TimelineModel
+  from '../components/TimelineModel';
+import TimelineTypeInterface
+  from '../components/TimelineTypes/TimelineTypeInterface';
 
 describe('<IntervalMagnitude /> Unit Tests', () => {
   let data: any;
@@ -24,6 +28,8 @@ describe('<IntervalMagnitude /> Unit Tests', () => {
   let applyZoomSpy: any;
   let drawLabelsSpy: any;
   let getTickTranslateSpy: any;
+  let m: any;
+  let timelineType:any;
 
   beforeEach(() => {
     // data array
@@ -136,6 +142,8 @@ describe('<IntervalMagnitude /> Unit Tests', () => {
       new Column('number', 2, 'index', 1),
       new Column('number', 2, 'Order Date_num', 1)]);
 
+    m = new TimelineModel();
+    timelineType = new IntervalMagnitude(m);
     // Create spies
     drawSpy =
       jest.spyOn(IntervalOccurrence.prototype, 'draw');
@@ -166,12 +174,14 @@ describe('<IntervalMagnitude /> Unit Tests', () => {
         <TimelineComponent
           data={data}
         />);
+    wrapper.timeLineTypeInterface = timelineType;
   });
 
   //  draw
   describe( 'draw()', () => {
     it('checks that is working as expected', ()=> {
-
+      wrapper.instance().drawEventMagnitude();
+      expect(drawSpy).toHaveBeenCalled();
     });
   });
   //  getData
@@ -182,6 +192,24 @@ describe('<IntervalMagnitude /> Unit Tests', () => {
   });
   //    Apply zoom
   describe( 'applyZoom()', () => {
+    // zoom in events for keydown & keyup
+    const zoomInEventDown = new KeyboardEvent('keydown', {'key': '+'});
+    const zoomInEventUp = new KeyboardEvent('keyup', {'key': '+'});
+    // zoom out events for keydown & keyup
+    const zoomOutEventDown = new KeyboardEvent('keydown', {'key': '-'});
+    const zoomOutEventUp = new KeyboardEvent('keyup', {'key': '-'});
+
+    it('timeline drawer handles new zoom', async () => {
+      wrapper.instance().drawTimeline();
+      // zoom in so that we can see if zooming back out works
+      document.body.dispatchEvent(zoomInEventDown);
+      document.body.dispatchEvent(zoomInEventUp);
+      expect(wrapper.instance().getScale()).toBeGreaterThan(1.0);
+      // zoom back out
+      document.body.dispatchEvent(zoomOutEventDown);
+      document.body.dispatchEvent(zoomOutEventUp);
+      expect(wrapper.instance().getScale()).toBe(1.0);
+    });
     it('checks that is working as expected', ()=> {
 
     });
@@ -189,7 +217,8 @@ describe('<IntervalMagnitude /> Unit Tests', () => {
   //    Draw labels
   describe( 'drawLabels()', () => {
     it('checks that is working as expected', ()=> {
-
+      wrapper.instance().drawTimeline();
+      expect(drawLabelsSpy).toHaveBeenCalled();
     });
   });
   //    getTickTranslation

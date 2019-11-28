@@ -31,6 +31,8 @@ jobs:
     - name: Upload source maps
       env:
         SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        SENTRY_ORG: cmpt371
+        SENTRY_PROJECT: team2
       if: github.ref == 'refs/heads/master' || contains(github.ref, 'tags/') || github.ref == 'refs/heads/develop'
       run: |
         export RELEASE_VERSION=$(git rev-parse --short HEAD)

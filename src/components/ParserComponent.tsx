@@ -10,7 +10,6 @@ import Data
   from './Data';
 import * as TimSort from 'timsort';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 /**
  * Purpose: react component responsible for receiving and parsing file data
  */
@@ -32,6 +31,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
         data: [],
         showTimeline: false,
         formatString: '',
+        fileData: '',
       };
 
       this.isValid = this.isValid.bind(this);
@@ -81,11 +81,23 @@ export default class ParserComponent extends React.Component<ParserInterface,
                       formatString: val,
                     };
                   });
+                  const mockDateFile: File = new File(
+                      [this.state.fileData],
+                      'mockFile.csv',
+                      {type: this.props.fileType.mimeName},
+                  );
+                  const fileEvent = {target: {files: [mockDateFile]}};
+                  this.parse(fileEvent);
                 }}>
-                <option selected value="">Open this select menu</option>
-                <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                <option selected value="">Select a Date Format</option>
+                <option value="X">Days from Event</option>
                 <option value="MM-DD-YYYY">MM-DD-YYYY</option>
                 <option value="DD-MM-YYYY">DD-MM-YYYY</option>
+                <option value="DD-MMMM-YYYY">DD-MMMM-YYYY</option>
+                <option value="MMMM-DD-YYYY">MMMM-DD-YYYY</option>
+                <option value="MMM-DD-YYYY">MMMM-DD-YYYY</option>
+                <option value="DD-MM-YY">DD-MM-YY</option>
+                <option value="MM-DD-YY">MM-DD-YY</option>
               </select>
             </div>
           </div>
@@ -111,13 +123,16 @@ export default class ParserComponent extends React.Component<ParserInterface,
     isValid(upFile?: File): boolean {
       if (upFile !== undefined) {
         const typeOfFile = upFile.name.substr(upFile.name.length - 4);
-        if (typeOfFile === '.csv') {
-          return typeOfFile === '.csv';
+        if (this.props.fileType.mimeName === '.csv' +
+            ',text/csv' && typeOfFile === '.csv') {
+          return true;
         } else {
-          throw new Error('Wrong file type was uploaded.');
+          alert('Wrong file type was uploaded.');
+          return false;
         }
       }
-      throw new Error('File object undefined');
+      alert('Wrong file type was uploaded.');
+      return false;
     }
 
     /**
@@ -136,8 +151,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
       if (data !== undefined && data.length > 0) {
         for (const [key, value] of Object.entries(data[0])) {
           if (!doneTheWork) {
-            const date1 = moment(String(value));
-            if (!isNaN(Number(date1)) && isNaN(Number(value))) {
+            const date1 = moment(String(value), this.state.formatString);
+            if (moment(date1, this.state.formatString).isValid()) {
               doneTheWork = true;
               const formatString = this.state.formatString;
 
@@ -295,14 +310,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
       });
 
       const temp: File = fileEvent.target.files[0];
-      try {
-        if (this.props.fileType.mimeName === '.csv' +
-            ',text/csv' && this.isValid(temp)) {
-          await this.parseCsv(fileEvent);
-        }
-      } catch (e) {
-        alert('Wrong file type was uploaded.');
-        console.log('Wrong file was uploaded.');
+      if (this.isValid(temp)) {
+        await this.parseCsv(fileEvent);
       }
 
       this.setState(() => {

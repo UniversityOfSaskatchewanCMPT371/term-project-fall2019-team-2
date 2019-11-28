@@ -343,13 +343,13 @@ export default class TimelineComponent
         break;
 
       case ViewType.interval:
-        prompt = 'Switch to IntervalOccurrence Timeline';
+        prompt = 'Switch to event Timeline';
         m.view = ViewType.intervalOccurrence;
         timelineType = new IntervalOccurrence(m);
         break;
 
       case ViewType.intervalOccurrence:
-        prompt = 'Switch to Interval Timeline';
+        prompt = 'Switch to interval Timeline';
         m.view = ViewType.event;
         timelineType = new EventMagnitude(m);
         break;

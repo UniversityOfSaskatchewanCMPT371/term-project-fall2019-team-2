@@ -137,40 +137,40 @@ export default class ParserComponent extends React.Component<ParserInterface,
         for (const [key, value] of Object.entries(data[0])) {
           if (!doneTheWork) {
             const date1 = moment(String(value));
-            // if (!isNaN(Number(date1)) && isNaN(Number(value))) {
-            doneTheWork = true;
-            const formatString = this.state.formatString;
+            if (!isNaN(Number(date1)) && isNaN(Number(value))) {
+              doneTheWork = true;
+              const formatString = this.state.formatString;
 
-            const keyInt = `${key}_num`;
+              const keyInt = `${key}_num`;
 
-            TimSort.sort(data, function(a: any, b: any) {
-              let val: any;
-              if (!a.hasOwnProperty(keyInt)) {
-                val = moment(a[key], formatString);
-                if (val.isValid()) {
-                  a[keyInt] = val.valueOf();
-                } else {
-                  a[keyInt] = -1;
+              TimSort.sort(data, function(a: any, b: any) {
+                let val: any;
+                if (!a.hasOwnProperty(keyInt)) {
+                  val = moment(a[key], formatString);
+                  if (val.isValid()) {
+                    a[keyInt] = val.valueOf();
+                  } else {
+                    a[keyInt] = -1;
+                  }
                 }
-              }
 
-              if (!b.hasOwnProperty(keyInt)) {
-                val = moment(b[key], formatString);
-                if (val.isValid()) {
-                  b[keyInt] = val.valueOf();
-                } else {
-                  b[keyInt] = -1;
+                if (!b.hasOwnProperty(keyInt)) {
+                  val = moment(b[key], formatString);
+                  if (val.isValid()) {
+                    b[keyInt] = val.valueOf();
+                  } else {
+                    b[keyInt] = -1;
+                  }
                 }
-              }
-              return (a[keyInt] - b[keyInt]);
-            });
+                return (a[keyInt] - b[keyInt]);
+              });
 
-            this.setState(() => {
-              return {
-                data,
-              };
-            });
-            // }
+              this.setState(() => {
+                return {
+                  data,
+                };
+              });
+            }
           }
         }
       }

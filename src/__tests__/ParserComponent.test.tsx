@@ -634,7 +634,8 @@ describe('<ParserComponent /> Unit Tests', () => {
         fileType: FileType.csv,
         data: data,
         showTimeline: false,
-        formatString: 'YYYY-MM-DD'
+        formatString: 'YYYY-MM-DD',
+        fileData: '',
       };
     });
 
@@ -684,6 +685,7 @@ describe('<ParserComponent /> Unit Tests', () => {
         data: data1,
         showTimeline: false,
         formatString: '',
+        fileData: '',
       };
       expect(() => {
         pc.inferTypes(data1);

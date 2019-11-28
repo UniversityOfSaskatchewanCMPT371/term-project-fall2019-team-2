@@ -310,8 +310,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
       });
 
       const temp: File = fileEvent.target.files[0];
-      if (this.props.fileType.mimeName === '.csv' +
-            ',text/csv' && this.isValid(temp)) {
+      if (this.isValid(temp)) {
         await this.parseCsv(fileEvent);
       }
 
@@ -349,11 +348,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
 
                   return d;
                 });
-            this.setState(() => {
-              return {
-                fileData: fileReader.result,
-              };
-            });
 
             // set state of the parser component
             this.setState((state) => {
@@ -367,8 +361,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
               this.columnTypes = this.inferTypes(this.state.data);
               this.sortData(this.state.data);
             } catch (e) {
-              alert(e.toString());
-              console.log(e.toString());
+              alert('data is EMPTY');
+              console.log('data is empty');
             }
           }
           resolver(true);

@@ -47,19 +47,6 @@ export default class EventOccurrence extends TimelineType
           const newHeight = (this.m.height - this.m.y(d[this.m.yColumn]));
           return newHeight < 0 ? 0 : newHeight;
         });
-    // bar.append('rect')
-    //     .attr('class', 'pin-line')
-    //     .attr('x', (d: any, i: number) =>
-    //       (this.m.scale * this.m.barWidth * (i + this.m.dataIdx)))
-    //     .attr('width', 2)
-    //     .attr('y', (d: any, i: number) => ((this.m.height / 2)
-    //         - (((i + this.m.dataIdx)%2) * (this.m.height / 10))))
-    //     .attr('height', (d:any, i: number) => ((this.m.height / 2)
-    //         + (((i + this.m.dataIdx)%2) * (this.m.height / 10))));
-    // .attr('height', (d: any) => {
-    //   const newHeight = (this.m.height - this.m.y(d[this.m.yColumn]));
-    //   return newHeight < 0 ? 0 : newHeight;
-    // });
 
     bar.append('text')
         .text((d: any) => d[this.m.yColumn])
@@ -70,16 +57,6 @@ export default class EventOccurrence extends TimelineType
           (this.m.scale * this.m.barWidth * (i + this.m.dataIdx)))
         .attr('y', (d: any, i: number) =>
           this.m.y(d[this.m.yColumn]));
-
-    // bar.append('text')
-    //     .text((d: any) => d[this.m.yColumn])
-    //     .attr('class', 'pin-text')
-    //     .style('text-anchor', 'start')
-    //     .style('font-size', '1rem')
-    //     .attr('x', (d: any, i: number) =>
-    //       (this.m.scale * this.m.barWidth * (i + this.m.dataIdx)))
-    //     .attr('y', (d: any, i: number) => ((this.m.height / 2)
-    //         - (((i + this.m.dataIdx)%2) * (this.m.height / 10))));
 
     console.log('EventMagnitude.draw(): ');
     console.log(bar);

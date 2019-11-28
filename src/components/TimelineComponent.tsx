@@ -469,7 +469,7 @@ export default class TimelineComponent
         break;
 
       case ViewType.IntervalOccurrence:
-        // timelineType = new IntervalMagnitude(m);
+        timelineType = new IntervalOccurrence(m);
         break;
 
       case ViewType.EventMagnitude:
@@ -642,12 +642,12 @@ export default class TimelineComponent
     const axisLayer = this.svg.append('g')
         .style('color', 'black')
         .attr('class', 'x axis')
-        .call(d3.axisTop(m.x))
+        // .call(d3.axisBottom(m.x))
         .append('text')
         .attr('id', 'axisLayer');
 
-    if (timelineType instanceof EventMagnitude ||
-      timelineType instanceof IntervalMagnitude) {
+    if (m.view === ViewType.EventMagnitude ||
+        m.view === ViewType.IntervalMagnitude) {
       axisLayer.append('g')
           .style('color', 'black')
           .attr('class', 'y axis')

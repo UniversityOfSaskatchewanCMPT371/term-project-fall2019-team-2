@@ -42,7 +42,7 @@ exports[`<TimelineComponent /> R2 Tests
               <div className=\\"input-group-prepend\\">
                 <InputGroupText id=\\"inputGroup Prepend\\">
                   <span className=\\"input-group-text\\" id=\\"inputGroup Prepend\\">
-                    yColumn
+                    First Y Column
                   </span>
                 </InputGroupText>
               </div>
@@ -78,6 +78,53 @@ exports[`<TimelineComponent /> R2 Tests
                 </option>
               </select>
             </FormControl>
+            <InputGroupPrepend>
+              <div className=\\"input-group-prepend\\">
+                <InputGroupText id=\\"inputGroup Prepend\\">
+                  <span className=\\"input-group-text\\" id=\\"inputGroup Prepend\\">
+                    Second Y Column
+                  </span>
+                </InputGroupText>
+              </div>
+            </InputGroupPrepend>
+            <FormControl as=\\"select\\" id=\\"ySelect\\" value=\\"\\" onChange={[Function: onChange]}>
+              <select value=\\"\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"ySelect\\" className=\\"form-control\\">
+                <option value=\\"\\">
+                  Select another Column
+                </option>
+                <option value=\\"Order ID\\">
+                  Order ID
+                </option>
+                <option value=\\"Units Sold\\">
+                  Units Sold
+                </option>
+                <option value=\\"Unit Price\\">
+                  Unit Price
+                </option>
+                <option value=\\"Unit Cost\\">
+                  Unit Cost
+                </option>
+                <option value=\\"Total Revenue\\">
+                  Total Revenue
+                </option>
+                <option value=\\"Total Cost\\">
+                  Total Cost
+                </option>
+                <option value=\\"Total Profit\\">
+                  Total Profit
+                </option>
+                <option value=\\"index\\">
+                  index
+                </option>
+                <option value=\\"Order Date_num\\">
+                  Order Date_num
+                </option>
+              </select>
+            </FormControl>
+          </div>
+        </InputGroup>
+        <InputGroup>
+          <div className=\\"input-group\\">
             <InputGroupPrepend>
               <div className=\\"input-group-prepend\\">
                 <InputGroupText id=\\"inputGroup Prepend\\">
@@ -234,8 +281,23 @@ exports[`<TimelineComponent /> R2 Tests
 </g>
 </g>
 </g>
-<g id=\\"axisLayer\\">
-<g style=\\"color: red;\\" class=\\"y axis\\" fill=\\"none\\" font-size=\\"10\\" font-family=\\"sans-serif\\" text-anchor=\\"end\\">
+<g style=\\"color: black;\\" class=\\"x axis\\" fill=\\"none\\" font-size=\\"10\\" font-family=\\"sans-serif\\" text-anchor=\\"middle\\">
+<path class=\\"domain\\" stroke=\\"currentColor\\" d=\\"M0.5,-6V0.5H934.5V-6\\">
+</path>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(233.5,0)\\">
+<line stroke=\\"currentColor\\" y2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" y=\\"-9\\" dy=\\"0em\\">1/1/2010
+</text>
+</g>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(700.5,0)\\">
+<line stroke=\\"currentColor\\" y2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" y=\\"-9\\" dy=\\"0em\\">1/2/2010
+</text>
+</g>
+<text id=\\"axisLayer\\">
+<g style=\\"color: black;\\" class=\\"y axis\\" fill=\\"none\\" font-size=\\"10\\" font-family=\\"sans-serif\\" text-anchor=\\"end\\">
 <path class=\\"domain\\" stroke=\\"currentColor\\" d=\\"M-6,598.5H0.5V0.5H-6\\">
 </path>
 <g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,583.3875042617942)\\">
@@ -313,6 +375,7 @@ exports[`<TimelineComponent /> R2 Tests
 <text transform=\\"rotate(-90)\\" y=\\"6\\" dy=\\".71em\\" style=\\"text-anchor: end; color: red;\\">yColumn
 </text>
 </g>
+</text>
 </g>
 <text transform=\\"translate(467,618)\\" style=\\"text-anchor: start;\\">Order Date
 </text>
@@ -365,7 +428,7 @@ exports[`<TimelineComponent /> R2 Tests
               <div className=\\"input-group-prepend\\">
                 <InputGroupText id=\\"inputGroup Prepend\\">
                   <span className=\\"input-group-text\\" id=\\"inputGroup Prepend\\">
-                    yColumn
+                    First Y Column
                   </span>
                 </InputGroupText>
               </div>
@@ -401,6 +464,53 @@ exports[`<TimelineComponent /> R2 Tests
                 </option>
               </select>
             </FormControl>
+            <InputGroupPrepend>
+              <div className=\\"input-group-prepend\\">
+                <InputGroupText id=\\"inputGroup Prepend\\">
+                  <span className=\\"input-group-text\\" id=\\"inputGroup Prepend\\">
+                    Second Y Column
+                  </span>
+                </InputGroupText>
+              </div>
+            </InputGroupPrepend>
+            <FormControl as=\\"select\\" id=\\"ySelect\\" value=\\"\\" onChange={[Function: onChange]}>
+              <select value=\\"\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"ySelect\\" className=\\"form-control\\">
+                <option value=\\"\\">
+                  Select another Column
+                </option>
+                <option value=\\"Order ID\\">
+                  Order ID
+                </option>
+                <option value=\\"Units Sold\\">
+                  Units Sold
+                </option>
+                <option value=\\"Unit Price\\">
+                  Unit Price
+                </option>
+                <option value=\\"Unit Cost\\">
+                  Unit Cost
+                </option>
+                <option value=\\"Total Revenue\\">
+                  Total Revenue
+                </option>
+                <option value=\\"Total Cost\\">
+                  Total Cost
+                </option>
+                <option value=\\"Total Profit\\">
+                  Total Profit
+                </option>
+                <option value=\\"index\\">
+                  index
+                </option>
+                <option value=\\"Order Date_num\\">
+                  Order Date_num
+                </option>
+              </select>
+            </FormControl>
+          </div>
+        </InputGroup>
+        <InputGroup>
+          <div className=\\"input-group\\">
             <InputGroupPrepend>
               <div className=\\"input-group-prepend\\">
                 <InputGroupText id=\\"inputGroup Prepend\\">
@@ -557,8 +667,23 @@ exports[`<TimelineComponent /> R2 Tests
 </g>
 </g>
 </g>
-<g id=\\"axisLayer\\">
-<g style=\\"color: red;\\" class=\\"y axis\\" fill=\\"none\\" font-size=\\"10\\" font-family=\\"sans-serif\\" text-anchor=\\"end\\">
+<g style=\\"color: black;\\" class=\\"x axis\\" fill=\\"none\\" font-size=\\"10\\" font-family=\\"sans-serif\\" text-anchor=\\"middle\\">
+<path class=\\"domain\\" stroke=\\"currentColor\\" d=\\"M0.5,-6V0.5H934.5V-6\\">
+</path>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(233.5,0)\\">
+<line stroke=\\"currentColor\\" y2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" y=\\"-9\\" dy=\\"0em\\">1/1/2010
+</text>
+</g>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(700.5,0)\\">
+<line stroke=\\"currentColor\\" y2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" y=\\"-9\\" dy=\\"0em\\">1/2/2010
+</text>
+</g>
+<text id=\\"axisLayer\\">
+<g style=\\"color: black;\\" class=\\"y axis\\" fill=\\"none\\" font-size=\\"10\\" font-family=\\"sans-serif\\" text-anchor=\\"end\\">
 <path class=\\"domain\\" stroke=\\"currentColor\\" d=\\"M-6,598.5H0.5V0.5H-6\\">
 </path>
 <g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,583.3875042617942)\\">
@@ -636,6 +761,7 @@ exports[`<TimelineComponent /> R2 Tests
 <text transform=\\"rotate(-90)\\" y=\\"6\\" dy=\\".71em\\" style=\\"text-anchor: end; color: red;\\">yColumn
 </text>
 </g>
+</text>
 </g>
 <text transform=\\"translate(467,618)\\" style=\\"text-anchor: start;\\">Order Date
 </text>

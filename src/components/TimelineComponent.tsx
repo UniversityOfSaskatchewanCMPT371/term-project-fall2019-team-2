@@ -20,7 +20,7 @@ export enum ViewType {
 }
 
 const m = new TimelineModel();
-let timelineType: TimelineTypeInterface = new IntervalOccurrence(m);
+let timelineType: TimelineTypeInterface = new IntervalMagnitude(m);
 
 /**
  * Purpose: renders and updates a timeline to the screen
@@ -41,12 +41,12 @@ export default class TimelineComponent
       marginBottom: 170,
       marginLeft: 40,
       marginRight: 20,
-      togglePrompt: 'Switch to Interval Timeline',
+      togglePrompt: 'Switch to Occurrence Timeline',
       yColumn: '',
       xColumn: '',
       xColumn2: '',
       loading: true,
-      view: ViewType.intervalOccurrence,
+      view: ViewType.interval,
     };
 
     this.drawTimeline = this.drawTimeline.bind(this);

@@ -97,6 +97,8 @@ export default class TimelineComponent
   /**
    * Purpose: waits until the component has properly mounted before drawing the
    * timeline
+   * @precondition: the component mounted correctly
+   * @postcondition: default x and y columns are chosen
    */
   componentDidMount(): void {
     if (this.state.data.columns !== null &&
@@ -260,10 +262,10 @@ export default class TimelineComponent
       </p> :
       <div>
         <div>
-          <Button
-            variant='primary'
-            onClick={this.toggleTimeline}>{this.state.togglePrompt}
-          </Button>
+          {/* <Button*/}
+          {/*  variant='primary'*/}
+          {/*  onClick={this.toggleTimeline}>{this.state.togglePrompt}*/}
+          {/* </Button>*/}
 
           <InputGroup>
             <InputGroup.Prepend>
@@ -359,7 +361,7 @@ export default class TimelineComponent
             </Form.Control>
           </InputGroup>
         </div>
-        <div
+        <div style={{marginTop: '10px'}}
           id='svgtarget'>
         </div>
       </div>
@@ -460,7 +462,7 @@ export default class TimelineComponent
     if (elem !== null && elem.node() !== null) {
       const rect = elem.node().getBoundingClientRect();
       // this is the proper height for our timeline
-      newHeight = window.innerHeight - rect.top;
+      newHeight = window.innerHeight - (rect.top + m.marginTop);
 
       // Update the height
       this.setState(() => {
@@ -608,7 +610,7 @@ export default class TimelineComponent
         .attr('id', 'bars');
 
     // Labels
-    timelineType.drawLabels(this.svg);
+    this.drawLabels();
 
     this.updateBars();
 

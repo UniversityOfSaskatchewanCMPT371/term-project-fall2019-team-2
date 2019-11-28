@@ -8,7 +8,7 @@ import TelemetryModal from './components/TelemetryModal';
 
 const App: React.FC = () => {
   return (
-    <div className="App">
+    <div className="App" style={{overflow: 'hidden'}}>
       <TelemetryModal></TelemetryModal>
 
       <Navbar bg="light" expand="lg">

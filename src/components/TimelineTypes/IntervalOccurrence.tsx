@@ -99,6 +99,48 @@ export default class IntervalOccurrence extends TimelineType
    * IntervalOccurrence Timeline
    */
   getData(): void {
+    let dataIdxEnd: number;
+    const keyInt1 = this.m.xColumn + '_num';
+    const keyInt2 = this.m.xColumn2 + '_num';
+    let consecutive = true;
+
+    for (dataIdxEnd = this.m.dataIdx;
+      dataIdxEnd < this.m.csvData.length;
+      dataIdxEnd++) {
+      const elem: any = this.m.csvData[dataIdxEnd];
+
+      if (!elem.hasOwnProperty(keyInt1)) {
+        elem[keyInt1] = Date.parse(elem[this.m.xColumn]);
+      }
+
+      if (!elem.hasOwnProperty(keyInt2)) {
+        elem[keyInt2] = Date.parse(elem[this.m.xColumn2]);
+      }
+
+      // We can only increment dataIdx if the preceding elements have also
+      // been moved off of the current screen area, otherwise elements will be
+      // removed prematurely
+      if (consecutive &&
+          ((this.m.scale * this.m.timeScale(elem[keyInt1])) < - this.m.deltaX &&
+              (this.m.scale * this.m.timeScale(elem[keyInt2])) <
+              - this.m.deltaX)) {
+        this.m.dataIdx++;
+      } else {
+        consecutive = false;
+      }
+
+      // If this is true, then the x position of the start of the bar and end
+      // of the bar are currently outside of the viewing area
+      /* eslint-disable max-len */
+      if (!((this.m.scale * this.m.timeScale(elem[keyInt1])) < (-this.m.deltaX + this.m.width) ||
+          (((this.m.scale * this.m.timeScale(elem[keyInt2])) <= - this.m.deltaX + this.m.width) &&
+              ((this.m.scale * this.m.timeScale(elem[keyInt2])) > - this.m.deltaX)))) {
+        break;
+      }
+      /* eslint-enable max-len */
+    }
+    this.m.data = this.m.csvData.slice(this.m.dataIdx,
+        dataIdxEnd + this.m.barBuffer);
   }
 
   /**

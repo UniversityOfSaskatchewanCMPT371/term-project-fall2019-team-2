@@ -1,48 +1,122 @@
-import TimelineTypeInterface, {TimelineType} from './TimelineTypeInterface';
-import * as d3 from 'd3';
+import TimelineTypeInterface, {TimelineType}
+  from './TimelineTypeInterface';
+import * as d3
+  from 'd3';
+import * as d3ScaleChromatic from 'd3-scale-chromatic';
 import assert
   from 'assert';
 
 /**
- * Purpose: to provide methods specific and relevant to drawing an
- * IntervalMagnitude timeline
+ * Purpose: provides methods relevant to drawing intervalOccurrence
+ * data
  */
-export default class IntervalMagnitude extends TimelineType
+export default class IntervalOccurrence extends TimelineType
   implements TimelineTypeInterface {
   /**
-   * Purpose: draws an element as an Interval with a Magnitude
+   * handles zooming
+   */
+  applyZoom(): void {
+    d3.selectAll('.bar')
+        .attr('x', (d: any) =>
+          this.m.scale * this.m.timeScale(new Date(d[this.m.xColumn])))
+        .attr('width', (d: any) =>
+          this.m.scale * (this.m.timeScale(new Date(d[this.m.xColumn2])) -
+            this.m.timeScale(new Date(d[this.m.xColumn]))));
+
+    d3.selectAll('.xtick')
+        .attr('transform', (d: any) =>
+          `translate(${this.m.scale * this.m.timeScale(new Date(d.text))},
+            ${this.m.height})`);
+
+    d3.selectAll('.line')
+        .attr('x2', (d: any) =>
+          this.m.scale * (this.m.timeScale(new Date(d[this.m.xColumn2]))));
+    d3.selectAll('.text')
+        .attr('x', (d: any) =>
+          this.m.scale * this.m.timeScale(new Date(d[this.m.xColumn])));
+  }
+
+  /**
+   * handles drawing the data correctly; as interval occurrence data
    * @param {any} selection: the selection for the object to draw
    * @param {any} ttOver: tooltip over function
    * @param {any} ttMove: tooltip move function
    * @param {any} ttLeave: tooltip leave function
    */
   draw(selection: any, ttOver: any, ttMove: any, ttLeave: any): void {
-    selection.append('rect')
-        .attr('class', 'bar')
+    const newBar = selection.append('g')
+        .attr('class', 'bar');
+
+    // shows the intervals
+    newBar.append('rect')
+        // .attr('class', 'bar')
         .attr('x', (d: any) =>
           (this.m.scale * this.m.timeScale(new Date(d[this.m.xColumn]))))
         .attr('width', (d: any) =>
           (this.m.timeScale(new Date(d[this.m.xColumn2])) -
           this.m.timeScale(new Date(d[this.m.xColumn]))))
-        .attr('y', (d: any) => this.m.y(d[this.m.yColumn]))
+        .attr('y', (d: any, i: number) =>
+          this.m.y(d[this.m.yColumn]))
         .attr('height', (d: any) => {
-          const newHeight = (this.m.height - this.m.y(d[this.m.yColumn]));
-          if (newHeight < 0) {
-            return 0;
-          } else {
-            return (this.m.height - this.m.y(d[this.m.yColumn]));
-          }
+          // const newHeight = (this.m.height - this.m.y(d[this.m.yColumn]));
+          const newHeight = this.m.y.bandwidth();
+          return newHeight < 0 ? 0 : newHeight;
         })
-        .style('fill', '#61a3a9')
+        .style('fill', (d: any) =>
+          d3ScaleChromatic
+              .interpolateRainbow(this.m.y(d[this.m.yColumn])))
         .style('opacity', 0.2)
         .on('mouseover', ttOver)
         .on('mousemove', ttMove)
         .on('mouseleave', ttLeave);
+
+    if (this.m.yColumn2 !== '') {
+      newBar.append('rect')
+      // .attr('class', 'bar')
+          .attr('x', (d: any) =>
+            (this.m.scale * this.m.timeScale(new Date(d[this.m.xColumn]))))
+          .attr('width', (d: any) =>
+            (this.m.timeScale(new Date(d[this.m.xColumn2])) -
+                  this.m.timeScale(new Date(d[this.m.xColumn]))))
+          .attr('y', (d: any, i: number) =>
+            this.m.y(d[this.m.yColumn2]))
+          .attr('height', (d: any) => {
+            const newHeight = this.m.y.bandwidth();
+            return newHeight < 0 ? 0 : newHeight;
+          })
+          .style('fill', (d: any) =>
+            d3ScaleChromatic
+                .interpolateRainbow(this.m.y(d[this.m.yColumn2])))
+          .style('opacity', 0.2)
+          .on('mouseover', ttOver)
+          .on('mousemove', ttMove)
+          .on('mouseleave', ttLeave);
+    }
+  }
+
+  /**
+   * Purpose: draws the initial axis labels when the timeline is first rendered
+   * @param {any} svg: the SVG element
+   */
+  drawLabels(svg: any): void {
+    svg.append('text')
+        .attr('transform',
+            `translate(${(this.m.width / 2) + 10},${this.m.height +
+        this.m.marginTop + 20})`)
+        .style('text-anchor', 'start')
+        .text('end: ' + this.m.xColumn2);
+
+    svg.append('text')
+        .attr('transform',
+        // eslint-disable-next-line max-len
+            `translate(${this.m.width / 2},${this.m.height + this.m.marginTop + 20})`)
+        .style('text-anchor', 'end')
+        .text('start: ' + this.m.xColumn + ',');
   }
 
   /**
    * Purpose: updates dataIdx, data, and ordinals when drawing an
-   * IntervalMagnitude Timeline
+   * IntervalOccurrence Timeline
    */
   getData(): void {
     let dataIdxEnd: number;
@@ -118,8 +192,8 @@ export default class IntervalMagnitude extends TimelineType
         /* eslint-disable max-len */
         if (consecutive &&
             !((this.m.scale * this.m.timeScale(elem[keyInt1])) < (-this.m.deltaX + this.m.width) ||
-            (((this.m.scale * this.m.timeScale(elem[keyInt2])) <= -this.m.deltaX + this.m.width) &&
-                ((this.m.scale * this.m.timeScale(elem[keyInt2])) > -this.m.deltaX)))) {
+                (((this.m.scale * this.m.timeScale(elem[keyInt2])) <= -this.m.deltaX + this.m.width) &&
+                    ((this.m.scale * this.m.timeScale(elem[keyInt2])) > -this.m.deltaX)))) {
           dataIdxEnd--;
         } else {
           consecutive = false;
@@ -144,51 +218,6 @@ export default class IntervalMagnitude extends TimelineType
   }
 
   /**
-   *
-   */
-  applyZoom(): void {
-    d3.selectAll('.bar')
-        .attr('x', (d: any) =>
-          this.m.scale * this.m.timeScale(new Date(d[this.m.xColumn])))
-        .attr('width', (d: any) =>
-          this.m.scale * (this.m.timeScale(new Date(d[this.m.xColumn2])) -
-        this.m.timeScale(new Date(d[this.m.xColumn]))));
-
-    d3.selectAll('.xtick')
-        .attr('transform', (d: any) =>
-          `translate(${this.m.scale * this.m.timeScale(new Date(d.text))},
-            ${this.m.height})`);
-  }
-
-  /**
-   * Purpose: draws the initial axis labels when the timeline is first rendered
-   * @param {any} svg: the SVG element
-   */
-  drawLabels(svg: any): void {
-    svg.append('text')
-        .attr('transform',
-            `translate(${(this.m.width / 2) + 10},${this.m.height +
-        this.m.marginTop + 20})`)
-        .style('text-anchor', 'start')
-        .text('end: ' + this.m.xColumn2);
-
-    svg.append('text')
-        .attr('transform',
-            // eslint-disable-next-line max-len
-            `translate(${this.m.width / 2},${this.m.height + this.m.marginTop + 20})`)
-        .style('text-anchor', 'end')
-        .text('start: ' + this.m.xColumn + ',');
-
-    svg.append('text')
-        .attr('transform', 'rotate(-90)')
-        .attr('y', 0 - this.m.marginLeft)
-        .attr('x', 0 - (this.m.height / 2))
-        .attr('dy', '1em')
-        .style('text-anchor', 'middle')
-        .text(this.m.yColumn);
-  }
-
-  /**
    * Purpose: gets the translation for an x-axis tick
    * @param {any} datum: the datum to draw the x-axis tick for
    * @return {string}: the translations string
@@ -206,6 +235,7 @@ export default class IntervalMagnitude extends TimelineType
    */
   checkYPrimType(primType: string): boolean {
     return (primType === 'date' ||
-        primType === 'number');
+        primType === 'number' ||
+        primType === 'string');
   }
 }

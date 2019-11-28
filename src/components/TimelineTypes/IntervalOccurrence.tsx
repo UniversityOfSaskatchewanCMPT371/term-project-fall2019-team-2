@@ -41,7 +41,10 @@ export default class IntervalOccurrence extends TimelineType
   draw(selection: any, ttOver: any, ttMove: any, ttLeave: any): void {
     const lineHeight = this.m.height/2;
     // Show the main vertical line
-    selection.append('line')
+    const tLine = selection.append('g')
+        . attr('class', 'line');
+
+    tLine.append('line')
         .attr('x', (d: any) =>
           this.m.timeScale(new Date(d[this.m.xColumn])))
         .attr('x2', (d: any) =>
@@ -51,8 +54,18 @@ export default class IntervalOccurrence extends TimelineType
         .attr('stroke', 'black')
         .style('width', 40);
 
+    tLine.append('text')
+        .text((d: any) => d[this.m.yColumn])
+        .attr('class', 'pin-text')
+        .style('text-anchor', 'start')
+        .style('font-size', '1rem')
+        .attr('y', (lineHeight))
+        .attr('x', (d: any, i: number) =>
+          (this.m.scale * (this.m.timeScale(new Date(d[this.m.xColumn])) +
+          this.m.timeScale(new Date(d[this.m.xColumn2])))/2));
+
     // shows the intervals
-    selection.append('rect')
+    tLine.append('rect')
         .attr('class', 'bar')
         .attr('x', (d: any) =>
           (this.m.scale * this.m.timeScale(new Date(d[this.m.xColumn]))))

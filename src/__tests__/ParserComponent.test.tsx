@@ -20,7 +20,6 @@ describe('<ParserComponent /> renders correctly', () => {
     expect(comp.contains(prompt)).toBeTruthy();
     expect(comp.exists('input')).toBeTruthy();
     expect(comp.find('input').prop('accept')).toContain('.csv,text/csv');
-
   });
 
   it('renders a <ParseComponent /> to select a .tl', () => {
@@ -265,39 +264,39 @@ describe('Csv FileEvents processed correctly\n', () => {
   });
 });
 
-describe('Incorrect file formatting is rejected\n',()=>{
-    const props = {
-        prompt: 'test: ',
-        fileType: FileType.csv,
-    };
+describe('Incorrect file formatting is rejected\n', ()=>{
+  const props = {
+    prompt: 'test: ',
+    fileType: FileType.csv,
+  };
 
-    const onChangeMock = jest.fn();
-    const comp: any = mount(
-        <ParserComponent
-            {...props}
-            onChange={onChangeMock}
-        />
-    );
+  const onChangeMock = jest.fn();
+  const comp: any = mount(
+      <ParserComponent
+        {...props}
+        onChange={onChangeMock}
+      />
+  );
 
-    beforeEach(() => {
-        onChangeMock.mockClear();
-        comp.setState({data: []});
-    });
+  beforeEach(() => {
+    onChangeMock.mockClear();
+    comp.setState({data: []});
+  });
 
-    //using 0
+  // using 0
 
-    //using $
+  // using $
 
-    //special characters
+  // special characters
 
-    //unescaped delimiter
+  // unescaped delimiter
 
-    //unescaped double quote
+  // unescaped double quote
 
-    afterEach(() => {
-        expect(comp.state('data').length).toEqual(3);
-        expect(onChangeMock).toHaveBeenCalledTimes(1);
-    });
+  afterEach(() => {
+    expect(comp.state('data').length).toEqual(3);
+    expect(onChangeMock).toHaveBeenCalledTimes(1);
+  });
 });
 
 describe('should accept valid csv file name with unusual' +

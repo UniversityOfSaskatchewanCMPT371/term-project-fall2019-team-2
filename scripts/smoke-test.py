@@ -60,7 +60,7 @@ class SmokeTests(unittest.TestCase):
     self.assertNotEqual(0, len(bar_graph))
 
     # Ensure the timeline select exists and is populated
-    switch_select = driver.find_element_by_xpath('//*[@id="timelineTypeSelect"]')
+    switch_select = driver.find_elements_by_id("timelineTypeSelect")
     self.assertNotEqual(0, len(switch_select))
 
     # Ensure a y-axis dropdown exists

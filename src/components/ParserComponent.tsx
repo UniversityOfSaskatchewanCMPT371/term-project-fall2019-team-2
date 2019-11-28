@@ -109,13 +109,11 @@ export default class ParserComponent extends React.Component<ParserInterface,
    * valid
    */
   isValid(upFile?: File): boolean {
-    console.log('isValid()');
     if (upFile !== undefined) {
       const typeOfFile = upFile.name.substr(upFile.name.length - 4);
       if (typeOfFile === '.csv') {
         return typeOfFile === '.csv';
       } else {
-        console.log('file object defined but is invalid');
         throw new Error('Wrong file type was uploaded.');
       }
     }

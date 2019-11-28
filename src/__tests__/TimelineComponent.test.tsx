@@ -347,8 +347,8 @@ describe('<TimelineComponent /> Unit Tests', () => {
     // Create spies
     drawTimelineSpy =
         jest.spyOn(TimelineComponent.prototype, 'drawTimeline');
-    toggleTimelineSpy =
-        jest.spyOn(TimelineComponent.prototype, 'toggleTimeline');
+    // toggleTimelineSpy =
+    //     jest.spyOn(TimelineComponent.prototype, 'toggleTimeline');
     initTimelineSpy =
         jest.spyOn(TimelineComponent.prototype, 'initTimeline');
     updateBarsSpy =

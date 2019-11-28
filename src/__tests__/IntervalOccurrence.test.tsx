@@ -175,17 +175,49 @@ describe('<IntervalOccurrence /> Unit Tests', () => {
 
   //  draw
   describe( 'draw()', () => {
-    m = new TimelineModel();
-    timelineType = new IntervalOccurrence(m);
-    wrapper.timeLineType = timelineType;
     it('checks that is working as expected', ()=> {
+      // m = new TimelineModel();
+      // timelineType = new IntervalOccurrence(m);
+      // wrapper.timelineType = timelineType;
+      const select = wrapper.find('#timelineTypeSelect').first();
+      select.simulate('change',
+          {target: {value: 'IntervalOccurrence'}});
+
+      const ySelect2 = wrapper.find('#y2Select').first();
+      ySelect2.simulate('change',
+          {target: {value: 'Country'}});
+
       expect(drawSpy).toHaveBeenCalled();
     });
   });
   //  getData
   describe( 'getData()', () => {
     it('checks that is working as expected', ()=> {
+      const tselect = wrapper.find('#timelineTypeSelect').first();
+      tselect.simulate('change',
+          {target: {value: 'IntervalOccurrence'}});
 
+      const ySelect2 = wrapper.find('#y2Select').first();
+      ySelect2.simulate('change',
+          {target: {value: 'Country'}});
+
+      let event = new KeyboardEvent('keydown', {'key': 'ArrowRight'});
+      let event2 = new KeyboardEvent('keyup', {'key': 'ArrowRight'});
+      for (let i = 0; i < 100; i++) {
+        document.body.dispatchEvent(event);
+        wrapper.instance().moveChart();
+        wrapper.instance().updateChart();
+        document.body.dispatchEvent(event2);
+      }
+
+      event = new KeyboardEvent('keydown', {'key': 'ArrowLeft'});
+      event2 = new KeyboardEvent('keyup', {'key': 'ArrowLeft'});
+      for (let i = 0; i < 100; i++) {
+        document.body.dispatchEvent(event);
+        wrapper.instance().moveChart();
+        wrapper.instance().updateChart();
+        document.body.dispatchEvent(event2);
+      }
     });
   });
   //    Apply zoom

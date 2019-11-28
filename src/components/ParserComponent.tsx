@@ -10,7 +10,6 @@ import Data
   from './Data';
 import * as TimSort from 'timsort';
 import 'bootstrap/dist/css/bootstrap.min.css';
-let FileContents = '';
 /**
  * Purpose: react component responsible for receiving and parsing file data
  */
@@ -32,6 +31,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
         data: [],
         showTimeline: false,
         formatString: '',
+        fileData: '',
       };
 
       this.isValid = this.isValid.bind(this);
@@ -83,7 +83,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
                     };
                   });
                   const mockDateFile: File = new File(
-                      [FileContents],
+                      [this.state.fileData],
                       'mockFile.csv',
                       {type: this.props.fileType.mimeName},
                   );
@@ -350,7 +350,11 @@ export default class ParserComponent extends React.Component<ParserInterface,
 
                   return d;
                 });
-            FileContents = fileReader.result;
+            this.setState(() => {
+              return {
+                fileData: fileReader.result,
+              };
+            });
 
             // set state of the parser component
             this.setState((state) => {

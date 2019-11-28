@@ -22,7 +22,7 @@ import TimelineTypeInterface
 import EventOccurrence
   from '../components/TimelineTypes/EventOccurrence';
 
-describe('<IntervalMagnitude /> Unit Tests', () => {
+describe('<EventOccurrence /> Unit Tests', () => {
   let data: any;
   let wrapper: any;
   let drawSpy: any;

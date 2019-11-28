@@ -10,17 +10,13 @@ import Data
   from '../components/Data';
 import Column
   from '../components/Column';
-import IntervalMagnitude
-  from '../components/TimelineTypes/IntervalMagnitude';
 import {deflateRaw} from 'zlib';
 import IntervalOccurrence
   from '../components/TimelineTypes/IntervalOccurrence';
 import TimelineModel
   from '../components/TimelineModel';
-import TimelineTypeInterface
-  from '../components/TimelineTypes/TimelineTypeInterface';
 
-describe('<IntervalMagnitude /> Unit Tests', () => {
+describe('<IntervalOccurrence /> Unit Tests', () => {
   let data: any;
   let wrapper: any;
   let drawSpy: any;

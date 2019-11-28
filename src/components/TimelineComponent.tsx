@@ -5,7 +5,6 @@ import * as d3
 import './Timeline.css';
 import * as TimSort
   from 'timsort';
-import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
 import TimelineModel from './TimelineModel';
@@ -17,11 +16,18 @@ import EventOccurrence
 import assert from 'assert';
 
 
+// export enum ViewType {
+//   IntervalMagnitude= 0,
+//   IntervalOccurrence = 1,
+//   EventMagnitude = 2,
+//   EventOccurrence = 3
+// }
+
 export enum ViewType {
-  IntervalMagnitude= 0,
-  IntervalOccurrence = 1,
-  EventMagnitude = 2,
-  EventOccurrence = 3
+  IntervalMagnitude= 'Interval Magnitude',
+  IntervalOccurrence = 'Interval Occurrence',
+  EventMagnitude = 'Event Magnitude',
+  EventOccurrence = 'Event Occurrence'
 }
 
 const m = new TimelineModel();
@@ -286,7 +292,7 @@ export default class TimelineComponent
             <Form.Control
               as='select'
               id='timelineTypeSelect'
-              // value={ViewType[this.state.view]}
+              value={this.state.view}
               onChange={(e) => {
                 this.changeTimelineType(e);
               }}>
@@ -296,14 +302,13 @@ export default class TimelineComponent
               <option value={ViewType.IntervalOccurrence}>
                 Interval Occurrence
               </option>
-              <option selected value={ViewType.EventMagnitude}>
+              <option value={ViewType.EventMagnitude}>
                 Event Magnitude
               </option>
               <option value={ViewType.EventOccurrence}>
                 Event Occurrence
               </option>
             </Form.Control>
-
           </InputGroup>
 
           <InputGroup>
@@ -419,9 +424,10 @@ export default class TimelineComponent
    * @param {any} e: the event to pass into the function
    */
   changeTimelineType(e: any) {
-    const val = Number.parseInt(e.target.value);
+    // const val = Number.parseInt(e.target.value);
+    const val = e.target.value;
     console.log(e.target.value);
-    console.log(ViewType[val]);
+    console.log(val);
     console.log(m.view);
     m.view = val;
 

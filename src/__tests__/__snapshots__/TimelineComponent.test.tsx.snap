@@ -7,11 +7,6 @@ exports[`<TimelineComponent /> R2 Tests
   <div id=\\"timelineComponentDiv\\">
     <div>
       <div>
-        <Button variant=\\"primary\\" onClick={[Function: bound toggleTimeline]} active={false} disabled={false} type=\\"button\\">
-          <button onClick={[Function: bound toggleTimeline]} disabled={false} type=\\"button\\" className=\\"btn btn-primary\\">
-            Switch to Interval Timeline
-          </button>
-        </Button>
         <InputGroup>
           <div className=\\"input-group\\">
             <InputGroupPrepend>
@@ -23,18 +18,18 @@ exports[`<TimelineComponent /> R2 Tests
                 </InputGroupText>
               </div>
             </InputGroupPrepend>
-            <FormControl as=\\"select\\" id=\\"timelineTypeSelect\\" onChange={[Function: onChange]}>
-              <select onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"timelineTypeSelect\\" className=\\"form-control\\">
-                <option value={0}>
+            <FormControl as=\\"select\\" id=\\"timelineTypeSelect\\" value=\\"Event Magnitude\\" onChange={[Function: onChange]}>
+              <select value=\\"Event Magnitude\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"timelineTypeSelect\\" className=\\"form-control\\">
+                <option value=\\"Interval Magnitude\\">
                   Interval Magnitude
                 </option>
-                <option value={1}>
+                <option value=\\"Interval Occurrence\\">
                   Interval Occurrence
                 </option>
-                <option selected={true} value={2}>
+                <option value=\\"Event Magnitude\\">
                   Event Magnitude
                 </option>
-                <option value={3}>
+                <option value=\\"Event Occurrence\\">
                   Event Occurrence
                 </option>
               </select>
@@ -178,7 +173,7 @@ exports[`<TimelineComponent /> R2 Tests
           </div>
         </InputGroup>
       </div>
-      <div id=\\"svgtarget\\" />
+      <div style={{...}} id=\\"svgtarget\\" />
     </div>
   </div>
 </TimelineComponent>"
@@ -335,11 +330,6 @@ exports[`<TimelineComponent /> R2 Tests
   <div id=\\"timelineComponentDiv\\">
     <div>
       <div>
-        <Button variant=\\"primary\\" onClick={[Function: bound toggleTimeline]} active={false} disabled={false} type=\\"button\\">
-          <button onClick={[Function: bound toggleTimeline]} disabled={false} type=\\"button\\" className=\\"btn btn-primary\\">
-            Switch to Interval Timeline
-          </button>
-        </Button>
         <InputGroup>
           <div className=\\"input-group\\">
             <InputGroupPrepend>
@@ -351,18 +341,18 @@ exports[`<TimelineComponent /> R2 Tests
                 </InputGroupText>
               </div>
             </InputGroupPrepend>
-            <FormControl as=\\"select\\" id=\\"timelineTypeSelect\\" onChange={[Function: onChange]}>
-              <select onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"timelineTypeSelect\\" className=\\"form-control\\">
-                <option value={0}>
+            <FormControl as=\\"select\\" id=\\"timelineTypeSelect\\" value=\\"Event Magnitude\\" onChange={[Function: onChange]}>
+              <select value=\\"Event Magnitude\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"timelineTypeSelect\\" className=\\"form-control\\">
+                <option value=\\"Interval Magnitude\\">
                   Interval Magnitude
                 </option>
-                <option value={1}>
+                <option value=\\"Interval Occurrence\\">
                   Interval Occurrence
                 </option>
-                <option selected={true} value={2}>
+                <option value=\\"Event Magnitude\\">
                   Event Magnitude
                 </option>
-                <option value={3}>
+                <option value=\\"Event Occurrence\\">
                   Event Occurrence
                 </option>
               </select>
@@ -506,7 +496,7 @@ exports[`<TimelineComponent /> R2 Tests
           </div>
         </InputGroup>
       </div>
-      <div id=\\"svgtarget\\" />
+      <div style={{...}} id=\\"svgtarget\\" />
     </div>
   </div>
 </TimelineComponent>"
@@ -528,18 +518,37 @@ exports[`<TimelineComponent /> R2 Tests
 <g clip-path=\\"url(#barsBox)\\">
 <g id=\\"barsLayer\\">
 <g class=\\"plot\\" id=\\"bars\\">
-<rect class=\\"bar\\" x=\\"125\\" width=\\"0\\" height=\\"NaN\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
+<g class=\\"bar\\">
+<rect class=\\"pin-line\\" x=\\"0\\" width=\\"2\\" y=\\"419.4852605640208\\" height=\\"178.5147394359792\\">
 </rect>
-<rect class=\\"bar\\" x=\\"125\\" width=\\"0\\" height=\\"NaN\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
+<circle class=\\"pin-head\\" cx=\\"0\\" cy=\\"419.4852605640208\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+</circle>
+</g>
+<g class=\\"bar\\">
+<rect class=\\"pin-line\\" x=\\"50\\" width=\\"2\\" y=\\"45.45221988871617\\" height=\\"552.5477801112838\\">
 </rect>
-<rect class=\\"bar\\" x=\\"125\\" width=\\"0\\" height=\\"NaN\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
+<circle class=\\"pin-head\\" cx=\\"50\\" cy=\\"45.45221988871617\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+</circle>
+</g>
+<g class=\\"bar\\">
+<rect class=\\"pin-line\\" x=\\"100\\" width=\\"2\\" y=\\"0\\" height=\\"598\\">
 </rect>
-<rect class=\\"bar\\" x=\\"125\\" width=\\"0\\" height=\\"NaN\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
+<circle class=\\"pin-head\\" cx=\\"100\\" cy=\\"0\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+</circle>
+</g>
+<g class=\\"bar\\">
+<rect class=\\"pin-line\\" x=\\"150\\" width=\\"2\\" y=\\"598\\" height=\\"0\\">
 </rect>
-<rect class=\\"bar\\" x=\\"125\\" width=\\"0\\" height=\\"NaN\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
+<circle class=\\"pin-head\\" cx=\\"150\\" cy=\\"598\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+</circle>
+</g>
+<g class=\\"bar\\">
+<rect class=\\"pin-line\\" x=\\"200\\" width=\\"2\\" y=\\"221.82608227113172\\" height=\\"376.1739177288683\\">
 </rect>
-<g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(125,
-      598)\\">
+<circle class=\\"pin-head\\" cx=\\"200\\" cy=\\"221.82608227113172\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+</circle>
+</g>
+<g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(25,598)\\">
 <line stroke=\\"blue\\" y2=\\"6\\">
 </line>
 <text style=\\"text-anchor: end; font-size: 1rem;\\" dx=\\"-.8em\\" dy=\\".15em\\" transform=\\"rotate(-90)\\">1/1/2010
@@ -552,15 +561,85 @@ exports[`<TimelineComponent /> R2 Tests
 <g style=\\"color: red;\\" class=\\"y axis\\" fill=\\"none\\" font-size=\\"10\\" font-family=\\"sans-serif\\" text-anchor=\\"end\\">
 <path class=\\"domain\\" stroke=\\"currentColor\\" d=\\"M-6,598.5H0.5V0.5H-6\\">
 </path>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,583.3875042617942)\\">
+<line stroke=\\"currentColor\\" x2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">350,000,000
+</text>
+</g>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,531.0850872294376)\\">
+<line stroke=\\"currentColor\\" x2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">400,000,000
+</text>
+</g>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,478.78267019708096)\\">
+<line stroke=\\"currentColor\\" x2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">450,000,000
+</text>
+</g>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,426.48025316472433)\\">
+<line stroke=\\"currentColor\\" x2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">500,000,000
+</text>
+</g>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,374.1778361323677)\\">
+<line stroke=\\"currentColor\\" x2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">550,000,000
+</text>
+</g>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,321.87541910001113)\\">
+<line stroke=\\"currentColor\\" x2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">600,000,000
+</text>
+</g>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,269.5730020676545)\\">
+<line stroke=\\"currentColor\\" x2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">650,000,000
+</text>
+</g>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,217.27058503529787)\\">
+<line stroke=\\"currentColor\\" x2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">700,000,000
+</text>
+</g>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,164.96816800294124)\\">
+<line stroke=\\"currentColor\\" x2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">750,000,000
+</text>
+</g>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,112.66575097058455)\\">
+<line stroke=\\"currentColor\\" x2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">800,000,000
+</text>
+</g>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,60.36333393822804)\\">
+<line stroke=\\"currentColor\\" x2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">850,000,000
+</text>
+</g>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,8.060916905871295)\\">
+<line stroke=\\"currentColor\\" x2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">900,000,000
+</text>
+</g>
 <text transform=\\"rotate(-90)\\" y=\\"6\\" dy=\\".71em\\" style=\\"text-anchor: end; color: red;\\">yColumn
 </text>
 </g>
 </g>
-<text transform=\\"translate(477,618)\\" style=\\"text-anchor: start;\\">end: Order ID
+<text transform=\\"translate(467,618)\\" style=\\"text-anchor: start;\\">Order Date
 </text>
-<text transform=\\"translate(467,618)\\" style=\\"text-anchor: end;\\">start: Order Date,
-</text>
-<text transform=\\"rotate(-90)\\" y=\\"-70\\" x=\\"-299\\" dy=\\"1em\\" style=\\"text-anchor: middle;\\">Order Date
+<text transform=\\"rotate(-90)\\" y=\\"-70\\" x=\\"-299\\" dy=\\"1em\\" style=\\"text-anchor: middle;\\">Order ID
 </text>
 </g>
 </svg>

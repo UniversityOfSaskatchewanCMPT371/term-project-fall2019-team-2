@@ -22,6 +22,7 @@ import assert from 'assert';
 //   EventMagnitude = 2,
 //   EventOccurrence = 3
 // }
+import IntervalOccurrence from './TimelineTypes/IntervalOccurrence';
 
 export enum ViewType {
   IntervalMagnitude= 'Interval Magnitude',
@@ -428,6 +429,12 @@ export default class TimelineComponent
         break;
 
       case ViewType.IntervalMagnitude:
+        prompt = 'Switch to IntervalOccurrence Timeline';
+        m.view = ViewType.IntervalOccurrence;
+        timelineType = new IntervalOccurrence(m);
+        break;
+
+      case ViewType.IntervalOccurrence:
         prompt = 'Switch to Interval Timeline';
         m.view = ViewType.EventMagnitude;
         timelineType = new EventMagnitude(m);
@@ -633,19 +640,26 @@ export default class TimelineComponent
             .on('end', this.dragEnded));
 
     const axisLayer = this.svg.append('g')
+        .style('color', 'black')
+        .attr('class', 'x axis')
+        .call(d3.axisTop(m.x))
+        .append('text')
         .attr('id', 'axisLayer');
 
-    axisLayer.append('g')
-        .style('color', 'red')
-        .attr('class', 'y axis')
-        .call(d3.axisLeft(m.y))
-        .append('text')
-        .attr('transform', 'rotate(-90)')
-        .attr('y', 6)
-        .attr('dy', '.71em')
-        .style('text-anchor', 'end')
-        .style('color', 'red')
-        .text('yColumn');
+    if (timelineType instanceof EventMagnitude ||
+      timelineType instanceof IntervalMagnitude) {
+      axisLayer.append('g')
+          .style('color', 'black')
+          .attr('class', 'y axis')
+          .call(d3.axisLeft(m.y))
+          .append('text')
+          .attr('transform', 'rotate(-90)')
+          .attr('y', 6)
+          .attr('dy', '.71em')
+          .style('text-anchor', 'end')
+          .style('color', 'red')
+          .text('yColumn');
+    }
 
     m.plot = barsLayer.append('g')
         .attr('class', 'plot')
@@ -771,7 +785,7 @@ export default class TimelineComponent
     const keys = Object.keys(d);
     let tooltip: string = '';
     keys.forEach(function(key) {
-      tooltip += '<strong>' + key + '</strong> <span style=\'color:red\'>' +
+      tooltip += '<strong>' + key + '</strong> <span style=\'color:#000000\'>' +
         d[key] + '</span><br/>';
     });
 

@@ -28,7 +28,9 @@ export default class IntervalOccurrence extends TimelineType
     d3.selectAll('.line')
         .attr('x2', (d: any) =>
           this.m.scale * (this.m.timeScale(new Date(d[this.m.xColumn2]))));
-    console.log(this.m.xColumn2);
+    d3.selectAll('.text')
+        .attr('x', (d: any) =>
+          this.m.scale * this.m.timeScale(new Date(d[this.m.xColumn])));
   }
 
   /**
@@ -45,6 +47,7 @@ export default class IntervalOccurrence extends TimelineType
         . attr('class', 'line');
 
     tLine.append('line')
+        .attr('class', 'line')
         .attr('x', (d: any) =>
           this.m.timeScale(new Date(d[this.m.xColumn])))
         .attr('x2', (d: any) =>
@@ -56,7 +59,7 @@ export default class IntervalOccurrence extends TimelineType
 
     tLine.append('text')
         .text((d: any) => d[this.m.yColumn])
-        .attr('class', 'pin-text')
+        .attr('class', 'text')
         .style('text-anchor', 'start')
         .style('font-size', '1rem')
         .attr('y', (lineHeight))

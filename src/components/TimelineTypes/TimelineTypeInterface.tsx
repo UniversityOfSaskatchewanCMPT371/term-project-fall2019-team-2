@@ -112,12 +112,72 @@ export abstract class TimelineType implements TimelineTypeInterface {
   }
 
   /**
+   * Purpose: determines which columns are appropriate for the y axis
+   * @param {string} primType: the primType to compare
+   */
+  abstract checkYPrimType(primType: string): boolean;
+
+  /**
+   * Purpose: determines which columns are appropriate for the y axis
+   * @param {string} primType: the primType to compare
+   * @return {boolean}: a boolean indicating if the primType is appropriate
+   * for the x axis
+   */
+  checkXPrimType(primType: string): boolean {
+    return (primType === 'date' || primType === 'number');
+  }
+
+  /**
+   * Purpose: updates the list of x and y axis columns to be relevant to the
+   * type of timeline being drawn.
+   */
+  updateColumns(): void {
+    const cols = this.m.columns;
+    let yColumnSet = false;
+    let xColumnSet = false;
+    let xColumn2Set = false;
+    this.m.yColumns = [];
+    this.m.xColumns = [];
+
+    // iterate through columns and set default values
+    for (let i = 0; i < cols.length; i++) {
+      const col = cols[i];
+      // Plotting occurrence data isn't yet supported, so we are only
+      // interested in plotting magnitude data for the y-axis
+      if (this.checkYPrimType(col.primType)) {
+        this.m.yColumns.push(col);
+        if (!yColumnSet) {
+          this.m.yColumn = col.key;
+          yColumnSet = true;
+        }
+      }
+
+      if (this.checkXPrimType(col.primType)) {
+        this.m.xColumns.push(col);
+        if (!xColumnSet) {
+          this.m.xColumn = col.key;
+          xColumnSet = true;
+          // continue so the next if isn't evaluated on the same element
+          continue;
+        }
+        // if xColumn has already been set, set xColumn2 to the next suitable
+        // column
+        if (xColumnSet && !xColumn2Set) {
+          this.m.xColumn2 = col.key;
+          xColumn2Set = true;
+        }
+      }
+    }
+  }
+
+  /**
    * Purpose: constructor
    * @param {TimelineModel} newModel: the TimelineModel to pass into the
    * TimelineType object
    */
   constructor(newModel: TimelineModel) {
     this.m = newModel;
+    this.updateColumns();
   }
 }
 

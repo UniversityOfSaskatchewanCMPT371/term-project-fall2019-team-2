@@ -39,7 +39,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
       this.inferTypes = this.inferTypes.bind(this);
       this.parseCsv = this.parseCsv.bind(this);
       this.parse = this.parse.bind(this);
-      this.inferTypes = this.inferTypes.bind(this);
     }
 
     /**
@@ -118,7 +117,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
           throw new Error('Wrong file type was uploaded.');
         }
       }
-      throw new Error('Wrong file type was uploaded.');
+      throw new Error('File object undefined');
     }
 
     /**
@@ -134,7 +133,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
     sortData(data: Array<object>): boolean {
       let doneTheWork = false;
       /* loop goes through each key and saves the 1 with a date in first row */
-      if (data[0] !== undefined && data.length > 0) {
+      if (data !== undefined && data.length > 0) {
         for (const [key, value] of Object.entries(data[0])) {
           if (!doneTheWork) {
             const date1 = moment(String(value));
@@ -353,8 +352,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
               this.columnTypes = this.inferTypes(this.state.data);
               this.sortData(this.state.data);
             } catch (e) {
-              alert('data is EMPTY');
-              console.log('data is empty');
+              alert(e.toString());
+              console.log(e.toString());
             }
           }
           resolver(true);

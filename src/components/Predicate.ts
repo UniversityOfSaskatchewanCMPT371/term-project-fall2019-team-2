@@ -26,7 +26,7 @@ export default class Predicate {
    * @return {string} The name of the predicate function
    */
   public getName(): string {
-    assert.notEqual(this.name, undefined);
+    assert.notStrictEqual(this.name, undefined);
     return this.name;
   }
 
@@ -42,8 +42,8 @@ export default class Predicate {
    */
   public evaluate(point: Object): boolean {
     // point object should be defined
-    assert.notEqual(point, null);
-    assert.notEqual(point, undefined);
+    assert.notStrictEqual(point, null);
+    assert.notStrictEqual(point, undefined);
     return this.func(point);
   }
 }

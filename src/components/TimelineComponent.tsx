@@ -101,7 +101,7 @@ export default class TimelineComponent
       let xColumn2Set = false;
 
       // data (columns) should exist to mount the component
-      assert.notEqual(cols, []);
+      assert.notStrictEqual(cols, []);
 
       m.yColumns = [];
       m.xColumns = [];
@@ -109,14 +109,14 @@ export default class TimelineComponent
       // iterate through columns and set default values
       for (let i = 0; i < cols.length; i++) {
         const col = cols[i];
-        assert.notEqual(col, null);
+        assert.notStrictEqual(col, null);
         // inferTypes shouldn't leave the type undefined
-        assert.notEqual(col.primType, undefined);
+        assert.notStrictEqual(col.primType, undefined);
         // Plotting occurrence data isn't yet supported, so we are only
         // interested in plotting magnitude data for the y-axis
         if (col.primType === 'number') {
           m.yColumns.push(col);
-          assert.equal(m.yColumns[m.yColumns.length - 1], col);
+          assert.strictEqual(m.yColumns[m.yColumns.length - 1], col);
           if (!yColumnSet) {
             this.setState(() => {
               return {
@@ -130,7 +130,7 @@ export default class TimelineComponent
 
         if (col.primType === 'date' || col.primType === 'number') {
           m.xColumns.push(col);
-          assert.equal(m.xColumns[m.xColumns.length - 1], col);
+          assert.strictEqual(m.xColumns[m.xColumns.length - 1], col);
           if (!xColumnSet) {
             this.setState(() => {
               return {
@@ -172,10 +172,10 @@ export default class TimelineComponent
    * @param {string} column
    */
   async sortData(column: string) {
-    assert.notEqual(this.state.data, []);
+    assert.notStrictEqual(this.state.data, []);
     const cols = this.state.data.columns;
     if (cols !== null && cols !== undefined) {
-      assert.notEqual(cols, []);
+      assert.notStrictEqual(cols, []);
       const col = cols.find((elem) => {
         return elem.key === column;
       });
@@ -200,7 +200,7 @@ export default class TimelineComponent
         }
 
         // there should still be data after being sorted
-        assert.notEqual(data, []);
+        assert.notStrictEqual(data, []);
         this.setState(() => {
           return {
             data,
@@ -216,13 +216,13 @@ export default class TimelineComponent
    * @param {string} column
    */
   async changeColumn(e: any, column: string) {
-    assert.notEqual(e, null);
-    assert.notEqual(e, undefined);
-    assert.notEqual(e.target, null);
-    assert.notEqual(e.target, undefined);
+    assert.notStrictEqual(e, null);
+    assert.notStrictEqual(e, undefined);
+    assert.notStrictEqual(e.target, null);
+    assert.notStrictEqual(e.target, undefined);
 
     const val = e.target.value;
-    assert.notEqual(val, undefined);
+    assert.notStrictEqual(val, undefined);
 
     // @ts-ignore
     if (column === 'yColumn') {
@@ -395,7 +395,7 @@ export default class TimelineComponent
    * Purpose: sets the initial values for rendering the actual timeline
    */
   initTimeline() {
-    assert.notEqual(this.state.data, []);
+    assert.notStrictEqual(this.state.data, []);
     m.yColumn = this.state.yColumn;
     m.xColumn = this.state.xColumn;
     m.xColumn2 = this.state.xColumn2;
@@ -464,7 +464,7 @@ export default class TimelineComponent
    */
   drawTimeline() {
     // should only draw timeline if there is data
-    assert.notEqual(this.state.data, []);
+    assert.notStrictEqual(this.state.data, []);
     this.zoom = d3.zoom()
         .scaleExtent([1, 20]) // zoom range
         .translateExtent(m.extent)

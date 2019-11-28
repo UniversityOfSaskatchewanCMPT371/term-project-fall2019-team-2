@@ -52,7 +52,7 @@ export default class Filter {
   public addPredicate(predicate: () => boolean) {
     this.listOfPreds.push(predicate);
     // pred should be in listOfPreds now
-    assert.equal(this.listOfPreds[this.listOfPreds.length - 1], predicate);
+    assert.strictEqual(this.listOfPreds[this.listOfPreds.length - 1], predicate);
   }
 
   /**
@@ -65,6 +65,6 @@ export default class Filter {
   public removePredicate(index: number) {
     const removed: Array<() => boolean> = this.listOfPreds.splice(index, 1);
     // pred shouldn't be in listOfPreds anymore
-    assert.equal(this.listOfPreds.find(removed[0]), undefined);
+    assert.strictEqual(this.listOfPreds.find(removed[0]), undefined);
   }
 }

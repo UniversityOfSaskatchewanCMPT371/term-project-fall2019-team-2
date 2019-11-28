@@ -141,7 +141,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
 
       let doneTheWork = false;
       /* loop goes through each key and saves the 1 with a date in first row */
-      if (data[0] !== undefined && data.length > 0) {
+      if (data !== undefined && data.length > 0) {
         assert.notEqual(data[0], null);
         for (const [key, value] of Object.entries(data[0])) {
           if (!doneTheWork) {

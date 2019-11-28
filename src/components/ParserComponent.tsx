@@ -35,6 +35,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
         data: [],
         showTimeline: false,
         formatString: '',
+        fileData: '',
       };
 
       this.isValid = this.isValid.bind(this);
@@ -42,7 +43,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
       this.inferTypes = this.inferTypes.bind(this);
       this.parseCsv = this.parseCsv.bind(this);
       this.parse = this.parse.bind(this);
-      this.inferTypes = this.inferTypes.bind(this);
     }
 
     /**
@@ -92,11 +92,23 @@ export default class ParserComponent extends React.Component<ParserInterface,
                       formatString: val,
                     };
                   });
+                  const mockDateFile: File = new File(
+                      [this.state.fileData],
+                      'mockFile.csv',
+                      {type: this.props.fileType.mimeName},
+                  );
+                  const fileEvent = {target: {files: [mockDateFile]}};
+                  this.parse(fileEvent);
                 }}>
-                <option selected value="">Open this select menu</option>
-                <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                <option selected value="">Select a Date Format</option>
+                <option value="X">Days from Event</option>
                 <option value="MM-DD-YYYY">MM-DD-YYYY</option>
                 <option value="DD-MM-YYYY">DD-MM-YYYY</option>
+                <option value="DD-MMMM-YYYY">DD-MMMM-YYYY</option>
+                <option value="MMMM-DD-YYYY">MMMM-DD-YYYY</option>
+                <option value="MMM-DD-YYYY">MMMM-DD-YYYY</option>
+                <option value="DD-MM-YY">DD-MM-YY</option>
+                <option value="MM-DD-YY">MM-DD-YY</option>
               </select>
             </div>
           </div>
@@ -122,13 +134,16 @@ export default class ParserComponent extends React.Component<ParserInterface,
     isValid(upFile?: File): boolean {
       if (upFile !== undefined) {
         const typeOfFile = upFile.name.substr(upFile.name.length - 4);
-        if (typeOfFile === '.csv') {
-          return typeOfFile === '.csv';
+        if (this.props.fileType.mimeName === '.csv' +
+            ',text/csv' && typeOfFile === '.csv') {
+          return true;
         } else {
-          throw new Error('Wrong file type was uploaded.');
+          alert('Wrong file type was uploaded.');
+          return false;
         }
       }
-      throw new Error('Wrong file type was uploaded.');
+      alert('Wrong file type was uploaded.');
+      return false;
     }
 
     /**
@@ -144,11 +159,11 @@ export default class ParserComponent extends React.Component<ParserInterface,
     sortData(data: Array<object>): boolean {
       let doneTheWork = false;
       /* loop goes through each key and saves the 1 with a date in first row */
-      if (data[0] !== undefined && data.length > 0) {
+      if (data !== undefined && data.length > 0) {
         for (const [key, value] of Object.entries(data[0])) {
           if (!doneTheWork) {
-            const date1 = moment(String(value));
-            if (!isNaN(Number(date1)) && isNaN(Number(value))) {
+            const date1 = moment(String(value), this.state.formatString);
+            if (moment(date1, this.state.formatString).isValid()) {
               doneTheWork = true;
               const formatString = this.state.formatString;
 
@@ -306,14 +321,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
       });
 
       const temp: File = fileEvent.target.files[0];
-      try {
-        if (this.props.fileType.mimeName === '.csv' +
-            ',text/csv' && this.isValid(temp)) {
-          await this.parseCsv(fileEvent);
-        }
-      } catch (e) {
-        alert('Wrong file type was uploaded.');
-        console.log('Wrong file was uploaded.');
+      if (this.isValid(temp)) {
+        await this.parseCsv(fileEvent);
       }
 
       this.setState(() => {
@@ -363,8 +372,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
               this.columnTypes = this.inferTypes(this.state.data);
               this.sortData(this.state.data);
             } catch (e) {
-              alert('data is EMPTY');
-              console.log('data is empty');
+              alert(e.toString());
+              console.log(e.toString());
             }
           }
           resolver(true);

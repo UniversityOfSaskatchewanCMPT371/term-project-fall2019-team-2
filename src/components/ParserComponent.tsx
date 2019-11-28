@@ -117,7 +117,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
           throw new Error('Wrong file type was uploaded.');
         }
       }
-      throw new Error('File object is undefined');
+      throw new Error('File object undefined');
     }
 
     /**

@@ -148,15 +148,15 @@ describe('<EventOccurrence /> Unit Tests', () => {
     timelineType = new EventOccurrence(m);
     // Create spies
     drawSpy =
-      jest.spyOn(IntervalOccurrence.prototype, 'draw');
+      jest.spyOn(EventOccurrence.prototype, 'draw');
     getDataSpy =
-      jest.spyOn(IntervalOccurrence.prototype, 'getData');
+      jest.spyOn(EventOccurrence.prototype, 'getData');
     applyZoomSpy =
-      jest.spyOn(IntervalOccurrence.prototype, 'applyZoom');
+      jest.spyOn(EventOccurrence.prototype, 'applyZoom');
     drawLabelsSpy =
-      jest.spyOn(IntervalOccurrence.prototype, 'drawLabels');
+      jest.spyOn(EventOccurrence.prototype, 'drawLabels');
     getTickTranslateSpy =
-      jest.spyOn(IntervalOccurrence.prototype, 'getTickTranslate');
+      jest.spyOn(EventOccurrence.prototype, 'getTickTranslate');
 
 
     // We have to mount the wrapper once to get the html it will generate in

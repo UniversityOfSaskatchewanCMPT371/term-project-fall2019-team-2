@@ -175,8 +175,10 @@ describe('<IntervalOccurrence /> Unit Tests', () => {
 
   //  draw
   describe( 'draw()', () => {
+    m = new TimelineModel();
+    timelineType = new IntervalOccurrence(m);
+    wrapper.timeLineType = timelineType;
     it('checks that is working as expected', ()=> {
-      wrapper.instance().drawEventMagnitude();
       expect(drawSpy).toHaveBeenCalled();
     });
   });

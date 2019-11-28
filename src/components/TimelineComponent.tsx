@@ -215,29 +215,38 @@ export default class TimelineComponent
   async changeColumn(e: any, column: string) {
     const val = e.target.value;
 
-    // @ts-ignore
-    if (column === 'yColumn') {
-      this.setState(() => {
-        return {
-          yColumn: val,
-        };
-      });
-      m.yColumn = val;
-    } else if (column === 'xColumn') {
-      this.setState(() => {
-        return {
-          xColumn: val,
-        };
-      }, () => this.sortData(val));
-      m.xColumn = val;
-    } else if (column === 'xColumn2') {
-      this.setState(() => {
-        return {
-          xColumn2: val,
-        };
-      });
-      m.xColumn2 = val;
-    }
+    // make sure the values actually get updated before calling resetTimeline
+    const valSet = new Promise((resolver, agent) => {
+      // @ts-ignore
+      if (column === 'yColumn') {
+        m.yColumn = val;
+        this.setState(() => {
+          return {
+            yColumn: m.yColumn,
+          };
+        }, () => resolver(true));
+      } else if (column === 'xColumn') {
+        m.xColumn = val;
+        this.setState(() => {
+          return {
+            xColumn: m.xColumn,
+          };
+        }, () => {
+          this.sortData(val);
+          resolver(true);
+        });
+      } else if (column === 'xColumn2') {
+        m.xColumn2 = val;
+        this.setState(() => {
+          return {
+            xColumn2: m.xColumn2,
+          };
+        }, () => resolver(true));
+      }
+    });
+
+    await valSet;
+
     this.resetTimeline();
   }
 
@@ -327,9 +336,10 @@ export default class TimelineComponent
             <Form.Control
               as='select'
               id='xSelect'
-              value={this.state.xColumn}
-              onChange={(e) => {
-                this.changeColumn(e, 'xColumn');
+              // value={this.state.xColumn}
+              value={m.xColumn}
+              onChange={async (e) => {
+                await this.changeColumn(e, 'xColumn');
               }}>
               {
                 m.xColumns.map((col: any, i: number) =>
@@ -348,9 +358,10 @@ export default class TimelineComponent
             <Form.Control
               as='select'
               id='x2Select'
-              value={this.state.xColumn2}
-              onChange={(e) => {
-                this.changeColumn(e, 'xColumn2');
+              // value={this.state.xColumn2}
+              value={m.xColumn2}
+              onChange={async (e) => {
+                await this.changeColumn(e, 'xColumn2');
               }}>
               {
                 m.xColumns.map((col: any, i: number) =>

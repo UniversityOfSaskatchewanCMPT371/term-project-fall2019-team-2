@@ -487,6 +487,10 @@ export default class TimelineComponent
             .on('end', this.dragEnded));
 
     const axisLayer = this.svg.append('g')
+        .style('color', 'black')
+        .attr('class', 'x axis')
+        .call(d3.axisTop(m.x))
+        .append('text')
         .attr('id', 'axisLayer');
 
     if (timelineType instanceof EventMagnitude ||

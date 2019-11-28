@@ -1,5 +1,7 @@
 import TimelineTypeInterface, {TimelineType}
   from './TimelineTypeInterface';
+import * as d3
+  from 'd3';
 
 /**
  * Purpose: provides methods relevant to drawing intervalOccurrence
@@ -11,6 +13,22 @@ export default class IntervalOccurrence extends TimelineType
    * handles zooming
    */
   applyZoom(): void {
+    d3.selectAll('.bar')
+        .attr('x', (d: any) =>
+          this.m.scale * this.m.timeScale(new Date(d[this.m.xColumn])))
+        .attr('width', (d: any) =>
+          this.m.scale * (this.m.timeScale(new Date(d[this.m.xColumn2])) -
+            this.m.timeScale(new Date(d[this.m.xColumn]))));
+
+    d3.selectAll('.xtick')
+        .attr('transform', (d: any) =>
+          `translate(${this.m.scale * this.m.timeScale(new Date(d.text))},
+            ${this.m.height})`);
+
+    d3.selectAll('.line')
+        .attr('x2', (d: any) =>
+          this.m.scale * (this.m.timeScale(new Date(d[this.m.xColumn2]))));
+    console.log(this.m.xColumn2);
   }
 
   /**

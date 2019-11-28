@@ -41,6 +41,7 @@ export default class TimelineModel {
   public xColumn: string;
   public xColumn2: string;
   public yColumn: string;
+  public yColumn2: string;
   public xColumns: Column[];
   public yColumns: Column[];
   public columns: Column[];
@@ -87,6 +88,7 @@ export default class TimelineModel {
     this.xColumn = '';
     this.xColumn2 = '';
     this.yColumn = '';
+    this.yColumn2 = '';
     this.xColumns = [];
     this.yColumns = [];
     this.columns = [];

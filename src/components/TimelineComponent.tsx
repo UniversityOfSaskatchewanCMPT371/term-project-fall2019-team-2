@@ -315,7 +315,7 @@ export default class TimelineComponent
             <InputGroup.Prepend>
               <InputGroup.Text
                 id='inputGroup
-                Prepend'>yColumn</InputGroup.Text>
+                Prepend'>First Y Column</InputGroup.Text>
             </InputGroup.Prepend>
             <Form.Control
               as='select'
@@ -333,6 +333,31 @@ export default class TimelineComponent
               }
             </Form.Control>
 
+            <InputGroup.Prepend>
+              <InputGroup.Text
+                id='inputGroup
+                Prepend'>Second Y Column</InputGroup.Text>
+            </InputGroup.Prepend>
+            <Form.Control
+              as='select'
+              id='ySelect'
+              // value={this.state.yColumn}
+              value={m.yColumn2}
+              onChange={async (e) => {
+                await this.changeColumn(e, 'yColumn');
+              }}>
+              <option key={''} value={''}>Select another Column</option>
+              {
+                m.yColumns.map((col: any, i: number) =>
+                  <option
+                    key={i}
+                    value={col.key}>{col.key}</option>)
+              }
+            </Form.Control>
+
+          </InputGroup>
+
+          <InputGroup>
             <InputGroup.Prepend>
               <InputGroup.Text
                 id='inputGroup

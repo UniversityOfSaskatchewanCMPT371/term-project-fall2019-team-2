@@ -38,4 +38,5 @@ export interface ParserState {
     showTimeline: boolean;
     formatString: string;
     fileData: any;
+    upFile: any;
 }

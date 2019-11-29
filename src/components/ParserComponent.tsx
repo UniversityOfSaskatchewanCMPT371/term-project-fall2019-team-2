@@ -36,6 +36,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
         showTimeline: false,
         formatString: '',
         fileData: '',
+        upFile: '',
       };
 
       this.isValid = this.isValid.bind(this);
@@ -94,11 +95,15 @@ export default class ParserComponent extends React.Component<ParserInterface,
                   });
                   const mockDateFile: File = new File(
                       [this.state.fileData],
-                      'mockFile.csv',
+                      String(this.state.upFile),
                       {type: this.props.fileType.mimeName},
                   );
                   const fileEvent = {target: {files: [mockDateFile]}};
-                  this.parse(fileEvent);
+                  // eslint-disable-next-line max-len
+                  const typeOfFile = this.state.upFile.substr(this.state.upFile.length - 4);
+                  if (typeOfFile === '.csv' || typeOfFile === undefined) {
+                    this.parse(fileEvent);
+                  }
                 }}>
                 <option selected value="">Select a Date Format</option>
                 <option value="X">Numeric</option>
@@ -133,6 +138,11 @@ export default class ParserComponent extends React.Component<ParserInterface,
      */
     isValid(upFile?: File): boolean {
       if (upFile !== undefined) {
+        this.setState(() => {
+          return {
+            upFile: upFile.name,
+          };
+        });
         const typeOfFile = upFile.name.substr(upFile.name.length - 4);
         if (this.props.fileType.mimeName === '.csv' +
             ',text/csv' && typeOfFile === '.csv') {
@@ -141,9 +151,14 @@ export default class ParserComponent extends React.Component<ParserInterface,
           alert('Wrong file type was uploaded.');
           return false;
         }
+      } else {
+        this.setState(() => {
+          return {
+            upFile: '',
+          };
+        });
+        return false;
       }
-      alert('Wrong file type was uploaded.');
-      return false;
     }
 
     /**
@@ -316,6 +331,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
     async parse(fileEvent: any) {
       this.setState(() => {
         return {
+          fileType: this.state.fileType,
           showTimeline: false,
         };
       });
@@ -323,13 +339,13 @@ export default class ParserComponent extends React.Component<ParserInterface,
       const temp: File = fileEvent.target.files[0];
       if (this.isValid(temp)) {
         await this.parseCsv(fileEvent);
+        this.setState(() => {
+          return {
+            showTimeline: true,
+          };
+        });
       }
 
-      this.setState(() => {
-        return {
-          showTimeline: true,
-        };
-      });
       this.childKey++;
     }
 
@@ -367,6 +383,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
                 fileType: this.state.fileType,
                 data: content,
                 fileData: fileReader.result,
+                showTimeline: false,
               };
             });
             try {

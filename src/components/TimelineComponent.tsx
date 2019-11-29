@@ -16,14 +16,11 @@ import EventOccurrence
 import assert from 'assert';
 
 
-// export enum ViewType {
-//   IntervalMagnitude= 0,
-//   IntervalOccurrence = 1,
-//   EventMagnitude = 2,
-//   EventOccurrence = 3
-// }
 import IntervalOccurrence from './TimelineTypes/IntervalOccurrence';
 
+/**
+ * Purpose: an enum to differentiate the data being drawn
+ */
 export enum ViewType {
   IntervalMagnitude = 'IntervalMagnitude',
   IntervalOccurrence = 'IntervalOccurrence',
@@ -475,41 +472,6 @@ export default class TimelineComponent
       </div>);
   }
 
-  /**
-   * Purpose: toggles between interval and occurrence timelines
-   */
-  // toggleTimeline() {
-  //   let prompt = this.state.togglePrompt;
-  //
-  //   switch (this.m.view) {
-  //     case ViewType.EventMagnitude:
-  //       prompt = 'Switch to Occurrence Timeline';
-  //       this.m.view = ViewType.IntervalMagnitude;
-  //       this.timelineType = new IntervalMagnitude(this.m);
-  //       break;
-  //
-  //     case ViewType.IntervalMagnitude:
-  //       prompt = 'Switch to IntervalOccurrence Timeline';
-  //       this.m.view = ViewType.IntervalOccurrence;
-  //       this.timelineType = new IntervalOccurrence(this.m);
-  //       break;
-  //
-  //     case ViewType.IntervalOccurrence:
-  //       prompt = 'Switch to Interval Timeline';
-  //       this.m.view = ViewType.EventMagnitude;
-  //       this.timelineType = new EventMagnitude(this.m);
-  //       break;
-  //   }
-  //
-  //   this.setState(() => {
-  //     return {
-  //       togglePrompt: prompt,
-  //       view: this.m.view,
-  //     };
-  //   }, () => {
-  //     this.resetTimeline();
-  //   });
-  // }
 
   /**
    * Purpose: changes the timeline type to the one desired by the user

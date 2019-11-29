@@ -11,6 +11,7 @@ import Data
 import * as TimSort from 'timsort';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {loadTestCsv} from './Utilities';
+import * as AlertComponent from './AlertComponent';
 
 console.log(process.env.NODE_ENV);
 
@@ -139,6 +140,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
           return true;
         } else {
           alert('Wrong file type was uploaded.');
+          // AlertComponent.default('Wrong file type was uploaded.');
           return false;
         }
       }

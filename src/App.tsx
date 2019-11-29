@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import ParserComponent from './components/ParserComponent';
+import AlertComponent from './components/AlertComponent';
 import {FileType} from './components/ParserInterface';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';

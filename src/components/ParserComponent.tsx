@@ -12,8 +12,6 @@ import * as TimSort from 'timsort';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {loadTestCsv} from './Utilities';
 
-console.log(process.env.NODE_ENV);
-
 /**
  * Purpose: react component responsible for receiving and parsing file data
  */

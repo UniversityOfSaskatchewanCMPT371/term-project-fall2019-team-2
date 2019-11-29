@@ -281,22 +281,12 @@ export default class ParserComponent extends React.Component<ParserInterface,
           let newCol: Column;
           if (mostCommonType === 'string') {
             // create a Column object with occurrence data
-            newCol = new Column(mostCommonType,
-                enumDrawType.occurrence, listFields[indx]);
-            arrayOfColumns[indx] = newCol;
-            indx++;
-          } else if (mostCommonType === 'number') {
-            // create a Column with interval, point or magnitude data
-            newCol = new Column(mostCommonType,
-                enumDrawType.any, listFields[indx]);
-            arrayOfColumns[indx] = newCol;
-            indx++;
-          } else if (mostCommonType === 'date') {
+            this.createColumn(mostCommonType, enumDrawType.occurrence, indx,
+                listFields, arrayOfColumns);
+          } else if (mostCommonType === 'date' || mostCommonType == 'number') {
             // create a Column with date data
-            // eslint-disable-next-line max-len
-            newCol = new Column(mostCommonType, enumDrawType.any, listFields[indx]);
-            arrayOfColumns[indx] = newCol;
-            indx++;
+            this.createColumn(mostCommonType, enumDrawType.any, indx,
+                listFields, arrayOfColumns);
           }
         }
         );
@@ -304,6 +294,22 @@ export default class ParserComponent extends React.Component<ParserInterface,
       } else {
         throw new Error('data is empty');
       }
+    }
+
+    /**
+   * creates a new column
+   * @param {string} mostComm
+   * @param {enumDrawType} drawType
+   * @param {number} indx
+   * @param {string[]} fieldList
+   * @param {Column[]} list
+   */
+    createColumn(mostComm: string, drawType: enumDrawType, indx: number,
+        fieldList: string[], list: Column[]) {
+      const newCol: any = new Column(mostComm, enumDrawType.any,
+          fieldList[indx]);
+      list[indx] = newCol;
+      indx++;
     }
 
     /**

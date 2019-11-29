@@ -151,21 +151,22 @@ export default class ParserComponent extends React.Component<ParserInterface,
                   if (val.isValid()) {
                     a[keyInt] = val.valueOf();
                   } else {
-                    console.info('TimSort.sort: the value for a is invalid');
+                    console.warn('the value for a is invalid');
                     a[keyInt] = -1;
                   }
                 }
+                console.log('a has property');
 
                 if (!b.hasOwnProperty(keyInt)) {
                   val = moment(b[key], formatString);
                   if (val.isValid()) {
                     b[keyInt] = val.valueOf();
                   } else {
-                    console.warn('TimSort.sort: the value for b is invalid');
+                    console.warn('the value for b is invalid');
                     b[keyInt] = -1;
                   }
                 }
-                console.log('TimSort.sort: b has no property');
+                console.log('b has property');
                 return (a[keyInt] - b[keyInt]);
               });
 
@@ -181,7 +182,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
       if (doneTheWork) {
         return true;
       } else {
-        throw new Error('sortData: The file uploaded has no dates.');
+        throw new Error('The file uploaded has no dates.');
       }
     }
 
@@ -232,18 +233,18 @@ export default class ParserComponent extends React.Component<ParserInterface,
                 if (isValid) {
                   curColTypes['numDate'] += 1;
                 } else {
-                  console.error('inferTypes:' + val + 'is not a valid file');
+                  console.error(val + 'is not a valid file');
                   throw val;
                 }
               } else {
-                console.warn('inferTypes:' + val + 'is not a string');
+                console.warn(val + 'is not a string');
                 throw val;
               }
             } catch {
               // @ts-ignore
               const type = typeof row[listFields[i]];
               if (type !== 'string' && type !== 'number') {
-                console.warn('inferTypes: incongruent type:' + curColTypes);
+                console.warn('incongruent type:' + curColTypes);
                 curColTypes['numIncongruent'] += 1;
               }
               // logs all the types that are seen
@@ -317,7 +318,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
         }
       } catch (e) {
         alert('Wrong file type was uploaded.');
-        console.error('Wrong file was uploaded.');
       }
 
       this.setState(() => {
@@ -368,7 +368,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
               this.sortData(this.state.data);
             } catch (e) {
               alert('data is EMPTY');
-              console.error('data is empty');
             }
           }
           resolver(true);

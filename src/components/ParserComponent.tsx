@@ -302,11 +302,11 @@ export default class ParserComponent extends React.Component<ParserInterface,
    * Precondition: all of the parameters are defined
    * Postcondition: list parameter has a new element appended to it
    * creates a new column using the parameters and appends it to a lst
-   * @param {string} mostComm
-   * @param {enumDrawType} drawType
-   * @param {number} indx
-   * @param {string[]} fieldList
-   * @param {Column[]} list
+   * @param {string} mostComm: the most common type of that column
+   * @param {enumDrawType} drawType: the type that the column is labeled as
+   * @param {number} indx: the index of the list parameter being appended to
+   * @param {string[]} fieldList: the list of fields for each column
+   * @param {Column[]} list: an array of columns
    */
     createColumn(mostComm: string, drawType: enumDrawType, indx: number,
         fieldList: string[], list: Column[]) {

@@ -11,10 +11,9 @@ import TimelineModel from './TimelineModel';
 import TimelineTypeInterface from './TimelineTypes/TimelineTypeInterface';
 import EventMagnitude from './TimelineTypes/EventMagnitude';
 import IntervalMagnitude from './TimelineTypes/IntervalMagnitude';
+import {strict as assert} from 'assert';
 import EventOccurrence
   from './TimelineTypes/EventOccurrence';
-import assert from 'assert';
-
 
 import IntervalOccurrence from './TimelineTypes/IntervalOccurrence';
 
@@ -118,6 +117,10 @@ export default class TimelineComponent
       let xColumnSet = false;
       let xColumn2Set = false;
 
+      // data (columns) should exist to mount the component
+      assert.notStrictEqual(cols, [],
+          'componentDidMount(): cols (data) is empty');
+
       this.m.yColumns = [];
       this.m.xColumns = [];
       this.m.columns = cols;
@@ -125,10 +128,17 @@ export default class TimelineComponent
       // iterate through columns and set default values
       for (let i = 0; i < cols.length; i++) {
         const col = cols[i];
+        assert.notStrictEqual(col, null,
+            'componentDidMount(): col is null');
+        // inferTypes shouldn't leave the type undefined
+        assert.notStrictEqual(col.primType, undefined,
+            'componentDidMount(): col.primType is undefined');
         // Plotting occurrence data isn't yet supported, so we are only
         // interested in plotting magnitude data for the y-axis
         if (col.primType === 'number') {
           this.m.yColumns.push(col);
+          assert.strictEqual(this.m.yColumns[this.m.yColumns.length - 1], col,
+              'componentDidMount(): col not added to this.m.yColumns');
           if (!yColumnSet) {
             this.setState(() => {
               return {
@@ -142,6 +152,8 @@ export default class TimelineComponent
 
         if (col.primType === 'date' || col.primType === 'number') {
           this.m.xColumns.push(col);
+          assert.strictEqual(this.m.xColumns[this.m.xColumns.length - 1], col,
+              'componentDidMount(): col not added to this.m.xColumns');
           if (!xColumnSet) {
             this.setState(() => {
               return {
@@ -183,8 +195,12 @@ export default class TimelineComponent
    * @param {string} column
    */
   async sortData(column: string) {
+    assert.notStrictEqual(this.state.data, [],
+        'TimelineComp - sortData(): this.state.data is empty');
     const cols = this.state.data.columns;
     if (cols !== null && cols !== undefined) {
+      assert.notStrictEqual(cols, [],
+          'TimelineComp - sortData(): cols (array) is empty');
       const col = cols.find((elem) => {
         return elem.key === column;
       });
@@ -208,6 +224,9 @@ export default class TimelineComponent
           });
         }
 
+        // there should still be data after being sorted
+        assert.notStrictEqual(data, [],
+            'TimelineComp - sortData(): data is empty');
         this.setState(() => {
           return {
             data,
@@ -223,7 +242,18 @@ export default class TimelineComponent
    * @param {string} column
    */
   async changeColumn(e: any, column: string) {
+    assert.notStrictEqual(e, null,
+        'changeColumn(): event obj is null');
+    assert.notStrictEqual(e, undefined,
+        'changeColumns(): event obj is undefined');
+    assert.notStrictEqual(e.target, null,
+        'changeColumns(): event.target obj is null');
+    assert.notStrictEqual(e.target, undefined,
+        'changeColumns(): event.target obj is undefined');
+
     const val = e.target.value;
+    assert.notStrictEqual(val, undefined,
+        'changeColumns(): event.target.value is undefined');
 
     // make sure the values actually get updated before calling resetTimeline
     const valSet = new Promise((resolver, agent) => {
@@ -273,8 +303,14 @@ export default class TimelineComponent
    */
   resetTimeline() {
     d3.selectAll('svg').remove();
+    // make sure svg removed
+    assert(d3.selectAll('svg').empty(),
+        'resetTimeline(): svg tags not removed');
     this.initTimeline();
     this.drawTimeline();
+    // make sure svg redrawn
+    assert(!d3.selectAll('svg').empty(),
+        'resetTimeline(): new svg not drawn');
   }
 
   /**
@@ -526,6 +562,8 @@ export default class TimelineComponent
    * Purpose: sets the initial values for rendering the actual timeline
    */
   initTimeline() {
+    assert.notStrictEqual(this.state.data, [],
+        'initTimeline(): this.state.data is empty');
     const elem: any = d3.select('#svgtarget');
     let newHeight = this.state.height;
     console.log('working');
@@ -638,6 +676,9 @@ export default class TimelineComponent
    * @postcondition : the Timeline and it's axis have been drawn.
    */
   drawTimeline() {
+    // should only draw timeline if there is data
+    assert.notStrictEqual(this.state.data, [],
+        'drawTimeline(): this.state.data is empty');
     this.zoom = d3.zoom()
         .scaleExtent([1, 20]) // zoom range
         .translateExtent(this.m.extent)

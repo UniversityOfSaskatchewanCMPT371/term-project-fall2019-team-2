@@ -130,6 +130,7 @@ describe('R1 Tests\n', () => {
         // Make sure isValid was called & error was thrown
         expect(isValidSpy).toHaveBeenCalledTimes(1);
         expect(isValidSpy).toThrow('Wrong file type was uploaded.');
+        expect.hasAssertions();
       }
     };
 
@@ -236,6 +237,7 @@ describe('R1 Tests\n', () => {
       expect(isValidSpy).toHaveBeenCalledTimes(1);
       expect(inferTypesSpy).toHaveBeenCalled();
       expect(sortDataSpy).toHaveBeenCalledTimes(1);
+      expect.hasAssertions();
     };
 
     beforeEach(() => {
@@ -312,6 +314,8 @@ describe('R1 Tests\n', () => {
     expect(inferTypesSpy).toHaveBeenCalledTimes(1);
     expect(sortDataSpy).toHaveBeenCalledTimes(1);
 
+    expect.hasAssertions();
+
     // These should not throw errors
     expect(isValidSpy).not.toThrow('Wrong file type was uploaded.');
     expect(inferTypesSpy).not.toThrow('data is empty');
@@ -339,6 +343,7 @@ describe('R1 Tests\n', () => {
       await wrapper.instance().parse(fEvent);
 
       expect(parseSpy).toHaveBeenCalledTimes(1);
+      expect.hasAssertions();
       expect(wrapper.state('data').length).toEqual(3);
       expect(onChangeMock).toHaveBeenCalledTimes(1);
     };

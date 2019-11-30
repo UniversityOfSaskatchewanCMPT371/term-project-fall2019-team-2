@@ -24,6 +24,7 @@ export interface TimelineState {
     xColumn: string;
     xColumn2: string;
     yColumn: string;
+    yColumn2: string;
 
     loading: boolean;
     view: ViewType;

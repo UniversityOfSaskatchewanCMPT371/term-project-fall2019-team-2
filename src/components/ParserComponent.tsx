@@ -314,7 +314,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
           'createColumn function has empty mostCommonType');
       assert.notStrictEqual(fieldList, [],
           'createColumn function has an empty fieldList');
-      assert(indx > fieldList.length,
+      assert(indx < fieldList.length,
           'createColumn function has too large of an index');
       const newCol: any = new Column(mostComm, drawType,
           fieldList[indx]);

@@ -446,37 +446,6 @@ describe('<TimelineComponent /> Unit Tests', () => {
     });
   });
 
-  // describe('toggleTimeline()', () => {
-  //   it('checks that the toggleTimeline function correctly sets the state ' +
-  //       'of the component', () => {
-  //     // const button = wrapper.find('button');
-  //     //
-  //     // button.simulate('click');
-  //
-  //     const select = wrapper.find('#timelineTypeSelect');
-  //
-  //     expect(toggleTimelineSpy).toHaveBeenCalled();
-  //     // check that the state is set properly
-  //     expect(wrapper.state('togglePrompt'))
-  //         .toEqual('Switch to Occurrence Timeline');
-  //     expect(initTimelineSpy).toHaveBeenCalled();
-  //     expect(drawTimelineSpy).toHaveBeenCalled();
-  //     expect(updateBarsSpy).toHaveBeenCalled();
-  //     expect(wrapper.state('view')).toEqual(ViewType.IntervalMagnitude);
-  //
-  //     button.simulate('click');
-  //
-  //     expect(toggleTimelineSpy).toHaveBeenCalled();
-  //     // check that the state is set properly
-  //     expect(wrapper.state('togglePrompt'))
-  //         .toEqual('Switch to Interval Timeline');
-  //     expect(initTimelineSpy).toHaveBeenCalled();
-  //     expect(drawTimelineSpy).toHaveBeenCalled();
-  //     expect(updateBarsSpy).toHaveBeenCalled();
-  //     expect(wrapper.state('view')).toEqual(ViewType.EventMagnitude);
-  //   });
-  // });
-
 
   describe('initTimeline()', () => {
     it('checks that values are set correctly', () => {

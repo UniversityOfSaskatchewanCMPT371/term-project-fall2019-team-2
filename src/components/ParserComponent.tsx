@@ -11,7 +11,10 @@ import Data
 import * as TimSort from 'timsort';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {loadTestCsv} from './Utilities';
+import {strict as assert} from 'assert';
 import * as AlertComponent from './AlertComponent';
+
+console.log(process.env.NODE_ENV);
 
 console.log(process.env.NODE_ENV);
 
@@ -102,7 +105,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
                   this.parse(fileEvent);
                 }}>
                 <option selected value="">Select a Date Format</option>
-                <option value="X">Days from Event</option>
+                <option value="X">Numeric</option>
                 <option value="MM-DD-YYYY">MM-DD-YYYY</option>
                 <option value="DD-MM-YYYY">DD-MM-YYYY</option>
                 <option value="DD-MMMM-YYYY">DD-MMMM-YYYY</option>
@@ -287,13 +290,14 @@ export default class ParserComponent extends React.Component<ParserInterface,
         typesForEachCol.forEach((element) => {
           // checks the most common type and uses that
           const mostCommonType = element.largest();
-          let newCol: Column;
           if (mostCommonType === 'string') {
             // create a Column object with occurrence data
             console.info('most common type is string');
             newCol = new Column(mostCommonType,
                 enumDrawType.occurrence, listFields[indx]);
             arrayOfColumns[indx] = newCol;
+            this.createColumn(mostCommonType, enumDrawType.occurrence, indx,
+                listFields, arrayOfColumns);
             indx++;
           } else if (mostCommonType === 'number') {
             // create a Column with interval, point or magnitude data
@@ -303,12 +307,15 @@ export default class ParserComponent extends React.Component<ParserInterface,
             arrayOfColumns[indx] = newCol;
             indx++;
           } else if (mostCommonType === 'date') {
+          } else if (mostCommonType === 'date' || mostCommonType === 'number') {
             // create a Column with date data
             // eslint-disable-next-line max-len
             console.info('most common type is date');
             newCol = new Column(mostCommonType, enumDrawType.any,
                 listFields[indx]);
             arrayOfColumns[indx] = newCol;
+            this.createColumn(mostCommonType, enumDrawType.any, indx,
+                listFields, arrayOfColumns);
             indx++;
           }
         }
@@ -317,6 +324,29 @@ export default class ParserComponent extends React.Component<ParserInterface,
       } else {
         throw new Error('data is empty');
       }
+    }
+
+    /**
+   * Precondition: all of the parameters are defined
+   * Postcondition: list parameter has a new element appended to it
+   * creates a new column using the parameters and appends it to a lst
+   * @param {string} mostComm: the most common type of that column
+   * @param {enumDrawType} drawType: the type that the column is labeled as
+   * @param {number} indx: the index of the list parameter being appended to
+   * @param {string[]} fieldList: the list of fields for each column
+   * @param {Column[]} list: an array of columns
+   */
+    createColumn(mostComm: string, drawType: enumDrawType, indx: number,
+        fieldList: string[], list: Column[]) {
+      assert.notStrictEqual(mostComm, '',
+          'createColumn function has empty mostCommonType');
+      assert.notStrictEqual(fieldList, [],
+          'createColumn function has an empty fieldList');
+      assert(indx < fieldList.length,
+          'createColumn function has too large of an index');
+      const newCol: any = new Column(mostComm, drawType,
+          fieldList[indx]);
+      list[indx] = newCol;
     }
 
     /**
@@ -381,6 +411,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
                 prompt: this.state.prompt,
                 fileType: this.state.fileType,
                 data: content,
+                fileData: fileReader.result,
               };
             });
             try {

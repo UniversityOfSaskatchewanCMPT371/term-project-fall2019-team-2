@@ -11,6 +11,7 @@ import Data
 import * as TimSort from 'timsort';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {loadTestCsv} from './Utilities';
+import {strict as assert} from 'assert';
 
 console.log(process.env.NODE_ENV);
 
@@ -298,7 +299,9 @@ export default class ParserComponent extends React.Component<ParserInterface,
     }
 
     /**
-   * creates a new column
+   * Precondition: all of the parameters are defined
+   * Postcondition: list parameter has a new element appended to it
+   * creates a new column using the parameters and appends it to a lst
    * @param {string} mostComm
    * @param {enumDrawType} drawType
    * @param {number} indx
@@ -307,6 +310,9 @@ export default class ParserComponent extends React.Component<ParserInterface,
    */
     createColumn(mostComm: string, drawType: enumDrawType, indx: number,
         fieldList: string[], list: Column[]) {
+      assert.notStrictEqual(mostComm, '');
+      assert.notStrictEqual(fieldList, []);
+      assert(indx < fieldList.length);
       const newCol: any = new Column(mostComm, drawType,
           fieldList[indx]);
       list[indx] = newCol;

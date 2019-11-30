@@ -234,9 +234,9 @@ export default class ParserComponent extends React.Component<ParserInterface,
      */
     inferTypes(data: Array<object>): Array<Column> | undefined {
       // data should contain something (according to the precondition)
-      assert.notStrictEqual(data, undefined);
-      assert.notStrictEqual(data, null);
-      assert.notStrictEqual(data, []);
+      assert.notStrictEqual(data, undefined, 'data is undefined');
+      assert.notStrictEqual(data, null, 'data is null');
+      assert.notStrictEqual(data, [], 'data is empty');
 
       if (this.state.data.length > 0) {
         assert.notStrictEqual(this.state.data[0], null);
@@ -328,19 +328,26 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * @param {Object} fileEvent: the event passed into this component
      */
     async parse(fileEvent: any) {
+      console.log(fileEvent === null);
       // sorry, i went a little insane
       // fileEvent is an object containing target files
-      assert.notStrictEqual(fileEvent, undefined);
-      assert.notStrictEqual(fileEvent, null);
+      assert.notStrictEqual(fileEvent, undefined, 'fileEvent is undefined');
+      assert.notStrictEqual(fileEvent, null, 'fileEvent is null');
       // check target obj
-      assert.notStrictEqual(fileEvent.target, null);
-      assert.notStrictEqual(fileEvent.target, undefined);
+      assert.notStrictEqual(fileEvent.target, null,
+          'fileEvent.target is null');
+      assert.notStrictEqual(fileEvent.target, undefined,
+          'fileEvent.target is undefined');
       // check files obj (Array<File>)
-      assert.notStrictEqual(fileEvent.target.files, null);
-      assert.notStrictEqual(fileEvent.target.files, undefined);
+      assert.notStrictEqual(fileEvent.target.files, null,
+          'fileEvent.target.files is null');
+      assert.notStrictEqual(fileEvent.target.files, undefined,
+          'fileEvent.target.files is undefined');
       // check File obj (file being uploaded)
-      assert.notStrictEqual(fileEvent.target.files[0], null);
-      assert.notStrictEqual(fileEvent.target.files[0], undefined);
+      assert.notStrictEqual(fileEvent.target.files[0], null,
+          'fileEvent.target.files[0] is null');
+      assert.notStrictEqual(fileEvent.target.files[0], undefined,
+          'fileEvent.target.files[0] is undefined');
 
       this.setState(() => {
         return {

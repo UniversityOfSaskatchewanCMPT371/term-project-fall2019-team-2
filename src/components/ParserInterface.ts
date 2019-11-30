@@ -38,5 +38,6 @@ export interface ParserState {
     showTimeline: boolean;
     formatString: string;
     fileData: any;
-    upFile: any;
+    /** this is to store the name of the file in the state**/
+    fileName: any;
 }

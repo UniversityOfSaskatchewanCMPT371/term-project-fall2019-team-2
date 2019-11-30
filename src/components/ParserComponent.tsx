@@ -34,7 +34,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
         showTimeline: false,
         formatString: '',
         fileData: '',
-        upFile: '',
+        fileName: '',
       };
 
       this.isValid = this.isValid.bind(this);
@@ -93,12 +93,12 @@ export default class ParserComponent extends React.Component<ParserInterface,
                   });
                   const mockDateFile: File = new File(
                       [this.state.fileData],
-                      String(this.state.upFile),
+                      String(this.state.fileName),
                       {type: this.props.fileType.mimeName},
                   );
                   const fileEvent = {target: {files: [mockDateFile]}};
-                  // eslint-disable-next-line max-len
-                  const typeOfFile = this.state.upFile.substr(this.state.upFile.length - 4);
+                  const nameOfFile = this.state.fileName;
+                  const typeOfFile = nameOfFile.substr(nameOfFile.length - 4);
                   if (typeOfFile === '.csv' || typeOfFile === undefined) {
                     this.parse(fileEvent);
                   }
@@ -138,7 +138,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
       if (upFile !== undefined) {
         this.setState(() => {
           return {
-            upFile: upFile.name,
+            fileName: upFile.name,
           };
         });
         const typeOfFile = upFile.name.substr(upFile.name.length - 4);
@@ -152,7 +152,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
       } else {
         this.setState(() => {
           return {
-            upFile: '',
+            fileName: '',
           };
         });
         return false;

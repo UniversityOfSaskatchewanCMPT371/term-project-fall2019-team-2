@@ -13,6 +13,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {loadTestCsv} from './Utilities';
 
 console.log(process.env.NODE_ENV);
+console.log(process.env.REACT_APP_SENTRY_DSN);
 
 /**
  * Purpose: react component responsible for receiving and parsing file data

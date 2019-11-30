@@ -635,12 +635,6 @@ describe('<TimelineComponent /> Unit Tests', () => {
     });
   });
 
-  describe('updateBars()', () => {
-    it('dummy test', () => {
-      expect(updateBarsSpy).toHaveBeenCalled();
-    });
-  });
-
   describe('moveChart()', () => {
     it('dummy test', async () => {
       wrapper.instance().drawTimeline();
@@ -671,24 +665,6 @@ describe('<TimelineComponent /> Unit Tests', () => {
       //   });
       //   res(true);
       // }, 1000));
-    });
-  });
-
-  describe('dragStarted()', () => {
-    it('dummy test', () => {
-      // todo: devs need to write unit tests
-    });
-  });
-
-  describe('dragged()', () => {
-    it('dummy test', () => {
-      // todo: devs need to write unit tests
-    });
-  });
-
-  describe('dragEnded()', () => {
-    it('dummy test', () => {
-      // todo: devs need to write unit tests
     });
   });
 });

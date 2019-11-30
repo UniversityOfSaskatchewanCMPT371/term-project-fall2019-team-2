@@ -2,12 +2,9 @@ import React from 'react';
 import ParserInterface, {ParserState} from './ParserInterface';
 import Column, {enumDrawType} from './Column';
 import moment from 'moment';
-import * as d3
-  from 'd3';
-import TimelineComponent
-  from './TimelineComponent';
-import Data
-  from './Data';
+import * as d3 from 'd3';
+import TimelineComponent from './TimelineComponent';
+import Data from './Data';
 import * as TimSort from 'timsort';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {loadTestCsv} from './Utilities';
@@ -133,8 +130,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
           String(this.state.fileName),
           {type: this.props.fileType.mimeName},
       );
-      const fileEvent = {target: {files: [mockDateFile]}};
-      return fileEvent;
+      // create file event of the mockfile and return it
+      return {target: {files: [mockDateFile]}};
     }
 
     /**

@@ -278,13 +278,12 @@ export default class ParserComponent extends React.Component<ParserInterface,
         typesForEachCol.forEach((element) => {
           // checks the most common type and uses that
           const mostCommonType = element.largest();
-          let newCol: Column;
           if (mostCommonType === 'string') {
             // create a Column object with occurrence data
             this.createColumn(mostCommonType, enumDrawType.occurrence, indx,
                 listFields, arrayOfColumns);
             indx++;
-          } else if (mostCommonType === 'date' || mostCommonType == 'number') {
+          } else if (mostCommonType === 'date' || mostCommonType === 'number') {
             // create a Column with date data
             this.createColumn(mostCommonType, enumDrawType.any, indx,
                 listFields, arrayOfColumns);

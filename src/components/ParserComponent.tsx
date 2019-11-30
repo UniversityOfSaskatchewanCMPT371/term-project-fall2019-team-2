@@ -89,7 +89,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
                       formatString: val,
                     };
                   });
-                  this.getNameofCsvandcallParse();
+                  this.checkifCsvandcallParse();
                 }}>
                 <option selected value="">Select a Date Format</option>
                 <option value="X">Numeric</option>
@@ -134,13 +134,16 @@ export default class ParserComponent extends React.Component<ParserInterface,
    * Purpose: check if file is .csv when date format
      * is changed and call parse if it is
      * @preconditions: the file should have a valid name (.csv)
+     * @return{boolean}: returns true if it works otherwise returns false
    */
-    getNameofCsvandcallParse(): any {
+    checkifCsvandcallParse(): boolean {
       const nameOfFile = this.state.fileName;
       const typeOfFile = nameOfFile.substr(nameOfFile.length - 4);
       if (typeOfFile === '.csv') {
         this.parse(this.createNewMockFile());
+        return true;
       }
+      return false;
     }
 
     /**

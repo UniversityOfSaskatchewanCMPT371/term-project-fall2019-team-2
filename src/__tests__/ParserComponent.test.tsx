@@ -441,13 +441,31 @@ describe('<ParserComponent /> Unit Tests', () => {
     });
   });
 
-  describe('getNameofCsvandcallParse()', () => {
-    const wrapper = mount(<ParserComponent prompt={'Select ' +
+  describe('checkifCsvandcallParse()', () => {
+    it('Should call parse if file is a .csv and return true', () => {
+      const wrapper = mount(<ParserComponent prompt={'Select ' +
     'a CSV file: '} fileType={FileType.csv}
-    onChange={function() {}}/>);
-    const instance = wrapper.instance() as ParserComponent;
-    it('Should ', () => {
-      console.log(instance.getNameofCsvandcallParse());
+      onChange={function() {}}/>);
+      const instance = wrapper.instance() as ParserComponent;
+      instance.setState(() => {
+        return {
+          fileName: '.csv',
+        };
+      });
+      expect(instance.checkifCsvandcallParse()).toBeTruthy();
+    });
+    it('Should not call parse if file ' +
+        'given is not a .csv and return false', () => {
+      const wrapper = mount(<ParserComponent prompt={'Select ' +
+          'a CSV file: '} fileType={FileType.csv}
+      onChange={function() {}}/>);
+      const instance = wrapper.instance() as ParserComponent;
+      instance.setState(() => {
+        return {
+          fileName: 'not a valid file',
+        };
+      });
+      expect(instance.checkifCsvandcallParse()).toBeFalsy();
     });
   });
 

@@ -502,7 +502,7 @@ describe('<ParserComponent /> Unit Tests', () => {
       const instance = wrapper.instance() as ParserComponent;
       instance.setState(() => {
         return {
-          fileName: 'not a valid file',
+          fileName: '.pdf',
         };
       });
       expect(instance.checkifCsvandcallParse()).toBeFalsy();

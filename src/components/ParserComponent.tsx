@@ -283,10 +283,12 @@ export default class ParserComponent extends React.Component<ParserInterface,
             // create a Column object with occurrence data
             this.createColumn(mostCommonType, enumDrawType.occurrence, indx,
                 listFields, arrayOfColumns);
+            indx++;
           } else if (mostCommonType === 'date' || mostCommonType == 'number') {
             // create a Column with date data
             this.createColumn(mostCommonType, enumDrawType.any, indx,
                 listFields, arrayOfColumns);
+            indx++;
           }
         }
         );
@@ -306,10 +308,9 @@ export default class ParserComponent extends React.Component<ParserInterface,
    */
     createColumn(mostComm: string, drawType: enumDrawType, indx: number,
         fieldList: string[], list: Column[]) {
-      const newCol: any = new Column(mostComm, enumDrawType.any,
+      const newCol: any = new Column(mostComm, drawType,
           fieldList[indx]);
       list[indx] = newCol;
-      indx++;
     }
 
     /**

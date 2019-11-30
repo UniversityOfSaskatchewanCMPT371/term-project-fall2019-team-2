@@ -13,8 +13,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {loadTestCsv} from './Utilities';
 import {strict as assert} from 'assert';
 
-console.log(process.env.NODE_ENV);
-
 /**
  * Purpose: react component responsible for receiving and parsing file data
  */
@@ -102,7 +100,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
                   this.parse(fileEvent);
                 }}>
                 <option selected value="">Select a Date Format</option>
-                <option value="X">Days from Event</option>
+                <option value="X">Numeric</option>
                 <option value="MM-DD-YYYY">MM-DD-YYYY</option>
                 <option value="DD-MM-YYYY">DD-MM-YYYY</option>
                 <option value="DD-MMMM-YYYY">DD-MMMM-YYYY</option>
@@ -381,6 +379,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
                 prompt: this.state.prompt,
                 fileType: this.state.fileType,
                 data: content,
+                fileData: fileReader.result,
               };
             });
             try {

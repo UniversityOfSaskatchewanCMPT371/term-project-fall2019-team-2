@@ -329,9 +329,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
             'inferTypes(): arrayOfColumns is empty after parsing data');
         return arrayOfColumns;
       } else {
-        assert(this.state.data.length === 0,
-            'inferTypes(): this.state.data is not empty');
-        // should probably return undefined here?
         throw new Error('data is empty');
       }
     }
@@ -367,8 +364,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * @param {Object} fileEvent: the event passed into this component
      */
     async parse(fileEvent: any) {
-      console.log(fileEvent === null);
-      // sorry, i went a little insane
       // fileEvent is an object containing target files
       assert.notStrictEqual(fileEvent, undefined,
           'parse(): fileEvent is undefined');

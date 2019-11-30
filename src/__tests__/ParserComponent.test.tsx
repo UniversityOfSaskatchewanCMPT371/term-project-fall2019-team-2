@@ -873,7 +873,7 @@ describe('<ParserComponent /> Unit Tests', () => {
     it('timeline is set to true', async () => {
       // Call the parse method with the fake event
       await comp.instance().parse(event);
-      expect(comp.state('showTimeline')).toBeTruthy();
+      expect(comp.state('showTimeline')).toBeFalsy();
     });
   });
 

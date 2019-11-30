@@ -91,16 +91,10 @@ export default class ParserComponent extends React.Component<ParserInterface,
                       formatString: val,
                     };
                   });
-                  const mockDateFile: File = new File(
-                      [this.state.fileData],
-                      String(this.state.fileName),
-                      {type: this.props.fileType.mimeName},
-                  );
-                  const fileEvent = {target: {files: [mockDateFile]}};
                   const nameOfFile = this.state.fileName;
                   const typeOfFile = nameOfFile.substr(nameOfFile.length - 4);
                   if (typeOfFile === '.csv' || typeOfFile === undefined) {
-                    this.parse(fileEvent);
+                    this.parse(this.createNewMockFile());
                   }
                 }}>
                 <option selected value="">Select a Date Format</option>
@@ -123,6 +117,23 @@ export default class ParserComponent extends React.Component<ParserInterface,
           </div>
         </div>
       );
+    }
+
+    /**
+     * Purpose create a mock file event of the actual file for
+     * parse when it is recalled everytime the date format is changed
+     * @preconditions: a file with valid file data and
+     * a valid file name and a valid file type
+     * @return {any}: a mock file event of the actual file
+     */
+    createNewMockFile(): any {
+      const mockDateFile: File = new File(
+          [this.state.fileData],
+          String(this.state.fileName),
+          {type: this.props.fileType.mimeName},
+      );
+      const fileEvent = {target: {files: [mockDateFile]}};
+      return fileEvent;
     }
 
     /**

@@ -437,19 +437,17 @@ describe('<ParserComponent /> Unit Tests', () => {
     onChange={function() {}}/>);
     const instance = wrapper.instance() as ParserComponent;
     it('Should check if new mock file event is created and returned', () => {
-      const testFile: File = new File(
-          ['Region,Country,Item Type,Sales Channel,Order Priority,' +
-          'Order Date,Order ID,Ship Date,Units Sold,Unit Price,Unit Cost,' +
-          'Total Revenue,Total Cost,Total Profit\n' +
-          'Sub-Saharan Africa,Chad,Office Supplies,Online,L,1/27/2011,' +
-          '292494523,2/12/2011,4484,651.21,524.96,2920025.64,2353920.64,' +
-          '566105.00\n' +
-          'Europe,Latvia,Beverages,Online,C,12/28/2015,361825549,1/23/2016,' +
-          '1075,47.45,31.79,51008.75,34174.25,16834.50\n'],
-          'test.csv',
-          {type: '.csv,text/csv'},
-      );
       console.log(instance.createNewMockFile());
+    });
+  });
+
+  describe('getNameofCsvandcallParse()', () => {
+    const wrapper = mount(<ParserComponent prompt={'Select ' +
+    'a CSV file: '} fileType={FileType.csv}
+    onChange={function() {}}/>);
+    const instance = wrapper.instance() as ParserComponent;
+    it('Should ', () => {
+      console.log(instance.getNameofCsvandcallParse());
     });
   });
 

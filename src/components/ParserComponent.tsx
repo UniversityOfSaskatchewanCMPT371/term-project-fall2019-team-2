@@ -89,11 +89,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
                       formatString: val,
                     };
                   });
-                  const nameOfFile = this.state.fileName;
-                  const typeOfFile = nameOfFile.substr(nameOfFile.length - 4);
-                  if (typeOfFile === '.csv' || typeOfFile === undefined) {
-                    this.parse(this.createNewMockFile());
-                  }
+                  this.getNameofCsvandcallParse();
                 }}>
                 <option selected value="">Select a Date Format</option>
                 <option value="X">Numeric</option>
@@ -118,7 +114,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
     }
 
     /**
-     * Purpose create a mock file event of the actual file for
+     * Purpose: create a mock file event of the actual file for
      * parse when it is recalled everytime the date format is changed
      * @preconditions: a file with valid file data and
      * a valid file name and a valid file type
@@ -132,6 +128,19 @@ export default class ParserComponent extends React.Component<ParserInterface,
       );
       // create file event of the mockfile and return it
       return {target: {files: [mockDateFile]}};
+    }
+
+    /**
+   * Purpose: check if file is .csv when date format
+     * is changed and call parse if it is
+     * @preconditions: the file should have a valid name (.csv)
+   */
+    getNameofCsvandcallParse(): any {
+      const nameOfFile = this.state.fileName;
+      const typeOfFile = nameOfFile.substr(nameOfFile.length - 4);
+      if (typeOfFile === '.csv') {
+        this.parse(this.createNewMockFile());
+      }
     }
 
     /**

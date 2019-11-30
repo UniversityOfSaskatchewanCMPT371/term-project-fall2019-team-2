@@ -310,9 +310,12 @@ export default class ParserComponent extends React.Component<ParserInterface,
    */
     createColumn(mostComm: string, drawType: enumDrawType, indx: number,
         fieldList: string[], list: Column[]) {
-      assert.notStrictEqual(mostComm, '');
-      assert.notStrictEqual(fieldList, []);
-      assert(indx < fieldList.length);
+      assert.notStrictEqual(mostComm, '',
+          'createColumn function has empty mostCommonType');
+      assert.notStrictEqual(fieldList, [],
+          'createColumn function has an empty fieldList');
+      assert(indx > fieldList.length,
+          'createColumn function has too large of an index');
       const newCol: any = new Column(mostComm, drawType,
           fieldList[indx]);
       list[indx] = newCol;

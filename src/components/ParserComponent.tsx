@@ -148,6 +148,79 @@ export default class ParserComponent extends React.Component<ParserInterface,
     }
 
     /**
+   * purpose: somehting
+   * @precondition not yet
+   * @param {Array} data: yes
+   * @return {boolean}: yea
+   */
+    dataIsValid(data: Array<object>): boolean {
+      if (data !== undefined && data.length > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    /**
+        * purpose: somehting
+     * @precondition not yet
+     * @param {Array} data: yes
+     * @return {any}: yea
+   */
+    lookForDateKey(data: Array<object>): any {
+      assert.notStrictEqual(data[0], null,
+          'sortData(): data[0] is null');
+      for (const [key, value] of Object.entries(data[0])) {
+        const date1 = moment(String(value), this.state.formatString);
+        if (moment(date1, this.state.formatString).isValid()) {
+          return key;
+        }
+      }
+    };
+
+    /**
+   * purpose: somehting
+   * @precondition not yet
+   * @param {Array} data: yes
+   * @return {boolean}: yea
+   */
+    sortsData(data: Array<object>): boolean {
+      const key = this.lookForDateKey(this.state.data);
+      const formatString = this.state.formatString;
+
+      const keyInt = `${key}_num`;
+
+      TimSort.sort(data, function(a: any, b: any) {
+        let val: any;
+        if (!a.hasOwnProperty(keyInt)) {
+          val = moment(a[key], formatString);
+          if (val.isValid()) {
+            a[keyInt] = val.valueOf();
+          } else {
+            a[keyInt] = -1;
+          }
+        }
+
+        if (!b.hasOwnProperty(keyInt)) {
+          val = moment(b[key], formatString);
+          if (val.isValid()) {
+            b[keyInt] = val.valueOf();
+          } else {
+            b[keyInt] = -1;
+          }
+        }
+        return (a[keyInt] - b[keyInt]);
+      });
+
+      this.setState(() => {
+        return {
+          data,
+        };
+      });
+      return false;
+    }
+
+    /**
      * Purpose: sorts the array of data
      * @precondition dates must contain year month and date,
      *    if data does not contain year in some

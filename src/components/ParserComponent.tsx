@@ -2,17 +2,13 @@ import React from 'react';
 import ParserInterface, {ParserState} from './ParserInterface';
 import Column, {enumDrawType} from './Column';
 import moment from 'moment';
-import * as d3
-  from 'd3';
-import TimelineComponent
-  from './TimelineComponent';
-import Data
-  from './Data';
+import * as d3 from 'd3';
+import TimelineComponent from './TimelineComponent';
+import Data from './Data';
 import * as TimSort from 'timsort';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {loadTestCsv} from './Utilities';
 import {strict as assert} from 'assert';
-import * as AlertComponent from './AlertComponent';
 
 console.log(process.env.NODE_ENV);
 
@@ -143,7 +139,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
           return true;
         } else {
           alert('Wrong file type was uploaded.');
-          // AlertComponent.default('Wrong file type was uploaded.');
           return false;
         }
       }
@@ -356,9 +351,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
           'createColumn function has an empty fieldList');
       assert(indx < fieldList.length,
           'createColumn function has too large of an index');
-      const newCol: any = new Column(mostComm, drawType,
+      list[indx] = new Column(mostComm, drawType,
           fieldList[indx]);
-      list[indx] = newCol;
     }
 
     /**

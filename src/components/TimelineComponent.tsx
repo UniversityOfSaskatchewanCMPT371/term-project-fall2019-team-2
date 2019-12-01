@@ -14,7 +14,6 @@ import IntervalMagnitude from './TimelineTypes/IntervalMagnitude';
 import {strict as assert} from 'assert';
 import EventOccurrence
   from './TimelineTypes/EventOccurrence';
-import assert from 'assert';
 import CONSTANTS from '../constants';
 import IntervalOccurrence from './TimelineTypes/IntervalOccurrence';
 import Column from './Column';

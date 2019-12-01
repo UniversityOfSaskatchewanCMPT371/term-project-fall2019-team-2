@@ -517,9 +517,8 @@ export default class TimelineComponent
   changeTimelineType(e: any) {
     // const val = Number.parseInt(e.target.value);
     const val = e.target.value;
-    console.log(e.target.value);
-    console.log(val);
-    console.log(this.m.view);
+    console.log('ChangeTimelineType(): val: '+e.target.value);
+    console.log('ChangeTimelineType(): this.m.value: '+this.m.view);
     this.m.view = val;
 
     switch (this.m.view) {
@@ -593,6 +592,13 @@ export default class TimelineComponent
         (this.m.marginBottom + this.m.marginTop);
 
     this.m.width = this.m.fullWidth - (this.m.marginLeft + this.m.marginRight);
+
+    // console log for instance variables
+    console.log('initTimeline():\n + this.m.fullHeight: '+ this.m.fullHeight+
+      '\nthis.m.fullWidth: '+this.m.fullWidth +
+      '\nthis.m.view: '+this.m.view +
+      '\nthis.m.height: '+this.m.height+
+      '\nthis.m.width: '+this.m.width);
 
     this.m.numBars = Math.floor(this.m.width / this.m.barWidth) +
       this.m.barBuffer;// small pixel buffer to ensure smooth transitions

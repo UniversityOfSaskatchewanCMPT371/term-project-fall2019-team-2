@@ -9,8 +9,8 @@ import * as TimSort from 'timsort';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {loadTestCsv} from './Utilities';
 import {strict as assert} from 'assert';
+import * as sentry from '@sentry/browser';
 
-console.log(process.env.NODE_ENV);
 
 /**
  * Purpose: react component responsible for receiving and parsing file data
@@ -168,30 +168,36 @@ export default class ParserComponent extends React.Component<ParserInterface,
               const formatString = this.state.formatString;
 
               const keyInt = `${key}_num`;
-
-              TimSort.sort(data, function(a: any, b: any) {
-                let val: any;
-                if (!a.hasOwnProperty(keyInt)) {
-                  val = moment(a[key], formatString);
-                  if (val.isValid()) {
-                    a[keyInt] = val.valueOf();
-                  } else {
-                    console.info('TimSort.sort: the value for a is invalid');
-                    a[keyInt] = -1;
+              try {
+                TimSort.sort(data, function(a: any, b: any) {
+                  let val: any;
+                  if (!a.hasOwnProperty(keyInt)) {
+                    val = moment(a[key], formatString);
+                    if (val.isValid()) {
+                      a[keyInt] = val.valueOf();
+                    } else {
+                      console.info('TimSort.sort(): the value' +
+                        ' for a is invalid');
+                      a[keyInt] = -1;
+                    }
                   }
-                }
 
-                if (!b.hasOwnProperty(keyInt)) {
-                  val = moment(b[key], formatString);
-                  if (val.isValid()) {
-                    b[keyInt] = val.valueOf();
-                  } else {
-                    console.warn('TimSort.sort: the value for b is invalid');
-                    b[keyInt] = -1;
+                  if (!b.hasOwnProperty(keyInt)) {
+                    val = moment(b[key], formatString);
+                    if (val.isValid()) {
+                      b[keyInt] = val.valueOf();
+                    } else {
+                      console.warn('TimSort.sort(): the value' +
+                        ' for b is invalid');
+                      b[keyInt] = -1;
+                    }
                   }
-                }
-                return (a[keyInt] - b[keyInt]);
-              });
+                  return (a[keyInt] - b[keyInt]);
+                });
+              } catch (err) {
+                // catch error
+                sentry.captureEvent(err);
+              }
 
               this.setState(() => {
                 return {
@@ -208,7 +214,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
             'sortData(): this.state.data is empty (not updated)');
         return true;
       } else {
-        throw new Error('sortData: The file uploaded has no dates.');
+        throw new Error('sortData(): The file uploaded has no dates.');
       }
     }
 
@@ -281,18 +287,18 @@ export default class ParserComponent extends React.Component<ParserInterface,
                 if (isValid) {
                   curColTypes['numDate'] += 1;
                 } else {
-                  console.error('inferTypes:' + val + 'is not a valid file');
+                  console.warn('inferTypes():' + val + 'is not a valid date');
                   throw val;
                 }
               } else {
-                console.warn('inferTypes:' + val + 'is not a string');
+                console.warn('inferTypes():' + val + 'is not a string');
                 throw val;
               }
             } catch {
               // @ts-ignore
               const type = typeof row[listFields[i]];
               if (type !== 'string' && type !== 'number') {
-                console.warn('inferTypes: incongruent type:' + curColTypes);
+                console.warn('inferTypes(): incongruent type:' + curColTypes);
                 curColTypes['numIncongruent'] += 1;
               }
               // logs all the types that are seen
@@ -363,6 +369,9 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * @param {Object} fileEvent: the event passed into this component
      */
     async parse(fileEvent: any) {
+      // clear the console before each parse
+      console.clear();
+
       // fileEvent is an object containing target files
       assert.notStrictEqual(fileEvent, undefined,
           'parse(): fileEvent is undefined');
@@ -384,7 +393,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
       assert.notStrictEqual(fileEvent.target.files[0], undefined,
           'parse(): fileEvent.target.files[0] is undefined');
 
-      console.clear();
+
       this.setState(() => {
         return {
           showTimeline: false,

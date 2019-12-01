@@ -17,7 +17,7 @@ if [ $status -ne 0 ]; then
   exit $status
 fi
 
-/usr/local/bin/npm run --silent test:ci
+/usr/local/bin/npm run --silent test:ci -- -u
 status=$?
 if [ $status -ne 0 ]; then
   echo test failed with exit status $status

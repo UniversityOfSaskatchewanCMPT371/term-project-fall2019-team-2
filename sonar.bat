@@ -12,7 +12,7 @@ if errorlevel 1 (
     goto end
 )
 
-call npm run --silent mesa:test:ci
+call npm run --silent mesa:test:ci -- -u
 if errorlevel 1 (
     echo test failed with errorlevel %errorlevel%
     goto end

@@ -955,7 +955,7 @@ export default class TimelineComponent
     // recover the new scale
     if (d3.event !== null) {
       this.m.scale = d3.event.transform.k;
-      console.log(d3.event);
+      // console.log(d3.event);
     } else {
       console.warn('d3.event was null');
     }

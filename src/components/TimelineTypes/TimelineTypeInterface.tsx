@@ -1,4 +1,6 @@
 import TimelineModel from '../TimelineModel';
+import {ViewType} from '../TimelineComponent';
+import assert from 'assert';
 
 
 interface TimelineTypeInterface {
@@ -19,7 +21,7 @@ export abstract class TimelineType implements TimelineTypeInterface {
   public m: TimelineModel;
 
   /**
-   * Purpose: applies
+   * Purpose: applies zooming
    */
   abstract applyZoom(): void;
 
@@ -32,16 +34,191 @@ export abstract class TimelineType implements TimelineTypeInterface {
    */
   abstract draw(selection: any, ttOver: any, ttMove: any, ttLeave: any): void;
 
+  // /**
+  //  *
+  //  * @param {any}  svg
+  //  */
+  // abstract drawLabels(svg: any): void;
+  /**
+   * Purpose: draws the initial axis labels when the timeline is first rendered
+   * @param {any} svg: the SVG element
+   */
+  drawLabels(svg: any): void {
+    let xString: string;
+    let yString: string;
+
+    if (this.m.view === ViewType.EventOccurrence ||
+      this.m.view === ViewType.IntervalOccurrence) {
+      // Occurrence timelines may have either one or two y columns
+      yString = this.m.yColumn;
+      if (this.m.yColumn2 !== '') {
+        yString += `, ${this.m.yColumn2}`;
+      }
+    } else {
+      yString = this.m.yColumn;
+    }
+
+    if (this.m.view === ViewType.IntervalOccurrence ||
+      this.m.view === ViewType.IntervalMagnitude) {
+      // Interval timelines always have two x columns
+      xString = `start: ${this.m.xColumn}, end: ${this.m.xColumn2}`;
+    } else {
+      // Event timelines only ever have one x column
+      xString = this.m.xColumn;
+    }
+
+    svg.append('text')
+        .attr('transform',
+            `translate(${this.m.width / 2},` +
+        `${this.m.height + this.m.marginTop + 20})`)
+        .style('text-anchor', 'middle')
+        .text(xString);
+
+    svg.append('text')
+        .attr('transform', 'rotate(-90)')
+        .attr('y', 0 - this.m.marginLeft)
+        .attr('x', 0 - (this.m.height / 2))
+        .attr('dy', '1em')
+        .style('text-anchor', 'middle')
+        .text(yString);
+  }
+
+  // /**
+  //  * Purpose
+  //  */
+  // abstract getData(): void;
   /**
    *
-   * @param {any}  svg
    */
-  abstract drawLabels(svg: any): void;
+  getData(): void {
+    if (this.m.view === ViewType.EventOccurrence ||
+      this.m.view === ViewType.EventMagnitude) {
+      this.getEventData();
+    } else {
+      this.getIntervalData();
+    }
+  }
 
   /**
-   * Purpose
+   * Purpose: updates dataIdx, data, and ordinals when drawing an Event Timeline
    */
-  abstract getData(): void;
+  private getEventData() {
+    // finds starting index
+    this.m.dataIdx =
+      Math.floor(- this.m.deltaX / (this.m.scale * this.m.barWidth));
+    this.m.data =
+      this.m.csvData.slice(this.m.dataIdx, this.m.numBars + this.m.dataIdx);
+  }
+
+  /**
+   * Purpose: updates dataIdx, data, and ordinals when drawing an Interval
+   * Timeline
+   */
+  private getIntervalData() {
+    let dataIdxEnd: number = 0;
+    let dataIdxStart: number = 0;
+    const keyInt1 = this.m.xColumn + '_num';
+    const keyInt2 = this.m.xColumn2 + '_num';
+    let consecutive = true;
+
+    assert(this.m.deltaXDirection === 1 ||
+      this.m.deltaXDirection === -1);
+
+    // console.log(this.m.deltaXDirection);
+    if (this.m.deltaXDirection === 1) {
+      for (dataIdxEnd = this.m.dataIdx;
+        dataIdxEnd < this.m.csvData.length;
+        dataIdxEnd++) {
+        const elem: any = this.m.csvData[dataIdxEnd];
+
+        if (!elem.hasOwnProperty(keyInt1)) {
+          elem[keyInt1] = Date.parse(elem[this.m.xColumn]);
+        }
+
+        if (!elem.hasOwnProperty(keyInt2)) {
+          elem[keyInt2] = Date.parse(elem[this.m.xColumn2]);
+        }
+
+        // We can only increment dataIdx if the preceding elements have also
+        // been moved off of the current screen area, otherwise elements will be
+        // removed prematurely
+        /* eslint-disable max-len */
+        if (consecutive &&
+          ((this.m.scale * this.m.timeScale(elem[keyInt1])) < -this.m.deltaX &&
+            (this.m.scale * this.m.timeScale(elem[keyInt2])) < -this.m.deltaX)) {
+          this.m.dataIdx++;
+        } else {
+          consecutive = false;
+        }
+        /* eslint-enable max-len */
+
+        // If this is true, then the x position of the start of the bar and end
+        // of the bar are currently outside of the viewing area
+        /* eslint-disable max-len */
+        if (!((this.m.scale * this.m.timeScale(elem[keyInt1])) < (-this.m.deltaX + this.m.width) ||
+          (((this.m.scale * this.m.timeScale(elem[keyInt2])) <= -this.m.deltaX + this.m.width) &&
+            ((this.m.scale * this.m.timeScale(elem[keyInt2])) > -this.m.deltaX)))) {
+          break;
+        }
+        /* eslint-enable max-len */
+      }
+      this.m.data = this.m.csvData.slice(this.m.dataIdx,
+          dataIdxEnd + this.m.barBuffer);
+    } else if (this.m.deltaXDirection === -1) {
+      dataIdxStart = this.m.dataIdx + this.m.data.length;
+      if (dataIdxStart >= this.m.csvData.length) {
+        dataIdxStart = this.m.csvData.length - 1;
+      }
+      dataIdxEnd = dataIdxStart;
+      for (dataIdxStart;
+        dataIdxStart > 0;
+        dataIdxStart--) {
+        // console.log(dataIdxStart);
+        const elem: any = this.m.csvData[dataIdxStart];
+
+        if (!elem.hasOwnProperty(keyInt1)) {
+          elem[keyInt1] = Date.parse(elem[this.m.xColumn]);
+        }
+
+        if (!elem.hasOwnProperty(keyInt2)) {
+          elem[keyInt2] = Date.parse(elem[this.m.xColumn2]);
+        }
+
+        // We can only increment dataIdx if the preceding elements have also
+        // been moved off of the current screen area, otherwise elements will be
+        // removed prematurely
+        /* eslint-disable max-len */
+        if (consecutive &&
+          !((this.m.scale * this.m.timeScale(elem[keyInt1])) < (-this.m.deltaX + this.m.width) ||
+            (((this.m.scale * this.m.timeScale(elem[keyInt2])) <= -this.m.deltaX + this.m.width) &&
+              ((this.m.scale * this.m.timeScale(elem[keyInt2])) > -this.m.deltaX)))) {
+          dataIdxEnd--;
+        } else {
+          consecutive = false;
+        }
+        /* eslint-enable max-len */
+
+        // If this is true, then the x position of the start of the bar and end
+        // of the bar are currently outside of the viewing area
+        /* eslint-disable max-len */
+        if (((this.m.scale * this.m.timeScale(elem[keyInt1])) < -this.m.deltaX &&
+          // right end of block
+          (this.m.scale * this.m.timeScale(elem[keyInt2])) < -this.m.deltaX)) {
+          break;
+        }
+        /* eslint-enable max-len */
+      }
+
+
+      this.m.data = this.m.csvData.slice(dataIdxStart,
+          dataIdxEnd + this.m.barBuffer);
+      this.m.dataIdx = dataIdxStart;
+    }
+    console.log(`this.m.dataIdx ${this.m.dataIdx}\n` +
+      `dataIdxStart ${dataIdxStart}\n` +
+      `dataIdxEnd ${dataIdxEnd}`);
+    console.log(this.m.data);
+  }
 
   /**
    * Purpose: gets the translation for an x-axis tick
@@ -180,6 +357,27 @@ export abstract class TimelineType implements TimelineTypeInterface {
     this.updateColumns();
   }
 }
+
+/**
+ * Purpose: this class exists to minimize code duplication between
+ * IntervalOccurrence and IntervalMagnitude
+ */
+// abstract class IntervalTimelineType extends TimelineType
+//   implements TimelineTypeInterface {
+//   abstract applyZoom(): void;
+//
+//   abstract checkYPrimType(primType: string): boolean;
+//
+//   abstract
+//   draw(selection: any, ttOver: any, ttMove: any, ttLeave: any): void;
+//
+//   getData(): void {
+//   }
+//
+//   getTickTranslate(datum: any): string {
+//     return '';
+//   }
+// }
 
 // class EventOccurrence
 // class IntervalOccurrence

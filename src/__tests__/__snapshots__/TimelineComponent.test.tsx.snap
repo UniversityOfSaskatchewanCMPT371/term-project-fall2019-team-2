@@ -272,7 +272,7 @@ exports[`<TimelineComponent /> R2 Tests
 </text>
 </g>
 </g>
-<text transform=\\"translate(467,618)\\" style=\\"text-anchor: start;\\">Order Date
+<text transform=\\"translate(467,618)\\" style=\\"text-anchor: middle;\\">Order Date
 </text>
 <text transform=\\"rotate(-90)\\" y=\\"-70\\" x=\\"-299\\" dy=\\"1em\\" style=\\"text-anchor: middle;\\">Order ID
 </text>
@@ -553,7 +553,7 @@ exports[`<TimelineComponent /> R2 Tests
 </text>
 </g>
 </g>
-<text transform=\\"translate(467,618)\\" style=\\"text-anchor: start;\\">Order Date
+<text transform=\\"translate(467,618)\\" style=\\"text-anchor: middle;\\">Order Date
 </text>
 <text transform=\\"rotate(-90)\\" y=\\"-70\\" x=\\"-299\\" dy=\\"1em\\" style=\\"text-anchor: middle;\\">Order ID
 </text>

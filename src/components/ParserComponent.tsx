@@ -39,7 +39,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
       this.isValid = this.isValid.bind(this);
       this.dataIsValid = this.dataIsValid.bind(this);
       this.lookForDateKey = this.lookForDateKey.bind(this);
-      this.sortsData = this.sortsData.bind(this);
+      this.sortData = this.sortData.bind(this);
       this.inferTypes = this.inferTypes.bind(this);
       this.parseCsv = this.parseCsv.bind(this);
       this.parse = this.parse.bind(this);
@@ -149,19 +149,18 @@ export default class ParserComponent extends React.Component<ParserInterface,
     }
 
     /**
-   * purpose: somehting
-   * @precondition not yet
-   * @param {Array} data: yes
-   * @return {boolean}: yea
+   * purpose: check if data is undefined and has more than 0 rows
+   * @precondition a csv has been uploaded and its data is stored in an array
+   * @param {Array} data: the array of data to be checked
+   * @return {boolean}: return true if the data is not undefined
+     * and contains more than 0 rows otherwise return false
    */
     dataIsValid(data: Array<object>): boolean {
       assert.notStrictEqual(data, null,
-          'sortData(): data (Array of objects) is null');
+          'dataIsValid(): data (Array of objects) is null');
       assert.notStrictEqual(data, [],
-          'sortData(): data (array of objects) is empty');
+          'dataIsValid(): data (array of objects) is empty');
       if (data !== undefined && data.length > 0) {
-        assert.notStrictEqual(data[0], null,
-            'sortData(): data[0] is null');
         return true;
       } else {
         alert('Data is empty');
@@ -170,10 +169,11 @@ export default class ParserComponent extends React.Component<ParserInterface,
     }
 
     /**
-        * purpose: somehting
-     * @precondition not yet
-     * @param {Array} data: yes
-     * @return {any}: yea
+     * purpose: looks for the column that has a valid date in the first row
+     * @precondition a csv has been uploaded and its data is stored in an array
+     * @param {Array} data: the array of data to be checked
+     * @return {any}: return the column name of the first row
+     * that contains the valid date of given date format
    */
     lookForDateKey(data: Array<object>): any {
       assert.notStrictEqual(data[0], null,
@@ -187,15 +187,18 @@ export default class ParserComponent extends React.Component<ParserInterface,
     };
 
     /**
-   * purpose: somehting
-   * @precondition not yet
-   * @param {Array} data: yes
-   * @return {boolean}: yea
+   * Purpose: sorts the array of data
+   * @precondition data contains a column of valid numbers that
+     * can be interpreted as a date in the selected date format
+   * @postcondition the data stored in the array is sorted by some date column
+   * @param {Array} data: the array of data to sort
+     * @param {any} key: the column name by which dates must be sorted
+   * @return {boolean}: true if data is sorted correctly
+     * and false if it failed to sort
    */
-    sortsData(data: Array<object>): boolean {
-      const key = this.lookForDateKey(this.state.data);
+    sortData(data: Array<object>, key:any): boolean {
       const formatString = this.state.formatString;
-
+      const initialData = this.state.data;
       const keyInt = `${key}_num`;
 
       TimSort.sort(data, function(a: any, b: any) {
@@ -228,19 +231,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
       // state should be updated
       assert.notStrictEqual(this.state.data, [],
           'sortData(): this.state.data is empty (not updated)');
-      return false;
+      return this.state.data !== initialData;
     }
-
-    /**
-     * Purpose: sorts the array of data
-     * @precondition dates must contain year month and date,
-     *    if data does not contain year in some
-     *    dates but does in some it will sort lexicographically.
-     *    a csv has been uploaded, and the data is stored in an array.
-     * @postcondition the data stored in the array is sorted by some date column
-     * @param {Array} data: the array of data to sort
-     * @return {boolean}: array of sorted data
-     */
 
     /**
      * Purpose: to instantiate an empty list of objects
@@ -485,7 +477,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
                     'parseCsv(): this.state.data is empty' +
                     'but still calling inferTypes & sortData');
                 this.columnTypes = this.inferTypes(this.state.data);
-                this.sortsData(this.state.data);
+                this.sortData(this.state.data,
+                    this.lookForDateKey(this.state.data));
               } catch (e) {
                 alert(e.toString());
                 console.log(e.toString());

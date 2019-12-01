@@ -449,7 +449,7 @@ describe('<ParserComponent /> Unit Tests', () => {
         {'Date': '2/31/1992'},
         {'Date': '12/21/1992'}];
       instance.setState({formatString: 'MM-DD-YYYY'});
-      instance.sortData(testArray);
+      instance.sortData(testArray, instance.lookForDateKey((testArray)));
       const expectedResult: {Date: string}[] = [
         {'Date': '2/31/1992'},
         {'Date': '12/21/1992'},
@@ -467,7 +467,7 @@ describe('<ParserComponent /> Unit Tests', () => {
         {'Date': '1/1/2000', 'Date1': '12/21/1992'},
         {'Date': '1/1/2002', 'Date1': '12/21/1993'}];
       instance.setState({formatString: 'MM DD YYYY'});
-      instance.sortData(testArray);
+      instance.sortData(testArray, instance.lookForDateKey((testArray)));
       const expectedResult: {Date: string, Date1: string}[] = [
         {'Date': '1/1/2000', 'Date1': '12/21/1992'},
         {'Date': '1/1/2001', 'Date1': '4/5/2010'},
@@ -479,13 +479,6 @@ describe('<ParserComponent /> Unit Tests', () => {
       expect(testArray[3]).toMatchObject(expectedResult[3]);
     });
 
-    it('should throw exception when given an empty file with no data', () => {
-      const testArray: {id: number, name: string, job: string}[] = [];
-      expect(() => {
-        instance.sortData(testArray);
-      }).toThrow('The file uploaded has no dates.');
-    });
-
     it('should sort the data by dates when given ' +
         'dates written in a form like November 23, 2019', () => {
       const testArray: {name: string, Date: string}[] = [
@@ -494,7 +487,7 @@ describe('<ParserComponent /> Unit Tests', () => {
         {'name': 'name3', 'Date': 'December 31, 2019'},
         {'name': 'name4', 'Date': 'February 5, 2019'}];
       instance.setState({formatString: 'MMMM DD YYYY'});
-      instance.sortData(testArray);
+      instance.sortData(testArray, instance.lookForDateKey((testArray)));
       const expectedResult: {name: string, Date: string}[] = [
         {'name': 'name2', 'Date': 'January 1, 2019'},
         {'name': 'name4', 'Date': 'February 5, 2019'},
@@ -514,7 +507,7 @@ describe('<ParserComponent /> Unit Tests', () => {
         {'name': 'name3', 'Date': 'December 31 2019'},
         {'name': 'name4', 'Date': 'February 5 2019'}];
       instance.setState({formatString: 'MMMM DD YYYY'});
-      instance.sortData(testArray);
+      instance.sortData(testArray, instance.lookForDateKey((testArray)));
       const expectedResult: {name: string, Date: string}[] = [
         {'name': 'name2', 'Date': 'January 1 2019'},
         {'name': 'name4', 'Date': 'February 5 2019'},
@@ -534,7 +527,7 @@ describe('<ParserComponent /> Unit Tests', () => {
         {'Date': '31 december 2019'},
         {'Date': '5 february 2019'}];
       instance.setState({formatString: 'DD-MMMM-YYYY'});
-      instance.sortData(testArray);
+      instance.sortData(testArray, instance.lookForDateKey((testArray)));
       const expectedResult: {Date: string}[] = [
         {'Date': '1 january 2019'},
         {'Date': '5 february 2019'},
@@ -554,7 +547,7 @@ describe('<ParserComponent /> Unit Tests', () => {
         {'name': 'name1', 'Date': 'January 1, 2019'},
         {'name': 'name2', 'Date': 'January 30, 2019'}];
       instance.setState({formatString: 'MMMM DD YYYY'});
-      instance.sortData(testArray);
+      instance.sortData(testArray, instance.lookForDateKey((testArray)));
       const expectedResult: {name: string, Date: string}[] = [
         {'name': 'name4', 'Date': 'february 31, 2019'},
         {'name': 'name1', 'Date': 'January 1, 2019'},
@@ -574,7 +567,7 @@ describe('<ParserComponent /> Unit Tests', () => {
         {'name': 'name1', 'Date': 'Jan 1, 2019'},
         {'name': 'name2', 'Date': 'Jan 30, 2019'}];
       instance.setState({formatString: 'MMM DD YYYY'});
-      instance.sortData(testArray);
+      instance.sortData(testArray, instance.lookForDateKey((testArray)));
       const expectedResult: {name: string, Date: string}[] = [
         {'name': 'name1', 'Date': 'Jan 1, 2019'},
         {'name': 'name2', 'Date': 'Jan 30, 2019'},
@@ -594,7 +587,7 @@ describe('<ParserComponent /> Unit Tests', () => {
         {'Date': '2.45254552'},
         {'Date': '1'}];
       instance.setState({formatString: 'X'});
-      instance.sortData(testArray);
+      instance.sortData(testArray, instance.lookForDateKey((testArray)));
       const expectedResult: {Date: string}[] = [
         {'Date': '1'},
         {'Date': '2.45254552'},

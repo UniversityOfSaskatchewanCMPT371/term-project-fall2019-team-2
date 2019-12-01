@@ -16,6 +16,7 @@ import EventOccurrence
   from './TimelineTypes/EventOccurrence';
 
 import IntervalOccurrence from './TimelineTypes/IntervalOccurrence';
+import * as sentry from '@sentry/browser';
 
 /**
  * Purpose: an enum to differentiate the data being drawn
@@ -906,7 +907,7 @@ export default class TimelineComponent
         this.ttOverHelper(d, d3.event.x, d3.event.y);
       }
     } catch (e) {
-      console.log(e);
+      sentry.captureEvent(e);
       throw (e);
     }
   }

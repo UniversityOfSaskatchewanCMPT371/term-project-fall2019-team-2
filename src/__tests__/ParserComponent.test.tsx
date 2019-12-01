@@ -482,7 +482,7 @@ describe('<ParserComponent /> Unit Tests', () => {
   });
 
   describe('checkifCsvandcallParse()', () => {
-    it('Should call parse if file is a .csv and return true', () => {
+    it('Should call parse when file is a .csv and return true', () => {
       const wrapper = mount(<ParserComponent prompt={'Select ' +
     'a CSV file: '} fileType={FileType.csv}
       onChange={function() {}}/>);

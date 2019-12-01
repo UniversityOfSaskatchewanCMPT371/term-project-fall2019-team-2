@@ -133,7 +133,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
     /**
    * Purpose: check if file is .csv when date format
      * is changed and call parse if it is
-     * @preconditions: the file should have a valid name (.csv)
+     * @preconditions: the current file should have a valid name (.csv)
      * @postconditions: parse is called if file is .csv
      * @return{boolean}: returns true if it works otherwise returns false
    */

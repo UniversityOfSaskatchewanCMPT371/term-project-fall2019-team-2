@@ -34,7 +34,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
         fileData: '',
         fileName: '',
       };
-
+      this.createNewMockFile = this.createNewMockFile.bind(this);
+      this.checkifCsvandcallParse = this.checkifCsvandcallParse.bind(this);
       this.isValid = this.isValid.bind(this);
       this.sortData = this.sortData.bind(this);
       this.inferTypes = this.inferTypes.bind(this);

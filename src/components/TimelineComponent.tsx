@@ -639,7 +639,7 @@ export default class TimelineComponent
    */
   drawTimeline() {
     this.zoom = d3.zoom()
-        .scaleExtent([1, 20]) // zoom range
+        .scaleExtent([0.5, 20]) // zoom range
         .translateExtent(this.m.extent)
         .extent(this.m.extent)
         .on('zoom', this.updateChart);
@@ -736,16 +736,17 @@ export default class TimelineComponent
       // moveChart depending on operation
       if (op === '-' || op === 's') {
         // Zoom out
+        const lowerRange: number = Math.max(
+            this.m.scaleMin, this.m.scale * this.m.scaleZoomOut);
         const identity = d3.zoomIdentity
-            .scale(Math.max(this.m.scaleMin,
-                this.m.scale * this.m.scaleZoomOut));
+            .scale(lowerRange);
 
         this.svg.transition().ease(d3.easeLinear).duration(300)
             .call(this.zoom.transform, identity);
         // Ensure the new scale is saved with a limit on the minimum
         //  zoomed out scope
-        this.m.scale = Math.max(this.m.scaleMin,
-            this.m.scale * this.m.scaleZoomOut);
+        this.m.scale = Math.max(lowerRange);
+        // this.m.extent = [[0, 0], [this.m.width, this.m.height]];
       } else if (op === '+' || op === 'w') {
         // Zoom In
         const identity = d3.zoomIdentity

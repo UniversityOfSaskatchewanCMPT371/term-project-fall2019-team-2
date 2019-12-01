@@ -27,13 +27,6 @@ export default class IntervalOccurrence extends TimelineType
         .attr('transform', (d: any) =>
           `translate(${this.m.scale * this.m.timeScale(new Date(d.text))},
             ${this.m.height})`);
-
-    d3.selectAll('.line')
-        .attr('x2', (d: any) =>
-          this.m.scale * (this.m.timeScale(new Date(d[this.m.xColumn2]))));
-    d3.selectAll('.text')
-        .attr('x', (d: any) =>
-          this.m.scale * this.m.timeScale(new Date(d[this.m.xColumn])));
   }
 
   /**

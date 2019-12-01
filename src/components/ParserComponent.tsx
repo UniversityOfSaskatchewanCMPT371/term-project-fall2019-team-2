@@ -36,9 +36,10 @@ export default class ParserComponent extends React.Component<ParserInterface,
         formatString: '',
         fileData: '',
       };
-
       this.isValid = this.isValid.bind(this);
-      this.sortData = this.sortData.bind(this);
+      this.dataIsValid = this.dataIsValid.bind(this);
+      this.lookForDateKey = this.lookForDateKey.bind(this);
+      this.sortsData = this.sortsData.bind(this);
       this.inferTypes = this.inferTypes.bind(this);
       this.parseCsv = this.parseCsv.bind(this);
       this.parse = this.parse.bind(this);
@@ -154,9 +155,16 @@ export default class ParserComponent extends React.Component<ParserInterface,
    * @return {boolean}: yea
    */
     dataIsValid(data: Array<object>): boolean {
+      assert.notStrictEqual(data, null,
+          'sortData(): data (Array of objects) is null');
+      assert.notStrictEqual(data, [],
+          'sortData(): data (array of objects) is empty');
       if (data !== undefined && data.length > 0) {
+        assert.notStrictEqual(data[0], null,
+            'sortData(): data[0] is null');
         return true;
       } else {
+        alert('Data is empty');
         return false;
       }
     }
@@ -217,6 +225,9 @@ export default class ParserComponent extends React.Component<ParserInterface,
           data,
         };
       });
+      // state should be updated
+      assert.notStrictEqual(this.state.data, [],
+          'sortData(): this.state.data is empty (not updated)');
       return false;
     }
 
@@ -230,66 +241,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * @param {Array} data: the array of data to sort
      * @return {boolean}: array of sorted data
      */
-    sortData(data: Array<object>): boolean {
-      assert.notStrictEqual(data, null,
-          'sortData(): data (Array of objects) is null');
-      assert.notStrictEqual(data, [],
-          'sortData(): data (array of objects) is empty');
-
-      let doneTheWork = false;
-      /* loop goes through each key and saves the 1 with a date in first row */
-      if (data !== undefined && data.length > 0) {
-        assert.notStrictEqual(data[0], null,
-            'sortData(): data[0] is null');
-        for (const [key, value] of Object.entries(data[0])) {
-          if (!doneTheWork) {
-            const date1 = moment(String(value), this.state.formatString);
-            if (moment(date1, this.state.formatString).isValid()) {
-              doneTheWork = true;
-              const formatString = this.state.formatString;
-
-              const keyInt = `${key}_num`;
-
-              TimSort.sort(data, function(a: any, b: any) {
-                let val: any;
-                if (!a.hasOwnProperty(keyInt)) {
-                  val = moment(a[key], formatString);
-                  if (val.isValid()) {
-                    a[keyInt] = val.valueOf();
-                  } else {
-                    a[keyInt] = -1;
-                  }
-                }
-
-                if (!b.hasOwnProperty(keyInt)) {
-                  val = moment(b[key], formatString);
-                  if (val.isValid()) {
-                    b[keyInt] = val.valueOf();
-                  } else {
-                    b[keyInt] = -1;
-                  }
-                }
-                return (a[keyInt] - b[keyInt]);
-              });
-
-              this.setState(() => {
-                return {
-                  data,
-                };
-              });
-            }
-          }
-        }
-      }
-      if (doneTheWork) {
-        // state should be updated
-        assert.notStrictEqual(this.state.data, [],
-            'sortData(): this.state.data is empty (not updated)');
-        return true;
-      } else {
-        throw new Error('The file uploaded has no dates.');
-      }
-    }
 
     /**
      * Purpose: to instantiate an empty list of objects
@@ -527,16 +478,18 @@ export default class ParserComponent extends React.Component<ParserInterface,
                 fileData: fileReader.result,
               };
             });
-            try {
-              // shouldn't pass empty array into inferTypes or sortData :/
-              assert.notStrictEqual(this.state.data, [],
-                  'parseCsv(): this.state.data is empty' +
-              'but still calling inferTypes & sortData');
-              this.columnTypes = this.inferTypes(this.state.data);
-              this.sortData(this.state.data);
-            } catch (e) {
-              alert(e.toString());
-              console.log(e.toString());
+            if (this.dataIsValid(this.state.data)) {
+              try {
+                // shouldn't pass empty array into inferTypes or sortData :/
+                assert.notStrictEqual(this.state.data, [],
+                    'parseCsv(): this.state.data is empty' +
+                    'but still calling inferTypes & sortData');
+                this.columnTypes = this.inferTypes(this.state.data);
+                this.sortsData(this.state.data);
+              } catch (e) {
+                alert(e.toString());
+                console.log(e.toString());
+              }
             }
           }
           resolver(true);

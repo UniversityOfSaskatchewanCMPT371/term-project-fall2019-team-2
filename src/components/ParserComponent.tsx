@@ -157,9 +157,15 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * @return {boolean}: array of sorted data
      */
     sortData(data: Array<object>): boolean {
+      assert.notStrictEqual(data, null,
+          'sortData(): data (Array of objects) is null');
+      assert.notStrictEqual(data, [],
+          'sortData(): data (array of objects) is empty');
       let doneTheWork = false;
       /* loop goes through each key and saves the 1 with a date in first row */
       if (data !== undefined && data.length > 0) {
+        assert.notStrictEqual(data[0], null,
+            'sortData(): data[0] is null');
         for (const [key, value] of Object.entries(data[0])) {
           if (!doneTheWork) {
             const date1 = moment(String(value), this.state.formatString);
@@ -369,8 +375,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * @param {Object} fileEvent: the event passed into this component
      */
     async parse(fileEvent: any) {
-      // clear the console before each parse
-      console.clear();
+      // indicate where the message started parsing
+      console.log('This is the beginning of parsing csv file');
 
       // fileEvent is an object containing target files
       assert.notStrictEqual(fileEvent, undefined,

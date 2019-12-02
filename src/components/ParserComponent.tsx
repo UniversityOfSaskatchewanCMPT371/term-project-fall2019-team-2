@@ -144,7 +144,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
           return false;
         }
       }
-      alert('Wrong file type was uploaded.');
+      // if file is undefined
       return false;
     }
 
@@ -163,8 +163,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
       if (data !== undefined && data.length > 0) {
         return true;
       } else {
-        alert('Data is empty');
-        return false;
+        throw new Error('The file uploaded has no data.');
       }
     }
 
@@ -470,19 +469,19 @@ export default class ParserComponent extends React.Component<ParserInterface,
                 fileData: fileReader.result,
               };
             });
-            if (this.dataIsValid(this.state.data)) {
-              try {
-                // shouldn't pass empty array into inferTypes or sortData :/
-                assert.notStrictEqual(this.state.data, [],
-                    'parseCsv(): this.state.data is empty' +
+            try {
+              // shouldn't pass empty array into inferTypes or sortData :/
+              assert.notStrictEqual(this.state.data, [],
+                  'parseCsv(): this.state.data is empty' +
                     'but still calling inferTypes & sortData');
+              if (this.dataIsValid(this.state.data)) {
                 this.columnTypes = this.inferTypes(this.state.data);
                 this.sortData(this.state.data,
                     this.lookForDateKey(this.state.data));
-              } catch (e) {
-                alert(e.toString());
-                console.log(e.toString());
               }
+            } catch (e) {
+              alert(e.toString());
+              console.log(e.toString());
             }
           }
           resolver(true);

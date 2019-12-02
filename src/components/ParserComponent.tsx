@@ -70,8 +70,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
             </div> :
             <div/>;
 
-      assert.strictEqual(1, 2, "1 in fact does not equal 2!");
-
       return (
         <div>
           <div className="row">

@@ -35,29 +35,29 @@ jobs:
       env:
         CI: true
 
-    # Use the winter!
-    - name: npm install, wint, build, and test
-      if: matrix.os == 'windows-latest'
-      shell: cmd
-      run: |
-        npm install
-        npm run wint
-        npm run build
-        set CI=true&&npm run test
-      env:
-        CI: true
+    # # Use the winter!
+    # - name: npm install, wint, build, and test
+    #   if: matrix.os == 'windows-latest'
+    #   shell: cmd
+    #   run: |
+    #     npm install
+    #     npm run wint
+    #     npm run build
+    #     set CI=true&&npm run test
+    #   env:
+    #     CI: true
 
-    # Smoke tests only run on Ubuntu
-    - name: npm install, lint, build, test, and smoke test
-      if: matrix.os == 'ubuntu-latest'
-      run: |
-        npm install
-        npm run lint
-        npm run build
-        npm run test
-        docker run -e START_XVFB=false -p 4444:4444 --shm-size=2g -v $(pwd):/mnt selenium/standalone-chrome:3.141.59-xenon /bin/bash -c "bash /mnt/scripts/setup-builder.sh"
-      env:
-        CI: true
+    # # Smoke tests only run on Ubuntu
+    # - name: npm install, lint, build, test, and smoke test
+    #   if: matrix.os == 'ubuntu-latest'
+    #   run: |
+    #     npm install
+    #     npm run lint
+    #     npm run build
+    #     npm run test
+    #     docker run -e START_XVFB=false -p 4444:4444 --shm-size=2g -v $(pwd):/mnt selenium/standalone-chrome:3.141.59-xenon /bin/bash -c "bash /mnt/scripts/setup-builder.sh"
+    #   env:
+    #     CI: true
 
     # Upload source maps
     - name: Upload source maps

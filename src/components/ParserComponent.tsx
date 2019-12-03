@@ -131,6 +131,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * valid
      */
     isValid(upFile?: File): boolean {
+      assert.notStrictEqual(upFile, null,
+          'isValid(): File object is null');
       if (upFile !== undefined) {
         const typeOfFile = upFile.name.substr(upFile.name.length - 4);
         if (this.props.fileType.mimeName === '.csv' +
@@ -156,9 +158,16 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * @return {boolean}: array of sorted data
      */
     sortData(data: Array<object>): boolean {
+      assert.notStrictEqual(data, null,
+          'sortData(): data (Array of objects) is null');
+      assert.notStrictEqual(data, [],
+          'sortData(): data (array of objects) is empty');
+
       let doneTheWork = false;
       /* loop goes through each key and saves the 1 with a date in first row */
       if (data !== undefined && data.length > 0) {
+        assert.notStrictEqual(data[0], null,
+            'sortData(): data[0] is null');
         for (const [key, value] of Object.entries(data[0])) {
           if (!doneTheWork) {
             const date1 = moment(String(value), this.state.formatString);
@@ -200,6 +209,9 @@ export default class ParserComponent extends React.Component<ParserInterface,
         }
       }
       if (doneTheWork) {
+        // state should be updated
+        assert.notStrictEqual(this.state.data, [],
+            'sortData(): this.state.data is empty (not updated)');
         return true;
       } else {
         throw new Error('The file uploaded has no dates.');
@@ -213,11 +225,16 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * @return {[CountTypes]}: a list of objects
      */
     createTypeCountingObjects(fieldLength: number): CountTypes[] {
+      assert(fieldLength > 0,
+          'createTypeCountingObjects(): ' +
+          'no data from which to create CountTypes[]');
       const typesForEachCol = [];
       // instantiate object for each column
       for (let i = 0; i < fieldLength; i++) {
         typesForEachCol.push(new CountTypes());
       }
+      assert.notStrictEqual(typesForEachCol, [],
+          'createTypeCountingObjects(): typesForEachCol array is empty');
       return typesForEachCol;
     }
 
@@ -232,20 +249,37 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * @return {Array}: a list of objects of type Column
      */
     inferTypes(data: Array<object>): Array<Column> | undefined {
+      // data should contain something (according to the precondition)
+      assert.notStrictEqual(data, undefined,
+          'inferTypes(): data (array of objects) is undefined');
+      assert.notStrictEqual(data, null,
+          'inferTypes(): data (array of objects) is null');
+      assert.notStrictEqual(data, [], 'data (array of objects) is empty');
+
       if (this.state.data.length > 0) {
+        assert.notStrictEqual(this.state.data[0], null,
+            'inferTypes(): this.state.data[0] is null');
         const listFields = Object.keys(this.state.data[0]);
+        assert.notStrictEqual(listFields, null,
+            'inferTypes(): listFields is null');
+        assert(listFields.length > 0,
+            'inferTypes(): listFields is empty');
         // instantiate objects to track the types of data
         const typesForEachCol =
             this.createTypeCountingObjects(listFields.length);
         // check half the values to find if the data is consistent
         [0, Math.floor(this.state.data.length / 2)].forEach((element) => {
           const row: object = this.state.data[element];
+          assert.notStrictEqual(row, null,
+              'inferTypes(): row object is null');
           // look at each field and categorize
           for (let i = 0; i < listFields.length; i++) {
             const curColTypes = typesForEachCol[i];
             try {
               // @ts-ignore
               const val = row[listFields[i]];
+              assert.notStrictEqual(val, undefined,
+                  'inferTypes(): value in field is undefined');
               if (typeof val === 'string') {
                 const date = moment(val);
                 const isValid = date.isValid();
@@ -290,6 +324,9 @@ export default class ParserComponent extends React.Component<ParserInterface,
           }
         }
         );
+        // if there is data then arrayOfColumns shouldn't be empty
+        assert.notStrictEqual(arrayOfColumns, [],
+            'inferTypes(): arrayOfColumns is empty after parsing data');
         return arrayOfColumns;
       } else {
         throw new Error('data is empty');
@@ -327,6 +364,27 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * @param {Object} fileEvent: the event passed into this component
      */
     async parse(fileEvent: any) {
+      // fileEvent is an object containing target files
+      assert.notStrictEqual(fileEvent, undefined,
+          'parse(): fileEvent is undefined');
+      assert.notStrictEqual(fileEvent, null,
+          'parse(): fileEvent is null');
+      // check target obj
+      assert.notStrictEqual(fileEvent.target, null,
+          'parse(): fileEvent.target is null');
+      assert.notStrictEqual(fileEvent.target, undefined,
+          'parse(): fileEvent.target is undefined');
+      // check files obj (Array<File>)
+      assert.notStrictEqual(fileEvent.target.files, null,
+          'parse(): fileEvent.target.files is null');
+      assert.notStrictEqual(fileEvent.target.files, undefined,
+          'parse(): fileEvent.target.files is undefined');
+      // check File obj (file being uploaded)
+      assert.notStrictEqual(fileEvent.target.files[0], null,
+          'parse(): fileEvent.target.files[0] is null');
+      assert.notStrictEqual(fileEvent.target.files[0], undefined,
+          'parse(): fileEvent.target.files[0] is undefined');
+
       this.setState(() => {
         return {
           showTimeline: false,
@@ -338,6 +396,9 @@ export default class ParserComponent extends React.Component<ParserInterface,
         await this.parseCsv(fileEvent);
       }
 
+      // only show timeline if there is data
+      assert.notStrictEqual(this.state.data, [],
+          'parse(): this.state.data is empty but setting showTimeline to true');
       this.setState(() => {
         return {
           showTimeline: true,
@@ -353,7 +414,18 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * @param {Object} fileEvent: the event passed into this component
      */
     async parseCsv(fileEvent: any) {
+      // check fileEvent (should probs just pass in the File from parse()...
+      assert.notStrictEqual(fileEvent, undefined,
+          'parseCsv(): fileEvent is undefined');
+      assert.notStrictEqual(fileEvent, null,
+          'parseCsv(): fileEvent is null');
+
       const csvFile = fileEvent.target.files[0];
+
+      assert.notStrictEqual(csvFile, undefined,
+          'parseCsv(): csvFile (File obj) is undefined');
+      assert.notStrictEqual(csvFile, null,
+          'parseCsv(): csvFile (File obj) is null');
 
       // for testing
       this.props.onChange(fileEvent.target.files[0]);
@@ -383,6 +455,10 @@ export default class ParserComponent extends React.Component<ParserInterface,
               };
             });
             try {
+              // shouldn't pass empty array into inferTypes or sortData :/
+              assert.notStrictEqual(this.state.data, [],
+                  'parseCsv(): this.state.data is empty' +
+              'but still calling inferTypes & sortData');
               this.columnTypes = this.inferTypes(this.state.data);
               this.sortData(this.state.data);
             } catch (e) {

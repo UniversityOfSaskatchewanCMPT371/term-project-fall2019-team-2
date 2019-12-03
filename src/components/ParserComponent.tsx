@@ -193,7 +193,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
                     if (val.isValid()) {
                       b[keyInt] = val.valueOf();
                     } else {
-                      console.warn('TimSort.sort(): the value' +
+                      console.info('TimSort.sort(): the value' +
                         ' for b is invalid');
                       b[keyInt] = -1;
                     }

@@ -197,42 +197,47 @@ export default class TimelineComponent
     assert.notStrictEqual(this.state.data, [],
         'TimelineComp - sortData(): this.state.data is empty');
     const cols = this.state.data.columns;
-    if (cols !== null && cols !== undefined) {
-      assert.notStrictEqual(cols, [],
-          'TimelineComp - sortData(): cols (array) is empty');
-      const col = cols.find((elem) => {
-        return elem.key === column;
-      });
+    try {
+      if (cols !== null && cols !== undefined) {
+        assert.notStrictEqual(cols, [],
+            'TimelineComp - sortData(): cols (array) is empty');
+        const col = cols.find((elem) => {
+          return elem.key === column;
+        });
 
-      if (col !== null && col !== undefined) {
-        const data = this.state.data;
-        if (col.primType === 'date') {
-          const keyInt = `${column}_num`;
-          TimSort.sort(data.arrayOfData, function(a: any, b: any) {
-            if (!a.hasOwnProperty(keyInt)) {
-              a[keyInt] = Date.parse(a[column]);
-            }
-            if (!b.hasOwnProperty(keyInt)) {
-              b[keyInt] = Date.parse(b[column]);
-            }
-            return (a[keyInt] - b[keyInt]);
-          });
-        } else {
-          TimSort.sort(data.arrayOfData, function(a: any, b: any) {
-            return (a[column] - b[column]);
+        if (col !== null && col !== undefined) {
+          const data = this.state.data;
+          if (col.primType === 'date') {
+            const keyInt = `${column}_num`;
+            TimSort.sort(data.arrayOfData, function(a: any, b: any) {
+              if (!a.hasOwnProperty(keyInt)) {
+                a[keyInt] = Date.parse(a[column]);
+              }
+              if (!b.hasOwnProperty(keyInt)) {
+                b[keyInt] = Date.parse(b[column]);
+              }
+              return (a[keyInt] - b[keyInt]);
+            });
+          } else {
+            TimSort.sort(data.arrayOfData, function(a: any, b: any) {
+              return (a[column] - b[column]);
+            });
+          }
+
+          // there should still be data after being sorted
+          assert.notStrictEqual(data, [],
+              'TimelineComp - sortData(): data is empty');
+          this.setState(() => {
+            return {
+              data,
+            };
           });
         }
-
-        // there should still be data after being sorted
-        assert.notStrictEqual(data, [],
-            'TimelineComp - sortData(): data is empty');
-        this.setState(() => {
-          return {
-            data,
-          };
-        });
       }
+    } catch (err) {
+      sentry.captureEvent(err);
     }
+
     console.error('sortData(): this.state.data has no columns');
   }
 
@@ -302,6 +307,7 @@ export default class TimelineComponent
    * Purpose: to clear and redraw the timeline
    */
   resetTimeline() {
+    console.log('Timeline has been resetted');
     d3.selectAll('svg').remove();
     // make sure svg removed
     assert(d3.selectAll('svg').empty(),

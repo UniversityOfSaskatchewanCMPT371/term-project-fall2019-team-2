@@ -10,7 +10,7 @@ export default class AlertComponent extends React.Component {
   private error:string;
   /**
    * Purpose: constructor for the AlertComponent
-   * @param {AlertComponent} error
+   * @param {AlertComponent} error: the error string message
    */
   // eslint-disable-next-line constructor-super,require-jsdoc
   constructor(error:string) {
@@ -27,7 +27,6 @@ export default class AlertComponent extends React.Component {
   alertDisplayer(): any {
     this.useStatehelper();
     if (this.show) {
-      // @ts-ignore
       return (
         <Alert variant="danger" onClose={() => this.show=false} dismissible>
           <Alert.Heading>Oh snap! You got an error!</Alert.Heading>

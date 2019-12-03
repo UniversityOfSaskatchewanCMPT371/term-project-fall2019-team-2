@@ -98,7 +98,7 @@ export default class TimelineModel {
     this.csvData = [];
     this.data = [];
 
-    this.extent = [[0, 0], [this.width, this.height]];
+    this.extent = [[0, 0], [0, 0]];
     this.view = ViewType.EventMagnitude;
   }
 }

@@ -581,8 +581,6 @@ export default class TimelineComponent
         .range([0, 50 * this.m.csvData.length]);
 
     this.m.x = d3.scaleBand()
-    // may need this in the future for spacing so leaving in
-    // .padding(1)
         .domain(this.m.data.map((d: any) => d[this.m.xColumn]))
         .range([0, this.m.width]).round(true);
 
@@ -674,6 +672,8 @@ export default class TimelineComponent
         .attr('clip-path', 'url(#barsBox)')
         .append('g')
         .attr('id', 'barsLayer')
+        .attr('width', this.m.width)
+        .attr('height', this.m.height)
         .call(d3.drag()
             .on('start', this.dragStarted)
             .on('drag', this.dragged)
@@ -738,15 +738,12 @@ export default class TimelineComponent
         // Zoom out
         const lowerRange: number = Math.max(
             this.m.scaleMin, this.m.scale * this.m.scaleZoomOut);
-        const identity = d3.zoomIdentity
-            .scale(lowerRange);
-
+        const identity = d3.zoomIdentity.scale(lowerRange);
         this.svg.transition().ease(d3.easeLinear).duration(300)
             .call(this.zoom.transform, identity);
         // Ensure the new scale is saved with a limit on the minimum
         //  zoomed out scope
-        this.m.scale = Math.max(lowerRange);
-        // this.m.extent = [[0, 0], [this.m.width, this.m.height]];
+        this.m.scale = lowerRange;
       } else if (op === '+' || op === 'w') {
         // Zoom In
         const identity = d3.zoomIdentity
@@ -760,7 +757,6 @@ export default class TimelineComponent
         // Pan Left
         this.m.deltaX = Math.min(0, this.m.deltaX + this.m.deltaPan);
         this.m.deltaXDirection = -1;
-        // console.log(deltaX);
         this.moveChart();
       } else if (op === 'ArrowRight') {
         this.m.deltaXDirection = 1;
@@ -915,15 +911,17 @@ export default class TimelineComponent
    * Purpose: updates the state and positioning of element on the Timeline
    */
   updateChart() {
+    const additionalBars: number = 1; // number of additional bars rendered
     // recover the new scale
     if (d3.event !== null) {
       this.m.scale = d3.event.transform.k;
-      console.log(d3.event);
+      // console.log(d3.event);
     } else {
       console.warn('d3.event was null');
     }
-
     this.timelineType.applyZoom();
+    this.m.numBars += additionalBars;
+    console.log('numBars in updateChart after: ', this.m.numBars);
 
     if (d3.event !== null && d3.event.sourceEvent !== null &&
       d3.event.sourceEvent.type === 'mousemove') {

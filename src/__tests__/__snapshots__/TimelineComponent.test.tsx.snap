@@ -1023,7 +1023,19 @@ exports[`<TimelineComponent /> R3 Tests
 
 exports[`<TimelineComponent /> R3 Tests
  T3.4 Snapshot test 3`] = `
-"<g class=\\"plot\\" id=\\"bars\\">
+"<svg width=\\"934\\" height=\\"768\\">
+<g transform=\\"translate(70, 0)\\">
+<rect width=\\"934\\" height=\\"598\\" style=\\"fill: none;\\">
+</rect>
+<defs>
+<clipPath id=\\"barsBox\\">
+<rect width=\\"934\\" height=\\"768\\" x=\\"0\\" y=\\"0\\">
+</rect>
+</clipPath>
+</defs>
+<g clip-path=\\"url(#barsBox)\\">
+<g id=\\"barsLayer\\" transform=\\"translate(0,0)\\">
+<g class=\\"plot\\" id=\\"bars\\">
 <g class=\\"bar\\">
 <rect class=\\"pin-line\\" x=\\"0\\" width=\\"2\\" y=\\"419.4852605640208\\" height=\\"178.5147394359792\\">
 </rect>
@@ -1061,12 +1073,112 @@ exports[`<TimelineComponent /> R3 Tests
 </text>
 </g>
 </g>
+</g>
+</g>
+<g id=\\"axisLayer\\">
+<g style=\\"color: red;\\" class=\\"y axis\\" fill=\\"none\\" font-size=\\"10\\" font-family=\\"sans-serif\\" text-anchor=\\"end\\">
+<path class=\\"domain\\" stroke=\\"currentColor\\" d=\\"M-6,598.5H0.5V0.5H-6\\">
+</path>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,583.3875042617942)\\">
+<line stroke=\\"currentColor\\" x2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">350,000,000
+</text>
+</g>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,531.0850872294376)\\">
+<line stroke=\\"currentColor\\" x2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">400,000,000
+</text>
+</g>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,478.78267019708096)\\">
+<line stroke=\\"currentColor\\" x2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">450,000,000
+</text>
+</g>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,426.48025316472433)\\">
+<line stroke=\\"currentColor\\" x2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">500,000,000
+</text>
+</g>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,374.1778361323677)\\">
+<line stroke=\\"currentColor\\" x2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">550,000,000
+</text>
+</g>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,321.87541910001113)\\">
+<line stroke=\\"currentColor\\" x2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">600,000,000
+</text>
+</g>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,269.5730020676545)\\">
+<line stroke=\\"currentColor\\" x2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">650,000,000
+</text>
+</g>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,217.27058503529787)\\">
+<line stroke=\\"currentColor\\" x2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">700,000,000
+</text>
+</g>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,164.96816800294124)\\">
+<line stroke=\\"currentColor\\" x2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">750,000,000
+</text>
+</g>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,112.66575097058455)\\">
+<line stroke=\\"currentColor\\" x2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">800,000,000
+</text>
+</g>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,60.36333393822804)\\">
+<line stroke=\\"currentColor\\" x2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">850,000,000
+</text>
+</g>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,8.060916905871295)\\">
+<line stroke=\\"currentColor\\" x2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">900,000,000
+</text>
+</g>
+<text transform=\\"rotate(-90)\\" y=\\"6\\" dy=\\".71em\\" style=\\"text-anchor: end; color: red;\\">yColumn
+</text>
+</g>
+</g>
+<text transform=\\"translate(467,618)\\" style=\\"text-anchor: start;\\">Order Date
+</text>
+<text transform=\\"rotate(-90)\\" y=\\"-70\\" x=\\"-299\\" dy=\\"1em\\" style=\\"text-anchor: middle;\\">Order ID
+</text>
+</g>
+</svg>
 "
 `;
 
 exports[`<TimelineComponent /> R3 Tests
  T3.4 Snapshot test 4`] = `
-"<g class=\\"plot\\" id=\\"bars\\">
+"<svg width=\\"934\\" height=\\"768\\">
+<g transform=\\"translate(70, 0)\\">
+<rect width=\\"934\\" height=\\"598\\" style=\\"fill: none;\\">
+</rect>
+<defs>
+<clipPath id=\\"barsBox\\">
+<rect width=\\"934\\" height=\\"768\\" x=\\"0\\" y=\\"0\\">
+</rect>
+</clipPath>
+</defs>
+<g clip-path=\\"url(#barsBox)\\">
+<g id=\\"barsLayer\\" transform=\\"translate(0,0)\\">
+<g class=\\"plot\\" id=\\"bars\\">
 <g class=\\"bar\\">
 <rect class=\\"pin-line\\" x=\\"0\\" width=\\"2\\" y=\\"419.4852605640208\\" height=\\"178.5147394359792\\">
 </rect>
@@ -1104,5 +1216,93 @@ exports[`<TimelineComponent /> R3 Tests
 </text>
 </g>
 </g>
+</g>
+</g>
+<g id=\\"axisLayer\\">
+<g style=\\"color: red;\\" class=\\"y axis\\" fill=\\"none\\" font-size=\\"10\\" font-family=\\"sans-serif\\" text-anchor=\\"end\\">
+<path class=\\"domain\\" stroke=\\"currentColor\\" d=\\"M-6,598.5H0.5V0.5H-6\\">
+</path>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,583.3875042617942)\\">
+<line stroke=\\"currentColor\\" x2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">350,000,000
+</text>
+</g>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,531.0850872294376)\\">
+<line stroke=\\"currentColor\\" x2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">400,000,000
+</text>
+</g>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,478.78267019708096)\\">
+<line stroke=\\"currentColor\\" x2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">450,000,000
+</text>
+</g>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,426.48025316472433)\\">
+<line stroke=\\"currentColor\\" x2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">500,000,000
+</text>
+</g>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,374.1778361323677)\\">
+<line stroke=\\"currentColor\\" x2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">550,000,000
+</text>
+</g>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,321.87541910001113)\\">
+<line stroke=\\"currentColor\\" x2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">600,000,000
+</text>
+</g>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,269.5730020676545)\\">
+<line stroke=\\"currentColor\\" x2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">650,000,000
+</text>
+</g>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,217.27058503529787)\\">
+<line stroke=\\"currentColor\\" x2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">700,000,000
+</text>
+</g>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,164.96816800294124)\\">
+<line stroke=\\"currentColor\\" x2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">750,000,000
+</text>
+</g>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,112.66575097058455)\\">
+<line stroke=\\"currentColor\\" x2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">800,000,000
+</text>
+</g>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,60.36333393822804)\\">
+<line stroke=\\"currentColor\\" x2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">850,000,000
+</text>
+</g>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,8.060916905871295)\\">
+<line stroke=\\"currentColor\\" x2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">900,000,000
+</text>
+</g>
+<text transform=\\"rotate(-90)\\" y=\\"6\\" dy=\\".71em\\" style=\\"text-anchor: end; color: red;\\">yColumn
+</text>
+</g>
+</g>
+<text transform=\\"translate(467,618)\\" style=\\"text-anchor: start;\\">Order Date
+</text>
+<text transform=\\"rotate(-90)\\" y=\\"-70\\" x=\\"-299\\" dy=\\"1em\\" style=\\"text-anchor: middle;\\">Order ID
+</text>
+</g>
+</svg>
 "
 `;

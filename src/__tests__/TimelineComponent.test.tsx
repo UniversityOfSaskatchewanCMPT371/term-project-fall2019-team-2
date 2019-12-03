@@ -398,7 +398,7 @@ describe('<TimelineComponent /> R3 Tests\n', ()=>{
     wrapper.instance().updateChart();
 
     // find d3 svg element
-    let svgTarget: any = document.getElementById('barsLayer');
+    let svgTarget: any = document.getElementById('svgtarget');
     let svgHTML: string = '';
     if (svgTarget) {
       svgHTML = prettyHTML(svgTarget.innerHTML);
@@ -418,7 +418,7 @@ describe('<TimelineComponent /> R3 Tests\n', ()=>{
     wrapper.instance().updateChart();
 
     // find d3 svg element
-    svgTarget = document.getElementById('barsLayer');
+    svgTarget = document.getElementById('svgtarget');
     svgHTML = '';
     if (svgTarget) {
       svgHTML = prettyHTML(svgTarget.innerHTML);

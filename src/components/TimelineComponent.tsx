@@ -672,8 +672,6 @@ export default class TimelineComponent
         .attr('clip-path', 'url(#barsBox)')
         .append('g')
         .attr('id', 'barsLayer')
-        .attr('width', this.m.width)
-        .attr('height', this.m.height)
         .call(d3.drag()
             .on('start', this.dragStarted)
             .on('drag', this.dragged)

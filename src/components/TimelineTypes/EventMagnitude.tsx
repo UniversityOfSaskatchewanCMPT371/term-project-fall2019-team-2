@@ -1,13 +1,12 @@
-import TimelineTypeInterface, {TimelineType} from './TimelineTypeInterface';
-import * as d3 from 'd3';
+import TimelineTypeInterface from './TimelineTypeInterface';
+import EventTimelineType
+  from './EventTimelineType';
 /**
  * Purpose: to provide methods specific and relevant to drawing an
  * EventMagnitude timeline
  */
-export default class EventMagnitude extends TimelineType
+export default class EventMagnitude extends EventTimelineType
   implements TimelineTypeInterface {
-  // m: TimelineModel;
-
   /**
    * Purpose: draws an element as Event with a Magnitude
    * @param {any} selection: the selection for the object to draw
@@ -27,12 +26,9 @@ export default class EventMagnitude extends TimelineType
         .attr('y', (d: any) => this.m.y(d[this.m.yColumn]))
         .attr('height', (d: any) => {
           const newHeight = (this.m.height - this.m.y(d[this.m.yColumn]));
-          if (newHeight < 0) {
-            return 0;
-          } else {
-            return (this.m.height - this.m.y(d[this.m.yColumn]));
-          }
+          return newHeight < 0 ? 0 : newHeight;
         });
+
     // Circles
     bar.append('circle')
         .attr('class', 'pin-head')
@@ -45,50 +41,6 @@ export default class EventMagnitude extends TimelineType
         .on('mouseover', ttOver)
         .on('mousemove', ttMove)
         .on('mouseleave', ttLeave);
-
-    // console.log('EventMagnitude.draw(): ');
-    // console.log(bar);
-  }
-
-  /**
-   * Purpose: updates dataIdx, data, and ordinals when drawing an
-   * EventMagnitude Timeline
-   */
-  // getData(): void {
-  //   // finds starting index
-  //   this.m.dataIdx =
-  //     Math.floor(- this.m.deltaX / (this.m.scale * this.m.barWidth));
-  //   this.m.data =
-  //     this.m.csvData.slice(this.m.dataIdx, this.m.numBars + this.m.dataIdx);
-  //   // ordinals = data.map((d: any) => d[xColumn]);
-  // }
-
-  /**
-   * Purpose: modify the representation of the timeline when a zoom is fired
-   */
-  applyZoom() {
-    d3.selectAll('.pin-line')
-        .attr('x', (d, i) =>
-          (this.m.scale * this.m.barWidth * (i + this.m.dataIdx)));
-    d3.selectAll('.pin-head')
-        .attr('cx', (d, i) =>
-          (this.m.scale * this.m.barWidth * (i + this.m.dataIdx)));
-
-    d3.selectAll('.xtick')
-        .attr('transform', (d: any) => 'translate(' +
-          ((this.m.scale * this.m.barWidth * (d['index'] + this.m.dataIdx)) +
-          ((this.m.scale * this.m.barWidth) / 2)) + ',' + this.m.height + ')');
-  }
-
-  /**
-   * Purpose: gets the translation for an x-axis tick
-   * @param {any} datum: the datum to draw the x-axis tick for
-   * @return {string}: the translations string
-   */
-  getTickTranslate(datum: any): string {
-    return 'translate(' +
-      ((this.m.scale * this.m.barWidth * (datum.index + this.m.dataIdx)) +
-        ((this.m.scale * this.m.barWidth) / 2)) + ',' + this.m.height + ')';
   }
 
   /**

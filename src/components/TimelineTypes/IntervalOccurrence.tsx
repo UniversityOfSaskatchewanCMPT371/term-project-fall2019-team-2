@@ -1,34 +1,15 @@
-import TimelineTypeInterface, {TimelineType}
+import TimelineTypeInterface
   from './TimelineTypeInterface';
-import * as d3
-  from 'd3';
 import * as d3ScaleChromatic from 'd3-scale-chromatic';
-import assert
-  from 'assert';
+import IntervalTimelineType
+  from './IntervalTimelineType';
 
 /**
  * Purpose: provides methods relevant to drawing intervalOccurrence
  * data
  */
-export default class IntervalOccurrence extends TimelineType
+export default class IntervalOccurrence extends IntervalTimelineType
   implements TimelineTypeInterface {
-  /**
-   * handles zooming
-   */
-  applyZoom(): void {
-    d3.selectAll('.box')
-        .attr('x', (d: any) =>
-          this.m.scale * this.m.timeScale(new Date(d[this.m.xColumn])))
-        .attr('width', (d: any) =>
-          this.m.scale * (this.m.timeScale(new Date(d[this.m.xColumn2])) -
-            this.m.timeScale(new Date(d[this.m.xColumn]))));
-
-    d3.selectAll('.xtick')
-        .attr('transform', (d: any) =>
-          `translate(${this.m.scale * this.m.timeScale(new Date(d.text))},
-            ${this.m.height})`);
-  }
-
   /**
    * handles drawing the data correctly; as interval occurrence data
    * @param {any} selection: the selection for the object to draw
@@ -86,17 +67,17 @@ export default class IntervalOccurrence extends TimelineType
     }
   }
 
-  /**
-   * Purpose: gets the translation for an x-axis tick
-   * @param {any} datum: the datum to draw the x-axis tick for
-   * @return {string}: the translations string
-   */
-  getTickTranslate(datum: any): string {
-    assert(datum !== undefined && datum !== null,
-        'datum is null');
-    return `translate(${this.m.timeScale(new Date(datum.text))},
-      ${this.m.height})`;
-  }
+  // /**
+  //  * Purpose: gets the translation for an x-axis tick
+  //  * @param {any} datum: the datum to draw the x-axis tick for
+  //  * @return {string}: the translations string
+  //  */
+  // getTickTranslate(datum: any): string {
+  //   assert(datum !== undefined && datum !== null,
+  //       'datum is null');
+  //   return `translate(${this.m.timeScale(new Date(datum.text))},
+  //     ${this.m.height})`;
+  // }
 
   /**
    * Purpose: determines which columns are appropriate for the y axis

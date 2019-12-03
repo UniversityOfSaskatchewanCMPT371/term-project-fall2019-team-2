@@ -1,31 +1,13 @@
-import TimelineTypeInterface, {TimelineType} from './TimelineTypeInterface';
-import * as d3 from 'd3';
-import assert
-  from 'assert';
+import TimelineTypeInterface from './TimelineTypeInterface';
+import IntervalTimelineType
+  from './IntervalTimelineType';
 
 /**
  * Purpose: to provide methods specific and relevant to drawing an
  * IntervalMagnitude timeline
  */
-export default class IntervalMagnitude extends TimelineType
+export default class IntervalMagnitude extends IntervalTimelineType
   implements TimelineTypeInterface {
-  /**
-   *
-   */
-  applyZoom(): void {
-    d3.selectAll('box')
-        .attr('x', (d: any) =>
-          this.m.scale * this.m.timeScale(new Date(d[this.m.xColumn])))
-        .attr('width', (d: any) =>
-          this.m.scale * (this.m.timeScale(new Date(d[this.m.xColumn2])) -
-        this.m.timeScale(new Date(d[this.m.xColumn]))));
-
-    d3.selectAll('.xtick')
-        .attr('transform', (d: any) =>
-          `translate(${this.m.scale * this.m.timeScale(new Date(d.text))},
-            ${this.m.height})`);
-  }
-
   /**
    * Purpose: draws an element as an Interval with a Magnitude
    * @param {any} selection: the selection for the object to draw
@@ -55,18 +37,6 @@ export default class IntervalMagnitude extends TimelineType
         .on('mouseover', ttOver)
         .on('mousemove', ttMove)
         .on('mouseleave', ttLeave);
-  }
-
-  /**
-   * Purpose: gets the translation for an x-axis tick
-   * @param {any} datum: the datum to draw the x-axis tick for
-   * @return {string}: the translations string
-   */
-  getTickTranslate(datum: any): string {
-    assert(datum !== undefined && datum !== null,
-        'datum is null');
-    return `translate(${this.m.timeScale(new Date(datum.text))},
-      ${this.m.height})`;
   }
 
   /**

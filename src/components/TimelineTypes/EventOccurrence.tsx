@@ -1,31 +1,15 @@
-import TimelineTypeInterface, {TimelineType} from './TimelineTypeInterface';
-import * as d3 from 'd3';
+import TimelineTypeInterface from './TimelineTypeInterface';
 import * as d3ScaleChromatic
   from 'd3-scale-chromatic';
+import EventTimelineType
+  from './EventTimelineType';
 
 /**
  * Purpose: to provide methods specific and relevant to drawing an
  * EventOccurrence timeline
  */
-export default class EventOccurrence extends TimelineType
+export default class EventOccurrence extends EventTimelineType
   implements TimelineTypeInterface {
-  /**
-   * Purpose: modify the representation of the timeline when a zoom is fired
-   */
-  applyZoom() {
-    d3.selectAll('.pin-line')
-        .attr('x', (d, i) =>
-          (this.m.scale * this.m.barWidth * (i + this.m.dataIdx)));
-    d3.selectAll('.pin-head')
-        .attr('x', (d, i) =>
-          (this.m.scale * this.m.barWidth * (i + this.m.dataIdx)));
-
-    d3.selectAll('.xtick')
-        .attr('transform', (d: any) => 'translate(' +
-          ((this.m.scale * this.m.barWidth * (d['index'] + this.m.dataIdx)) +
-          ((this.m.scale * this.m.barWidth) / 2)) + ',' + this.m.height + ')');
-  }
-
   /**
    * Purpose: draws an element as Event with a Magnitude
    * @param {any} selection: the selection for the object to draw
@@ -37,8 +21,6 @@ export default class EventOccurrence extends TimelineType
     const bar = selection.append('g')
         .attr('class', 'bar');
 
-    // console.error(selection.datum());
-    // const newY selection.dataum
     if (this.m.yColumn2 !== '') {
       bar.append('rect')
           .attr('class', 'pin-line')
@@ -58,13 +40,11 @@ export default class EventOccurrence extends TimelineType
           .attr('class', 'pin-head')
           .attr('cx', (d: any, i: number) =>
             (this.m.scale * this.m.barWidth * (i + this.m.dataIdx)))
-          // .attr('cy', (d: any) => this.m.y(d[this.m.yColumn]))
           .attr('cy', (d:any) =>
             this.m.y(d[this.m.yColumn2]) + (this.m.y.bandwidth()/2))
           .attr('r', '5')
           .style('fill', (d: any) =>
-            d3ScaleChromatic
-                .interpolateRainbow(this.m.y(d[this.m.yColumn2])))
+            d3ScaleChromatic.interpolateRainbow(this.m.y(d[this.m.yColumn2])))
           // .style('fill', '#69b3a2')
           .attr('stroke', 'black')
           .on('mouseover', ttOver)
@@ -90,7 +70,6 @@ export default class EventOccurrence extends TimelineType
         .attr('class', 'pin-head')
         .attr('cx', (d: any, i: number) =>
           (this.m.scale * this.m.barWidth * (i + this.m.dataIdx)))
-        // .attr('cy', (d: any) => this.m.y(d[this.m.yColumn]))
         .attr('cy', (d:any) =>
           this.m.y(d[this.m.yColumn]) + (this.m.y.bandwidth()/2))
         .attr('r', '5')
@@ -102,20 +81,6 @@ export default class EventOccurrence extends TimelineType
         .on('mouseover', ttOver)
         .on('mousemove', ttMove)
         .on('mouseleave', ttLeave);
-
-    // console.log('EventMagnitude.draw(): ');
-    // console.log(bar);
-  }
-
-  /**
-   * Purpose: gets the translation for an x-axis tick
-   * @param {any} datum: the datum to draw the x-axis tick for
-   * @return {string}: the translations string
-   */
-  getTickTranslate(datum: any): string {
-    return 'translate(' +
-        ((this.m.scale * this.m.barWidth * (datum.index + this.m.dataIdx)) +
-            ((this.m.scale * this.m.barWidth) / 2)) + ',' + this.m.height + ')';
   }
 
   /**

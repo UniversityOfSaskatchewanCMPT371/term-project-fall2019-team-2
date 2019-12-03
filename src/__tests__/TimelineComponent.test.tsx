@@ -446,37 +446,6 @@ describe('<TimelineComponent /> Unit Tests', () => {
     });
   });
 
-  // describe('toggleTimeline()', () => {
-  //   it('checks that the toggleTimeline function correctly sets the state ' +
-  //       'of the component', () => {
-  //     // const button = wrapper.find('button');
-  //     //
-  //     // button.simulate('click');
-  //
-  //     const select = wrapper.find('#timelineTypeSelect');
-  //
-  //     expect(toggleTimelineSpy).toHaveBeenCalled();
-  //     // check that the state is set properly
-  //     expect(wrapper.state('togglePrompt'))
-  //         .toEqual('Switch to Occurrence Timeline');
-  //     expect(initTimelineSpy).toHaveBeenCalled();
-  //     expect(drawTimelineSpy).toHaveBeenCalled();
-  //     expect(updateBarsSpy).toHaveBeenCalled();
-  //     expect(wrapper.state('view')).toEqual(ViewType.IntervalMagnitude);
-  //
-  //     button.simulate('click');
-  //
-  //     expect(toggleTimelineSpy).toHaveBeenCalled();
-  //     // check that the state is set properly
-  //     expect(wrapper.state('togglePrompt'))
-  //         .toEqual('Switch to Interval Timeline');
-  //     expect(initTimelineSpy).toHaveBeenCalled();
-  //     expect(drawTimelineSpy).toHaveBeenCalled();
-  //     expect(updateBarsSpy).toHaveBeenCalled();
-  //     expect(wrapper.state('view')).toEqual(ViewType.EventMagnitude);
-  //   });
-  // });
-
 
   describe('initTimeline()', () => {
     it('checks that values are set correctly', () => {
@@ -663,63 +632,6 @@ describe('<TimelineComponent /> Unit Tests', () => {
       //     .simulate('change', {target: {value: 'Order Date'}});
 
       expect(updateBarsSpy).toHaveBeenCalled();
-    });
-  });
-
-  describe('updateBars()', () => {
-    it('dummy test', () => {
-      expect(updateBarsSpy).toHaveBeenCalled();
-    });
-  });
-
-  describe('moveChart()', () => {
-    it('dummy test', async () => {
-      wrapper.instance().drawTimeline();
-      const event = new MouseEvent('mousemove',
-          {
-            clientX: 1000,
-            button: 0,
-            buttons: 1,
-            clientY: 1000,
-            movementX: -100,
-          });
-      // const dragBehaviour = d3.behavior.drag();
-      // console.log(document.getElementById('barsLayer'));
-      // document.getElementById('barsLayer').dispatchEvent(event);
-      // console.log(document.getElementById('barsLayer'));
-      // wrapper.instance().dragged();
-
-      // await new Promise((res) => setTimeout(() => {
-      //   wrapper.update();
-      //   //console.log(wrapper.html());
-      //   wrapper.find('#barsLayer')
-      //     .simulate('drag', {
-      //     sourceEvent: {
-      //       x: 100,
-      //       y: 100,
-      //       movementX: -100,
-      //     }
-      //   });
-      //   res(true);
-      // }, 1000));
-    });
-  });
-
-  describe('dragStarted()', () => {
-    it('dummy test', () => {
-      // todo: devs need to write unit tests
-    });
-  });
-
-  describe('dragged()', () => {
-    it('dummy test', () => {
-      // todo: devs need to write unit tests
-    });
-  });
-
-  describe('dragEnded()', () => {
-    it('dummy test', () => {
-      // todo: devs need to write unit tests
     });
   });
 });

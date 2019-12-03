@@ -176,9 +176,6 @@ describe('<IntervalOccurrence /> Unit Tests', () => {
   //  draw
   describe( 'draw()', () => {
     it('checks that is working as expected', ()=> {
-      // m = new TimelineModel();
-      // timelineType = new IntervalOccurrence(m);
-      // wrapper.timelineType = timelineType;
       const select = wrapper.find('#timelineTypeSelect').first();
       select.simulate('change',
           {target: {value: 'IntervalOccurrence'}});

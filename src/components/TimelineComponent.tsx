@@ -12,7 +12,7 @@ import TimelineTypeInterface from './TimelineTypes/TimelineTypeInterface';
 import EventMagnitude from './TimelineTypes/EventMagnitude';
 import IntervalMagnitude from './TimelineTypes/IntervalMagnitude';
 import {strict as assert} from 'assert';
-import EventOccurrence 
+import EventOccurrence
   from './TimelineTypes/EventOccurrence';
 import CONSTANTS from '../constants';
 import IntervalOccurrence from './TimelineTypes/IntervalOccurrence';

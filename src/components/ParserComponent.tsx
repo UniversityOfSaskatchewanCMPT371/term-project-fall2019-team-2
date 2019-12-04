@@ -45,7 +45,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
     }
 
     /**
-     * Waits until component mounts. 
+     * Waits until component mounts.
      * This method is called by react when mounted. We simply
      * use it to automatically load a CSV on development environments.
      */
@@ -347,8 +347,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
    * @param {string[]} fieldList: the list of fields for each column
    * @param {Column[]} list: an array of columns
    */
-    protected createColumn(mostComm: string, drawType: enumDrawType, indx: number,
-        fieldList: string[], list: Column[]) {
+    protected createColumn(mostComm: string, drawType: enumDrawType,
+        indx: number, fieldList: string[], list: Column[]) {
       assert.notStrictEqual(mostComm, '',
           'createColumn function has empty mostCommonType');
       assert.notStrictEqual(fieldList, [],

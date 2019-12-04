@@ -16,7 +16,10 @@ export default class IntervalMagnitude extends IntervalTimelineType
    * @param {any} ttLeave: tooltip leave function
    */
   draw(selection: any, ttOver: any, ttMove: any, ttLeave: any): void {
-    selection.append('rect')
+    const newBar = selection.append('g')
+        .attr('class', 'bar');
+
+    newBar.append('rect')
         .attr('class', 'box')
         .attr('x', (d: any) =>
           (this.m.scale * this.m.timeScale(new Date(d[this.m.xColumn]))))

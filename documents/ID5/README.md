@@ -1,5 +1,9 @@
 # Incremental Deliverable 5 Readme
 
+## Continuity Plan
+
+Details for continuing the project have be found [here](TODO!). TODO:
+
 ## Source Code
 
 [Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID5/src) is the link to the current source code for the project, and [Here](https://dev.braunson.me/) is a link to the current development build of the software.

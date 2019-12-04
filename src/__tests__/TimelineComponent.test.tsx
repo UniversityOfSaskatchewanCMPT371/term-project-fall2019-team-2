@@ -5,11 +5,198 @@ import {
 import * as d3
   from 'd3';
 import TimelineComponent
-  from '../components/TimelineComponent';
+, {ViewType} from '../components/TimelineComponent';
 import Data
   from '../components/Data';
 import Column
   from '../components/Column';
+
+describe('<TimelineComponent /> R2 Tests\n', () => {
+  // sample data for Timeline component
+  const data: Data = new Data('path/to/file', [
+    {
+      'Region': 'North America',
+      'Country': 'Central African Republic',
+      'Item Type': 'Vegetables',
+      'Sales Channel': 'Online',
+      'Order Priority': 'H',
+      'Order Date': '1/1/2010',
+      'Order ID': 506209075,
+      'Ship Date': '2/4/2010',
+      'Units Sold': 7369,
+      'Unit Price': 154.06,
+      'Unit Cost': 90.93,
+      'Total Revenue': 1135268.14,
+      'Total Cost': 670063.17,
+      'Total Profit': 465204.97,
+      'index': 4535,
+      'Order Date_num': 1262325600000
+    },
+    {
+      'Region': 'North America',
+      'Country': 'China',
+      'Item Type': 'Cereal',
+      'Sales Channel': 'Online',
+      'Order Priority': 'C',
+      'Order Date': '1/1/2010',
+      'Order ID': 863776719,
+      'Ship Date': '2/10/2010',
+      'Units Sold': 9581,
+      'Unit Price': 205.7,
+      'Unit Cost': 117.11,
+      'Total Revenue': 1970811.7,
+      'Total Cost': 1122030.91,
+      'Total Profit': 848780.79,
+      'index': 5104,
+      'Order Date_num': 1262325600000
+    },
+    {
+      'Region': 'North America',
+      'Country': 'Sweden',
+      'Item Type': 'Clothes',
+      'Sales Channel': 'Online',
+      'Order Priority': 'H',
+      'Order Date': '1/2/2010',
+      'Order ID': 907228076,
+      'Ship Date': '2/21/2010',
+      'Units Sold': 7803,
+      'Unit Price': 109.28,
+      'Unit Cost': 35.84,
+      'Total Revenue': 852711.84,
+      'Total Cost': 279659.52,
+      'Total Profit': 573052.32,
+      'index': 4193,
+      'Order Date_num': 1262412000000
+    },
+    {
+      'Region': 'North America',
+      'Country': 'Equatorial Guinea',
+      'Item Type': 'Snacks',
+      'Sales Channel': 'Offline',
+      'Order Priority': 'M',
+      'Order Date': '1/2/2010',
+      'Order ID': 335552775,
+      'Ship Date': '2/12/2010',
+      'Units Sold': 6378,
+      'Unit Price': 152.58,
+      'Unit Cost': 97.44,
+      'Total Revenue': 973155.24,
+      'Total Cost': 621472.32,
+      'Total Profit': 351682.92,
+      'index': 7005,
+      'Order Date_num': 1262412000000
+    },
+    {
+      'Region': 'North America',
+      'Country': 'Mongolia',
+      'Item Type': 'Cosmetics',
+      'Sales Channel': 'Offline',
+      'Order Priority': 'C',
+      'Order Date': '1/2/2010',
+      'Order ID': 695167052,
+      'Ship Date': '1/22/2010',
+      'Units Sold': 4234,
+      'Unit Price': 437.2,
+      'Unit Cost': 263.33,
+      'Total Revenue': 1851104.8,
+      'Total Cost': 1114939.22,
+      'Total Profit': 736165.58,
+      'index': 9127,
+      'Order Date_num': 1262412000000
+    }],
+  [
+    new Column('string', 1, 'Region', 1),
+    new Column('string', 1, 'Country', 1),
+    new Column('string', 1, 'Item Type', 1),
+    new Column('string', 1, 'Sales Channel', 1),
+    new Column('string', 1, 'Order Priority', 1),
+    new Column('date', 2, 'Order Date', 1),
+    new Column('number', 2, 'Order ID', 1),
+    new Column('date', 2, 'Ship Date', 1),
+    new Column('number', 2, 'Units Sold', 1),
+    new Column('number', 2, 'Unit Price', 1),
+    new Column('number', 2, 'Unit Cost', 1),
+    new Column('number', 2, 'Total Revenue', 1),
+    new Column('number', 2, 'Total Cost', 1),
+    new Column('number', 2, 'Total Profit', 1),
+    new Column('number', 2, 'index', 1),
+    new Column('number', 2, 'Order Date_num', 1)]);
+
+  let wrapper: any;
+
+  // helper function to make innerHTML more readable
+  const prettyHTML = (htmlString: string) => {
+    const lines: Array<string> = htmlString.split(/(?=<)/g);
+    let tempString: string = '';
+    for (let i: number = 0; i < lines.length; i++) {
+      tempString += (lines[i] + '\n');
+    }
+    return tempString;
+  };
+
+  beforeEach(() => {
+    // need to do this so that d3 works properly with jest/enzyme
+    wrapper = mount(
+        <TimelineComponent
+          data={data}
+        />);
+    document.body.innerHTML = wrapper.html();
+    wrapper = mount(
+        <TimelineComponent
+          data={data}
+        />);
+    // initialize & draw the timeline (updates html)
+    wrapper.instance().resetTimeline();
+
+    // Check that rendered TimelineComponent HTML matches snapshot
+    // This doesn't include the html created by d3
+    expect(wrapper.debug()).toMatchSnapshot();
+  });
+
+  it('T2.1 Snapshot Test\n', () => {
+    // This just makes the snapshot more readable
+    const svgTarget: any = document.getElementById('svgtarget');
+    let svgHTML: string = '';
+    if (svgTarget) {
+      svgHTML = prettyHTML(svgTarget.innerHTML);
+    }
+
+    // Check that svg created by d3 matches snapshot
+    expect(svgHTML).toMatchSnapshot();
+  });
+
+  it('T2.4 Snapshot Test\n', () => {
+    // Didn't want to make superfluous snapshots
+    const occurrenceButton: any =
+      <button>Switch
+        to
+        Occurrence
+        Timeline</button>;
+    const intervalButton: any =
+      <button>Switch
+        to
+        Interval
+        Timeline</button>;
+
+    // make sure button has interval prompt initially
+    expect(wrapper.containsMatchingElement(intervalButton)).toBeTruthy();
+
+    // simulate user clicking button to change to
+    wrapper.find('button').simulate('click');
+
+    // make sure button switched to occurrence prompt
+    expect(wrapper.containsMatchingElement(occurrenceButton)).toBeTruthy();
+
+    const svgTarget: any = document.getElementById('svgtarget');
+    let svgHTML: string = '';
+    if (svgTarget) {
+      svgHTML = prettyHTML(svgTarget.innerHTML);
+    }
+
+    // Check that svg created by d3 matches snapshot
+    expect(svgHTML).toMatchSnapshot();
+  });
+});
 
 
 // To be used by developers
@@ -225,9 +412,9 @@ describe('<TimelineComponent /> Unit Tests', () => {
       expect(wrapper.state('marginBottom')).toEqual(170);
       expect(wrapper.state('marginLeft')).toEqual(40);
       expect(wrapper.state('marginRight')).toEqual(20);
-      expect(wrapper.state('toggleTimeline')).toEqual(0);
       expect(wrapper.state('togglePrompt'))
           .toEqual('Switch to Interval Timeline');
+      expect(wrapper.state('view')).toEqual(ViewType.occurrence);
     });
   });
 
@@ -247,23 +434,23 @@ describe('<TimelineComponent /> Unit Tests', () => {
 
       expect(toggleTimelineSpy).toHaveBeenCalled();
       // check that the state is set properly
-      expect(wrapper.state('toggleTimeline')).toEqual(1);
       expect(wrapper.state('togglePrompt'))
           .toEqual('Switch to Occurrence Timeline');
       expect(initTimelineSpy).toHaveBeenCalled();
       expect(drawTimelineSpy).toHaveBeenCalled();
       expect(drawEventMagnitudeSpy).toHaveBeenCalled();
+      expect(wrapper.state('view')).toEqual(ViewType.interval);
 
       button.simulate('click');
 
       expect(toggleTimelineSpy).toHaveBeenCalled();
       // check that the state is set properly
-      expect(wrapper.state('toggleTimeline')).toEqual(0);
       expect(wrapper.state('togglePrompt'))
           .toEqual('Switch to Interval Timeline');
       expect(initTimelineSpy).toHaveBeenCalled();
       expect(drawTimelineSpy).toHaveBeenCalled();
       expect(drawIntervalMagnitudeSpy).toHaveBeenCalled();
+      expect(wrapper.state('view')).toEqual(ViewType.occurrence);
     });
   });
 
@@ -275,29 +462,42 @@ describe('<TimelineComponent /> Unit Tests', () => {
   });
 
   describe('drawTimeline()', () => {
-    it('timeline drawer handles zoom out', () => {
-      wrapper.instance().drawTimeline();
-      const event = new KeyboardEvent('keypress', {'key': 'w'});
-      document.body.dispatchEvent(event);
+    // zoom in events for keydown & keyup
+    const zoomInEventDown = new KeyboardEvent('keydown', {'key': '+'});
+    const zoomInEventUp = new KeyboardEvent('keyup', {'key': '+'});
+    // zoom out events for keydown & keyup
+    const zoomOutEventDown = new KeyboardEvent('keydown', {'key': '-'});
+    const zoomOutEventUp = new KeyboardEvent('keyup', {'key': '-'});
 
+    it('timeline drawer handles zoom out', async () => {
+      wrapper.instance().drawTimeline();
+      // zoom in so that we can see if zooming back out works
+      document.body.dispatchEvent(zoomInEventDown);
+      document.body.dispatchEvent(zoomInEventUp);
       expect(wrapper.instance().getScale()).toBeGreaterThan(1.0);
+      // zoom back out
+      document.body.dispatchEvent(zoomOutEventDown);
+      document.body.dispatchEvent(zoomOutEventUp);
+      expect(wrapper.instance().getScale()).toBe(1.0);
+    });
+    it('drawLabels is called', () => {
+      const drawTimelineSpy = jest.spyOn(TimelineComponent.prototype,
+          'drawTimeline');
+      wrapper.instance().drawTimeline();
+      expect(drawTimelineSpy).toHaveBeenCalled();
     });
 
     it('timeline drawer handles zoom in', () => {
       wrapper.instance().drawTimeline();
-      let event = new KeyboardEvent('keypress', {'key': 'w'});
-      document.body.dispatchEvent(event);
-
-      expect(wrapper.instance().getScale()).toBeGreaterThan(1.0);
-      event = new KeyboardEvent('keypress', {'key': 's'});
-      document.body.dispatchEvent(event);
-
       expect(wrapper.instance().getScale()).toBe(1.0);
+      document.body.dispatchEvent(zoomInEventDown);
+      document.body.dispatchEvent(zoomInEventUp);
+      expect(wrapper.instance().getScale()).toBeGreaterThan(1.0);
     });
 
     it('timeline drawer handles pan right', () => {
       wrapper.instance().drawTimeline();
-      const event = new KeyboardEvent('keypress', {'key': 'd'});
+      const event = new KeyboardEvent('keydown', {'key': 'ArrowRight'});
       document.body.dispatchEvent(event);
 
       expect(wrapper.instance().getDeltaX()).toBeLessThan(0);
@@ -305,11 +505,15 @@ describe('<TimelineComponent /> Unit Tests', () => {
 
     it('timeline drawer handles pan left', () => {
       wrapper.instance().drawTimeline();
-      let event = new KeyboardEvent('keypress', {'key': 'd'});
+      let event = new KeyboardEvent('keydown', {'key': 'ArrowRight'});
+      document.body.dispatchEvent(event);
+      event = new KeyboardEvent('keyup', {'key': 'ArrowRight'});
       document.body.dispatchEvent(event);
 
       expect(wrapper.instance().getDeltaX()).toBeLessThan(0);
-      event = new KeyboardEvent('keypress', {'key': 'a'});
+      event = new KeyboardEvent('keydown', {'key': 'ArrowLeft'});
+      document.body.dispatchEvent(event);
+      event = new KeyboardEvent('keyup', {'key': 'ArrowRight'});
       document.body.dispatchEvent(event);
 
       expect(wrapper.instance().getDeltaX()).toBe(0);
@@ -317,7 +521,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
 
     it('timeline drawer does not zoom out too far', () => {
       wrapper.instance().drawTimeline();
-      const event = new KeyboardEvent('keypress', {'key': 's'});
+      const event = new KeyboardEvent('keydown', {'key': 's'});
       document.body.dispatchEvent(event);
 
       // Should stay at 1
@@ -326,13 +530,29 @@ describe('<TimelineComponent /> Unit Tests', () => {
 
     it('timeline drawer does not pan too far left', () => {
       wrapper.instance().drawTimeline();
-      const event = new KeyboardEvent('keypress', {'key': 'a'});
+      const event = new KeyboardEvent('keydown', {'key': 'ArrowLeft'});
       document.body.dispatchEvent(event);
 
       // Should stay at 0 (the min)
       expect(wrapper.instance().getDeltaX()).toBe(0);
     });
   });
+
+  describe('getIntervalMagnitudeData()', () => {
+    it('checks that getIntervalMagnitudeData is called when needed ',
+        () => {
+          const button = wrapper.find('button');
+          button.simulate('click');
+
+          wrapper.instance().drawTimeline();
+          const event = new KeyboardEvent('keydown', {'key': 'ArrowRight'});
+          document.body.dispatchEvent(event);
+          wrapper.instance().moveChart();
+          wrapper.instance().updateChart();
+          expect(wrapper.state('view')).toBe(ViewType.interval);
+        });
+  });
+
 
   describe('ttOver()', () => {
     it('checks that ttOver throws an error if it is called on the ' +
@@ -376,7 +596,6 @@ describe('<TimelineComponent /> Unit Tests', () => {
             expect(initTimelineSpy).toHaveBeenCalled();
             wrapper.instance().updateChart();
             // expect(consoleOutput[0]).toEqual('d3.event was null');
-
             wrapper.setState({toggleTimeline: 1});
             expect(wrapper.state('toggleTimeline')).toBe(1);
             wrapper.instance().updateChart();
@@ -397,7 +616,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
       expect(updateBarsSpy).toHaveBeenCalled();
       console.log(document.body.innerHTML);
       // console.log(wrapper.)
-      expect(d3.selectAll('.bar').size()).toBe(5);
+      expect(d3.selectAll('.pin-line').size()).toBe(5);
       wrapper.instance().drawIntervalMagnitude(d3.selectAll('.bar'));
       expect(drawIntervalMagnitudeSpy).toHaveBeenCalled();
       //
@@ -430,8 +649,35 @@ describe('<TimelineComponent /> Unit Tests', () => {
   });
 
   describe('moveChart()', () => {
-    it('dummy test', () => {
-      // todo: devs need to write unit tests
+    it('dummy test', async () => {
+      wrapper.instance().drawTimeline();
+      const event = new MouseEvent('mousemove',
+          {
+            clientX: 1000,
+            button: 0,
+            buttons: 1,
+            clientY: 1000,
+            movementX: -100,
+          });
+      // const dragBehaviour = d3.behavior.drag();
+      // console.log(document.getElementById('barsLayer'));
+      // document.getElementById('barsLayer').dispatchEvent(event);
+      // console.log(document.getElementById('barsLayer'));
+      // wrapper.instance().dragged();
+
+      // await new Promise((res) => setTimeout(() => {
+      //   wrapper.update();
+      //   //console.log(wrapper.html());
+      //   wrapper.find('#barsLayer')
+      //     .simulate('drag', {
+      //     sourceEvent: {
+      //       x: 100,
+      //       y: 100,
+      //       movementX: -100,
+      //     }
+      //   });
+      //   res(true);
+      // }, 1000));
     });
   });
 

@@ -140,8 +140,7 @@ export abstract class TimelineType implements TimelineTypeInterface {
     this.m.xColumns = [];
 
     // iterate through columns and set default values
-    for (let i = 0; i < cols.length; i++) {
-      const col = cols[i];
+    for (const col of cols) {
       // Plotting occurrence data isn't yet supported, so we are only
       // interested in plotting magnitude data for the y-axis
       if (this.checkYPrimType(col.primType)) {

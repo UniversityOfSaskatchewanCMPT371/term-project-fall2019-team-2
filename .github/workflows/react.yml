@@ -59,7 +59,7 @@ jobs:
       env:
         CI: true
 
-    # Upload source maps
+    # Upload source maps (testing sonar cloud)
     - name: Upload source maps
       env:
         SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}

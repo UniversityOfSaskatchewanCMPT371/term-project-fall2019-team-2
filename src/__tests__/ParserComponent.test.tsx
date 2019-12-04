@@ -240,47 +240,42 @@ describe('R1 Tests\n', () => {
     });
 
     afterEach(() => {
+      // should encounter assertions
+      expect.hasAssertions();
+
       // make sure sortData, parseCsv, & inferTypes were called
       expect(parseCsvSpy).toHaveBeenCalled();
       expect(sortDataSpy).toHaveBeenCalled();
       expect(inferTypesSpy).toHaveBeenCalled();
 
-      expect(parseCsvSpy).not.toThrow();
-      expect(sortDataSpy).not.toThrow();
-      expect(inferTypesSpy).not.toThrow();
-
-      // Check that ParserComponent data is still empty
-      compData = wrapper.state('data');
-
+      // file has 3 rows of data
       expect(compData.length).toBe(3);
-
-      // count number of properties in each row object
-      for (let j = 0; j < compData.length; j++) {
-        // will always be 2 more than # of columns from csv data
-        // b/c of properties added for sorting (date_num & index)
-        expect(countNumProperties(compData[0])).toBe(6);
-      }
     });
 
     // more data in 1 row
     it('Should cut off data in row if more vals than # of fields\n',
         async () => {
-          const lessDataFile: File = new File([
+          const moreDataFile: File = new File([
             'date,h2,h3,h4\n' +
             '01-01-1990,2,3,4,5\n' + // one too many values in this row
             '01-01-1990,7,8,9\n' +
-            '01-01-1990,11,12,13'
+            '01-01-1990,11,12,13,14' // one too many values in this row
           ],
           'lessDataTest.csv',
           {type: '.csv,text/csv'}
           );
-          fileEvent = {target: {files: [lessDataFile]}};
+          fileEvent = {target: {files: [moreDataFile]}};
 
           await wrapper.instance().parse(fileEvent);
-        });
 
-    // less data in 1 row
-    // empty data cells
+          compData = wrapper.state('data');
+          // count number of properties in each row object
+          for (let j = 0; j < compData.length; j++) {
+            // will always be 2 more than # of columns from csv data
+            // b/c of properties added for sorting (date_num & index)
+            expect(countNumProperties(compData[0])).toBe(6);
+          }
+        });
   });
 
   describe('T1.3: .csv with different valid date formats accepted\n', () => {
@@ -347,6 +342,7 @@ describe('R1 Tests\n', () => {
 
     it('should parse .csv with unsorted dates & sort data by date\n',
         async () => {
+          initTest();
           const unsortedDateFile: File = new File(
               // This tests DD-MM-YYYY format
               ['Date,SomeNum,SomeString\n' +

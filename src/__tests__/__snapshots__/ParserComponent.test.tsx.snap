@@ -1,45 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`R1 Tests
- T1.2: Handling upload of CSVs with strange formatting Should cut off data in row if more vals than # of fields
- 1`] = `
-Object {
-  "h1": 1,
-  "h1_num": 1,
-  "h2": 2,
-  "h3": 3,
-  "h4": 4,
-  "index": 0,
-}
-`;
-
-exports[`R1 Tests
- T1.2: Handling upload of CSVs with strange formatting Should cut off data in row if more vals than # of fields
- 2`] = `
-Object {
-  "h1": 6,
-  "h1_num": 6,
-  "h2": 7,
-  "h3": 8,
-  "h4": 9,
-  "index": 1,
-}
-`;
-
-exports[`R1 Tests
- T1.2: Handling upload of CSVs with strange formatting Should cut off data in row if more vals than # of fields
- 3`] = `
-Object {
-  "h1": 10,
-  "h1_num": 10,
-  "h2": 11,
-  "h3": 12,
-  "h4": 13,
-  "index": 2,
-}
-`;
-
-exports[`R1 Tests
  T1.3: .csv with different valid date formats accepted
  should parse .csv with sorted dates
  DD-MM-YYYY 1`] = `

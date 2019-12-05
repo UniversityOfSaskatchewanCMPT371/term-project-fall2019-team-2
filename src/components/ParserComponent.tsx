@@ -9,7 +9,6 @@ import * as TimSort from 'timsort';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {loadTestCsv} from './Utilities';
 import {strict as assert} from 'assert';
-import Any = jasmine.Any;
 
 /**
  * Purpose: react component responsible for receiving and parsing file data

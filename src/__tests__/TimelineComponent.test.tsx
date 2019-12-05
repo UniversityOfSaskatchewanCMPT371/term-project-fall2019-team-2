@@ -461,14 +461,10 @@ describe('<TimelineComponent /> Unit Tests', () => {
 
     it('timeline drawer handles zoom out', async () => {
       wrapper.instance().drawTimeline();
-      // zoom in so that we can see if zooming back out works
-      document.body.dispatchEvent(zoomInEventDown);
-      document.body.dispatchEvent(zoomInEventUp);
-      expect(wrapper.instance().getScale()).toBeGreaterThan(1.0);
-      // zoom back out
+      // zoom out
       document.body.dispatchEvent(zoomOutEventDown);
       document.body.dispatchEvent(zoomOutEventUp);
-      expect(wrapper.instance().getScale()).toBe(1.0);
+      expect(wrapper.instance().getScale()).toBeLessThan(1.0);
     });
     it('drawLabels is called', () => {
       const drawTimelineSpy = jest.spyOn(TimelineComponent.prototype,
@@ -515,8 +511,8 @@ describe('<TimelineComponent /> Unit Tests', () => {
       const event = new KeyboardEvent('keydown', {'key': 's'});
       document.body.dispatchEvent(event);
 
-      // Should stay at 1
-      expect(wrapper.instance().getScale()).toBe(1.0);
+      // Should scale down by 10%
+      expect(wrapper.instance().getScale()).toBe(0.9);
     });
 
     it('timeline drawer does not pan too far left', () => {

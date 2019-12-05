@@ -592,7 +592,7 @@ export default class TimelineComponent
     this.m.deltaX = 0;
     this.m.scale = 1;
     this.m.csvData = this.state.data.arrayOfData;
-    console.log(this.m.csvData);
+
     this.m.data = this.m.csvData.slice(0, this.m.numBars);
     // ordinals = data.map((d: any) => d[xColumn]);
 
@@ -611,8 +611,6 @@ export default class TimelineComponent
         .range([0, 50 * this.m.csvData.length]);
 
     this.m.x = d3.scaleBand()
-    // may need this in the future for spacing so leaving in
-    // .padding(1)
         .domain(this.m.data.map((d: any) => d[this.m.xColumn]))
         .range([0, this.m.width]).round(true);
 
@@ -672,7 +670,7 @@ export default class TimelineComponent
     assert.notStrictEqual(this.state.data, [],
         'drawTimeline(): this.state.data is empty');
     this.zoom = d3.zoom()
-        .scaleExtent([1, 20]) // zoom range
+        .scaleExtent([0.5, 20]) // zoom range
         .translateExtent(this.m.extent)
         .extent(this.m.extent)
         .on('zoom', this.updateChart);
@@ -769,16 +767,14 @@ export default class TimelineComponent
       // moveChart depending on operation
       if (op === '-' || op === 's') {
         // Zoom out
-        const identity = d3.zoomIdentity
-            .scale(Math.max(this.m.scaleMin,
-                this.m.scale * this.m.scaleZoomOut));
-
+        const lowerRange: number = Math.max(
+            this.m.scaleMin, this.m.scale * this.m.scaleZoomOut);
+        const identity = d3.zoomIdentity.scale(lowerRange);
         this.svg.transition().ease(d3.easeLinear).duration(300)
             .call(this.zoom.transform, identity);
         // Ensure the new scale is saved with a limit on the minimum
         //  zoomed out scope
-        this.m.scale = Math.max(this.m.scaleMin,
-            this.m.scale * this.m.scaleZoomOut);
+        this.m.scale = lowerRange;
       } else if (op === '+' || op === 'w') {
         // Zoom In
         const identity = d3.zoomIdentity
@@ -792,7 +788,6 @@ export default class TimelineComponent
         // Pan Left
         this.m.deltaX = Math.min(0, this.m.deltaX + this.m.deltaPan);
         this.m.deltaXDirection = -1;
-        // console.log(deltaX);
         this.moveChart();
       } else if (op === 'ArrowRight') {
         this.m.deltaXDirection = 1;
@@ -947,14 +942,16 @@ export default class TimelineComponent
    * Purpose: updates the state and positioning of element on the Timeline
    */
   updateChart() {
+    const additionalBars: number = 1; // number of additional bars rendered
     // recover the new scale
     if (d3.event !== null) {
       this.m.scale = d3.event.transform.k;
     } else {
       console.warn('d3.event was null');
     }
-
     this.timelineType.applyZoom();
+    this.m.numBars += additionalBars;
+    console.log('numBars in updateChart after: ', this.m.numBars);
 
     if (d3.event !== null && d3.event.sourceEvent !== null &&
       d3.event.sourceEvent.type === 'mousemove') {
@@ -1018,20 +1015,6 @@ export default class TimelineComponent
    * being rendered.
    */
   moveChart() {
-    // console.log(d3.event);
-    // if (d3.event.type === 'zoom' && d3.event.transform.k !== this.m.scale) {
-    //   const from = ((this.m.width/ 2) + this.m.deltaX);
-    //   const to = (((this.m.width / 2) + this.m.deltaX ) * this.m.scale);
-    //   console.log({to, from});
-    //
-    //   this.m.deltaX = this.m.deltaX - (to-from);
-    //   d3.select('#barsLayer')
-    //       .attr('transform',
-    //           `translate(${this.m.deltaX},10)`);
-    // } else {
-    //
-    // }
-
     d3.select('#barsLayer')
         .attr('transform', () => {
           return `translate(${this.m.deltaX},0)`;

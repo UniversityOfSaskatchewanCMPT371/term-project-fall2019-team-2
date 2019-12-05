@@ -10,6 +10,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {loadTestCsv} from './Utilities';
 import {strict as assert} from 'assert';
 import * as sentry from '@sentry/browser';
+import ConsoleLogComponent from './ConsoleLogComponent';
 
 
 /**
@@ -19,6 +20,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
   ParserState> {
     private columnTypes?: Array<Column>;
     private childKey = 0;
+    private debugConfig = new ConsoleLogComponent();
 
     /**
      * Purpose: ParserComponent constructor
@@ -50,7 +52,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
       // Autoloads a file for local testing
       if (process.env.NODE_ENV === 'development') {
         loadTestCsv().then((res) => {
-          console.log(res);
           this.parse(res);
         });
       }
@@ -139,10 +140,14 @@ export default class ParserComponent extends React.Component<ParserInterface,
           return true;
         } else {
           alert('Wrong file type was uploaded.');
+          this.debugConfig.consoleLogger(this.isValid.name,
+              'Wrong file type was uploaded.', 'ERROR');
           return false;
         }
       }
       alert('Wrong file type was uploaded.');
+      this.debugConfig.consoleLogger(this.isValid.name,
+          'Wrong file type was uploaded.', 'ERROR');
       return false;
     }
 
@@ -182,8 +187,10 @@ export default class ParserComponent extends React.Component<ParserInterface,
                     if (val.isValid()) {
                       a[keyInt] = val.valueOf();
                     } else {
-                      console.info('TimSort.sort(): the value' +
-                        ' for a is invalid');
+                      // @ts-ignore
+                      // eslint-disable-next-line no-invalid-this
+                      this.debugConfig.consoleLogger(this.sortData.name,
+                          'the value for a is invalid', 'WARN');
                       a[keyInt] = -1;
                     }
                   }
@@ -193,8 +200,10 @@ export default class ParserComponent extends React.Component<ParserInterface,
                     if (val.isValid()) {
                       b[keyInt] = val.valueOf();
                     } else {
-                      console.info('TimSort.sort(): the value' +
-                        ' for b is invalid');
+                      // @ts-ignore
+                      // eslint-disable-next-line no-invalid-this
+                      this.debugConfig.consoleLogger(this.sortData.name,
+                          'the value for b is invalid', 'WARN');
                       b[keyInt] = -1;
                     }
                   }
@@ -289,22 +298,26 @@ export default class ParserComponent extends React.Component<ParserInterface,
               if (typeof val === 'string') {
                 const date = moment(val);
                 const isValid = date.isValid();
-                console.log(date + 'is valid');
+                this.debugConfig.consoleLogger(this.inferTypes.name,
+                    date + 'is valid', 'INFO');
                 if (isValid) {
                   curColTypes['numDate'] += 1;
                 } else {
-                  console.warn('inferTypes():' + val + 'is not a valid date');
+                  this.debugConfig.consoleLogger(this.inferTypes.name,
+                      val + 'is not a valid date', 'WARN');
                   throw val;
                 }
               } else {
-                console.warn('inferTypes():' + val + 'is not a string');
+                this.debugConfig.consoleLogger(this.inferTypes.name,
+                    val + 'is not a string', 'WARN');
                 throw val;
               }
             } catch {
               // @ts-ignore
               const type = typeof row[listFields[i]];
               if (type !== 'string' && type !== 'number') {
-                console.warn('inferTypes(): incongruent type:' + curColTypes);
+                this.debugConfig.consoleLogger(this.inferTypes.name,
+                    'incongruent type:' + curColTypes, 'INFO');
                 curColTypes['numIncongruent'] += 1;
               }
               // logs all the types that are seen
@@ -313,7 +326,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
               } else {
                 curColTypes['numNumber'] += 1;
               }
-              console.log(curColTypes);
+              this.debugConfig.consoleLogger(this.inferTypes.name,
+                  'curColTypes:' + curColTypes, 'INFO');
             }
           }
         });
@@ -324,7 +338,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
           const mostCommonType = element.largest();
           if (mostCommonType === 'string') {
             // create a Column object with occurrence data
-            console.info('most common type is string');
+            this.debugConfig.consoleLogger(this.inferTypes.name,
+                'most common type is string', 'INFO');
             this.createColumn(mostCommonType, enumDrawType.occurrence, indx,
                 listFields, arrayOfColumns);
             indx++;
@@ -376,7 +391,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
      */
     async parse(fileEvent: any) {
       // indicate where the message started parsing
-      console.log('This is the beginning of parsing csv file');
+      this.debugConfig.consoleLogger(this.parse.name,
+          'This is the beginning of parsing csv file', 'INFO');
 
       // fileEvent is an object containing target files
       assert.notStrictEqual(fileEvent, undefined,
@@ -408,7 +424,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
 
       const temp: File = fileEvent.target.files[0];
       if (this.isValid(temp)) {
-        console.log('Target file is a .csv');
+        this.debugConfig.consoleLogger(this.parse.name,
+            'Target file is a .csv', 'INFO');
         await this.parseCsv(fileEvent);
       }
 
@@ -479,7 +496,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
               this.sortData(this.state.data);
             } catch (e) {
               alert(e.toString());
-              console.error(e.toString());
+              this.debugConfig.consoleLogger(this.parseCsv.name,
+                  e.toString(), 'ERROR');
             }
           }
           resolver(true);

@@ -1,7 +1,7 @@
 import TimelineTypeInterface, {TimelineType}
   from './TimelineTypeInterface';
-import * as d3
-  from 'd3';
+// import * as d3
+//   from 'd3';
 import * as d3ScaleChromatic from 'd3-scale-chromatic';
 import assert
   from 'assert';

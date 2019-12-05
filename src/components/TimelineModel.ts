@@ -25,7 +25,7 @@ export default class TimelineModel {
   // The default starting panned position
   public deltaPan = 50;
   // The minimum possible scale
-  public scaleMin = 1.0;
+  public scaleMin = 0.1;
   // The current scale
   public scale = 1.0;
 
@@ -74,7 +74,7 @@ export default class TimelineModel {
     this.scaleZoomOut = 0.9;
     this.scaleZoomIn = 1.1;
     this.deltaPan = 50;
-    this.scaleMin = 1.0;
+    this.scaleMin = 0.1;
     this.scale = 1.0;
 
     this.fullWidth = 0;

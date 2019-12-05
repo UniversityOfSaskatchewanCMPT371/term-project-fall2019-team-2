@@ -19,7 +19,8 @@ export default class ConsoleLogComponent extends React.Component {
    * actual logging function
    * @param {string} functionName: function's name;
    * @param {any} message: actual error message, could be string or boolean
-   *  @param {string} option: options at the place where you use it
+   *  @param {string} option: options at the place where you use it,
+   *    either INFO, WARN or ERROR
    */
   consoleLogger(functionName:string, message: any, option:string): void {
     if (config.includes('INFO') && option.includes('INFO')) {

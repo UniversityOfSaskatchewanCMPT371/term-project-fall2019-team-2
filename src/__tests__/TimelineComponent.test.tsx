@@ -200,6 +200,11 @@ describe('<TimelineComponent /> R2 Tests\n', () => {
       svgHTML = prettyHTML(svgTarget.innerHTML);
     }
 
+    console.log(pretty(document.body.innerHTML));
+    console.log(svgHTML);
+    console.log(window.innerWidth);
+    console.log(window.innerHeight);
+
     // Check that svg created by d3 matches snapshot
     expect(svgHTML).toMatchSnapshot();
   });
@@ -347,8 +352,6 @@ describe('<TimelineComponent /> Unit Tests', () => {
     // Create spies
     drawTimelineSpy =
         jest.spyOn(TimelineComponent.prototype, 'drawTimeline');
-    // toggleTimelineSpy =
-    //     jest.spyOn(TimelineComponent.prototype, 'toggleTimeline');
     initTimelineSpy =
         jest.spyOn(TimelineComponent.prototype, 'initTimeline');
     updateBarsSpy =
@@ -509,6 +512,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
 
     it('timeline drawer does not zoom out too far', () => {
       wrapper.instance().drawTimeline();
+      console.log(pretty(wrapper.html()));
       const event = new KeyboardEvent('keydown', {'key': 's'});
       document.body.dispatchEvent(event);
 
@@ -517,8 +521,13 @@ describe('<TimelineComponent /> Unit Tests', () => {
     });
 
     it('timeline drawer does not pan too far left', () => {
+      wrapper.update();
+      wrapper.instance().initTimeline();
       wrapper.instance().drawTimeline();
+      wrapper.instance().updateChart();
+
       const event = new KeyboardEvent('keydown', {'key': 'ArrowLeft'});
+
       document.body.dispatchEvent(event);
 
       // Should stay at 0 (the min)
@@ -529,9 +538,6 @@ describe('<TimelineComponent /> Unit Tests', () => {
   describe('getIntervalMagnitudeData()', () => {
     it('checks that getIntervalMagnitudeData is called when needed ',
         () => {
-          // const button = wrapper.find('button');
-          // button.simulate('click');
-
           const select = wrapper.find('#timelineTypeSelect').first();
           select.simulate('change',
               {target: {value: 'IntervalMagnitude'}});
@@ -566,7 +572,6 @@ describe('<TimelineComponent /> Unit Tests', () => {
           expect(ttOverHelperSpy).toHaveBeenCalled();
 
           expect(!d3.selectAll('.tooltip').empty()).toEqual(true);
-
           wrapper.instance().ttUpdatePos(100, 100);
           expect(ttUpdatePosSpy).toHaveBeenCalled();
         });

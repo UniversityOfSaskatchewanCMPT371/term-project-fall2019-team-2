@@ -467,7 +467,8 @@ describe('R1 Tests\n', () => {
     expect(isValidSpy).not.toThrow('Wrong file type was uploaded.');
     expect(inferTypesSpy).not.toThrow('data is empty');
 
-    expect(sortDataSpy).toThrow('The file uploaded has no dates of the given format.');
+    expect(sortDataSpy).toThrow('The file uploaded has ' +
+        'no dates of the given format.');
 
     compData = wrapper.state('data');
     expect(compData.length).toBe(3);

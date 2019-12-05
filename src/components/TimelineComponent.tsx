@@ -487,8 +487,8 @@ export default class TimelineComponent
               </Form.Control>
             </InputGroup>
 
-            {yDropdowns}
             {xDropdowns}
+            {yDropdowns}
           </div>
           <div style={{marginTop: '10px'}}
             id='svgtarget'>

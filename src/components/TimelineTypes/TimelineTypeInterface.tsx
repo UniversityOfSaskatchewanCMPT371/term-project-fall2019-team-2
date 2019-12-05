@@ -123,7 +123,6 @@ export abstract class TimelineType implements TimelineTypeInterface {
     return result;
   }
 
-
   /**
    * Purpose: updates the range of elements currently being rendered on the
    * timeline

@@ -8,6 +8,7 @@ import Data from './Data';
 import * as TimSort from 'timsort';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {loadTestCsv} from './Utilities';
+
 import {strict as assert} from 'assert';
 
 /**

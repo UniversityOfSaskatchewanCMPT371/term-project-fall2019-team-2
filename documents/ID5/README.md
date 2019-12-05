@@ -15,6 +15,14 @@
 
 
 ## Reviews Conducted
+Every member of the group underwent a formal review throughout the course of the semester:
+Camille and Evan [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/DesignDocumentReview.pdf)
+Amanda [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/riskDocReviewID4.pdf)
+Mesa [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/develop/documents/reviews/Formal_review_doc.pdf)
+Eileen [here](TODO GENERATE LINK WHEN REPO IS CLEANED UP)
+Braunson [here](TODO GENERATE LINK WHEN REPO IS CLEANED UP)
+Anurag [here](TODO GENERATE LINK WHEN REVIEW IS APPROVED)
+Kevin [here](TODO GENERATE LINK WHEN REVIEW IS APPROVED)
 
 
 ## Design and Requirements Documents

@@ -10,22 +10,20 @@
 - [Code Refactor and Interface Construction](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/pull/186)
 - [Tons of Assertions added by the Test Team](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/pull/146)
 
-## Mini-Milestones
-
-
 ## Risk Report
+
 
 
 ## Reviews Conducted
 Every member of the group underwent a formal review throughout the course of the semester:<br/>
-Camille and Evan [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/DesignDocumentReview.pdf)<br/>
+Camille [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/ID2FormalReview.pdf)<br/>
+Evan [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/ID2FormalReview.pdf)<br/>
 Amanda [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/riskDocReviewID4.pdf)<br/>
-Mesa [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/develop/documents/reviews/Formal_review_doc.pdf)<br/>
-Eileen [here](TODO GENERATE LINK WHEN REPO IS CLEANED UP)<br/>
-Braunson [here](TODO GENERATE LINK WHEN REPO IS CLEANED UP)<br/>
-Anurag [here](TODO GENERATE LINK WHEN REVIEW IS APPROVED)<br/>
-Kevin [here](TODO GENERATE LINK WHEN REVIEW IS APPROVED)<br/>
-
+Mesa [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/ID1FormalReview.pdf)
+Eileen [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/ID4FormalReview.pdf)<br/>
+Braunson [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/ID3FormalReview.pdf)<br/>
+Anurag [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/ID5FormalReview.pdf)<br/>
+Kevin [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/ID5FormalReview2.pdf)<br/>
 
 
 ## Design and Requirements Documents

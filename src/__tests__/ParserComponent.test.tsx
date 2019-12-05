@@ -632,6 +632,7 @@ describe('<ParserComponent /> Unit Tests', () => {
     'a CSV file: '} fileType={FileType.csv}
       onChange={function() {}}/>);
       const instance = wrapper.instance() as ParserComponent;
+      instance.props.fileType.mimeName = '.csv,text/csv';
       instance.setState(() => {
         return {
           fileName: '.csv',

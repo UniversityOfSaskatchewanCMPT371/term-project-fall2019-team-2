@@ -14,8 +14,9 @@ import IntervalMagnitude from './TimelineTypes/IntervalMagnitude';
 import {strict as assert} from 'assert';
 import EventOccurrence
   from './TimelineTypes/EventOccurrence';
-
+import CONSTANTS from '../constants';
 import IntervalOccurrence from './TimelineTypes/IntervalOccurrence';
+import Column from './Column';
 
 /**
  * Purpose: an enum to differentiate the data being drawn
@@ -26,9 +27,6 @@ export enum ViewType {
   EventMagnitude = 'EventMagnitude',
   EventOccurrence = 'EventOccurrence'
 }
-
-// const m = new TimelineModel();
-// let timelineType: TimelineTypeInterface = new EventMagnitude(m);
 
 /**
  * Purpose: renders and updates a timeline to the screen
@@ -64,7 +62,6 @@ export default class TimelineComponent
     this.timelineType = new EventMagnitude(this.m);
 
     this.drawTimeline = this.drawTimeline.bind(this);
-    // this.toggleTimeline = this.toggleTimeline.bind(this);
     this.changeTimelineType = this.changeTimelineType.bind(this);
     this.initTimeline = this.initTimeline.bind(this);
     this.ttOverHelper = this.ttOverHelper.bind(this);
@@ -314,6 +311,20 @@ export default class TimelineComponent
   }
 
   /**
+   * Internal function that maps columns to HTML optional values
+   * Pre-Conditions: None
+   * Post-Conditions: None. This function does not change the state
+   * of the visualization.
+   * @param {Column[]} column An array of columns
+   * @return {JSX.Element[]} The HTML option values for the drop downs
+   */
+  private mapColumnsToOptions(column: Column[]): JSX.Element[] {
+    return column.map((col: any, i: number) =>
+      <option key={i} value={col.key}>{col.key}</option>
+    );
+  }
+
+  /**
    * Purpose: renders the initial html
    * @return {string}: html output to the page
    */
@@ -335,10 +346,7 @@ export default class TimelineComponent
               await this.changeColumn(e, 'yColumn');
             }}>
             {
-              this.m.yColumns.map((col: any, i: number) =>
-                <option
-                  key={i}
-                  value={col.key}>{col.key}</option>)
+              this.mapColumnsToOptions(this.m.yColumns)
             }
           </Form.Control>
 
@@ -357,10 +365,7 @@ export default class TimelineComponent
             }}>
             <option key={''} value={''}>Select another Column</option>
             {
-              this.m.yColumns.map((col: any, i: number) =>
-                <option
-                  key={i}
-                  value={col.key}>{col.key}</option>)
+              this.mapColumnsToOptions(this.m.yColumns)
             }
           </Form.Control>
 
@@ -380,10 +385,7 @@ export default class TimelineComponent
               await this.changeColumn(e, 'yColumn');
             }}>
             {
-              this.m.yColumns.map((col: any, i: number) =>
-                <option
-                  key={i}
-                  value={col.key}>{col.key}</option>)
+              this.mapColumnsToOptions(this.m.yColumns)
             }
           </Form.Control>
         </InputGroup>;
@@ -406,10 +408,7 @@ export default class TimelineComponent
               await this.changeColumn(e, 'xColumn');
             }}>
             {
-              this.m.xColumns.map((col: any, i: number) =>
-                <option
-                  key={i}
-                  value={col.key}>{col.key}</option>)
+              this.mapColumnsToOptions(this.m.xColumns)
             }
           </Form.Control>
 
@@ -428,10 +427,7 @@ export default class TimelineComponent
               await this.changeColumn(e, 'xColumn2');
             }}>
             {
-              this.m.xColumns.map((col: any, i: number) =>
-                <option
-                  key={i}
-                  value={col.key}>{col.key}</option>)
+              this.mapColumnsToOptions(this.m.xColumns)
             }
           </Form.Control>
         </InputGroup> :
@@ -450,10 +446,7 @@ export default class TimelineComponent
               await this.changeColumn(e, 'xColumn');
             }}>
             {
-              this.m.xColumns.map((col: any, i: number) =>
-                <option
-                  key={i}
-                  value={col.key}>{col.key}</option>)
+              this.mapColumnsToOptions(this.m.xColumns)
             }
           </Form.Control>
         </InputGroup>;
@@ -514,7 +507,6 @@ export default class TimelineComponent
    * @param {any} e: the event to pass into the function
    */
   changeTimelineType(e: any) {
-    // const val = Number.parseInt(e.target.value);
     const val = e.target.value;
     console.log(e.target.value);
     console.log(val);
@@ -564,7 +556,7 @@ export default class TimelineComponent
   initTimeline() {
     assert.notStrictEqual(this.state.data, [],
         'initTimeline(): this.state.data is empty');
-    const elem: any = d3.select('#svgtarget');
+    const elem: any = d3.select(CONSTANTS.SVG_SELECTOR);
     let newHeight = this.state.height;
     console.log('working');
     console.log(elem);
@@ -685,7 +677,7 @@ export default class TimelineComponent
         .extent(this.m.extent)
         .on('zoom', this.updateChart);
 
-    this.svg = d3.select('#svgtarget')
+    this.svg = d3.select(CONSTANTS.SVG_SELECTOR)
         .append('svg')
         .attr('width', this.m.width)
         .attr('height', this.m.height + this.m.marginTop +
@@ -850,7 +842,7 @@ export default class TimelineComponent
    * @param {number} y
    */
   ttOverHelper(d: any, x: number, y: number) {
-    const Tooltip = d3.select('#svgtarget')
+    const Tooltip = d3.select(CONSTANTS.SVG_SELECTOR)
         .append('div')
         .style('opacity', 0)
         .attr('class', 'tooltip')
@@ -866,8 +858,8 @@ export default class TimelineComponent
     const keys = Object.keys(d);
     let tooltip: string = '';
     keys.forEach(function(key) {
-      tooltip += '<strong>' + key + '</strong> <span style=\'color:#000000\'>' +
-        d[key] + '</span><br/>';
+      tooltip += `<strong>${key}</strong>
+      <span style='color:#000000'>${d[key]}</span><br/>`;
     });
 
     Tooltip.html(tooltip);
@@ -876,7 +868,7 @@ export default class TimelineComponent
       const ttBox = Tooltip.node()!.getBoundingClientRect();
 
       if ((ttBox.top + ttBox.height) > this.m.height) {
-        Tooltip.style('top', (this.m.fullHeight - ttBox.height) + 'px');
+        Tooltip.style('top', `${(this.m.fullHeight - ttBox.height)}px`);
       }
 
       Tooltip.style('opacity', 1);
@@ -917,7 +909,7 @@ export default class TimelineComponent
       // @ts-ignore
       const ttBox = Tooltip.node()!.getBoundingClientRect();
 
-      Tooltip.style('left', (xPos + 70) + 'px');
+      Tooltip.style('left', `${(xPos + 70)}px`);
 
       if ((yPos + ttBox.height) > this.m.fullHeight) {
         yPos = (this.m.fullHeight - ttBox.height);
@@ -1051,7 +1043,6 @@ export default class TimelineComponent
   dragged() {
     this.ttUpdatePos(d3.event.sourceEvent.x, d3.event.sourceEvent.y);
 
-    // console.log('movement: ' + d3.event.sourceEvent.movementX);
     if (d3.event.sourceEvent.movementX > 0) {
       this.m.deltaXDirection = -1;
     } else if (d3.event.sourceEvent.movementX < 0) {
@@ -1071,4 +1062,4 @@ export default class TimelineComponent
   dragEnded(caller: any) {
     d3.select(caller).classed('active', false);
   }
-};
+}

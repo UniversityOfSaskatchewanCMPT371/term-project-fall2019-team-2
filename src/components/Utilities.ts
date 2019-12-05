@@ -121,7 +121,7 @@ export async function loadTestCsv(): Promise<any> {
   const fileName = '100_Sales_Records.csv';
 
   const filedata = await $.ajax({
-    url: '/' + fileName,
+    url: `/${fileName}`,
   });
 
   return {

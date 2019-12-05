@@ -261,14 +261,18 @@ export default class ParserComponent extends React.Component<ParserInterface,
         const row: object = this.state.data[element];
         assert.notStrictEqual(row, null,
             'inferTypes(): row object is null');
+
         // look at each field and categorize
         for (let i = 0; i < listFields.length; i++) {
           const curColTypes = typesForEachCol[i];
           try {
+            // each field in listFields could be a different type
+            // typescript hates this and so it must be ignored
             // @ts-ignore
             const val = row[listFields[i]];
             assert.notStrictEqual(val, undefined,
                 'inferTypes(): value in field is undefined');
+
             if (typeof val === 'string') {
               const date = moment(val);
               const isValid = date.isValid();
@@ -281,6 +285,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
               throw val;
             }
           } catch {
+            // listFields contains different types, typescript does not play
+            // well with this notion thus must be ignored
             // @ts-ignore
             const type = typeof row[listFields[i]];
             if (type !== 'string' && type !== 'number') {

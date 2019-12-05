@@ -15,14 +15,14 @@
 
 
 ## Reviews Conducted
-Every member of the group underwent a formal review throughout the course of the semester:
-Camille and Evan [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/DesignDocumentReview.pdf)
-Amanda [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/riskDocReviewID4.pdf)
-Mesa [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/develop/documents/reviews/Formal_review_doc.pdf)
-Eileen [here](TODO GENERATE LINK WHEN REPO IS CLEANED UP)
-Braunson [here](TODO GENERATE LINK WHEN REPO IS CLEANED UP)
-Anurag [here](TODO GENERATE LINK WHEN REVIEW IS APPROVED)
-Kevin [here](TODO GENERATE LINK WHEN REVIEW IS APPROVED)
+Every member of the group underwent a formal review throughout the course of the semester:<br/>
+Camille and Evan [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/DesignDocumentReview.pdf)<br/>
+Amanda [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/riskDocReviewID4.pdf)<br/>
+Mesa [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/develop/documents/reviews/Formal_review_doc.pdf)<br/>
+Eileen [here](TODO GENERATE LINK WHEN REPO IS CLEANED UP)<br/>
+Braunson [here](TODO GENERATE LINK WHEN REPO IS CLEANED UP)<br/>
+Anurag [here](TODO GENERATE LINK WHEN REVIEW IS APPROVED)<br/>
+Kevin [here](TODO GENERATE LINK WHEN REVIEW IS APPROVED)<br/>
 
 
 
@@ -31,12 +31,12 @@ Kevin [here](TODO GENERATE LINK WHEN REVIEW IS APPROVED)
 
 ## Meetings With Stakeholders
 
-Stakeholder meetings took place every ID as required.
-[ID1](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID5/documents/meetings/stakeholder10.5.md)
-[ID2](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID5/documents/meetings/stakeholder9.4.md)
-[ID3](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID5/documents/meetings/stakeholder10.4.md)
-[ID4](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID5/documents/meetings/stakeholder11.17.pdf)
-[ID5](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID5/documents/meetings/stakeholder11.30.md)
+Stakeholder meetings took place every ID as required.<br/>
+[ID1](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID5/documents/meetings/stakeholder10.5.md)<br/>
+[ID2](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID5/documents/meetings/stakeholder9.4.md)<br/>
+[ID3](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID5/documents/meetings/stakeholder10.4.md)<br/>
+[ID4](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID5/documents/meetings/stakeholder11.17.pdf)<br/>
+[ID5](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID5/documents/meetings/stakeholder11.30.md)<br/>
 
 ## Testing
 

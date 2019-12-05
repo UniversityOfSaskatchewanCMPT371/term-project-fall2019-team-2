@@ -6,7 +6,7 @@ import config from './.config'; // Relative path to your File
  * used to read console log configuration from a file to control
  * what is need to be printed on console log
  */
-export default class ConsoleLogComponent extends React.Component {
+export default class ConsoleLogComponent {
   /**
    * actual logging function
    * @param {string} functionName: function's name;

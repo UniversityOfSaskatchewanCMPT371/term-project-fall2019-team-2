@@ -104,6 +104,7 @@ describe('R1 Tests\n', () => {
   // this suppresses that error (can still check that an alert is created)
   window.alert = () => {};
 
+  // resets spies, mock functions, fileEvent obj, & the data array
   const reset = () => {
     // clear spies
     inferTypesSpy.mockClear();
@@ -122,6 +123,20 @@ describe('R1 Tests\n', () => {
     onChangeMock.mockClear();
     compData = [];
     fileEvent = undefined;
+  };
+
+  // helper function for counting properties in an object
+  const countNumProperties = (obj: object) => {
+    let numProperties = 0;
+
+    // it needs to count every property in the object
+    for (const c in compData[0]) {
+      if (c !== undefined) {
+        numProperties++;
+      }
+    }
+
+    return numProperties;
   };
 
   describe('T1.1: Incompatible file types not accepted\n', () => {
@@ -218,6 +233,117 @@ describe('R1 Tests\n', () => {
     });
   });
 
+  describe('Handling upload of CSVs with strange formatting', () => {
+    beforeEach(() => {
+      reset();
+      wrapper = mount(<ParserComponent
+        {...csvProps}
+        onChange={onChangeMock}
+      />);
+    });
+
+    afterEach(() => {
+      // should encounter assertions
+      expect.hasAssertions();
+
+      // make sure sortData, parseCsv, & inferTypes were called
+      expect(parseCsvSpy).toHaveBeenCalled();
+      expect(sortDataSpy).toHaveBeenCalled();
+      expect(inferTypesSpy).toHaveBeenCalled();
+
+      const filename = fileEvent.target.files[0].name;
+      // file has 3 rows of data
+      if (filename === 'moreDataTest.csv' || filename === 'lessDataTest.csv') {
+        expect(compData.length).toBe(3);
+      } else {
+        expect(compData.length).toBe(4);
+      }
+    });
+
+    // more data in 1 row
+    it('T1.2: Should cut off data in row if more vals than # of fields\n',
+        async () => {
+          const moreDataFile: File = new File([
+            'date,h2,h3,h4\n' +
+            '01-01-1990,2,3,4,5\n' + // one too many values in this row
+            '01-01-1990,7,8,9\n' +
+            '01-01-1990,11,12,13,14' // one too many values in this row
+          ],
+          'moreDataTest.csv',
+          {type: '.csv,text/csv'}
+          );
+          fileEvent = {target: {files: [moreDataFile]}};
+
+          await wrapper.instance().parse(fileEvent);
+
+          compData = wrapper.state('data');
+          // count number of properties in each row object
+          for (let j = 0; j < compData.length; j++) {
+            // will always be 2 more than # of columns from csv data
+            // b/c of properties added for sorting (date_num & index)
+            expect(countNumProperties(compData[0])).toBe(6);
+          }
+        });
+
+    it('T1.10: Should not create object for empty row', async () => {
+      const colHeaders: Array<string> = ['date', 'h2', 'h3', 'h4'];
+      const emptyRow: File = new File([
+        'date,h2,h3,h4\n' +
+        '01-01-1990,2,,4\n' + // row has empty value
+        '01-01-1990,7,8,9\n' +
+        ',,,\n' +
+        '01-01-1990,,12,' // row has 2 empty values
+      ],
+      'emptyRow.csv',
+      {type: '.csv,text/csv'}
+      );
+      fileEvent = {target: {files: [emptyRow]}};
+
+      await wrapper.instance().parse(fileEvent);
+
+      compData = wrapper.state('data');
+      const rowObj = Object(compData[0]);
+
+      // create object with date_num of -1 & push to front of array
+      expect(rowObj['date_num']).toBe(-1);
+
+      for (let i = 0; i < colHeaders.length; i++) {
+        expect(rowObj[colHeaders[i]]).toBe(null);
+      }
+    });
+
+    it('T1.11: Should accept data and set empty property to null', async () => {
+      const lessDataRow: File = new File([
+        'date,h2,h3,h4\n' +
+        '01-01-1990,2,,4\n' + // row has empty value
+        '01-01-1990,7,8,9\n' +
+        '01-01-1990,,12,' // row has 2 empty values
+      ],
+      'lessDataTest.csv',
+      {type: '.csv,text/csv'}
+      );
+      fileEvent = {target: {files: [lessDataRow]}};
+
+      await wrapper.instance().parse(fileEvent);
+
+      compData = wrapper.state('data');
+      let rowObj = Object(compData[0]);
+
+      // check that only 3rd column val in 1st row is null
+      expect(rowObj['date']).toBe('01-01-1990');
+      expect(rowObj['h2']).toBe(2);
+      expect(rowObj['h3']).toBe(null);
+      expect(rowObj['h4']).toBe(4);
+
+      rowObj = Object(compData[2]);
+      // check that that 2nd & 3rd col vals in 3rd row are null
+      expect(rowObj['date']).toBe('01-01-1990');
+      expect(rowObj['h2']).toBe(null);
+      expect(rowObj['h3']).toBe(12);
+      expect(rowObj['h4']).toBe(null);
+    });
+  });
+
   describe('T1.3: .csv with different valid date formats accepted\n', () => {
     // replaces afterEach() -> was behaving weirdly with async()
     const expectHelper = async (fEvent: object) => {
@@ -233,7 +359,7 @@ describe('R1 Tests\n', () => {
 
       // onChange should be called once
       expect(onChangeMock).toHaveBeenCalledTimes(1);
-      expect(compData.length).toBe(3);
+      expect(compData.length).toBe(9);
       // spies that should have been called
       expect(parseSpy).toHaveBeenCalledTimes(1);
       expect(parseCsvSpy).toHaveBeenCalledTimes(1);
@@ -243,42 +369,63 @@ describe('R1 Tests\n', () => {
       expect.hasAssertions();
     };
 
-    beforeEach(() => {
+    const initTest = () => {
       reset();
       wrapper = mount(<ParserComponent
         {...csvProps}
         onChange={onChangeMock}
       />);
-    });
+    };
 
-    it('should parse .csv with sorted dates\n', async () => {
-      const multiDateFile: File = new File(
-          ['Date,SomeNum,SomeString\n' +
-          '04/04/1995,4,abcd\n' +
-          '06-07-1996,5,efg\n' +
-          'November 5 1997,1,hij\n' +
-          ''],
-          'multiDateTest.csv',
-          {type: '.csv,text/csv'},
-      );
-      fileEvent = {target: {files: [multiDateFile]}};
+    describe('should parse .csv with sorted dates\n', () => {
+      beforeEach(() => {
+        initTest();
+      });
 
-      await expectHelper(fileEvent);
+      afterEach(async () => {
+        await expectHelper(fileEvent);
+      });
+
+      it('DD-MM-YYYY', async () => {
+        const ddmmyyyyFile: File = new File(
+            ['Date,SomeNum,SomeString\n' +
+            '01-01-1989,5,efg\n' +
+            '01-01-1990,1,hij\n' +
+            '01-01-1991,4,abcd\n' +
+            '01-02-2000,5,efg\n' +
+            '01-04-2000,1,hij\n' +
+            '01-07-2000,4,abcd\n' +
+            '11-01-2000,5,efg\n' +
+            '15-01-2000,1,hij\n' +
+            '21-01-2000,4,abcd\n' +
+            ''],
+            'test.csv',
+            {type: '.csv,text/csv'},
+        );
+        fileEvent = {target: {files: [ddmmyyyyFile]}};
+      });
     });
 
     it('should parse .csv with unsorted dates & sort data by date\n',
         async () => {
-          const unsortedMultiDateFile: File = new File(
-              // This tests YYYY-MM-DD format
+          initTest();
+          const unsortedDateFile: File = new File(
+              // This tests DD-MM-YYYY format
               ['Date,SomeNum,SomeString\n' +
-              '04-04-1997,4,abcd\n' +
-              '04-04-1993,5,efg\n' +
-              '04-04-1995,1,hij\n' +
+              '01-07-2000,4,abcd\n' +
+              '01-02-2000,5,efg\n' +
+              '01-04-2000,1,hij\n' +
+              '21-01-2000,4,abcd\n' +
+              '11-01-2000,5,efg\n' +
+              '15-01-2000,1,hij\n' +
+              '01-01-1991,4,abcd\n' +
+              '01-01-1989,5,efg\n' +
+              '01-01-1990,1,hij\n' +
               ''],
               'test.csv',
               {type: '.csv,text/csv'},
           );
-          fileEvent = {target: {files: [unsortedMultiDateFile]}};
+          fileEvent = {target: {files: [unsortedDateFile]}};
 
           await expectHelper(fileEvent);
         });
@@ -342,14 +489,12 @@ describe('R1 Tests\n', () => {
       />);
     });
 
-    const expectHelper = async (fEvent: object) => {
-      await wrapper.instance().parse(fEvent);
-
+    afterEach(() => {
       expect(parseSpy).toHaveBeenCalledTimes(1);
       expect.hasAssertions();
       expect(wrapper.state('data').length).toEqual(3);
       expect(onChangeMock).toHaveBeenCalledTimes(1);
-    };
+    });
 
     it('file name with \\', async () => {
       const testfile: File = new File(
@@ -362,7 +507,7 @@ describe('R1 Tests\n', () => {
           {type: '.csv,text/csv'}
       );
       fileEvent = {target: {files: [testfile]}};
-      await expectHelper(fileEvent);
+      await wrapper.instance().parse(fileEvent);
     });
 
     it('file name with emoji that use unicode', async () => {
@@ -375,7 +520,7 @@ describe('R1 Tests\n', () => {
           {type: '.csv,text/csv'});
 
       fileEvent = {target: {files: [testfilewithemoji]}};
-      await expectHelper(fileEvent);
+      await wrapper.instance().parse(fileEvent);
     });
   });
 });

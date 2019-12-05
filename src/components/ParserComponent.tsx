@@ -192,47 +192,41 @@ export default class ParserComponent extends React.Component<ParserInterface,
    * @postcondition the data stored in the array is sorted by some date column
    * @param {Array} data: the array of data to sort
      * @param {any} key: the column name by which dates must be sorted
-   * @return {boolean}: true if data is sorted correctly
-     * and false if it failed to sort
+   * @return {boolean}: return true once data is sorted
    */
-    sortData(data: Array<object>, key:any): boolean {
+    sortData(data: Array<object>, key:string): boolean {
       assert.notEqual(key, false,
           'sortData(): No valid date for selected format was found');
       const formatString = this.state.formatString;
       const initialData = this.state.data;
       const keyInt = `${key}_num`;
-      if (key !== false) {
-        TimSort.sort(data, function(a: any, b: any) {
-          let val: any;
-          if (!a.hasOwnProperty(keyInt)) {
-            val = moment(a[key], formatString);
-            if (val.isValid()) {
-              a[keyInt] = val.valueOf();
-            } else {
-              a[keyInt] = -1;
-            }
+      TimSort.sort(data, function(a: any, b: any) {
+        let val: any;
+        if (!a.hasOwnProperty(keyInt)) {
+          val = moment(a[key], formatString);
+          if (val.isValid()) {
+            a[keyInt] = val.valueOf();
+          } else {
+            a[keyInt] = -1;
           }
+        }
 
-          if (!b.hasOwnProperty(keyInt)) {
-            val = moment(b[key], formatString);
-            if (val.isValid()) {
-              b[keyInt] = val.valueOf();
-            } else {
-              b[keyInt] = -1;
-            }
+        if (!b.hasOwnProperty(keyInt)) {
+          val = moment(b[key], formatString);
+          if (val.isValid()) {
+            b[keyInt] = val.valueOf();
+          } else {
+            b[keyInt] = -1;
           }
-          return (a[keyInt] - b[keyInt]);
-        });
-      }
+        }
+        return (a[keyInt] - b[keyInt]);
+      });
 
       this.setState(() => {
         return {
           data,
         };
       });
-      // state should be updated
-      assert.notStrictEqual(this.state.data, [],
-          'sortData(): this.state.data is empty (not updated)');
       return this.state.data !== initialData;
     }
 

@@ -455,9 +455,6 @@ describe('R1 Tests\n', () => {
 
     await wrapper.instance().parse(fileEvent);
 
-    // make sure alert was created
-    // expect(windowSpy).toHaveBeenCalled();
-
     // Make sure isValid, parseCsv, inferTypes, & sortData was called
     expect(isValidSpy).toHaveBeenCalledTimes(1);
     expect(parseCsvSpy).toHaveBeenCalledTimes(1);

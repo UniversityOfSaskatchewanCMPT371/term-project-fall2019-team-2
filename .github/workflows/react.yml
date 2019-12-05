@@ -58,3 +58,20 @@ jobs:
         docker run -e START_XVFB=false -p 4444:4444 --shm-size=2g -v $(pwd):/mnt selenium/standalone-chrome:3.141.59-xenon /bin/bash -c "bash /mnt/scripts/setup-builder.sh"
       env:
         CI: true
+
+    # Upload source maps
+    - name: Upload source maps
+      env:
+        SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        SENTRY_ORG: cmpt371
+        SENTRY_PROJECT: team2
+      if: matrix.os == 'ubuntu-latest' && matrix.node-version == '10.x' && (github.ref == 'refs/heads/master' || contains(github.ref, 'tags/') || github.ref == 'refs/heads/develop')
+      run: |
+        export RELEASE_VERSION=$(git rev-parse --short HEAD)
+        curl -L -o sentry-cli https://github.com/getsentry/sentry-cli/releases/download/1.49.0/sentry-cli-Linux-x86_64
+        chmod +x sentry-cli
+        ./sentry-cli releases new $RELEASE_VERSION
+        ./sentry-cli releases files $RELEASE_VERSION upload-sourcemaps --ext ts --ext map build/static/js
+        ./sentry-cli releases files $RELEASE_VERSION upload-sourcemaps --ext ts --ext map src
+        ./sentry-cli releases set-commits --auto $RELEASE_VERSION
+        ./sentry-cli releases finalize $RELEASE_VERSION

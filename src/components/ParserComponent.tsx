@@ -10,6 +10,9 @@ import Data
   from './Data';
 import * as TimSort from 'timsort';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {loadTestCsv} from './Utilities';
+
+import {strict as assert} from 'assert';
 
 /**
  * Purpose: react component responsible for receiving and parsing file data
@@ -32,6 +35,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
         data: [],
         showTimeline: false,
         formatString: '',
+        fileData: '',
       };
 
       this.isValid = this.isValid.bind(this);
@@ -39,13 +43,19 @@ export default class ParserComponent extends React.Component<ParserInterface,
       this.inferTypes = this.inferTypes.bind(this);
       this.parseCsv = this.parseCsv.bind(this);
       this.parse = this.parse.bind(this);
-      this.inferTypes = this.inferTypes.bind(this);
     }
 
     /**
      * Waits until component mounts
      */
     componentDidMount(): void {
+      // Autoloads a file for local testing
+      if (process.env.NODE_ENV === 'development') {
+        loadTestCsv().then((res) => {
+          console.log(res);
+          this.parse(res);
+        });
+      }
     }
 
     /**
@@ -82,11 +92,23 @@ export default class ParserComponent extends React.Component<ParserInterface,
                       formatString: val,
                     };
                   });
+                  const mockDateFile: File = new File(
+                      [this.state.fileData],
+                      'mockFile.csv',
+                      {type: this.props.fileType.mimeName},
+                  );
+                  const fileEvent = {target: {files: [mockDateFile]}};
+                  this.parse(fileEvent);
                 }}>
-                <option selected value="">Open this select menu</option>
-                <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                <option selected value="">Select a Date Format</option>
+                <option value="X">Numeric</option>
                 <option value="MM-DD-YYYY">MM-DD-YYYY</option>
                 <option value="DD-MM-YYYY">DD-MM-YYYY</option>
+                <option value="DD-MMMM-YYYY">DD-MMMM-YYYY</option>
+                <option value="MMMM-DD-YYYY">MMMM-DD-YYYY</option>
+                <option value="MMM-DD-YYYY">MMMM-DD-YYYY</option>
+                <option value="DD-MM-YY">DD-MM-YY</option>
+                <option value="MM-DD-YY">MM-DD-YY</option>
               </select>
             </div>
           </div>
@@ -110,15 +132,20 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * valid
      */
     isValid(upFile?: File): boolean {
+      assert.notStrictEqual(upFile, null,
+          'isValid(): File object is null');
       if (upFile !== undefined) {
         const typeOfFile = upFile.name.substr(upFile.name.length - 4);
-        if (typeOfFile === '.csv') {
-          return typeOfFile === '.csv';
+        if (this.props.fileType.mimeName === '.csv' +
+            ',text/csv' && typeOfFile === '.csv') {
+          return true;
         } else {
-          throw new Error('Wrong file type was uploaded.');
+          alert('Wrong file type was uploaded.');
+          return false;
         }
       }
-      throw new Error('Wrong file type was uploaded.');
+      alert('Wrong file type was uploaded.');
+      return false;
     }
 
     /**
@@ -132,13 +159,20 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * @return {boolean}: array of sorted data
      */
     sortData(data: Array<object>): boolean {
+      assert.notStrictEqual(data, null,
+          'sortData(): data (Array of objects) is null');
+      assert.notStrictEqual(data, [],
+          'sortData(): data (array of objects) is empty');
+
       let doneTheWork = false;
       /* loop goes through each key and saves the 1 with a date in first row */
-      if (data[0] !== undefined && data.length > 0) {
+      if (data !== undefined && data.length > 0) {
+        assert.notStrictEqual(data[0], null,
+            'sortData(): data[0] is null');
         for (const [key, value] of Object.entries(data[0])) {
           if (!doneTheWork) {
-            const date1 = moment(String(value));
-            if (!isNaN(Number(date1)) && isNaN(Number(value))) {
+            const date1 = moment(String(value), this.state.formatString);
+            if (moment(date1, this.state.formatString).isValid()) {
               doneTheWork = true;
               const formatString = this.state.formatString;
 
@@ -176,6 +210,9 @@ export default class ParserComponent extends React.Component<ParserInterface,
         }
       }
       if (doneTheWork) {
+        // state should be updated
+        assert.notStrictEqual(this.state.data, [],
+            'sortData(): this.state.data is empty (not updated)');
         return true;
       } else {
         throw new Error('The file uploaded has no dates.');
@@ -189,11 +226,16 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * @return {[CountTypes]}: a list of objects
      */
     createTypeCountingObjects(fieldLength: number): CountTypes[] {
+      assert(fieldLength > 0,
+          'createTypeCountingObjects(): ' +
+          'no data from which to create CountTypes[]');
       const typesForEachCol = [];
       // instantiate object for each column
       for (let i = 0; i < fieldLength; i++) {
         typesForEachCol.push(new CountTypes());
       }
+      assert.notStrictEqual(typesForEachCol, [],
+          'createTypeCountingObjects(): typesForEachCol array is empty');
       return typesForEachCol;
     }
 
@@ -208,20 +250,37 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * @return {Array}: a list of objects of type Column
      */
     inferTypes(data: Array<object>): Array<Column> | undefined {
+      // data should contain something (according to the precondition)
+      assert.notStrictEqual(data, undefined,
+          'inferTypes(): data (array of objects) is undefined');
+      assert.notStrictEqual(data, null,
+          'inferTypes(): data (array of objects) is null');
+      assert.notStrictEqual(data, [], 'data (array of objects) is empty');
+
       if (this.state.data.length > 0) {
+        assert.notStrictEqual(this.state.data[0], null,
+            'inferTypes(): this.state.data[0] is null');
         const listFields = Object.keys(this.state.data[0]);
+        assert.notStrictEqual(listFields, null,
+            'inferTypes(): listFields is null');
+        assert(listFields.length > 0,
+            'inferTypes(): listFields is empty');
         // instantiate objects to track the types of data
         const typesForEachCol =
             this.createTypeCountingObjects(listFields.length);
         // check half the values to find if the data is consistent
         [0, Math.floor(this.state.data.length / 2)].forEach((element) => {
           const row: object = this.state.data[element];
+          assert.notStrictEqual(row, null,
+              'inferTypes(): row object is null');
           // look at each field and categorize
           for (let i = 0; i < listFields.length; i++) {
             const curColTypes = typesForEachCol[i];
             try {
               // @ts-ignore
               const val = row[listFields[i]];
+              assert.notStrictEqual(val, undefined,
+                  'inferTypes(): value in field is undefined');
               if (typeof val === 'string') {
                 const date = moment(val);
                 const isValid = date.isValid();
@@ -253,32 +312,49 @@ export default class ParserComponent extends React.Component<ParserInterface,
         typesForEachCol.forEach((element) => {
           // checks the most common type and uses that
           const mostCommonType = element.largest();
-          let newCol: Column;
           if (mostCommonType === 'string') {
             // create a Column object with occurrence data
-            newCol = new Column(mostCommonType,
-                enumDrawType.occurrence, listFields[indx]);
-            arrayOfColumns[indx] = newCol;
+            this.createColumn(mostCommonType, enumDrawType.occurrence, indx,
+                listFields, arrayOfColumns);
             indx++;
-          } else if (mostCommonType === 'number') {
-            // create a Column with interval, point or magnitude data
-            newCol = new Column(mostCommonType,
-                enumDrawType.any, listFields[indx]);
-            arrayOfColumns[indx] = newCol;
-            indx++;
-          } else if (mostCommonType === 'date') {
+          } else if (mostCommonType === 'date' || mostCommonType === 'number') {
             // create a Column with date data
-            // eslint-disable-next-line max-len
-            newCol = new Column(mostCommonType, enumDrawType.any, listFields[indx]);
-            arrayOfColumns[indx] = newCol;
+            this.createColumn(mostCommonType, enumDrawType.any, indx,
+                listFields, arrayOfColumns);
             indx++;
           }
         }
         );
+        // if there is data then arrayOfColumns shouldn't be empty
+        assert.notStrictEqual(arrayOfColumns, [],
+            'inferTypes(): arrayOfColumns is empty after parsing data');
         return arrayOfColumns;
       } else {
         throw new Error('data is empty');
       }
+    }
+
+    /**
+   * Precondition: all of the parameters are defined
+   * Postcondition: list parameter has a new element appended to it
+   * creates a new column using the parameters and appends it to a lst
+   * @param {string} mostComm: the most common type of that column
+   * @param {enumDrawType} drawType: the type that the column is labeled as
+   * @param {number} indx: the index of the list parameter being appended to
+   * @param {string[]} fieldList: the list of fields for each column
+   * @param {Column[]} list: an array of columns
+   */
+    createColumn(mostComm: string, drawType: enumDrawType, indx: number,
+        fieldList: string[], list: Column[]) {
+      assert.notStrictEqual(mostComm, '',
+          'createColumn function has empty mostCommonType');
+      assert.notStrictEqual(fieldList, [],
+          'createColumn function has an empty fieldList');
+      assert(indx < fieldList.length,
+          'createColumn function has too large of an index');
+      const newCol: any = new Column(mostComm, drawType,
+          fieldList[indx]);
+      list[indx] = newCol;
     }
 
     /**
@@ -289,6 +365,27 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * @param {Object} fileEvent: the event passed into this component
      */
     async parse(fileEvent: any) {
+      // fileEvent is an object containing target files
+      assert.notStrictEqual(fileEvent, undefined,
+          'parse(): fileEvent is undefined');
+      assert.notStrictEqual(fileEvent, null,
+          'parse(): fileEvent is null');
+      // check target obj
+      assert.notStrictEqual(fileEvent.target, null,
+          'parse(): fileEvent.target is null');
+      assert.notStrictEqual(fileEvent.target, undefined,
+          'parse(): fileEvent.target is undefined');
+      // check files obj (Array<File>)
+      assert.notStrictEqual(fileEvent.target.files, null,
+          'parse(): fileEvent.target.files is null');
+      assert.notStrictEqual(fileEvent.target.files, undefined,
+          'parse(): fileEvent.target.files is undefined');
+      // check File obj (file being uploaded)
+      assert.notStrictEqual(fileEvent.target.files[0], null,
+          'parse(): fileEvent.target.files[0] is null');
+      assert.notStrictEqual(fileEvent.target.files[0], undefined,
+          'parse(): fileEvent.target.files[0] is undefined');
+
       this.setState(() => {
         return {
           showTimeline: false,
@@ -296,16 +393,13 @@ export default class ParserComponent extends React.Component<ParserInterface,
       });
 
       const temp: File = fileEvent.target.files[0];
-      try {
-        if (this.props.fileType.mimeName === '.csv' +
-            ',text/csv' && this.isValid(temp)) {
-          await this.parseCsv(fileEvent);
-        }
-      } catch (e) {
-        alert('Wrong file type was uploaded.');
-        console.log('Wrong file was uploaded.');
+      if (this.isValid(temp)) {
+        await this.parseCsv(fileEvent);
       }
 
+      // only show timeline if there is data
+      assert.notStrictEqual(this.state.data, [],
+          'parse(): this.state.data is empty but setting showTimeline to true');
       this.setState(() => {
         return {
           showTimeline: true,
@@ -321,7 +415,18 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * @param {Object} fileEvent: the event passed into this component
      */
     async parseCsv(fileEvent: any) {
+      // check fileEvent (should probs just pass in the File from parse()...
+      assert.notStrictEqual(fileEvent, undefined,
+          'parseCsv(): fileEvent is undefined');
+      assert.notStrictEqual(fileEvent, null,
+          'parseCsv(): fileEvent is null');
+
       const csvFile = fileEvent.target.files[0];
+
+      assert.notStrictEqual(csvFile, undefined,
+          'parseCsv(): csvFile (File obj) is undefined');
+      assert.notStrictEqual(csvFile, null,
+          'parseCsv(): csvFile (File obj) is null');
 
       // for testing
       this.props.onChange(fileEvent.target.files[0]);
@@ -347,14 +452,19 @@ export default class ParserComponent extends React.Component<ParserInterface,
                 prompt: this.state.prompt,
                 fileType: this.state.fileType,
                 data: content,
+                fileData: fileReader.result,
               };
             });
             try {
+              // shouldn't pass empty array into inferTypes or sortData :/
+              assert.notStrictEqual(this.state.data, [],
+                  'parseCsv(): this.state.data is empty' +
+              'but still calling inferTypes & sortData');
               this.columnTypes = this.inferTypes(this.state.data);
               this.sortData(this.state.data);
             } catch (e) {
-              alert('data is EMPTY');
-              console.log('data is empty');
+              alert(e.toString());
+              console.log(e.toString());
             }
           }
           resolver(true);

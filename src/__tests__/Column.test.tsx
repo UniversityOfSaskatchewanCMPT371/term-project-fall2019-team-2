@@ -27,15 +27,3 @@ describe('<Column /> Unit Tests', () => {
     });
   });
 });
-
-describe('show()', () => {
-  it('dummy test', () => {
-    // todo: devs need to write unit tests
-  });
-});
-
-describe('rescale()', () => {
-  it('dummy test', () => {
-    // todo: devs need to write unit tests
-  });
-});

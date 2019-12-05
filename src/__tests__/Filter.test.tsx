@@ -4,26 +4,23 @@ import Filter from '../components/Filter';
 
 describe('<Filter /> Unit Tests', () => {
   describe('constructor()', () => {
-    it('dummy test', () => {
-      // todo: devs need to write unit tests
-    });
-  });
+    let filterObj: Filter;
+    const lowerRange: number = 1;
+    const upperRange: number = 5;
+    const isShown: boolean = true;
+    const listOfPreds: Array<(...args: any[]) => boolean> =
+        [() => true];
 
-  describe('redefineRange()', () => {
-    it('dummy test', () => {
-      // todo: devs need to write unit tests
-    });
-  });
 
-  describe('addPredicate()', () => {
-    it('dummy test', () => {
-      // todo: devs need to write unit tests
+    beforeEach(() => {
+      filterObj = new Filter(lowerRange, upperRange, isShown, listOfPreds);
     });
-  });
 
-  describe('removePredicate()', () => {
-    it('dummy test', () => {
-      // todo: devs need to write unit tests
+    it('constructor should assigns variables', () => {
+      expect(filterObj.lowerRange).toBe(lowerRange);
+      expect(filterObj.upperRange).toBe(upperRange);
+      expect(filterObj.isShown).toBeTruthy();
+      expect(filterObj.listOfPreds).toBe(listOfPreds);
     });
   });
 });

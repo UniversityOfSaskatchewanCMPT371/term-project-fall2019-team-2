@@ -239,29 +239,19 @@ export default class ParserComponent extends React.Component<ParserInterface,
     }
 
     /**
-     * Purpose: attempts to infer the types of the data in each of the columns
-     * of the csv data
-     * @precondition An array of sorted data exists for types to be inferred
-     * from
-     * @postcondition The array is transformed into an array of type Column,
-     * and the default behavior for the data is inferred and set
-     * @param {Array} data: the array of pre-sorted valid data
-     * @return {Array}: a list of objects of type Column
-     */
-    inferTypes(data: Array<object>): Column[] {
-      // data should contain something (according to the precondition)
-      assert.notStrictEqual(data, undefined,
-          'inferTypes(): data (array of objects) is undefined');
-      assert.notStrictEqual(data, null,
-          'inferTypes(): data (array of objects) is null');
-      assert.notStrictEqual(data, [], 'data (array of objects) is empty');
-      assert.notStrictEqual(this.state.data[0], null,
-          'inferTypes(): this.state.data[0] is null');
-      const listFields = Object.keys(this.state.data[0]);
+   * goes through data, checks what the most common type of data is in the colum
+   * and returns a list of each and how many types were found
+   * @precondition: listFields is not empty
+   * @postcondition: creates a non-empty list of CountTypes
+   * @param {Array} listFields a list of the keys for each column
+   * @return {CountTypes[]} a list of how many and which kinds of types were
+   * found
+   */
+    private inferTypesHelper(listFields: any): CountTypes[] {
       assert.notStrictEqual(listFields, null,
-          'inferTypes(): listFields is null');
+          'inferTypesHelper(): listFields is null');
       assert(listFields.length > 0,
-          'inferTypes(): listFields is empty');
+          'inferTypesHelper(): listFields is empty');
       // instantiate objects to track the types of data
       const typesForEachCol =
           this.createTypeCountingObjects(listFields.length);
@@ -304,16 +294,35 @@ export default class ParserComponent extends React.Component<ParserInterface,
           }
         }
       });
+      assert.notStrictEqual(typesForEachCol, []);
       return typesForEachCol;
     }
 
     /**
-   * creates the array of infered types
-   * @param listFields
-   * @param typesForEachCol
+   * Purpose: attempts to infer the types of the data in each of the columns
+   * of the csv data
+   * @precondition An array of sorted data exists for types to be inferred
+   * from
+   * @postcondition The array is transformed into an array of type Column,
+   * and the default behavior for the data is inferred and set
+   * @param {Array} data: the array of pre-sorted valid data
    * @return {Array}: a list of objects of type Column
    */
-    createTypes(listFields: any, typesForEachCol: CountTypes[]): Array<Column> {
+    inferTypes(data: Array<object>): Array<Column> {
+    // data should contain something (according to the precondition)
+      assert.notStrictEqual(data, undefined,
+          'inferTypes(): data (array of objects) is undefined');
+      assert.notStrictEqual(data, null,
+          'inferTypes(): data (array of objects) is null');
+      assert.notStrictEqual(data, [], 'data (array of objects) is empty');
+      assert.notStrictEqual(this.state.data[0], null,
+          'inferTypes(): this.state.data[0] is null');
+      const listFields = Object.keys(this.state.data[0]);
+      assert.notStrictEqual(listFields, null,
+          'inferTypes(): listFields is null');
+      assert(listFields.length > 0,
+          'inferTypes(): listFields is empty');
+      const typesForEachCol = this.inferTypesHelper(listFields);
       let indx = 0;
       const arrayOfColumns = new Array<Column>(listFields.length);
       typesForEachCol.forEach((element) => {

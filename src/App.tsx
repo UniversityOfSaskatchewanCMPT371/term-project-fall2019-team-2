@@ -4,10 +4,14 @@ import ParserComponent from './components/ParserComponent';
 import {FileType} from './components/ParserInterface';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
+import TelemetryModal from './components/TelemetryModal';
 
 const App: React.FC = () => {
   return (
-    <div className="App">
+    <div className="App" style={{overflow: 'hidden',
+      paddingLeft: '20px', paddingRight: '20px'}}>
+      <TelemetryModal></TelemetryModal>
+
       <Navbar bg="light" expand="lg">
         <Navbar.Brand href="#home">Group 2</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />

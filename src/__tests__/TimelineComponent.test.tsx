@@ -11,6 +11,8 @@ import Data
 import Column
   from '../components/Column';
 
+import pretty from 'pretty';
+
 describe('<TimelineComponent /> R2 Tests\n', () => {
   // sample data for Timeline component
   const data: Data = new Data('path/to/file', [
@@ -166,32 +168,42 @@ describe('<TimelineComponent /> R2 Tests\n', () => {
   });
 
   it('T2.4 Snapshot Test\n', () => {
-    // Didn't want to make superfluous snapshots
-    const occurrenceButton: any =
-      <button>Switch
-        to
-        Occurrence
-        Timeline</button>;
-    const intervalButton: any =
-      <button>Switch
-        to
-        Interval
-        Timeline</button>;
+    const select: any =
+        // @ts-ignore
+        <select
+          id="timelineTypeSelect"
+          className="form-control">
+          <option
+            value="IntervalMagnitude">Interval
+            Magnitude
+          </option>
+          <option
+            value="IntervalOccurrence">Interval
+            Occurrence
+          </option>
+          <option
+            value="EventMagnitude">Event
+            Magnitude
+          </option>
+          <option
+            value="EventOccurrence">Event
+            Occurrence
+          </option>
+        </select>;
 
-    // make sure button has interval prompt initially
-    expect(wrapper.containsMatchingElement(intervalButton)).toBeTruthy();
-
-    // simulate user clicking button to change to
-    wrapper.find('button').simulate('click');
-
-    // make sure button switched to occurrence prompt
-    expect(wrapper.containsMatchingElement(occurrenceButton)).toBeTruthy();
+    // make sure select has rendered as expected
+    expect(wrapper.containsMatchingElement(select)).toBeTruthy();
 
     const svgTarget: any = document.getElementById('svgtarget');
     let svgHTML: string = '';
     if (svgTarget) {
       svgHTML = prettyHTML(svgTarget.innerHTML);
     }
+
+    console.log(pretty(document.body.innerHTML));
+    console.log(svgHTML);
+    console.log(window.innerWidth);
+    console.log(window.innerHeight);
 
     // Check that svg created by d3 matches snapshot
     expect(svgHTML).toMatchSnapshot();
@@ -340,8 +352,6 @@ describe('<TimelineComponent /> Unit Tests', () => {
     // Create spies
     drawTimelineSpy =
         jest.spyOn(TimelineComponent.prototype, 'drawTimeline');
-    toggleTimelineSpy =
-        jest.spyOn(TimelineComponent.prototype, 'toggleTimeline');
     initTimelineSpy =
         jest.spyOn(TimelineComponent.prototype, 'initTimeline');
     updateBarsSpy =
@@ -386,18 +396,32 @@ describe('<TimelineComponent /> Unit Tests', () => {
 
   describe('<TimelineComponent /> renders correctly', () => {
     it('checks that the timeline component renders correctly', () => {
-      const button =
-          <button>Switch
-            to
-            Interval
-            Timeline</button>;
-      // eslint-disable-next-line max-len
-      expect(wrapper.containsMatchingElement(
-          <button>Switch
-            to
-            Interval
-            Timeline</button>))
-          .toEqual(true);
+      console.log(pretty(wrapper.html()));
+      const select: any =
+          // @ts-ignore
+          <select
+            id="timelineTypeSelect"
+            className="form-control">
+            <option
+              value="IntervalMagnitude">Interval
+              Magnitude
+            </option>
+            <option
+              value="IntervalOccurrence">Interval
+              Occurrence
+            </option>
+            <option
+              value="EventMagnitude">Event
+              Magnitude
+            </option>
+            <option
+              value="EventOccurrence">Event
+              Occurrence
+            </option>
+          </select>;
+
+      // make sure select has rendered as expected
+      expect(wrapper.containsMatchingElement(select)).toBeTruthy();
       expect(wrapper.exists('#svgtarget')).toEqual(true);
     });
   });
@@ -414,7 +438,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
       expect(wrapper.state('marginRight')).toEqual(20);
       expect(wrapper.state('togglePrompt'))
           .toEqual('Switch to Interval Timeline');
-      expect(wrapper.state('view')).toEqual(ViewType.occurrence);
+      expect(wrapper.state('view')).toEqual(ViewType.EventMagnitude);
     });
   });
 
@@ -422,35 +446,6 @@ describe('<TimelineComponent /> Unit Tests', () => {
     it('checks if drawTimeline is called', () => {
       expect(initTimelineSpy).toHaveBeenCalled();
       expect(drawTimelineSpy).toHaveBeenCalled();
-    });
-  });
-
-  describe('toggleTimeline()', () => {
-    it('checks that the toggleTimeline function correctly sets the state ' +
-        'of the component', () => {
-      const button = wrapper.find('button');
-
-      button.simulate('click');
-
-      expect(toggleTimelineSpy).toHaveBeenCalled();
-      // check that the state is set properly
-      expect(wrapper.state('togglePrompt'))
-          .toEqual('Switch to Occurrence Timeline');
-      expect(initTimelineSpy).toHaveBeenCalled();
-      expect(drawTimelineSpy).toHaveBeenCalled();
-      expect(drawEventMagnitudeSpy).toHaveBeenCalled();
-      expect(wrapper.state('view')).toEqual(ViewType.interval);
-
-      button.simulate('click');
-
-      expect(toggleTimelineSpy).toHaveBeenCalled();
-      // check that the state is set properly
-      expect(wrapper.state('togglePrompt'))
-          .toEqual('Switch to Interval Timeline');
-      expect(initTimelineSpy).toHaveBeenCalled();
-      expect(drawTimelineSpy).toHaveBeenCalled();
-      expect(drawIntervalMagnitudeSpy).toHaveBeenCalled();
-      expect(wrapper.state('view')).toEqual(ViewType.occurrence);
     });
   });
 
@@ -471,14 +466,10 @@ describe('<TimelineComponent /> Unit Tests', () => {
 
     it('timeline drawer handles zoom out', async () => {
       wrapper.instance().drawTimeline();
-      // zoom in so that we can see if zooming back out works
-      document.body.dispatchEvent(zoomInEventDown);
-      document.body.dispatchEvent(zoomInEventUp);
-      expect(wrapper.instance().getScale()).toBeGreaterThan(1.0);
-      // zoom back out
+      // zoom out
       document.body.dispatchEvent(zoomOutEventDown);
       document.body.dispatchEvent(zoomOutEventUp);
-      expect(wrapper.instance().getScale()).toBe(1.0);
+      expect(wrapper.instance().getScale()).toBeLessThan(1.0);
     });
     it('drawLabels is called', () => {
       const drawTimelineSpy = jest.spyOn(TimelineComponent.prototype,
@@ -521,16 +512,22 @@ describe('<TimelineComponent /> Unit Tests', () => {
 
     it('timeline drawer does not zoom out too far', () => {
       wrapper.instance().drawTimeline();
+      console.log(pretty(wrapper.html()));
       const event = new KeyboardEvent('keydown', {'key': 's'});
       document.body.dispatchEvent(event);
 
-      // Should stay at 1
-      expect(wrapper.instance().getScale()).toBe(1.0);
+      // Should scale down by 10%
+      expect(wrapper.instance().getScale()).toBe(0.9);
     });
 
     it('timeline drawer does not pan too far left', () => {
+      wrapper.update();
+      wrapper.instance().initTimeline();
       wrapper.instance().drawTimeline();
+      wrapper.instance().updateChart();
+
       const event = new KeyboardEvent('keydown', {'key': 'ArrowLeft'});
+
       document.body.dispatchEvent(event);
 
       // Should stay at 0 (the min)
@@ -541,15 +538,16 @@ describe('<TimelineComponent /> Unit Tests', () => {
   describe('getIntervalMagnitudeData()', () => {
     it('checks that getIntervalMagnitudeData is called when needed ',
         () => {
-          const button = wrapper.find('button');
-          button.simulate('click');
+          const select = wrapper.find('#timelineTypeSelect').first();
+          select.simulate('change',
+              {target: {value: 'IntervalMagnitude'}});
 
           wrapper.instance().drawTimeline();
           const event = new KeyboardEvent('keydown', {'key': 'ArrowRight'});
           document.body.dispatchEvent(event);
           wrapper.instance().moveChart();
           wrapper.instance().updateChart();
-          expect(wrapper.state('view')).toBe(ViewType.interval);
+          expect(wrapper.state('view')).toBe(ViewType.IntervalMagnitude);
         });
   });
 
@@ -574,7 +572,6 @@ describe('<TimelineComponent /> Unit Tests', () => {
           expect(ttOverHelperSpy).toHaveBeenCalled();
 
           expect(!d3.selectAll('.tooltip').empty()).toEqual(true);
-
           wrapper.instance().ttUpdatePos(100, 100);
           expect(ttUpdatePosSpy).toHaveBeenCalled();
         });
@@ -614,9 +611,6 @@ describe('<TimelineComponent /> Unit Tests', () => {
     it('dummy test', () => {
       expect(drawTimelineSpy).toHaveBeenCalled();
       expect(updateBarsSpy).toHaveBeenCalled();
-      console.log(document.body.innerHTML);
-      // console.log(wrapper.)
-      expect(d3.selectAll('.pin-line').size()).toBe(5);
       wrapper.instance().drawIntervalMagnitude(d3.selectAll('.bar'));
       expect(drawIntervalMagnitudeSpy).toHaveBeenCalled();
       //
@@ -634,68 +628,11 @@ describe('<TimelineComponent /> Unit Tests', () => {
 
       wrapper.find('#xSelect').first()
           .simulate('change', {target: {value: 'Ship Date'}});
-
-      wrapper.find('#x2Select').first()
-          .simulate('change', {target: {value: 'Order Date'}});
+      //
+      // wrapper.find('#x2Select').first()
+      //     .simulate('change', {target: {value: 'Order Date'}});
 
       expect(updateBarsSpy).toHaveBeenCalled();
-    });
-  });
-
-  describe('updateBars()', () => {
-    it('dummy test', () => {
-      expect(updateBarsSpy).toHaveBeenCalled();
-    });
-  });
-
-  describe('moveChart()', () => {
-    it('dummy test', async () => {
-      wrapper.instance().drawTimeline();
-      const event = new MouseEvent('mousemove',
-          {
-            clientX: 1000,
-            button: 0,
-            buttons: 1,
-            clientY: 1000,
-            movementX: -100,
-          });
-      // const dragBehaviour = d3.behavior.drag();
-      // console.log(document.getElementById('barsLayer'));
-      // document.getElementById('barsLayer').dispatchEvent(event);
-      // console.log(document.getElementById('barsLayer'));
-      // wrapper.instance().dragged();
-
-      // await new Promise((res) => setTimeout(() => {
-      //   wrapper.update();
-      //   //console.log(wrapper.html());
-      //   wrapper.find('#barsLayer')
-      //     .simulate('drag', {
-      //     sourceEvent: {
-      //       x: 100,
-      //       y: 100,
-      //       movementX: -100,
-      //     }
-      //   });
-      //   res(true);
-      // }, 1000));
-    });
-  });
-
-  describe('dragStarted()', () => {
-    it('dummy test', () => {
-      // todo: devs need to write unit tests
-    });
-  });
-
-  describe('dragged()', () => {
-    it('dummy test', () => {
-      // todo: devs need to write unit tests
-    });
-  });
-
-  describe('dragEnded()', () => {
-    it('dummy test', () => {
-      // todo: devs need to write unit tests
     });
   });
 });

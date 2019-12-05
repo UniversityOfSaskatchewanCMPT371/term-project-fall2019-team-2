@@ -478,27 +478,136 @@ describe('R1 Tests\n', () => {
       });
     });
 
-    it('should parse .csv with unsorted dates & sort data by date\n',
-        async () => {
-          initTest();
-          const unsortedDateFile: File = new File(
-              // This tests DD-MM-YYYY format
-              ['Date,SomeNum,SomeString\n' +
-              '01-07-2000,9,abcd\n' +
-              '01-02-2000,7,efg\n' +
-              '01-04-2000,8,hij\n' +
-              '21-01-2000,6,abcd\n' +
-              '11-01-2000,4,efg\n' +
-              '15-01-2000,5,hij\n' +
-              '01-01-1991,3,abcd\n' +
-              '01-01-1989,1,efg\n' +
-              '01-01-1990,2,hij\n'
-              ],
-              'test.csv',
-              {type: '.csv,text/csv'},
-          );
-          fileEvent = {target: {files: [unsortedDateFile]}};
-          await wrapper.instance().parse(fileEvent);
+    describe('should parse .csv with unsorted dates & sort data by date\n',
+        () => {
+          beforeEach(() => {
+            initTest();
+          });
+          afterEach(() => {
+            expectHelper(fileEvent);
+          });
+
+          it('DD-MM-YYYY', () => {
+            wrapper.setState({'formatString': 'DD-MM-YYYY'});
+            const ddmmyyyyFile: File = new File(
+                ['Date,SomeNum,SomeString\n' +
+                '01-07-2000,9,abcd\n' +
+                '01-02-2000,7,efg\n' +
+                '01-04-2000,8,hij\n' +
+                '21-01-2000,6,abcd\n' +
+                '11-01-2000,4,efg\n' +
+                '15-01-2000,5,hij\n' +
+                '01-01-1991,3,abcd\n' +
+                '01-01-1989,1,efg\n' +
+                '01-01-1990,2,hij\n'
+                ],
+                'unsorted.csv',
+                {type: '.csv,text/csv'},
+            );
+            fileEvent = {target: {files: [ddmmyyyyFile]}};
+          });
+
+          xit('MM-DD-YYYY', () => {
+            wrapper.setState({'formatString': 'MM-DD-YYYY'});
+            const mmddyyyyFile: File = new File(
+                ['Date,SomeNum,SomeString\n' +
+                '07-01-2000,9,abcd\n' +
+                '02-01-2000,7,efg\n' +
+                '04-01-2000,8,hij\n' +
+                '01-21-2000,6,abcd\n' +
+                '01-11-2000,4,efg\n' +
+                '01-15-2000,5,hij\n' +
+                '01-01-1991,3,abcd\n' +
+                '01-01-1989,1,efg\n' +
+                '01-01-1990,2,hij\n'
+                ],
+                'unsorted.csv',
+                {type: '.csv,text/csv'},
+            );
+            fileEvent = {target: {files: [mmddyyyyFile]}};
+          });
+
+          xit('DD-MMMM-YYYY', () => {
+            wrapper.setState({'formatString': 'DD-MMMM-YYYY'});
+            const ddmmmmyyyyFile: File = new File(
+                // This tests DD-MM-YYYY format
+                ['Date,SomeNum,SomeString\n' +
+                '01-July-2000,9,abcd\n' +
+                '01-February-2000,7,efg\n' +
+                '01-April-2000,8,hij\n' +
+                '21-January-2000,6,abcd\n' +
+                '11-January-2000,4,efg\n' +
+                '15-January-2000,5,hij\n' +
+                '01-January-1991,3,abcd\n' +
+                '01-January-1989,1,efg\n' +
+                '01-January-1990,2,hij\n'
+                ],
+                'unsorted.csv',
+                {type: '.csv,text/csv'},
+            );
+            fileEvent = {target: {files: [ddmmmmyyyyFile]}};
+          });
+
+          xit('MMMM-DD-YYYY', () => {
+            wrapper.setState({'formatString': 'MMMM-DD-YYYY'});
+            const mmmmddyyyyFile: File = new File(
+                ['Date,SomeNum,SomeString\n' +
+                'July-01-2000,9,abcd\n' +
+                'February-01-2000,7,efg\n' +
+                'April-01-2000,8,hij\n' +
+                'January-21-2000,6,abcd\n' +
+                'January-11-2000,4,efg\n' +
+                'January-15-2000,5,hij\n' +
+                'January-01-1991,3,abcd\n' +
+                'January-01-1989,1,efg\n' +
+                'January-01-1990,2,hij\n'
+                ],
+                'unsorted.csv',
+                {type: '.csv,text/csv'},
+            );
+            fileEvent = {target: {files: [mmmmddyyyyFile]}};
+          });
+
+          xit('DD-MM-YY', () => {
+            wrapper.setState({'formatString': 'DD-MM-YY'});
+            const ddmmyyFile: File = new File(
+                // This tests DD-MM-YYYY format
+                ['Date,SomeNum,SomeString\n' +
+                '01-07-00,9,abcd\n' +
+                '01-02-00,7,efg\n' +
+                '01-04-00,8,hij\n' +
+                '21-01-00,6,abcd\n' +
+                '11-01-00,4,efg\n' +
+                '15-01-00,5,hij\n' +
+                '01-01-91,3,abcd\n' +
+                '01-01-89,1,efg\n' +
+                '01-01-90,2,hij\n'
+                ],
+                'unsorted.csv',
+                {type: '.csv,text/csv'},
+            );
+            fileEvent = {target: {files: [ddmmyyFile]}};
+          });
+
+          xit('MM-DD-YY', () => {
+            wrapper.setState({'formatString': 'MM-DD-YYYY'});
+            const mmddyyFile: File = new File(
+                ['Date,SomeNum,SomeString\n' +
+                '07-01-00,9,abcd\n' +
+                '02-01-00,7,efg\n' +
+                '04-01-00,8,hij\n' +
+                '01-21-00,6,abcd\n' +
+                '01-11-00,4,efg\n' +
+                '01-15-00,5,hij\n' +
+                '01-01-91,3,abcd\n' +
+                '01-01-89,1,efg\n' +
+                '01-01-90,2,hij\n'
+                ],
+                'unsorted.csv',
+                {type: '.csv,text/csv'},
+            );
+            fileEvent = {target: {files: [mmddyyFile]}};
+          });
         });
   });
 

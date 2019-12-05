@@ -592,7 +592,7 @@ export default class TimelineComponent
     this.m.deltaX = 0;
     this.m.scale = 1;
     this.m.csvData = this.state.data.arrayOfData;
-
+    console.log(this.m.csvData);
     this.m.data = this.m.csvData.slice(0, this.m.numBars);
     // ordinals = data.map((d: any) => d[xColumn]);
 
@@ -603,7 +603,7 @@ export default class TimelineComponent
 
     // @ts-ignore
     this.m.maxDate = new Date(d3.max(
-        [d3.min(this.m.csvData, (d: any) => Date.parse(d[this.m.xColumn])),
+        [d3.max(this.m.csvData, (d: any) => Date.parse(d[this.m.xColumn])),
           d3.max(this.m.csvData, (d: any) => Date.parse(d[this.m.xColumn2]))]));
 
     this.m.timeScale = d3.scaleTime()
@@ -950,7 +950,6 @@ export default class TimelineComponent
     // recover the new scale
     if (d3.event !== null) {
       this.m.scale = d3.event.transform.k;
-      // console.log(d3.event);
     } else {
       console.warn('d3.event was null');
     }
@@ -1019,6 +1018,20 @@ export default class TimelineComponent
    * being rendered.
    */
   moveChart() {
+    // console.log(d3.event);
+    // if (d3.event.type === 'zoom' && d3.event.transform.k !== this.m.scale) {
+    //   const from = ((this.m.width/ 2) + this.m.deltaX);
+    //   const to = (((this.m.width / 2) + this.m.deltaX ) * this.m.scale);
+    //   console.log({to, from});
+    //
+    //   this.m.deltaX = this.m.deltaX - (to-from);
+    //   d3.select('#barsLayer')
+    //       .attr('transform',
+    //           `translate(${this.m.deltaX},10)`);
+    // } else {
+    //
+    // }
+
     d3.select('#barsLayer')
         .attr('transform', () => {
           return `translate(${this.m.deltaX},0)`;

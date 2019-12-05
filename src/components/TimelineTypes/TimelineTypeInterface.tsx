@@ -1,5 +1,7 @@
 import TimelineModel from '../TimelineModel';
 import {ViewType} from '../TimelineComponent';
+import assert from 'assert';
+import * as d3 from 'd3';
 
 
 interface TimelineTypeInterface {
@@ -77,6 +79,50 @@ export abstract class TimelineType implements TimelineTypeInterface {
         .text(yString);
   }
 
+  /**
+   * Purpose: checks if arguments are greater than the left bound of the
+   * timeline
+   * @param {number[]} args: values to compare to the left bound of the
+   * timeline
+   * @return {boolean}: true if all of the args are less than the right bound
+   */
+  outsideLeftBound(...args: number[]): boolean {
+    const lBound: number = -this.m.deltaX;
+    let result = true;
+
+    if (args.length === 0) {
+      result = false;
+    }
+
+    for (let i = 0; i < args.length; i++) {
+      const arg: number = args[i];
+      result = result && (arg < lBound);
+    }
+    return result;
+  }
+
+  /**
+   * Purpose: checks if arguments are greater than the right bound of the
+   * timeline
+   * @param {number[]} args: values to compare to the right bound of the
+   * timeline
+   * @return {boolean}: true if all of the args are greater than the right bound
+   */
+  outsideRightBound(...args: number[]): boolean {
+    const rBound: number = -this.m.deltaX + this.m.width;
+    let result = true;
+
+    if (args.length === 0) {
+      result = false;
+    }
+
+    for (let i = 0; i < args.length; i++) {
+      const arg: number = args[i];
+      result = result && (arg > rBound);
+    }
+    return result;
+  }
+
 
   /**
    * Purpose: updates the range of elements currently being rendered on the
@@ -88,7 +134,100 @@ export abstract class TimelineType implements TimelineTypeInterface {
    * @postconditions: the array of data to be rendered is updated to accurately
    * reflect the information from the timeline
    */
-  abstract getData(): void;
+  getData(): void {
+    console.log(this.m.csvData);
+    let dataIdxEnd: number = 0;
+    let dataIdxStart: number = 0;
+    let consecutive = true;
+    const keys = [];
+
+    const direction = this.m.deltaXDirection;
+
+    if (this.m.view === ViewType.IntervalOccurrence ||
+      this.m.view === ViewType.IntervalMagnitude) {
+      keys.push(this.m.xColumn);
+      keys.push(this.m.xColumn2);
+    } else {
+      keys.push(this.m.xColumn);
+    }
+
+    assert(this.m.deltaXDirection === 1 ||
+      this.m.deltaXDirection === -1);
+
+    if (direction === 1) {
+      dataIdxStart = dataIdxEnd = this.m.dataIdx;
+    } else if (direction === -1) {
+      // @ts-ignore
+      dataIdxStart = dataIdxEnd =
+        d3.max([this.m.dataIdx + this.m.data.length,
+          this.m.csvData.length-1]);
+    }
+    console.log(this.m.csvData);
+
+    for (dataIdxEnd;
+      (direction === 1 && dataIdxEnd < this.m.csvData.length) ||
+         (direction === -1 && dataIdxEnd > 0);
+      dataIdxEnd+=direction) {
+      const elem: any = this.m.csvData[dataIdxEnd];
+      const bounds: number[] = [];
+
+      // get the bounds to test against for this object
+      keys.forEach((key) => {
+        if (!elem.hasOwnProperty(key + '_num')) {
+          elem[key + '_num'] = Date.parse(elem[key]);
+        }
+        bounds.push((this.m.scale * this.m.timeScale(elem[key + '_num'])));
+      });
+
+      // We can only increment dataIdx if the preceding elements have also
+      // been moved off of the current screen area
+      if (consecutive) {
+        if (direction === 1 && this.outsideLeftBound(...bounds)) {
+          dataIdxStart+=direction;
+        } else if (direction === -1 && this.outsideRightBound(...bounds)) {
+          dataIdxStart+=direction;
+        } else {
+          consecutive = false;
+        }
+      } else {
+        consecutive = false;
+      }
+
+      // Check if this element is outside of the bound in which elements are
+      // entering
+      if (direction === 1 && this.outsideRightBound(...bounds)) {
+        break;
+      } else if (direction === -1 && this.outsideLeftBound(...bounds)) {
+        break;
+      }
+    }
+
+    console.log({dataIdxStart, dataIdxEnd});
+
+    if (direction === 1) {
+      dataIdxStart = dataIdxStart >= this.m.csvData.length ?
+        this.m.csvData.length - 1 :
+        dataIdxStart;
+
+      dataIdxEnd = dataIdxEnd + this.m.barBuffer >= this.m.csvData.length ?
+        this.m.csvData.length - 1 :
+        dataIdxEnd + this.m.barBuffer;
+
+      this.m.data = this.m.csvData.slice(dataIdxStart, dataIdxEnd);
+      this.m.dataIdx = dataIdxStart;
+    } else if (direction === -1) {
+      dataIdxStart = dataIdxStart + this.m.barBuffer >= this.m.csvData.length ?
+        this.m.csvData.length - 1 :
+        dataIdxStart + this.m.barBuffer;
+
+      dataIdxEnd = dataIdxEnd >= this.m.csvData.length ?
+        this.m.csvData.length - 1 :
+        dataIdxEnd;
+
+      this.m.data = this.m.csvData.slice(dataIdxEnd, dataIdxStart);
+      this.m.dataIdx = dataIdxEnd;
+    }
+  }
 
   /**
    * Purpose: gets the translation for an x-axis tick
@@ -120,18 +259,14 @@ export abstract class TimelineType implements TimelineTypeInterface {
     // plot every 5th date
     this.m.data.forEach((d: any, i: number) => {
       if (((i + this.m.dataIdx) % 5) === 0) {
-        ticks.push({
-          id: d['index'],
-          index: i,
-          text: d[this.m.xColumn],
-        });
+        ticks.push(d);
       }
     });
 
     // noinspection TypeScriptValidateJSTypes
     this.m.plot.selectAll('.xtick')
         .data(ticks, function(d: any) {
-          return d.id;
+          return d['index'];
         })
         .join(
             (enter: any) => {
@@ -146,7 +281,7 @@ export abstract class TimelineType implements TimelineTypeInterface {
                   .attr('y2', 6);
 
               tick.append('text')
-                  .text((d: any) => d.text)
+                  .text((d: any) => d[this.m.xColumn])
                   .style('text-anchor', 'end')
                   .style('font-size', '1rem')
                   .attr('dx', '-.8em')

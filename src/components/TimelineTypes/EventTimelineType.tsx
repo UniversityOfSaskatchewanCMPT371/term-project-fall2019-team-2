@@ -1,6 +1,7 @@
 import TimelineTypeInterface, {TimelineType} from './TimelineTypeInterface';
 import * as d3
   from 'd3';
+import assert from 'assert';
 
 /**
  * Purpose: this class exists to minimize code duplication between
@@ -14,24 +15,36 @@ export default abstract class EventTimelineType extends TimelineType
   applyZoom() {
     const bar = d3.selectAll('.bar');
     const scale = this.m.scale;
-    const barWidth = this.m.barWidth;
-    const dataIdx = this.m.dataIdx;
+    const timeScale = this.m.timeScale;
+    const key = this.m.xColumn + '_num';
+
+    d3.select('#barsLayer');
+
     bar.each(function( d: any, i: number) {
       // eslint-disable-next-line no-invalid-this
       d3.select(this).selectAll('.pin-line')
           .attr('x', (d: any) =>
-            (scale * barWidth * (i + dataIdx)));
+            (scale * timeScale(d[key])));
       // eslint-disable-next-line no-invalid-this
       d3.select(this).selectAll('.pin-head')
           .attr('cx', (d: any) =>
-            (scale * barWidth * (i + dataIdx)));
+            (scale * timeScale(d[key])));
     });
 
     d3.selectAll('.xtick')
-        .attr('transform', (d: any) => 'translate(' +
-            ((this.m.scale * this.m.barWidth * (d['index'] + this.m.dataIdx)) +
-                ((this.m.scale * this.m.barWidth) / 2)) + ',' +
-            this.m.height + ')');
+        .attr('transform', (d: any) =>
+          `translate(${this.m.scale * this.m.timeScale(d[key])},
+          ${this.m.height})`);
+
+
+    // const from = ((this.m.width + this.m.deltaX) / 2);
+    // const to = ((((this.m.deltaX + this.m.width) / 2)) * this.m.scale);
+    //
+    // console.log({to, from});
+    // d3.select('#barsLayer')
+    //     .attr('transform', `translate(${100},10)`);
+    // d3.select('#barsLayer')
+    //     .attr('transform', `translate(${(to-from)},0)`);
   }
 
   abstract draw(selection: any, ttOver: any, ttMove: any, ttLeave: any): void;
@@ -39,27 +52,17 @@ export default abstract class EventTimelineType extends TimelineType
 
   abstract checkYPrimType(primType: string): boolean;
 
-
-  /**
-   * Purpose: updates dataIdx, data, and ordinals when drawing an
-   * EventMagnitude Timeline
-   */
-  getData(): void {
-    // finds starting index
-    this.m.dataIdx =
-        Math.floor(- this.m.deltaX / (this.m.scale * this.m.barWidth));
-    this.m.data =
-        this.m.csvData.slice(this.m.dataIdx, this.m.numBars + this.m.dataIdx);
-  }
-
   /**
    * Purpose: gets the translation for an x-axis tick
    * @param {any} datum: the datum to draw the x-axis tick for
    * @return {string}: the translations string
    */
   getTickTranslate(datum: any): string {
-    return 'translate(' +
-        ((this.m.scale * this.m.barWidth * (datum.index + this.m.dataIdx)) +
-            ((this.m.scale * this.m.barWidth) / 2)) + ',' + this.m.height + ')';
+    assert(datum !== undefined && datum !== null,
+        'datum is null');
+    const key = this.m.xColumn + '_num';
+
+    return `translate(${this.m.scale * this.m.timeScale(datum[key])},
+    ${this.m.height})`;
   }
 }

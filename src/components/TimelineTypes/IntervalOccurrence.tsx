@@ -65,19 +65,8 @@ export default class IntervalOccurrence extends IntervalTimelineType
           .on('mousemove', ttMove)
           .on('mouseleave', ttLeave);
     }
+    console.log(this.m.csvData);
   }
-
-  // /**
-  //  * Purpose: gets the translation for an x-axis tick
-  //  * @param {any} datum: the datum to draw the x-axis tick for
-  //  * @return {string}: the translations string
-  //  */
-  // getTickTranslate(datum: any): string {
-  //   assert(datum !== undefined && datum !== null,
-  //       'datum is null');
-  //   return `translate(${this.m.timeScale(new Date(datum.text))},
-  //     ${this.m.height})`;
-  // }
 
   /**
    * Purpose: determines which columns are appropriate for the y axis

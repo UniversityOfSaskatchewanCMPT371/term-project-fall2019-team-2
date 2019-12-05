@@ -188,10 +188,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
                     if (val.isValid()) {
                       a[keyInt] = val.valueOf();
                     } else {
-                      // @ts-ignore
-                      // eslint-disable-next-line no-invalid-this
-                      this.debugConfig.consoleLogger(this.sortData.name,
-                          'the value for a is invalid', 'WARN');
                       a[keyInt] = -1;
                     }
                   }
@@ -201,10 +197,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
                     if (val.isValid()) {
                       b[keyInt] = val.valueOf();
                     } else {
-                      // @ts-ignore
-                      // eslint-disable-next-line no-invalid-this
-                      this.debugConfig.consoleLogger(this.sortData.name,
-                          'the value for b is invalid', 'WARN');
                       b[keyInt] = -1;
                     }
                   }

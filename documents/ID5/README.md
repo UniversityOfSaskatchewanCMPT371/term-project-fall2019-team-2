@@ -25,11 +25,18 @@ Anurag [here](TODO GENERATE LINK WHEN REVIEW IS APPROVED)
 Kevin [here](TODO GENERATE LINK WHEN REVIEW IS APPROVED)
 
 
+
 ## Design and Requirements Documents
 
 
 ## Meetings With Stakeholders
 
+Stakeholder meetings took place every ID as required.
+[ID1](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID5/documents/meetings/stakeholder10.5.md)
+[ID2](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID5/documents/meetings/stakeholder9.4.md)
+[ID3](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID5/documents/meetings/stakeholder10.4.md)
+[ID4](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID5/documents/meetings/stakeholder11.17.pdf)
+[ID5](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID5/documents/meetings/stakeholder11.30.md)
 
 ## Testing
 

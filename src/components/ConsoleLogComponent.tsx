@@ -8,14 +8,6 @@ import config from './.config'; // Relative path to your File
  */
 export default class ConsoleLogComponent extends React.Component {
   /**
-   * empty constructor
-   */
-  constructor() {
-    // @ts-ignore
-    super();
-  }
-
-  /**
    * actual logging function
    * @param {string} functionName: function's name;
    * @param {any} message: actual error message, could be string or boolean

@@ -387,7 +387,7 @@ describe('R1 Tests\n', () => {
         await expectHelper(fileEvent);
       });
 
-      it('DD-MM-YYYY',  () => {
+      it('DD-MM-YYYY', () => {
         wrapper.setState({'formatString': 'DD-MM-YYYY'});
         const ddmmyyyyFile: File = new File(
             ['Date,SomeNum,SomeString\n' +

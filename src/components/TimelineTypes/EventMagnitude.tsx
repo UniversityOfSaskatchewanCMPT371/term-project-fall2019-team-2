@@ -6,8 +6,6 @@ import * as d3 from 'd3';
  */
 export default class EventMagnitude extends TimelineType
   implements TimelineTypeInterface {
-  // m: TimelineModel;
-
   /**
    * Purpose: draws an element as Event with a Magnitude
    * @param {any} selection: the selection for the object to draw

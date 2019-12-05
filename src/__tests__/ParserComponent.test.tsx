@@ -239,7 +239,7 @@ describe('R1 Tests\n', () => {
       />);
     });
 
-    afterEach(() => {
+    const shouldAcceptAllRows = () => {
       // should encounter assertions
       expect.hasAssertions();
 
@@ -250,7 +250,7 @@ describe('R1 Tests\n', () => {
 
       // file has 3 rows of data
       expect(compData.length).toBe(3);
-    });
+    };
 
     // more data in 1 row
     it('Should cut off data in row if more vals than # of fields\n',
@@ -261,7 +261,7 @@ describe('R1 Tests\n', () => {
             '01-01-1990,7,8,9\n' +
             '01-01-1990,11,12,13,14' // one too many values in this row
           ],
-          'lessDataTest.csv',
+          'moreDataTest.csv',
           {type: '.csv,text/csv'}
           );
           fileEvent = {target: {files: [moreDataFile]}};
@@ -275,7 +275,70 @@ describe('R1 Tests\n', () => {
             // b/c of properties added for sorting (date_num & index)
             expect(countNumProperties(compData[0])).toBe(6);
           }
+
+          shouldAcceptAllRows();
         });
+
+    it('Should accept data and set empty property to null', async () => {
+      const lessDataRow: File = new File([
+        'date,h2,h3,h4\n' +
+        '01-01-1990,2,,4\n' + // row has empty value
+        '01-01-1990,7,8,9\n' +
+        '01-01-1990,,12,' // row has 2 empty values
+      ],
+      'lessDataTest.csv',
+      {type: '.csv,text/csv'}
+      );
+      fileEvent = {target: {files: [lessDataRow]}};
+
+      await wrapper.instance().parse(fileEvent);
+
+      compData = wrapper.state('data');
+      let rowObj = Object(compData[0]);
+
+      // check that only 3rd column val in 1st row is null
+      expect(rowObj['date']).toBe('01-01-1990');
+      expect(rowObj['h2']).toBe(2);
+      expect(rowObj['h3']).toBe(null);
+      expect(rowObj['h4']).toBe(4);
+
+      rowObj = Object(compData[2]);
+      // check that that 2nd & 3rd col vals in 3rd row are null
+      expect(rowObj['date']).toBe('01-01-1990');
+      expect(rowObj['h2']).toBe(null);
+      expect(rowObj['h3']).toBe(12);
+      expect(rowObj['h4']).toBe(null);
+
+      shouldAcceptAllRows();
+    });
+
+    it('Should not create object for empty row', async () => {
+      const colHeaders: Array<string> = ['date', 'h2', 'h3', 'h4'];
+      const emptyRow: File = new File([
+        'date,h2,h3,h4\n' +
+        '01-01-1990,2,,4\n' + // row has empty value
+        '01-01-1990,7,8,9\n' +
+         ',,,\n' +
+        '01-01-1990,,12,' // row has 2 empty values
+      ],
+      'emptyRow.csv',
+      {type: '.csv,text/csv'}
+      );
+      fileEvent = {target: {files: [emptyRow]}};
+
+      await wrapper.instance().parse(fileEvent);
+
+      compData = wrapper.state('data');
+      const rowObj = Object(compData[0]);
+
+      // create object with date_num of -1 & push to front of array
+      expect(compData.length).toBe(4);
+      expect(rowObj['date_num']).toBe(-1);
+
+      for (let i = 0; i < colHeaders.length; i++) {
+        expect(rowObj[colHeaders[i]]).toBe(null);
+      }
+    });
   });
 
   describe('T1.3: .csv with different valid date formats accepted\n', () => {

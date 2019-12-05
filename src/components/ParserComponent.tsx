@@ -141,7 +141,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
     checkifCsvandcallParse(): boolean {
       const nameOfFile = this.state.fileName;
       const typeOfFile = nameOfFile.substr(nameOfFile.length - 4);
-      if (typeOfFile === '.csv') {
+      if (typeOfFile === '.csv' && this.props.fileType.mimeName === '.csv' +
+          ',text/csv') {
         this.parse(this.createNewMockFile());
         return true;
       }

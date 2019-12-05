@@ -870,11 +870,6 @@ describe('<ParserComponent /> Unit Tests', () => {
       await comp.instance().parse(event);
       expect(inferTypesSpy).toHaveBeenCalled();
     });
-    it('timeline is set to true', async () => {
-      // Call the parse method with the fake event
-      await comp.instance().parse(event);
-      expect(comp.state('showTimeline')).toBeFalsy();
-    });
   });
 
   describe('parseCsv()', () => {

@@ -303,6 +303,11 @@ export abstract class TimelineType implements TimelineTypeInterface {
    * @param {string} primType: the primType to compare
    * @return {boolean}: a boolean indicating if the primType is appropriate
    * for the x axis
+   *
+   * @precondition: the primType accurately represents one of the columns from
+   * the parsed csv.
+   * @postcondition: true or false, based on whether or not the primType is a
+   * date or number.
    */
   checkXPrimType(primType: string): boolean {
     return (primType === 'date' || primType === 'number');

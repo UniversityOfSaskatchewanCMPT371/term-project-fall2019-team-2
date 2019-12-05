@@ -129,7 +129,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
           {type: this.props.fileType.mimeName},
       );
       // create file event of the mockfile and return it
-      return {target: {files: [mockDateFile]}};
+      const mockFileEvent = {target: {files: [mockDateFile]}};
+      return mockFileEvent;
     }
 
     /**
@@ -203,6 +204,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
           'sortData(): data (array of objects) is empty');
 
       let doneTheWork = false;
+      let foundADate = false;
       /* loop goes through each key and saves the 1 with a date in first row */
       if (data !== undefined && data.length > 0) {
         assert.notStrictEqual(data[0], null,
@@ -211,6 +213,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
           if (!doneTheWork) {
             const date1 = moment(String(value), this.state.formatString);
             if (moment(date1, this.state.formatString).isValid()) {
+              foundADate = true;
               doneTheWork = true;
               const formatString = this.state.formatString;
 

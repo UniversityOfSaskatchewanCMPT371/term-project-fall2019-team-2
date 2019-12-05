@@ -38,11 +38,14 @@ export default class TimelineModel {
   public numBars: number = 0;
   public dataIdx: number = 0;
   public deltaX: number = 0;
+  public deltaXDirection: number = 1;
   public xColumn: string;
   public xColumn2: string;
   public yColumn: string;
+  public yColumn2: string;
   public xColumns: Column[];
   public yColumns: Column[];
+  public columns: Column[];
 
   public csvData: Object[];
   public data: Array<object>;
@@ -83,16 +86,19 @@ export default class TimelineModel {
     this.numBars = 0;
     this.dataIdx = 0;
     this.deltaX = 0;
+    this.deltaXDirection = 1;
     this.xColumn = '';
     this.xColumn2 = '';
     this.yColumn = '';
+    this.yColumn2 = '';
     this.xColumns = [];
     this.yColumns = [];
+    this.columns = [];
 
     this.csvData = [];
     this.data = [];
 
     this.extent = [[0, 0], [0, 0]];
-    this.view = ViewType.event;
+    this.view = ViewType.EventMagnitude;
   }
 }

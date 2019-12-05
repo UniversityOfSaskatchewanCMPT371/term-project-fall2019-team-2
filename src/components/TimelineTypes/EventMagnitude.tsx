@@ -111,4 +111,15 @@ export default class EventMagnitude extends TimelineType
       ((this.m.scale * this.m.barWidth * (datum.index + this.m.dataIdx)) +
         ((this.m.scale * this.m.barWidth) / 2)) + ',' + this.m.height + ')';
   }
+
+  /**
+   * Purpose: determines which columns are appropriate for the y axis
+   * @param {string} primType: the primType to compare
+   * @return {boolean}: a boolean indicating if the primType is appropriate
+   * for the y axis
+   */
+  checkYPrimType(primType: string): boolean {
+    return (primType === 'date' ||
+        primType === 'number');
+  }
 }

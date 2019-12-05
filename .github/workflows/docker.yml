@@ -19,9 +19,10 @@ jobs:
     - name: Deploy a docker image
       env:
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
       run: |
         # Everything after the very last slash / for a valid tag
-        docker build . --tag braunson/cmpt371:${GITHUB_REF##*/} --tag braunson/cmpt371:latest
+        docker build . --build-arg REACT_APP_SENTRY_DSN=${SENTRY_DSN} --build-arg REACT_APP_VERSION=$(git rev-parse --short HEAD) --tag braunson/cmpt371:${GITHUB_REF##*/} --tag braunson/cmpt371:latest
         echo ${DOCKER_PASSWORD} | docker login --username braunson --password-stdin
         docker push braunson/cmpt371:${GITHUB_REF##*/}
         docker push braunson/cmpt371:latest

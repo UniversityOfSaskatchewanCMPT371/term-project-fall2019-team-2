@@ -59,9 +59,9 @@ class SmokeTests(unittest.TestCase):
     bar_graph = driver.find_elements_by_class_name("bar")
     self.assertNotEqual(0, len(bar_graph))
 
-    # Ensure the switch to interval timeline exists
-    switch_button = driver.find_element_by_xpath('//*[@id="root"]/div/div/div[2]/div/div/div/div/div[1]/button')
-    self.assertEqual("Switch to Interval Timeline", switch_button.text)
+    # Ensure the timeline select exists and is populated
+    switch_select = driver.find_elements_by_id("timelineTypeSelect")
+    self.assertNotEqual(0, len(switch_select))
 
     # Ensure a y-axis dropdown exists
     dropdown_button = driver.find_elements_by_id("ySelect")

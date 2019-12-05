@@ -34,7 +34,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
         fileData: '',
         fileName: '',
       };
-      this.createNewMockFile = this.createNewMockFile.bind(this);
+      this.createNewMockFileEvent = this.createNewMockFileEvent.bind(this);
       this.checkifCsvandcallParse = this.checkifCsvandcallParse.bind(this);
       this.isValid = this.isValid.bind(this);
       this.sortData = this.sortData.bind(this);
@@ -122,15 +122,14 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * a valid file name and a valid file type
      * @return {any}: a mock file event similar to the actual file event
      */
-    createNewMockFile(): any {
+    createNewMockFileEvent(): any {
       const mockDateFile: File = new File(
           [this.state.fileData],
           String(this.state.fileName),
           {type: this.props.fileType.mimeName},
       );
       // create file event of the mockfile and return it
-      const mockFileEvent = {target: {files: [mockDateFile]}};
-      return mockFileEvent;
+      return {target: {files: [mockDateFile]}};
     }
 
     /**
@@ -145,7 +144,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
       const typeOfFile = nameOfFile.substr(nameOfFile.length - 4);
       if (typeOfFile === '.csv' && this.props.fileType.mimeName === '.csv' +
           ',text/csv') {
-        this.parse(this.createNewMockFile());
+        this.parse(this.createNewMockFileEvent());
         return true;
       }
       return false;

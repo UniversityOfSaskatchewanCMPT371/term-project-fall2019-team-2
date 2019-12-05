@@ -582,7 +582,7 @@ describe('<ParserComponent /> Unit Tests', () => {
     });
   });
 
-  describe('createNewMockFile()', () => {
+  describe('createNewMockFileEvent()', () => {
     it('Should check if new mock file event is created and returned', () => {
       const wrapper = mount(<ParserComponent prompt={'Select ' +
     'a CSV file: '} fileType={FileType.csv}
@@ -622,7 +622,7 @@ describe('<ParserComponent /> Unit Tests', () => {
           {type: '.pdf,application/pdf'},
       );
       instance.props.fileType.mimeName = '.pdf,application/pdf';
-      expect(instance.createNewMockFile()).
+      expect(instance.createNewMockFileEvent()).
           toEqual({target: {files: [testFile]}});
     });
   });

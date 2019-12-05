@@ -740,18 +740,37 @@ exports[`<TimelineComponent /> R3 Tests
  T3.3 Snapshot Test
  2`] = `
 "<g class=\\"plot\\" id=\\"bars\\">
-<rect class=\\"bar\\" x=\\"125\\" width=\\"0\\" y=\\"419.4852605640208\\" height=\\"178.5147394359792\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
+<g class=\\"bar\\">
+<rect class=\\"pin-line\\" x=\\"0\\" width=\\"2\\" y=\\"419.4852605640208\\" height=\\"178.5147394359792\\">
 </rect>
-<rect class=\\"bar\\" x=\\"125\\" width=\\"0\\" y=\\"45.45221988871617\\" height=\\"552.5477801112838\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
+<circle class=\\"pin-head\\" cx=\\"0\\" cy=\\"419.4852605640208\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+</circle>
+</g>
+<g class=\\"bar\\">
+<rect class=\\"pin-line\\" x=\\"50\\" width=\\"2\\" y=\\"45.45221988871617\\" height=\\"552.5477801112838\\">
 </rect>
-<rect class=\\"bar\\" x=\\"125\\" width=\\"0\\" y=\\"0\\" height=\\"598\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
+<circle class=\\"pin-head\\" cx=\\"50\\" cy=\\"45.45221988871617\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+</circle>
+</g>
+<g class=\\"bar\\">
+<rect class=\\"pin-line\\" x=\\"100\\" width=\\"2\\" y=\\"0\\" height=\\"598\\">
 </rect>
-<rect class=\\"bar\\" x=\\"125\\" width=\\"0\\" y=\\"598\\" height=\\"0\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
+<circle class=\\"pin-head\\" cx=\\"100\\" cy=\\"0\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+</circle>
+</g>
+<g class=\\"bar\\">
+<rect class=\\"pin-line\\" x=\\"150\\" width=\\"2\\" y=\\"598\\" height=\\"0\\">
 </rect>
-<rect class=\\"bar\\" x=\\"125\\" width=\\"0\\" y=\\"221.82608227113172\\" height=\\"376.1739177288683\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
+<circle class=\\"pin-head\\" cx=\\"150\\" cy=\\"598\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+</circle>
+</g>
+<g class=\\"bar\\">
+<rect class=\\"pin-line\\" x=\\"200\\" width=\\"2\\" y=\\"221.82608227113172\\" height=\\"376.1739177288683\\">
 </rect>
-<g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(125,
-      598)\\">
+<circle class=\\"pin-head\\" cx=\\"200\\" cy=\\"221.82608227113172\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+</circle>
+</g>
+<g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(25,598)\\">
 <line stroke=\\"blue\\" y2=\\"6\\">
 </line>
 <text style=\\"text-anchor: end; font-size: 1rem;\\" dx=\\"-.8em\\" dy=\\".15em\\" transform=\\"rotate(-90)\\">1/1/2010
@@ -765,18 +784,37 @@ exports[`<TimelineComponent /> R3 Tests
  T3.3 Snapshot Test
  3`] = `
 "<g class=\\"plot\\" id=\\"bars\\">
-<rect class=\\"bar\\" x=\\"201.31375000000008\\" width=\\"0\\" y=\\"419.4852605640208\\" height=\\"178.5147394359792\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
+<g class=\\"bar\\">
+<rect class=\\"pin-line\\" x=\\"0\\" width=\\"2\\" y=\\"419.4852605640208\\" height=\\"178.5147394359792\\">
 </rect>
-<rect class=\\"bar\\" x=\\"201.31375000000008\\" width=\\"0\\" y=\\"45.45221988871617\\" height=\\"552.5477801112838\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
+<circle class=\\"pin-head\\" cx=\\"0\\" cy=\\"419.4852605640208\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+</circle>
+</g>
+<g class=\\"bar\\">
+<rect class=\\"pin-line\\" x=\\"80.52550000000004\\" width=\\"2\\" y=\\"45.45221988871617\\" height=\\"552.5477801112838\\">
 </rect>
-<rect class=\\"bar\\" x=\\"201.31375000000008\\" width=\\"0\\" y=\\"0\\" height=\\"598\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
+<circle class=\\"pin-head\\" cx=\\"80.52550000000004\\" cy=\\"45.45221988871617\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+</circle>
+</g>
+<g class=\\"bar\\">
+<rect class=\\"pin-line\\" x=\\"161.05100000000007\\" width=\\"2\\" y=\\"0\\" height=\\"598\\">
 </rect>
-<rect class=\\"bar\\" x=\\"201.31375000000008\\" width=\\"0\\" y=\\"598\\" height=\\"0\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
+<circle class=\\"pin-head\\" cx=\\"161.05100000000007\\" cy=\\"0\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+</circle>
+</g>
+<g class=\\"bar\\">
+<rect class=\\"pin-line\\" x=\\"241.57650000000012\\" width=\\"2\\" y=\\"598\\" height=\\"0\\">
 </rect>
-<rect class=\\"bar\\" x=\\"201.31375000000008\\" width=\\"0\\" y=\\"221.82608227113172\\" height=\\"376.1739177288683\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
+<circle class=\\"pin-head\\" cx=\\"241.57650000000012\\" cy=\\"598\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+</circle>
+</g>
+<g class=\\"bar\\">
+<rect class=\\"pin-line\\" x=\\"322.10200000000015\\" width=\\"2\\" y=\\"221.82608227113172\\" height=\\"376.1739177288683\\">
 </rect>
-<g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(201.31375000000008,
-            598)\\">
+<circle class=\\"pin-head\\" cx=\\"322.10200000000015\\" cy=\\"221.82608227113172\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+</circle>
+</g>
+<g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(40.26275000000002,598)\\">
 <line stroke=\\"blue\\" y2=\\"6\\">
 </line>
 <text style=\\"text-anchor: end; font-size: 1rem;\\" dx=\\"-.8em\\" dy=\\".15em\\" transform=\\"rotate(-90)\\">1/1/2010
@@ -943,18 +981,37 @@ exports[`<TimelineComponent /> R3 Tests
 exports[`<TimelineComponent /> R3 Tests
  T3.4 Snapshot test 2`] = `
 "<g class=\\"plot\\" id=\\"bars\\">
-<rect class=\\"bar\\" x=\\"125\\" width=\\"0\\" y=\\"419.4852605640208\\" height=\\"178.5147394359792\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
+<g class=\\"bar\\">
+<rect class=\\"pin-line\\" x=\\"0\\" width=\\"2\\" y=\\"419.4852605640208\\" height=\\"178.5147394359792\\">
 </rect>
-<rect class=\\"bar\\" x=\\"125\\" width=\\"0\\" y=\\"45.45221988871617\\" height=\\"552.5477801112838\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
+<circle class=\\"pin-head\\" cx=\\"0\\" cy=\\"419.4852605640208\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+</circle>
+</g>
+<g class=\\"bar\\">
+<rect class=\\"pin-line\\" x=\\"50\\" width=\\"2\\" y=\\"45.45221988871617\\" height=\\"552.5477801112838\\">
 </rect>
-<rect class=\\"bar\\" x=\\"125\\" width=\\"0\\" y=\\"0\\" height=\\"598\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
+<circle class=\\"pin-head\\" cx=\\"50\\" cy=\\"45.45221988871617\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+</circle>
+</g>
+<g class=\\"bar\\">
+<rect class=\\"pin-line\\" x=\\"100\\" width=\\"2\\" y=\\"0\\" height=\\"598\\">
 </rect>
-<rect class=\\"bar\\" x=\\"125\\" width=\\"0\\" y=\\"598\\" height=\\"0\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
+<circle class=\\"pin-head\\" cx=\\"100\\" cy=\\"0\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+</circle>
+</g>
+<g class=\\"bar\\">
+<rect class=\\"pin-line\\" x=\\"150\\" width=\\"2\\" y=\\"598\\" height=\\"0\\">
 </rect>
-<rect class=\\"bar\\" x=\\"125\\" width=\\"0\\" y=\\"221.82608227113172\\" height=\\"376.1739177288683\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
+<circle class=\\"pin-head\\" cx=\\"150\\" cy=\\"598\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+</circle>
+</g>
+<g class=\\"bar\\">
+<rect class=\\"pin-line\\" x=\\"200\\" width=\\"2\\" y=\\"221.82608227113172\\" height=\\"376.1739177288683\\">
 </rect>
-<g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(125,
-      598)\\">
+<circle class=\\"pin-head\\" cx=\\"200\\" cy=\\"221.82608227113172\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+</circle>
+</g>
+<g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(25,598)\\">
 <line stroke=\\"blue\\" y2=\\"6\\">
 </line>
 <text style=\\"text-anchor: end; font-size: 1rem;\\" dx=\\"-.8em\\" dy=\\".15em\\" transform=\\"rotate(-90)\\">1/1/2010
@@ -979,18 +1036,37 @@ exports[`<TimelineComponent /> R3 Tests
 <g clip-path=\\"url(#barsBox)\\">
 <g id=\\"barsLayer\\" transform=\\"translate(0,0)\\">
 <g class=\\"plot\\" id=\\"bars\\">
-<rect class=\\"bar\\" x=\\"201.31375000000008\\" width=\\"0\\" y=\\"419.4852605640208\\" height=\\"178.5147394359792\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
+<g class=\\"bar\\">
+<rect class=\\"pin-line\\" x=\\"0\\" width=\\"2\\" y=\\"419.4852605640208\\" height=\\"178.5147394359792\\">
 </rect>
-<rect class=\\"bar\\" x=\\"201.31375000000008\\" width=\\"0\\" y=\\"45.45221988871617\\" height=\\"552.5477801112838\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
+<circle class=\\"pin-head\\" cx=\\"0\\" cy=\\"419.4852605640208\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+</circle>
+</g>
+<g class=\\"bar\\">
+<rect class=\\"pin-line\\" x=\\"80.52550000000004\\" width=\\"2\\" y=\\"45.45221988871617\\" height=\\"552.5477801112838\\">
 </rect>
-<rect class=\\"bar\\" x=\\"201.31375000000008\\" width=\\"0\\" y=\\"0\\" height=\\"598\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
+<circle class=\\"pin-head\\" cx=\\"80.52550000000004\\" cy=\\"45.45221988871617\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+</circle>
+</g>
+<g class=\\"bar\\">
+<rect class=\\"pin-line\\" x=\\"161.05100000000007\\" width=\\"2\\" y=\\"0\\" height=\\"598\\">
 </rect>
-<rect class=\\"bar\\" x=\\"201.31375000000008\\" width=\\"0\\" y=\\"598\\" height=\\"0\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
+<circle class=\\"pin-head\\" cx=\\"161.05100000000007\\" cy=\\"0\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+</circle>
+</g>
+<g class=\\"bar\\">
+<rect class=\\"pin-line\\" x=\\"241.57650000000012\\" width=\\"2\\" y=\\"598\\" height=\\"0\\">
 </rect>
-<rect class=\\"bar\\" x=\\"201.31375000000008\\" width=\\"0\\" y=\\"221.82608227113172\\" height=\\"376.1739177288683\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
+<circle class=\\"pin-head\\" cx=\\"241.57650000000012\\" cy=\\"598\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+</circle>
+</g>
+<g class=\\"bar\\">
+<rect class=\\"pin-line\\" x=\\"322.10200000000015\\" width=\\"2\\" y=\\"221.82608227113172\\" height=\\"376.1739177288683\\">
 </rect>
-<g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(201.31375000000008,
-            598)\\">
+<circle class=\\"pin-head\\" cx=\\"322.10200000000015\\" cy=\\"221.82608227113172\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+</circle>
+</g>
+<g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(40.26275000000002,598)\\">
 <line stroke=\\"blue\\" y2=\\"6\\">
 </line>
 <text style=\\"text-anchor: end; font-size: 1rem;\\" dx=\\"-.8em\\" dy=\\".15em\\" transform=\\"rotate(-90)\\">1/1/2010
@@ -1079,9 +1155,7 @@ exports[`<TimelineComponent /> R3 Tests
 </text>
 </g>
 </g>
-<text transform=\\"translate(477,618)\\" style=\\"text-anchor: start;\\">end: Order ID
-</text>
-<text transform=\\"translate(467,618)\\" style=\\"text-anchor: end;\\">start: Order Date,
+<text transform=\\"translate(467,618)\\" style=\\"text-anchor: start;\\">Order Date
 </text>
 <text transform=\\"rotate(-90)\\" y=\\"-70\\" x=\\"-299\\" dy=\\"1em\\" style=\\"text-anchor: middle;\\">Order ID
 </text>
@@ -1105,18 +1179,37 @@ exports[`<TimelineComponent /> R3 Tests
 <g clip-path=\\"url(#barsBox)\\">
 <g id=\\"barsLayer\\" transform=\\"translate(0,0)\\">
 <g class=\\"plot\\" id=\\"bars\\">
-<rect class=\\"bar\\" x=\\"125\\" width=\\"0\\" y=\\"419.4852605640208\\" height=\\"178.5147394359792\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
+<g class=\\"bar\\">
+<rect class=\\"pin-line\\" x=\\"0\\" width=\\"2\\" y=\\"419.4852605640208\\" height=\\"178.5147394359792\\">
 </rect>
-<rect class=\\"bar\\" x=\\"125\\" width=\\"0\\" y=\\"45.45221988871617\\" height=\\"552.5477801112838\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
+<circle class=\\"pin-head\\" cx=\\"0\\" cy=\\"419.4852605640208\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+</circle>
+</g>
+<g class=\\"bar\\">
+<rect class=\\"pin-line\\" x=\\"50\\" width=\\"2\\" y=\\"45.45221988871617\\" height=\\"552.5477801112838\\">
 </rect>
-<rect class=\\"bar\\" x=\\"125\\" width=\\"0\\" y=\\"0\\" height=\\"598\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
+<circle class=\\"pin-head\\" cx=\\"50\\" cy=\\"45.45221988871617\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+</circle>
+</g>
+<g class=\\"bar\\">
+<rect class=\\"pin-line\\" x=\\"100\\" width=\\"2\\" y=\\"0\\" height=\\"598\\">
 </rect>
-<rect class=\\"bar\\" x=\\"125\\" width=\\"0\\" y=\\"598\\" height=\\"0\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
+<circle class=\\"pin-head\\" cx=\\"100\\" cy=\\"0\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+</circle>
+</g>
+<g class=\\"bar\\">
+<rect class=\\"pin-line\\" x=\\"150\\" width=\\"2\\" y=\\"598\\" height=\\"0\\">
 </rect>
-<rect class=\\"bar\\" x=\\"125\\" width=\\"0\\" y=\\"221.82608227113172\\" height=\\"376.1739177288683\\" style=\\"fill: #61a3a9; opacity: 0.2;\\">
+<circle class=\\"pin-head\\" cx=\\"150\\" cy=\\"598\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+</circle>
+</g>
+<g class=\\"bar\\">
+<rect class=\\"pin-line\\" x=\\"200\\" width=\\"2\\" y=\\"221.82608227113172\\" height=\\"376.1739177288683\\">
 </rect>
-<g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(125,
-            598)\\">
+<circle class=\\"pin-head\\" cx=\\"200\\" cy=\\"221.82608227113172\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+</circle>
+</g>
+<g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(25,598)\\">
 <line stroke=\\"blue\\" y2=\\"6\\">
 </line>
 <text style=\\"text-anchor: end; font-size: 1rem;\\" dx=\\"-.8em\\" dy=\\".15em\\" transform=\\"rotate(-90)\\">1/1/2010
@@ -1205,9 +1298,7 @@ exports[`<TimelineComponent /> R3 Tests
 </text>
 </g>
 </g>
-<text transform=\\"translate(477,618)\\" style=\\"text-anchor: start;\\">end: Order ID
-</text>
-<text transform=\\"translate(467,618)\\" style=\\"text-anchor: end;\\">start: Order Date,
+<text transform=\\"translate(467,618)\\" style=\\"text-anchor: start;\\">Order Date
 </text>
 <text transform=\\"rotate(-90)\\" y=\\"-70\\" x=\\"-299\\" dy=\\"1em\\" style=\\"text-anchor: middle;\\">Order ID
 </text>

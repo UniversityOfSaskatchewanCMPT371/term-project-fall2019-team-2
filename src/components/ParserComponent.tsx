@@ -106,7 +106,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
                 <option value="DD-MM-YYYY">DD-MM-YYYY</option>
                 <option value="DD-MMMM-YYYY">DD-MMMM-YYYY</option>
                 <option value="MMMM-DD-YYYY">MMMM-DD-YYYY</option>
-                <option value="MMM-DD-YYYY">MMMM-DD-YYYY</option>
+                <option value="MMM-DD-YYYY">MMM-DD-YYYY</option>
                 <option value="DD-MM-YY">DD-MM-YY</option>
                 <option value="MM-DD-YY">MM-DD-YY</option>
               </select>
@@ -160,7 +160,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
           'dataIsValid(): data (Array of objects) is null');
       assert.notStrictEqual(data, [],
           'dataIsValid(): data (array of objects) is empty');
-      if (data !== undefined && data.length > 0) {
+      if (data !== undefined && data.length >= 0) {
         return true;
       } else {
         throw new Error('The file uploaded has no data.');
@@ -196,31 +196,34 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * and false if it failed to sort
    */
     sortData(data: Array<object>, key:any): boolean {
+      assert.notEqual(key, false,
+          'sortData(): No valid date for selected format was found');
       const formatString = this.state.formatString;
       const initialData = this.state.data;
       const keyInt = `${key}_num`;
-
-      TimSort.sort(data, function(a: any, b: any) {
-        let val: any;
-        if (!a.hasOwnProperty(keyInt)) {
-          val = moment(a[key], formatString);
-          if (val.isValid()) {
-            a[keyInt] = val.valueOf();
-          } else {
-            a[keyInt] = -1;
+      if (key !== false) {
+        TimSort.sort(data, function(a: any, b: any) {
+          let val: any;
+          if (!a.hasOwnProperty(keyInt)) {
+            val = moment(a[key], formatString);
+            if (val.isValid()) {
+              a[keyInt] = val.valueOf();
+            } else {
+              a[keyInt] = -1;
+            }
           }
-        }
 
-        if (!b.hasOwnProperty(keyInt)) {
-          val = moment(b[key], formatString);
-          if (val.isValid()) {
-            b[keyInt] = val.valueOf();
-          } else {
-            b[keyInt] = -1;
+          if (!b.hasOwnProperty(keyInt)) {
+            val = moment(b[key], formatString);
+            if (val.isValid()) {
+              b[keyInt] = val.valueOf();
+            } else {
+              b[keyInt] = -1;
+            }
           }
-        }
-        return (a[keyInt] - b[keyInt]);
-      });
+          return (a[keyInt] - b[keyInt]);
+        });
+      }
 
       this.setState(() => {
         return {
@@ -397,8 +400,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
       // check File obj (file being uploaded)
       assert.notStrictEqual(fileEvent.target.files[0], null,
           'parse(): fileEvent.target.files[0] is null');
-      assert.notStrictEqual(fileEvent.target.files[0], undefined,
-          'parse(): fileEvent.target.files[0] is undefined');
 
       this.setState(() => {
         return {
@@ -469,6 +470,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
                 fileData: fileReader.result,
               };
             });
+            const lookForDateKeyResult = this.lookForDateKey(this.state.data);
             try {
               // shouldn't pass empty array into inferTypes or sortData :/
               assert.notStrictEqual(this.state.data, [],
@@ -476,8 +478,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
                     'but still calling inferTypes & sortData');
               if (this.dataIsValid(this.state.data)) {
                 this.columnTypes = this.inferTypes(this.state.data);
-                this.sortData(this.state.data,
-                    this.lookForDateKey(this.state.data));
+                this.sortData(this.state.data, lookForDateKeyResult);
               }
             } catch (e) {
               alert(e.toString());

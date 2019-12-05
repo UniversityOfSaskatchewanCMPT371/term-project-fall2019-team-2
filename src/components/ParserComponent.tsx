@@ -116,10 +116,11 @@ export default class ParserComponent extends React.Component<ParserInterface,
 
     /**
      * Purpose: create a mock file event of the actual file for
-     * parse when it is recalled everytime the date format is changed
+     * parse when it is recalled everytime the date format is
+     * changed with a valid .csv type file
      * @preconditions: a file with valid file data and
      * a valid file name and a valid file type
-     * @return {any}: a mock file event of the actual file
+     * @return {any}: a mock file event similar to the actual file event
      */
     createNewMockFile(): any {
       const mockDateFile: File = new File(

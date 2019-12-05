@@ -122,7 +122,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * a valid file name and a valid file type
      * @return {any}: a mock file event similar to the actual file event
      */
-    createNewMockFile(): string {
+    createNewMockFile(): any {
       const mockDateFile: File = new File(
           [this.state.fileData],
           String(this.state.fileName),
@@ -130,7 +130,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
       );
       // create file event of the mockfile and return it
       const mockFileEvent = {target: {files: [mockDateFile]}};
-      return String(mockFileEvent);
+      return mockFileEvent;
     }
 
     /**

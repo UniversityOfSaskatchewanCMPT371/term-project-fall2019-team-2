@@ -68,7 +68,7 @@ export default class TimelineComponent
     this.ttOver = this.ttOver.bind(this);
     this.ttUpdatePos = this.ttUpdatePos.bind(this);
     this.ttMove = this.ttMove.bind(this);
-    this.ttMove = this.ttMove.bind(this);
+    // this.ttMove = this.ttMove.bind(this);
     this.updateChart = this.updateChart.bind(this);
     this.updateBars = this.updateBars.bind(this);
     this.moveChart = this.moveChart.bind(this);
@@ -951,7 +951,7 @@ export default class TimelineComponent
     }
     this.timelineType.applyZoom();
     this.m.numBars += additionalBars;
-    console.log('numBars in updateChart after: ', this.m.numBars);
+    // console.log('numBars in updateChart after: ', this.m.numBars);
 
     if (d3.event !== null && d3.event.sourceEvent !== null &&
       d3.event.sourceEvent.type === 'mousemove') {
@@ -1029,14 +1029,19 @@ export default class TimelineComponent
    * @param {any} caller
    */
   dragStarted(caller: any) {
+    console.log(caller);
+    console.log('dragStarted');
     d3.select(caller).raise()
         .classed('active', true);
+    console.log(caller);
   }
 
   /**
    * Purpose: called when the timeline is dragged by the user
    */
   dragged() {
+    console.log(d3.event);
+    console.log('dragged');
     this.ttUpdatePos(d3.event.sourceEvent.x, d3.event.sourceEvent.y);
 
     if (d3.event.sourceEvent.movementX > 0) {
@@ -1056,6 +1061,19 @@ export default class TimelineComponent
    * @param {any} caller
    */
   dragEnded(caller: any) {
+    const hoveredBars: any = d3.selectAll('.bar:hover');
+
+    // if nothing is being hovered over, remove the tooltip
+    if (hoveredBars.empty()) {
+      d3.selectAll('.tooltip').remove();
+    } else {
+      // make sure the tooltip is up to date.
+      hoveredBars.each((d: any) => {
+        this.ttOverHelper(d, d3.event.x, d3.event.y);
+      });
+    }
+
+
     d3.select(caller).classed('active', false);
   }
 }

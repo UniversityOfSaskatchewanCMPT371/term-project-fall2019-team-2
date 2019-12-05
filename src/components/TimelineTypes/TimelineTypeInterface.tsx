@@ -134,7 +134,6 @@ export abstract class TimelineType implements TimelineTypeInterface {
    * reflect the information from the timeline
    */
   getData(): void {
-    console.log(this.m.csvData);
     let dataIdxEnd: number = 0;
     let dataIdxStart: number = 0;
     let consecutive = true;
@@ -161,7 +160,7 @@ export abstract class TimelineType implements TimelineTypeInterface {
         d3.max([this.m.dataIdx + this.m.data.length,
           this.m.csvData.length-1]);
     }
-    console.log(this.m.csvData);
+    // console.log(this.m.csvData);
 
     for (dataIdxEnd;
       (direction === 1 && dataIdxEnd < this.m.csvData.length) ||
@@ -201,7 +200,7 @@ export abstract class TimelineType implements TimelineTypeInterface {
       }
     }
 
-    console.log({dataIdxStart, dataIdxEnd});
+    // console.log({dataIdxStart, dataIdxEnd});
 
     if (direction === 1) {
       dataIdxStart = dataIdxStart >= this.m.csvData.length ?
@@ -240,6 +239,8 @@ export abstract class TimelineType implements TimelineTypeInterface {
    * @param {any}  ttOver
    * @param {any}  ttMove
    * @param {any} ttLeave
+   *
+   * @precondition
    */
   updateBars(ttOver: any, ttMove: any, ttLeave: any): void {
     // @ts-ignore

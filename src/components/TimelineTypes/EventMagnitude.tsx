@@ -21,9 +21,8 @@ export default class EventMagnitude extends EventTimelineType
 
     bar.append('rect')
         .attr('class', 'pin-line')
-        .attr('x', (d: any, i: number) => {
-          return (this.m.scale * this.m.timeScale(new Date(d[this.m.xColumn])));
-        })
+        .attr('x', (d: any) =>
+          (this.m.scale * this.m.timeScale(new Date(d[this.m.xColumn]))))
         .attr('width', 2)
         .attr('y', (d: any) => this.m.y(d[this.m.yColumn]))
         .attr('height', (d: any) => {
@@ -34,7 +33,7 @@ export default class EventMagnitude extends EventTimelineType
     // Circles
     bar.append('circle')
         .attr('class', 'pin-head')
-        .attr('cx', (d: any, i: number) =>
+        .attr('cx', (d: any) =>
           (this.m.scale * this.m.timeScale(new Date(d[this.m.xColumn]))))
         .attr('cy', (d: any) => this.m.y(d[this.m.yColumn]))
         .attr('r', '5')

@@ -24,22 +24,26 @@ export default class EventOccurrence extends EventTimelineType
     if (this.m.yColumn2 !== '') {
       bar.append('rect')
           .attr('class', 'pin-line')
-          .attr('x', (d: any, i: number) =>
-            (this.m.scale * this.m.barWidth * (i + this.m.dataIdx)))
+          // .attr('x', (d: any, i: number) =>
+          //   (this.m.scale * this.m.barWidth * (i + this.m.dataIdx)))
+          .attr('x', (d: any) =>
+            (this.m.scale * this.m.timeScale(new Date(d[this.m.xColumn]))))
           .attr('width', 2)
-          .attr('y', (d: any, i: number) =>
+          .attr('y', (d: any) =>
             this.m.y(d[this.m.yColumn2]) + (this.m.y.bandwidth()/2))
           .attr('height', (d: any) => {
-            const newHeight = (this.m.height -
-                (this.m.y(d[this.m.yColumn2]) + (this.m.y.bandwidth()/2)));
+            const newHeight = (this.m.height - (this.m.y(d[this.m.yColumn2]) +
+              (this.m.y.bandwidth()/2)));
             return newHeight < 0 ? 0 : newHeight;
           });
 
       // Circles
       bar.append('circle')
           .attr('class', 'pin-head')
-          .attr('cx', (d: any, i: number) =>
-            (this.m.scale * this.m.barWidth * (i + this.m.dataIdx)))
+          // .attr('cx', (d: any, i: number) =>
+          //   (this.m.scale * this.m.barWidth * (i + this.m.dataIdx)))
+          .attr('cx', (d: any) =>
+            (this.m.scale * this.m.timeScale(new Date(d[this.m.xColumn]))))
           .attr('cy', (d:any) =>
             this.m.y(d[this.m.yColumn2]) + (this.m.y.bandwidth()/2))
           .attr('r', '5')
@@ -53,10 +57,12 @@ export default class EventOccurrence extends EventTimelineType
     } else {
       bar.append('rect')
           .attr('class', 'pin-line')
-          .attr('x', (d: any, i: number) =>
-            (this.m.scale * this.m.barWidth * (i + this.m.dataIdx)))
+          // .attr('x', (d: any, i: number) =>
+          //   (this.m.scale * this.m.barWidth * (i + this.m.dataIdx)))
+          .attr('x', (d: any) =>
+            (this.m.scale * this.m.timeScale(new Date(d[this.m.xColumn]))))
           .attr('width', 2)
-          .attr('y', (d: any, i: number) =>
+          .attr('y', (d: any) =>
             this.m.y(d[this.m.yColumn]) + (this.m.y.bandwidth()/2))
           .attr('height', (d: any) => {
             const newHeight = (this.m.height -
@@ -68,8 +74,10 @@ export default class EventOccurrence extends EventTimelineType
     // Circles
     bar.append('circle')
         .attr('class', 'pin-head')
-        .attr('cx', (d: any, i: number) =>
-          (this.m.scale * this.m.barWidth * (i + this.m.dataIdx)))
+        // .attr('cx', (d: any, i: number) =>
+        //   (this.m.scale * this.m.barWidth * (i + this.m.dataIdx)))
+        .attr('cx', (d: any) =>
+          (this.m.scale * this.m.timeScale(new Date(d[this.m.xColumn]))))
         .attr('cy', (d:any) =>
           this.m.y(d[this.m.yColumn]) + (this.m.y.bandwidth()/2))
         .attr('r', '5')

@@ -350,7 +350,7 @@ describe('R1 Tests\n', () => {
 
       // Check that the object contains all the data from the csv
       compData.forEach((date) => {
-        // expect(date).toMatchSnapshot({Date_num: expect.any(Number)});
+        expect(date).toMatchSnapshot({Date_num: expect.any(Number)});
       });
 
       // onChange should be called once

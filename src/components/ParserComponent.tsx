@@ -248,7 +248,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * @param {Array} data: the array of pre-sorted valid data
      * @return {Array}: a list of objects of type Column
      */
-    inferTypes(data: Array<object>): Array<Column> | undefined {
+    inferTypes(data: Array<object>): Column[] {
       // data should contain something (according to the precondition)
       assert.notStrictEqual(data, undefined,
           'inferTypes(): data (array of objects) is undefined');
@@ -304,6 +304,16 @@ export default class ParserComponent extends React.Component<ParserInterface,
           }
         }
       });
+      return typesForEachCol;
+    }
+
+    /**
+   * creates the array of infered types
+   * @param listFields
+   * @param typesForEachCol
+   * @return {Array}: a list of objects of type Column
+   */
+    createTypes(listFields: any, typesForEachCol: CountTypes[]): Array<Column> {
       let indx = 0;
       const arrayOfColumns = new Array<Column>(listFields.length);
       typesForEachCol.forEach((element) => {

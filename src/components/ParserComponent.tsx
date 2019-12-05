@@ -60,6 +60,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
 
     /**
      * Purpose: renders the HTML for this component
+     * @precondition: none
+     * @postcondition: none
      * @return {string}: valid HTML
      */
     render() {

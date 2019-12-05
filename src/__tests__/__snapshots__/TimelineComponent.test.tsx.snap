@@ -566,21 +566,45 @@ exports[`<TimelineComponent /> R3 Tests
  T3.3 Snapshot Test
  1`] = `
 "<TimelineComponent data={{...}}>
-  <div>
+  <div id=\\"timelineComponentDiv\\">
     <div>
       <div>
-        <Button variant=\\"primary\\" onClick={[Function: bound toggleTimeline]} active={false} disabled={false} type=\\"button\\">
-          <button onClick={[Function: bound toggleTimeline]} disabled={false} type=\\"button\\" className=\\"btn btn-primary\\">
-            Switch to Interval Timeline
-          </button>
-        </Button>
         <InputGroup>
           <div className=\\"input-group\\">
             <InputGroupPrepend>
               <div className=\\"input-group-prepend\\">
                 <InputGroupText id=\\"inputGroup Prepend\\">
                   <span className=\\"input-group-text\\" id=\\"inputGroup Prepend\\">
-                    yColumn
+                    Timeline Type
+                  </span>
+                </InputGroupText>
+              </div>
+            </InputGroupPrepend>
+            <FormControl as=\\"select\\" id=\\"timelineTypeSelect\\" value=\\"EventMagnitude\\" onChange={[Function: onChange]}>
+              <select value=\\"EventMagnitude\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"timelineTypeSelect\\" className=\\"form-control\\">
+                <option value=\\"IntervalMagnitude\\">
+                  Interval Magnitude
+                </option>
+                <option value=\\"IntervalOccurrence\\">
+                  Interval Occurrence
+                </option>
+                <option value=\\"EventMagnitude\\">
+                  Event Magnitude
+                </option>
+                <option value=\\"EventOccurrence\\">
+                  Event Occurrence
+                </option>
+              </select>
+            </FormControl>
+          </div>
+        </InputGroup>
+        <InputGroup>
+          <div className=\\"input-group\\">
+            <InputGroupPrepend>
+              <div className=\\"input-group-prepend\\">
+                <InputGroupText id=\\"inputGroup Prepend\\">
+                  <span className=\\"input-group-text\\" id=\\"inputGroup Prepend\\">
+                    Y Column
                   </span>
                 </InputGroupText>
               </div>
@@ -616,11 +640,15 @@ exports[`<TimelineComponent /> R3 Tests
                 </option>
               </select>
             </FormControl>
+          </div>
+        </InputGroup>
+        <InputGroup>
+          <div className=\\"input-group\\">
             <InputGroupPrepend>
               <div className=\\"input-group-prepend\\">
                 <InputGroupText id=\\"inputGroup Prepend\\">
                   <span className=\\"input-group-text\\" id=\\"inputGroup Prepend\\">
-                    xColumn
+                    X Column
                   </span>
                 </InputGroupText>
               </div>
@@ -662,56 +690,10 @@ exports[`<TimelineComponent /> R3 Tests
                 </option>
               </select>
             </FormControl>
-            <InputGroupPrepend>
-              <div className=\\"input-group-prepend\\">
-                <InputGroupText id=\\"inputGroup Prepend\\">
-                  <span className=\\"input-group-text\\" id=\\"inputGroup Prepend\\">
-                    Ending Range
-                  </span>
-                </InputGroupText>
-              </div>
-            </InputGroupPrepend>
-            <FormControl as=\\"select\\" id=\\"x2Select\\" value=\\"Order ID\\" onChange={[Function: onChange]}>
-              <select value=\\"Order ID\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"x2Select\\" className=\\"form-control\\">
-                <option value=\\"Order Date\\">
-                  Order Date
-                </option>
-                <option value=\\"Order ID\\">
-                  Order ID
-                </option>
-                <option value=\\"Ship Date\\">
-                  Ship Date
-                </option>
-                <option value=\\"Units Sold\\">
-                  Units Sold
-                </option>
-                <option value=\\"Unit Price\\">
-                  Unit Price
-                </option>
-                <option value=\\"Unit Cost\\">
-                  Unit Cost
-                </option>
-                <option value=\\"Total Revenue\\">
-                  Total Revenue
-                </option>
-                <option value=\\"Total Cost\\">
-                  Total Cost
-                </option>
-                <option value=\\"Total Profit\\">
-                  Total Profit
-                </option>
-                <option value=\\"index\\">
-                  index
-                </option>
-                <option value=\\"Order Date_num\\">
-                  Order Date_num
-                </option>
-              </select>
-            </FormControl>
           </div>
         </InputGroup>
       </div>
-      <div id=\\"svgtarget\\" />
+      <div style={{...}} id=\\"svgtarget\\" />
     </div>
   </div>
 </TimelineComponent>"
@@ -808,21 +790,45 @@ exports[`<TimelineComponent /> R3 Tests
 exports[`<TimelineComponent /> R3 Tests
  T3.4 Snapshot test 1`] = `
 "<TimelineComponent data={{...}}>
-  <div>
+  <div id=\\"timelineComponentDiv\\">
     <div>
       <div>
-        <Button variant=\\"primary\\" onClick={[Function: bound toggleTimeline]} active={false} disabled={false} type=\\"button\\">
-          <button onClick={[Function: bound toggleTimeline]} disabled={false} type=\\"button\\" className=\\"btn btn-primary\\">
-            Switch to Interval Timeline
-          </button>
-        </Button>
         <InputGroup>
           <div className=\\"input-group\\">
             <InputGroupPrepend>
               <div className=\\"input-group-prepend\\">
                 <InputGroupText id=\\"inputGroup Prepend\\">
                   <span className=\\"input-group-text\\" id=\\"inputGroup Prepend\\">
-                    yColumn
+                    Timeline Type
+                  </span>
+                </InputGroupText>
+              </div>
+            </InputGroupPrepend>
+            <FormControl as=\\"select\\" id=\\"timelineTypeSelect\\" value=\\"EventMagnitude\\" onChange={[Function: onChange]}>
+              <select value=\\"EventMagnitude\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"timelineTypeSelect\\" className=\\"form-control\\">
+                <option value=\\"IntervalMagnitude\\">
+                  Interval Magnitude
+                </option>
+                <option value=\\"IntervalOccurrence\\">
+                  Interval Occurrence
+                </option>
+                <option value=\\"EventMagnitude\\">
+                  Event Magnitude
+                </option>
+                <option value=\\"EventOccurrence\\">
+                  Event Occurrence
+                </option>
+              </select>
+            </FormControl>
+          </div>
+        </InputGroup>
+        <InputGroup>
+          <div className=\\"input-group\\">
+            <InputGroupPrepend>
+              <div className=\\"input-group-prepend\\">
+                <InputGroupText id=\\"inputGroup Prepend\\">
+                  <span className=\\"input-group-text\\" id=\\"inputGroup Prepend\\">
+                    Y Column
                   </span>
                 </InputGroupText>
               </div>
@@ -858,11 +864,15 @@ exports[`<TimelineComponent /> R3 Tests
                 </option>
               </select>
             </FormControl>
+          </div>
+        </InputGroup>
+        <InputGroup>
+          <div className=\\"input-group\\">
             <InputGroupPrepend>
               <div className=\\"input-group-prepend\\">
                 <InputGroupText id=\\"inputGroup Prepend\\">
                   <span className=\\"input-group-text\\" id=\\"inputGroup Prepend\\">
-                    xColumn
+                    X Column
                   </span>
                 </InputGroupText>
               </div>
@@ -904,56 +914,10 @@ exports[`<TimelineComponent /> R3 Tests
                 </option>
               </select>
             </FormControl>
-            <InputGroupPrepend>
-              <div className=\\"input-group-prepend\\">
-                <InputGroupText id=\\"inputGroup Prepend\\">
-                  <span className=\\"input-group-text\\" id=\\"inputGroup Prepend\\">
-                    Ending Range
-                  </span>
-                </InputGroupText>
-              </div>
-            </InputGroupPrepend>
-            <FormControl as=\\"select\\" id=\\"x2Select\\" value=\\"Order ID\\" onChange={[Function: onChange]}>
-              <select value=\\"Order ID\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"x2Select\\" className=\\"form-control\\">
-                <option value=\\"Order Date\\">
-                  Order Date
-                </option>
-                <option value=\\"Order ID\\">
-                  Order ID
-                </option>
-                <option value=\\"Ship Date\\">
-                  Ship Date
-                </option>
-                <option value=\\"Units Sold\\">
-                  Units Sold
-                </option>
-                <option value=\\"Unit Price\\">
-                  Unit Price
-                </option>
-                <option value=\\"Unit Cost\\">
-                  Unit Cost
-                </option>
-                <option value=\\"Total Revenue\\">
-                  Total Revenue
-                </option>
-                <option value=\\"Total Cost\\">
-                  Total Cost
-                </option>
-                <option value=\\"Total Profit\\">
-                  Total Profit
-                </option>
-                <option value=\\"index\\">
-                  index
-                </option>
-                <option value=\\"Order Date_num\\">
-                  Order Date_num
-                </option>
-              </select>
-            </FormControl>
           </div>
         </InputGroup>
       </div>
-      <div id=\\"svgtarget\\" />
+      <div style={{...}} id=\\"svgtarget\\" />
     </div>
   </div>
 </TimelineComponent>"
@@ -1057,7 +1021,7 @@ exports[`<TimelineComponent /> R3 Tests
 </g>
 </g>
 <g id=\\"axisLayer\\">
-<g style=\\"color: red;\\" class=\\"y axis\\" fill=\\"none\\" font-size=\\"10\\" font-family=\\"sans-serif\\" text-anchor=\\"end\\">
+<g style=\\"color: black;\\" class=\\"y axis\\" fill=\\"none\\" font-size=\\"10\\" font-family=\\"sans-serif\\" text-anchor=\\"end\\">
 <path class=\\"domain\\" stroke=\\"currentColor\\" d=\\"M-6,598.5H0.5V0.5H-6\\">
 </path>
 <g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,583.3875042617942)\\">
@@ -1200,7 +1164,7 @@ exports[`<TimelineComponent /> R3 Tests
 </g>
 </g>
 <g id=\\"axisLayer\\">
-<g style=\\"color: red;\\" class=\\"y axis\\" fill=\\"none\\" font-size=\\"10\\" font-family=\\"sans-serif\\" text-anchor=\\"end\\">
+<g style=\\"color: black;\\" class=\\"y axis\\" fill=\\"none\\" font-size=\\"10\\" font-family=\\"sans-serif\\" text-anchor=\\"end\\">
 <path class=\\"domain\\" stroke=\\"currentColor\\" d=\\"M-6,598.5H0.5V0.5H-6\\">
 </path>
 <g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,583.3875042617942)\\">

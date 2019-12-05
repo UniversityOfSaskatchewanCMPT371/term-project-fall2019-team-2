@@ -200,15 +200,10 @@ describe('<TimelineComponent /> R2 Tests\n', () => {
       svgHTML = prettyHTML(svgTarget.innerHTML);
     }
 
-    wrapper.update();
-    wrapper.instance().initTimeline();
-    wrapper.instance().drawTimeline();
-    wrapper.instance().updateChart();
-
     console.log(pretty(document.body.innerHTML));
     console.log(window.innerWidth);
     console.log(window.innerHeight);
-    // console.log(prettyHTML(wrapper.html()));
+
     // Check that svg created by d3 matches snapshot
     expect(svgHTML).toMatchSnapshot();
   });

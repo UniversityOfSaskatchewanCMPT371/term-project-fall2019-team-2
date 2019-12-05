@@ -7,6 +7,8 @@
 ### Notable PRs
 
 - [Error Reporting, Telemetry and User Feedback](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/pull/141)
+- [Code Refactor and Interface Construction](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/pull/186)
+- [Tons of Assertions added by the Test Team](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/pull/146)
 
 ## Mini-Milestones
 

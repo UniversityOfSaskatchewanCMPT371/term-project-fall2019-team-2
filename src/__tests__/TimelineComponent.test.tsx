@@ -201,6 +201,7 @@ describe('<TimelineComponent /> R2 Tests\n', () => {
     }
 
     console.log(pretty(document.body.innerHTML));
+    console.log(svgHTML);
     console.log(window.innerWidth);
     console.log(window.innerHeight);
 

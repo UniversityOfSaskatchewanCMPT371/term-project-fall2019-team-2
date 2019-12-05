@@ -57,7 +57,7 @@ export default abstract class IntervalTimelineType extends TimelineType
     assert(datum !== undefined && datum !== null,
         'datum is null');
     const key = this.m.xColumn;
-    return `translate(${this.m.timeScale(new Date(datum[key]))},
+    return `translate(${this.m.scale * this.m.timeScale(new Date(datum[key]))},
       ${this.m.height})`;
   }
 }

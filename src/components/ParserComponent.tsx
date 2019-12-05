@@ -420,8 +420,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
       // check File obj (file being uploaded)
       assert.notStrictEqual(fileEvent.target.files[0], null,
           'parse(): fileEvent.target.files[0] is null');
-      assert.notStrictEqual(fileEvent.target.files[0], undefined,
-          'parse(): fileEvent.target.files[0] is undefined');
 
       this.setState(() => {
         return {

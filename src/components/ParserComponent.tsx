@@ -9,6 +9,7 @@ import * as TimSort from 'timsort';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {loadTestCsv} from './Utilities';
 import {strict as assert} from 'assert';
+import Any = jasmine.Any;
 
 /**
  * Purpose: react component responsible for receiving and parsing file data
@@ -122,7 +123,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * a valid file name and a valid file type
      * @return {any}: a mock file event similar to the actual file event
      */
-    createNewMockFile(): any {
+    createNewMockFile(): string {
       const mockDateFile: File = new File(
           [this.state.fileData],
           String(this.state.fileName),
@@ -130,7 +131,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
       );
       // create file event of the mockfile and return it
       const mockFileEvent = {target: {files: [mockDateFile]}};
-      return mockFileEvent;
+      return String(mockFileEvent);
     }
 
     /**
@@ -204,7 +205,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
           'sortData(): data (array of objects) is empty');
 
       let doneTheWork = false;
-      let foundADate = false;
       /* loop goes through each key and saves the 1 with a date in first row */
       if (data !== undefined && data.length > 0) {
         assert.notStrictEqual(data[0], null,
@@ -213,7 +213,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
           if (!doneTheWork) {
             const date1 = moment(String(value), this.state.formatString);
             if (moment(date1, this.state.formatString).isValid()) {
-              foundADate = true;
               doneTheWork = true;
               const formatString = this.state.formatString;
 
@@ -256,7 +255,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
             'sortData(): this.state.data is empty (not updated)');
         return true;
       } else {
-        throw new Error('The file uploaded has no dates.');
+        throw new Error('The file uploaded has no dates of the given format.');
       }
     }
 

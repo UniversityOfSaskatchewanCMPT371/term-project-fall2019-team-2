@@ -7,14 +7,23 @@
 ### Notable PRs
 
 - [Error Reporting, Telemetry and User Feedback](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/pull/141)
-
-## Mini-Milestones
-
+- [Code Refactor and Interface Construction](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/pull/186)
+- [Tons of Assertions added by the Test Team](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/pull/146)
 
 ## Risk Report
 
 
+
 ## Reviews Conducted
+Every member of the group underwent a formal review throughout the course of the semester:<br/>
+Camille [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/ID2FormalReview.pdf)<br/>
+Evan [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/ID2FormalReview.pdf)<br/>
+Amanda [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/riskDocReviewID4.pdf)<br/>
+Mesa [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/ID1FormalReview.pdf)
+Eileen [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/ID4FormalReview.pdf)<br/>
+Braunson [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/ID3FormalReview.pdf)<br/>
+Anurag [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/ID5FormalReview.pdf)<br/>
+Kevin [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/ID5FormalReview2.pdf)<br/>
 
 
 ## Design and Requirements Documents
@@ -22,6 +31,12 @@
 
 ## Meetings With Stakeholders
 
+Stakeholder meetings took place every ID as required.<br/>
+[ID1](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID5/documents/meetings/stakeholder10.5.md)<br/>
+[ID2](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID5/documents/meetings/stakeholder9.4.md)<br/>
+[ID3](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID5/documents/meetings/stakeholder10.4.md)<br/>
+[ID4](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID5/documents/meetings/stakeholder11.17.pdf)<br/>
+[ID5](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID5/documents/meetings/stakeholder11.30.md)<br/>
 
 ## Testing
 

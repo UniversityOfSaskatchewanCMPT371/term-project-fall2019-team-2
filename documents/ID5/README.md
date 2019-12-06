@@ -1,8 +1,5 @@
 # Incremental Deliverable 5 Readme
 
-## Continuity Plan
-
-Details for continuing the project have be found [here](TODO!). TODO:
 
 ## Source Code
 
@@ -47,7 +44,7 @@ Stakeholder meetings took place every ID as required.<br/>
 
 ## Testing
 
-Snap-shot tests are found [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID5/src/__tests__/__snapshots__) and the unit testing suite is located [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID5/src/__tests__).  [This](TODO GENERATE THIS LINK AFTER TEST DESIGN DOCS ARE DONE) is a link to our current test design documentation which outlines both manual and automated tests. [This](https://docs.google.com/spreadsheets/d/1ZnNRrXKV4FqdfMf8I6ga-5IDUYAZFbtIXiw5_pEGHTY/edit#gid=0) is a link to our current test matrix.  [Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID5/scripts) is a link to our Selenium driven smoke tests.
+Snap-shot tests are found [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID5/src/__tests__/__snapshots__) and the unit testing suite is located [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID5/src/__tests__).  [This](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/ID5/Test%20Design%20Doc.pdf) is a link to our current test design documentation which outlines both manual and automated tests. [This](https://docs.google.com/spreadsheets/d/1ZnNRrXKV4FqdfMf8I6ga-5IDUYAZFbtIXiw5_pEGHTY/edit#gid=0) is a link to our current test matrix.  [Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID5/scripts) is a link to our Selenium driven smoke tests.
 
 This deliverable also saw the production of a massive amount of assertions.  [Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/src/components/ParserComponent.tsx) is a link to some source code where almost all pre-conditions were turned into assertions.
 

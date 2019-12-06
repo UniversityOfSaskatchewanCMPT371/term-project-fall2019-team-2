@@ -234,6 +234,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
           return key;
         }
       }
+      throw new Error('No dates found');
     };
 
     /**
@@ -246,7 +247,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
    * @return {boolean}: return true once data is sorted
    */
     sortData(data: Array<object>, key:string): boolean {
-      assert.notEqual(key, undefined,
+      assert.notStrictEqual(key, undefined,
           'sortData(): No valid date for selected format was found');
       const formatString = this.state.formatString;
       const keyInt = `${key}_num`;

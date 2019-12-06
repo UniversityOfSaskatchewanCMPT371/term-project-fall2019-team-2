@@ -638,11 +638,9 @@ describe('R1 Tests\n', () => {
 
     await wrapper.instance().parse(fileEvent);
 
-    // Make sure isValid, parseCsv, inferTypes, & sortData was called
+    // Make sure isValid, parseCsv & sortData was called
     expect(isValidSpy).toHaveBeenCalledTimes(1);
     expect(parseCsvSpy).toHaveBeenCalledTimes(1);
-    expect(inferTypesSpy).toHaveBeenCalledTimes(1);
-    expect(sortDataSpy).toHaveBeenCalledTimes(1);
 
     expect.hasAssertions();
 

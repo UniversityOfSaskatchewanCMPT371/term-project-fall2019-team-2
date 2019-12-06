@@ -1084,18 +1084,6 @@ describe('<ParserComponent /> Unit Tests', () => {
     });
   });
 
-  describe('createCountingObjects()', () => {
-    const pi: ParserInterface = {
-      prompt: 'test',
-      fileType: FileType.csv,
-      onChange: jest.fn(),
-    };
-    const pc = new ParserComponent(pi);
-    it('instantiates a list of CountTypes', () => {
-      // const listObjects = pc.createTypeCountingObjects(4);
-    });
-  });
-
   describe('inferTypes()', () => {
     let pc: ParserComponent;
     let data: any[] | object[] |

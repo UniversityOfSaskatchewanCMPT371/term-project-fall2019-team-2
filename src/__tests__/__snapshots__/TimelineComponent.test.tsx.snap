@@ -761,6 +761,75 @@ exports[`<TimelineComponent /> R2 Tests
 exports[`<TimelineComponent /> R2 Tests
  T2.7 Snapshot Test
  1`] = `
+"<svg width=\\"934\\" height=\\"768\\">
+<g transform=\\"translate(70, 0)\\">
+<rect width=\\"934\\" height=\\"598\\" style=\\"fill: none;\\">
+</rect>
+<defs>
+<clipPath id=\\"barsBox\\">
+<rect width=\\"934\\" height=\\"768\\" x=\\"0\\" y=\\"0\\">
+</rect>
+</clipPath>
+</defs>
+<g clip-path=\\"url(#barsBox)\\">
+<g id=\\"barsLayer\\">
+<g class=\\"plot\\" id=\\"bars\\">
+<g class=\\"bar\\">
+<rect class=\\"box\\" x=\\"249.9828853473595\\" width=\\"-249.94908067958855\\" y=\\"0\\" height=\\"598\\" style=\\"fill: rgb(110, 64, 170); opacity: 0.2;\\">
+</rect>
+</g>
+<g class=\\"bar\\">
+<rect class=\\"box\\" x=\\"249.9828853473595\\" width=\\"-249.87825144321658\\" y=\\"0\\" height=\\"598\\" style=\\"fill: rgb(110, 64, 170); opacity: 0.2;\\">
+</rect>
+</g>
+<g class=\\"bar\\">
+<rect class=\\"box\\" x=\\"250\\" width=\\"-249.8867589791694\\" y=\\"0\\" height=\\"598\\" style=\\"fill: rgb(110, 64, 170); opacity: 0.2;\\">
+</rect>
+</g>
+<g class=\\"bar\\">
+<rect class=\\"box\\" x=\\"250\\" width=\\"-250\\" y=\\"0\\" height=\\"598\\" style=\\"fill: rgb(110, 64, 170); opacity: 0.2;\\">
+</rect>
+</g>
+<g class=\\"bar\\">
+<rect class=\\"box\\" x=\\"250\\" width=\\"-249.92876535375675\\" y=\\"0\\" height=\\"598\\" style=\\"fill: rgb(110, 64, 170); opacity: 0.2;\\">
+</rect>
+</g>
+<g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(249.9828853473595,
+      598)\\">
+<line stroke=\\"blue\\" y2=\\"6\\">
+</line>
+<text style=\\"text-anchor: end; font-size: 1rem;\\" dx=\\"-.8em\\" dy=\\".15em\\" transform=\\"rotate(-90)\\">1/1/2010
+</text>
+</g>
+</g>
+</g>
+</g>
+<g id=\\"axisLayer\\">
+<g style=\\"color: black;\\" class=\\"y axis\\" fill=\\"none\\" font-size=\\"10\\" font-family=\\"sans-serif\\" text-anchor=\\"end\\">
+<path class=\\"domain\\" stroke=\\"currentColor\\" d=\\"M-6,598.5H0.5V0.5H-6\\">
+</path>
+<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,299)\\">
+<line stroke=\\"currentColor\\" x2=\\"-6\\">
+</line>
+<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">North America
+</text>
+</g>
+<text transform=\\"rotate(-90)\\" y=\\"6\\" dy=\\".71em\\" style=\\"text-anchor: end; color: red;\\">yColumn
+</text>
+</g>
+</g>
+<text transform=\\"translate(467,618)\\" style=\\"text-anchor: middle;\\">start: Order Date, end: Order ID
+</text>
+<text transform=\\"rotate(-90)\\" y=\\"-70\\" x=\\"-299\\" dy=\\"1em\\" style=\\"text-anchor: middle;\\">Region
+</text>
+</g>
+</svg>
+"
+`;
+
+exports[`<TimelineComponent /> R2 Tests
+ T2.7 Snapshot Test
+ 2`] = `
 "<TimelineComponent data={{...}}>
   <div id=\\"timelineComponentDiv\\">
     <div>
@@ -1028,7 +1097,7 @@ exports[`<TimelineComponent /> R2 Tests
 
 exports[`<TimelineComponent /> R2 Tests
  T2.7 Snapshot Test
- 2`] = `
+ 3`] = `
 "<svg width=\\"934\\" height=\\"768\\">
   <g transform=\\"translate(70, 0)\\">
     <rect width=\\"934\\" height=\\"598\\" style=\\"fill: none;\\"></rect>

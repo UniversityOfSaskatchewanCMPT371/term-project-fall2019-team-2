@@ -50,7 +50,7 @@ export default class IntervalOccurrence extends IntervalTimelineType
             (this.m.scale * this.m.timeScale(new Date(d[this.m.xColumn]))))
           .attr('width', (d: any) =>
             (this.m.timeScale(new Date(d[this.m.xColumn2])) -
-                  this.m.timeScale(new Date(d[this.m.xColumn]))))
+            this.m.timeScale(new Date(d[this.m.xColumn]))))
           .attr('y', (d: any, i: number) =>
             this.m.y(d[this.m.yColumn2]))
           .attr('height', (d: any) => {
@@ -75,7 +75,8 @@ export default class IntervalOccurrence extends IntervalTimelineType
    */
   checkYPrimType(primType: string): boolean {
     return (primType === 'date' ||
-        primType === 'number' ||
-        primType === 'string');
+      primType === 'number' ||
+      primType === 'string');
   }
 }
+

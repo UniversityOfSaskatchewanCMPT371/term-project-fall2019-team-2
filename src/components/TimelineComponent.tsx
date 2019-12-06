@@ -772,8 +772,8 @@ export default class TimelineComponent
 
   /**
    * Register events on D3 elements.
-   * @precondition: An event occurs
-   * @precondition: The correct reaction takes place
+   * @precondition: An keyboard/mouse event occurs
+   * @precondition: The correct event is registered
    * @return {void}: Nothing
    */
   private registerEvents(): void {
@@ -863,9 +863,9 @@ export default class TimelineComponent
    * @param {number} y
    */
   ttOverHelper(d: any, x: number, y: number) {
-    assert(d!=null, 'd should not be null');
-    assert(x!=null, 'x should not be null');
-    assert(y!=null, 'y should not be null');
+    assert.notStrictEqual(d, null, 'd should not be null');
+    assert.notStrictEqual(x, null, 'x should not be null');
+    assert.notStrictEqual(y, null, 'y should not be null');
     const Tooltip = d3.select(CONSTANTS.SVG_SELECTOR)
         .append('div')
         .style('opacity', 0)
@@ -1011,8 +1011,6 @@ export default class TimelineComponent
    * and has been replaced by the TimelineTypeInterface, it only still exists
    * because some tests rely on it and a workaround has not yet been
    * figured out.
-   * @precondition:?
-   * @postcondition:?
    * @param {any} selection: the selection for the object to draw
    */
   drawEventMagnitude(selection: any): void {
@@ -1046,8 +1044,6 @@ export default class TimelineComponent
    * Timeline. This function is old and has been replaced by the
    * TimelineTypeInterface, it only still exists because some tests rely on it
    * and a workaround has not yet been figured out.
-   * @precondition:?
-   * @postcondition:?
    */
   getEventMagnitudeData() {
     this.timelineType.getData();
@@ -1058,8 +1054,6 @@ export default class TimelineComponent
    * IntervalMagnitude Timeline. This function is old and has been replaced by
    * the TimelineTypeInterface, it only still exists because some tests rely on
    * it and a workaround has not yet been figured out.
-   * @precondition:?
-   * @postcondition:?
    */
   getIntervalMagnitudeData() {
     this.timelineType.getData();
@@ -1084,8 +1078,6 @@ export default class TimelineComponent
   /**
    * @this dragStarted
    * @param {any} caller
-   * @precondition:?
-   * @postcondition:?
    */
   dragStarted(caller: any) {
     console.log(caller);
@@ -1120,8 +1112,6 @@ export default class TimelineComponent
   /**
    * @this dragEnded
    * @param {any} caller
-   * @precondition:?
-   * @postcondition:?
    */
   dragEnded(caller: any) {
     const hoveredBars: any = d3.selectAll('.bar:hover');

@@ -519,7 +519,7 @@ export default class TimelineComponent
 
   /**
    * Purpose: changes the timeline type to the one desired by the user
-   * @precondition: A csv fike has been uploaded
+   * @precondition: A csv file has been uploaded
    * @postcondition: The chart position is updated with the new values
    * @param {any} e: the event to pass into the function
    */

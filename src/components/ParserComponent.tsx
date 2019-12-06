@@ -168,11 +168,13 @@ export default class ParserComponent extends React.Component<ParserInterface,
       assert.notStrictEqual(upFile, null,
           'isValid(): File object is null');
       if (upFile !== undefined) {
+        // change the state fileName to be the same as the uploaded file
         this.setState(() => {
           return {
             fileName: upFile.name,
           };
         });
+        // return true if the file meets the criteria and return false if not
         const typeOfFile = upFile.name.substr(upFile.name.length - 4);
         if (this.props.fileType.mimeName === '.csv' +
             ',text/csv' && typeOfFile === '.csv') {
@@ -182,6 +184,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
           return false;
         }
       } else {
+        // if the filename is undefined change it
+        // to an empty string and return false
         this.setState(() => {
           return {
             fileName: '',

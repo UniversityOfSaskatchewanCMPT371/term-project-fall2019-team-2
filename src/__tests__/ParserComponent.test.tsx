@@ -821,7 +821,9 @@ describe('<ParserComponent /> Unit Tests', () => {
     it('should return undefined when given data with no date', () => {
       const testArray: {Name: string, AnotherName: string}[] = [
         {'Name': 'name', 'AnotherName': 'Name'}];
-      expect(instance.lookForDateKey(testArray)).toEqual(undefined);
+      expect(() => {
+        instance.lookForDateKey(testArray);
+      }).toThrowError('No dates found');
     });
   });
 
@@ -1149,20 +1151,6 @@ describe('<ParserComponent /> Unit Tests', () => {
       } catch (error) {
         fail(); // fail if error thrown
       }
-    });
-    it('should throw exception when given empty data(undefined)', () => {
-      const data1 = new Array(0);
-      pc.state = {prompt: 'data1',
-        fileType: FileType.csv,
-        data: data1,
-        showTimeline: false,
-        formatString: '',
-        fileData: '',
-        fileName: '',
-      };
-      expect(() => {
-        pc.inferTypes(data1);
-      }).toThrow('data is empty');
     });
   });
 

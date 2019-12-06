@@ -8,27 +8,29 @@
 
 - [Error Reporting, Telemetry and User Feedback](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/pull/141)
 - [Code Refactor and Interface Construction](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/pull/186)
+- [Code Refactor, TimelineModel creation](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/pull/133)
 - [Tons of Assertions added by the Test Team](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/pull/146)
 
 ## Risk Report
 
-[This](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/ID5/Risk%20Analysis.pdf) is our final risk report.  It reflects on previous risks as well as risks as risks faced for this deliverable.  
+[This](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/ID5/Risk%20Analysis.pdf) is our final risk report.  It reflects on previous risks as well as risks as risks faced for this deliverable, and discusses the various plans that were put in place for either contingency or mitigation.
 
 ## Reviews Conducted
-Every member of the group underwent a formal review throughout the course of the semester:<br/>
+Every member of the group underwent a formal review throughout the course of the semester. It's also worth noting that not only was everyone reviewed, but everyone reviewed someone at least once. <br/>
 Camille [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/ID2FormalReview.pdf)<br/>
 Evan [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/ID2FormalReview.pdf)<br/>
 Amanda [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/riskDocReviewID4.pdf)<br/>
-Mesa [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/ID1FormalReview.pdf)
+Mesa [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/ID1FormalReview.pdf)<br/>
 Eileen [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/ID4FormalReview.pdf)<br/>
 Braunson [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/ID3FormalReview.pdf)<br/>
 Anurag [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/ID5FormalReview.pdf)<br/>
 Kevin [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/ID5FormalReview2.pdf)<br/>
 
 
-## Design and Requirements Documents
 
-Design documents are located [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/ID5/As-Built%20Design%20Documents.pdf), and reflect the current as-built design of the system.  Requirements documents  are located [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/master/documents/ID5/Requirements.pdf) and reflect the most recent changes in requirements by the stakeholder.
+## Design Documents, Requirements Documents, and System Flow Diagram
+
+Design documents are located [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/ID5/As-Built%20Design%20Documents.pdf), and reflect the current as-built design of the system.  Requirements documents  are located [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/ID5/Requirements.pdf) and reflect the most recent changes in requirements by the stakeholder. Finally, [this](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/ID5/System%20Flow%20Diagram.pdf) diagram outlines the system flow.
 
 ## Meetings With Stakeholders
 
@@ -41,9 +43,9 @@ Stakeholder meetings took place every ID as required.<br/>
 
 ## Testing
 
-Snap-shot tests are found [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID5/src/__tests__/__snapshots__) and the unit testing suite is located [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/master/src/__tests__).  [This](TODO GENERATE THIS LINK AFTER TEST DESIGN DOCS ARE DONE) is a link to our current test design documentation, and [this](https://docs.google.com/spreadsheets/d/1ZnNRrXKV4FqdfMf8I6ga-5IDUYAZFbtIXiw5_pEGHTY/edit#gid=0) is a link to our current test matrix.
+Snap-shot tests are found [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID5/src/__tests__/__snapshots__) and the unit testing suite is located [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID5/src/__tests__).  [This](TODO GENERATE THIS LINK AFTER TEST DESIGN DOCS ARE DONE) is a link to our current test design documentation which outlines both manual and automated tests. [This](https://docs.google.com/spreadsheets/d/1ZnNRrXKV4FqdfMf8I6ga-5IDUYAZFbtIXiw5_pEGHTY/edit#gid=0) is a link to our current test matrix.  [Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID5/scripts) is a link to our Selenium driven smoke tests.
 
-This deliverable also saw the production of a massive amount of assertions.  [Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/master/src/components/ParserComponent.tsx) is a link to some source code where almost all pre-conditions were turned into assertions.
+This deliverable also saw the production of a massive amount of assertions.  [Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/src/components/ParserComponent.tsx) is a link to some source code where almost all pre-conditions were turned into assertions.
 
 
 ## Issue Tracking

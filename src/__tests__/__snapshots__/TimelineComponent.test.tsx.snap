@@ -162,22 +162,23 @@ exports[`<TimelineComponent /> R2 Tests
             <circle class=\\"pin-head\\" cx=\\"0\\" cy=\\"247.38657190948192\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\"></circle>
           </g>
           <g class=\\"bar\\">
-            <rect class=\\"pin-line\\" x=\\"50\\" width=\\"2\\" y=\\"0\\" height=\\"598\\"></rect>
-            <circle class=\\"pin-head\\" cx=\\"50\\" cy=\\"0\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\"></circle>
+            <rect class=\\"pin-line\\" x=\\"0\\" width=\\"2\\" y=\\"0\\" height=\\"598\\"></rect>
+            <circle class=\\"pin-head\\" cx=\\"0\\" cy=\\"0\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\"></circle>
           </g>
           <g class=\\"bar\\">
-            <rect class=\\"pin-line\\" x=\\"100\\" width=\\"2\\" y=\\"198.84870020572288\\" height=\\"399.1512997942771\\"></rect>
-            <circle class=\\"pin-head\\" cx=\\"100\\" cy=\\"198.84870020572288\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\"></circle>
+            <rect class=\\"pin-line\\" x=\\"250\\" width=\\"2\\" y=\\"198.84870020572288\\" height=\\"399.1512997942771\\"></rect>
+            <circle class=\\"pin-head\\" cx=\\"250\\" cy=\\"198.84870020572288\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\"></circle>
           </g>
           <g class=\\"bar\\">
-            <rect class=\\"pin-line\\" x=\\"150\\" width=\\"2\\" y=\\"358.2184402468674\\" height=\\"239.78155975313263\\"></rect>
-            <circle class=\\"pin-head\\" cx=\\"150\\" cy=\\"358.2184402468674\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\"></circle>
+            <rect class=\\"pin-line\\" x=\\"250\\" width=\\"2\\" y=\\"358.2184402468674\\" height=\\"239.78155975313263\\"></rect>
+            <circle class=\\"pin-head\\" cx=\\"250\\" cy=\\"358.2184402468674\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\"></circle>
           </g>
           <g class=\\"bar\\">
-            <rect class=\\"pin-line\\" x=\\"200\\" width=\\"2\\" y=\\"598\\" height=\\"0\\"></rect>
-            <circle class=\\"pin-head\\" cx=\\"200\\" cy=\\"598\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\"></circle>
+            <rect class=\\"pin-line\\" x=\\"250\\" width=\\"2\\" y=\\"598\\" height=\\"0\\"></rect>
+            <circle class=\\"pin-head\\" cx=\\"250\\" cy=\\"598\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\"></circle>
           </g>
-          <g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(25,598)\\">
+          <g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(0,
+    598)\\">
             <line stroke=\\"blue\\" y2=\\"6\\"></line><text style=\\"text-anchor: end; font-size: 1rem;\\" dx=\\"-.8em\\" dy=\\".15em\\" transform=\\"rotate(-90)\\">1/1/2010</text>
           </g>
         </g>
@@ -220,7 +221,7 @@ exports[`<TimelineComponent /> R2 Tests
           <line stroke=\\"currentColor\\" x2=\\"-6\\"></line><text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">9,500</text>
         </g><text transform=\\"rotate(-90)\\" y=\\"6\\" dy=\\".71em\\" style=\\"text-anchor: end; color: red;\\">yColumn</text>
       </g>
-    </g><text transform=\\"translate(467,618)\\" style=\\"text-anchor: start;\\">Order Date</text><text transform=\\"rotate(-90)\\" y=\\"-70\\" x=\\"-299\\" dy=\\"1em\\" style=\\"text-anchor: middle;\\">Units Sold</text>
+    </g><text transform=\\"translate(467,618)\\" style=\\"text-anchor: middle;\\">Order Date</text><text transform=\\"rotate(-90)\\" y=\\"-70\\" x=\\"-299\\" dy=\\"1em\\" style=\\"text-anchor: middle;\\">Units Sold</text>
   </g>
 </svg>"
 `;
@@ -467,26 +468,27 @@ exports[`<TimelineComponent /> R2 Tests
             <circle class=\\"pin-head\\" cx=\\"0\\" cy=\\"555.2857142857142\\" r=\\"5\\" style=\\"fill: rgb(107, 247, 92);\\" stroke=\\"black\\"></circle>
           </g>
           <g class=\\"bar\\">
-            <rect class=\\"pin-line\\" x=\\"50\\" width=\\"2\\" y=\\"128.14285714285714\\" height=\\"469.8571428571429\\"></rect>
-            <circle class=\\"pin-head\\" cx=\\"50\\" cy=\\"128.14285714285714\\" r=\\"5\\" style=\\"fill: rgb(210, 201, 52);\\" stroke=\\"black\\"></circle>
-            <circle class=\\"pin-head\\" cx=\\"50\\" cy=\\"469.8571428571429\\" r=\\"5\\" style=\\"fill: rgb(223, 64, 161);\\" stroke=\\"black\\"></circle>
+            <rect class=\\"pin-line\\" x=\\"0\\" width=\\"2\\" y=\\"128.14285714285714\\" height=\\"469.8571428571429\\"></rect>
+            <circle class=\\"pin-head\\" cx=\\"0\\" cy=\\"128.14285714285714\\" r=\\"5\\" style=\\"fill: rgb(210, 201, 52);\\" stroke=\\"black\\"></circle>
+            <circle class=\\"pin-head\\" cx=\\"0\\" cy=\\"469.8571428571429\\" r=\\"5\\" style=\\"fill: rgb(223, 64, 161);\\" stroke=\\"black\\"></circle>
           </g>
           <g class=\\"bar\\">
-            <rect class=\\"pin-line\\" x=\\"100\\" width=\\"2\\" y=\\"128.14285714285714\\" height=\\"469.8571428571429\\"></rect>
-            <circle class=\\"pin-head\\" cx=\\"100\\" cy=\\"128.14285714285714\\" r=\\"5\\" style=\\"fill: rgb(210, 201, 52);\\" stroke=\\"black\\"></circle>
-            <circle class=\\"pin-head\\" cx=\\"100\\" cy=\\"384.42857142857144\\" r=\\"5\\" style=\\"fill: rgb(27, 217, 172);\\" stroke=\\"black\\"></circle>
+            <rect class=\\"pin-line\\" x=\\"250\\" width=\\"2\\" y=\\"128.14285714285714\\" height=\\"469.8571428571429\\"></rect>
+            <circle class=\\"pin-head\\" cx=\\"250\\" cy=\\"128.14285714285714\\" r=\\"5\\" style=\\"fill: rgb(210, 201, 52);\\" stroke=\\"black\\"></circle>
+            <circle class=\\"pin-head\\" cx=\\"250\\" cy=\\"384.42857142857144\\" r=\\"5\\" style=\\"fill: rgb(27, 217, 172);\\" stroke=\\"black\\"></circle>
           </g>
           <g class=\\"bar\\">
-            <rect class=\\"pin-line\\" x=\\"150\\" width=\\"2\\" y=\\"42.714285714285715\\" height=\\"555.2857142857143\\"></rect>
-            <circle class=\\"pin-head\\" cx=\\"150\\" cy=\\"42.714285714285715\\" r=\\"5\\" style=\\"fill: rgb(110, 64, 170);\\" stroke=\\"black\\"></circle>
-            <circle class=\\"pin-head\\" cx=\\"150\\" cy=\\"299\\" r=\\"5\\" style=\\"fill: rgb(255, 112, 78);\\" stroke=\\"black\\"></circle>
+            <rect class=\\"pin-line\\" x=\\"250\\" width=\\"2\\" y=\\"42.714285714285715\\" height=\\"555.2857142857143\\"></rect>
+            <circle class=\\"pin-head\\" cx=\\"250\\" cy=\\"42.714285714285715\\" r=\\"5\\" style=\\"fill: rgb(110, 64, 170);\\" stroke=\\"black\\"></circle>
+            <circle class=\\"pin-head\\" cx=\\"250\\" cy=\\"299\\" r=\\"5\\" style=\\"fill: rgb(255, 112, 78);\\" stroke=\\"black\\"></circle>
           </g>
           <g class=\\"bar\\">
-            <rect class=\\"pin-line\\" x=\\"200\\" width=\\"2\\" y=\\"42.714285714285715\\" height=\\"555.2857142857143\\"></rect>
-            <circle class=\\"pin-head\\" cx=\\"200\\" cy=\\"42.714285714285715\\" r=\\"5\\" style=\\"fill: rgb(110, 64, 170);\\" stroke=\\"black\\"></circle>
-            <circle class=\\"pin-head\\" cx=\\"200\\" cy=\\"213.57142857142858\\" r=\\"5\\" style=\\"fill: rgb(57, 136, 225);\\" stroke=\\"black\\"></circle>
+            <rect class=\\"pin-line\\" x=\\"250\\" width=\\"2\\" y=\\"42.714285714285715\\" height=\\"555.2857142857143\\"></rect>
+            <circle class=\\"pin-head\\" cx=\\"250\\" cy=\\"42.714285714285715\\" r=\\"5\\" style=\\"fill: rgb(110, 64, 170);\\" stroke=\\"black\\"></circle>
+            <circle class=\\"pin-head\\" cx=\\"250\\" cy=\\"213.57142857142858\\" r=\\"5\\" style=\\"fill: rgb(57, 136, 225);\\" stroke=\\"black\\"></circle>
           </g>
-          <g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(25,598)\\">
+          <g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(0,
+    598)\\">
             <line stroke=\\"blue\\" y2=\\"6\\"></line><text style=\\"text-anchor: end; font-size: 1rem;\\" dx=\\"-.8em\\" dy=\\".15em\\" transform=\\"rotate(-90)\\">1/1/2010</text>
           </g>
         </g>
@@ -517,7 +519,7 @@ exports[`<TimelineComponent /> R2 Tests
           <line stroke=\\"currentColor\\" x2=\\"-6\\"></line><text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">Offline</text>
         </g><text transform=\\"rotate(-90)\\" y=\\"6\\" dy=\\".71em\\" style=\\"text-anchor: end; color: red;\\">yColumn</text>
       </g>
-    </g><text transform=\\"translate(467,618)\\" style=\\"text-anchor: start;\\">Order Date</text><text transform=\\"rotate(-90)\\" y=\\"-70\\" x=\\"-299\\" dy=\\"1em\\" style=\\"text-anchor: middle;\\">Units Sold</text>
+    </g><text transform=\\"translate(467,618)\\" style=\\"text-anchor: middle;\\">Order Date</text><text transform=\\"rotate(-90)\\" y=\\"-70\\" x=\\"-299\\" dy=\\"1em\\" style=\\"text-anchor: middle;\\">Units Sold, Sales Channel</text>
   </g>
 </svg>"
 `;
@@ -725,11 +727,21 @@ exports[`<TimelineComponent /> R2 Tests
     <g clip-path=\\"url(#barsBox)\\">
       <g id=\\"barsLayer\\">
         <g class=\\"plot\\" id=\\"bars\\">
-          <rect class=\\"bar\\" x=\\"0\\" width=\\"0\\" height=\\"NaN\\" style=\\"fill: #61a3a9; opacity: 0.2;\\"></rect>
-          <rect class=\\"bar\\" x=\\"0\\" width=\\"0\\" height=\\"NaN\\" style=\\"fill: #61a3a9; opacity: 0.2;\\"></rect>
-          <rect class=\\"bar\\" x=\\"250\\" width=\\"0\\" height=\\"NaN\\" style=\\"fill: #61a3a9; opacity: 0.2;\\"></rect>
-          <rect class=\\"bar\\" x=\\"250\\" width=\\"0\\" height=\\"NaN\\" style=\\"fill: #61a3a9; opacity: 0.2;\\"></rect>
-          <rect class=\\"bar\\" x=\\"250\\" width=\\"0\\" height=\\"NaN\\" style=\\"fill: #61a3a9; opacity: 0.2;\\"></rect>
+          <g class=\\"bar\\">
+            <rect class=\\"box\\" x=\\"0\\" width=\\"0\\" height=\\"NaN\\" style=\\"fill: #61a3a9; opacity: 0.2;\\"></rect>
+          </g>
+          <g class=\\"bar\\">
+            <rect class=\\"box\\" x=\\"0\\" width=\\"0\\" height=\\"NaN\\" style=\\"fill: #61a3a9; opacity: 0.2;\\"></rect>
+          </g>
+          <g class=\\"bar\\">
+            <rect class=\\"box\\" x=\\"250\\" width=\\"0\\" height=\\"NaN\\" style=\\"fill: #61a3a9; opacity: 0.2;\\"></rect>
+          </g>
+          <g class=\\"bar\\">
+            <rect class=\\"box\\" x=\\"250\\" width=\\"0\\" height=\\"NaN\\" style=\\"fill: #61a3a9; opacity: 0.2;\\"></rect>
+          </g>
+          <g class=\\"bar\\">
+            <rect class=\\"box\\" x=\\"250\\" width=\\"0\\" height=\\"NaN\\" style=\\"fill: #61a3a9; opacity: 0.2;\\"></rect>
+          </g>
           <g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(0,
       598)\\">
             <line stroke=\\"blue\\" y2=\\"6\\"></line><text style=\\"text-anchor: end; font-size: 1rem;\\" dx=\\"-.8em\\" dy=\\".15em\\" transform=\\"rotate(-90)\\">1/1/2010</text>
@@ -741,7 +753,7 @@ exports[`<TimelineComponent /> R2 Tests
       <g style=\\"color: black;\\" class=\\"y axis\\" fill=\\"none\\" font-size=\\"10\\" font-family=\\"sans-serif\\" text-anchor=\\"end\\">
         <path class=\\"domain\\" stroke=\\"currentColor\\" d=\\"M-6,598.5H0.5V0.5H-6\\"></path><text transform=\\"rotate(-90)\\" y=\\"6\\" dy=\\".71em\\" style=\\"text-anchor: end; color: red;\\">yColumn</text>
       </g>
-    </g><text transform=\\"translate(477,618)\\" style=\\"text-anchor: start;\\">end: Order Date</text><text transform=\\"translate(467,618)\\" style=\\"text-anchor: end;\\">start: Order Date,</text><text transform=\\"rotate(-90)\\" y=\\"-70\\" x=\\"-299\\" dy=\\"1em\\" style=\\"text-anchor: middle;\\">Region</text>
+    </g><text transform=\\"translate(467,618)\\" style=\\"text-anchor: middle;\\">start: Order Date, end: Order Date</text><text transform=\\"rotate(-90)\\" y=\\"-70\\" x=\\"-299\\" dy=\\"1em\\" style=\\"text-anchor: middle;\\">Region</text>
   </g>
 </svg>"
 `;
@@ -1029,24 +1041,24 @@ exports[`<TimelineComponent /> R2 Tests
       <g id=\\"barsLayer\\">
         <g class=\\"plot\\" id=\\"bars\\">
           <g class=\\"bar\\">
-            <rect x=\\"0\\" width=\\"0\\" y=\\"448.5\\" height=\\"149.5\\" style=\\"fill: rgb(175, 240, 91); opacity: 0.2;\\"></rect>
-            <rect x=\\"0\\" width=\\"0\\" y=\\"299\\" height=\\"149.5\\" style=\\"fill: rgb(110, 64, 170); opacity: 0.2;\\"></rect>
+            <rect class=\\"box\\" x=\\"0\\" width=\\"0\\" y=\\"448.5\\" height=\\"149.5\\" style=\\"fill: rgb(175, 240, 91); opacity: 0.2;\\"></rect>
+            <rect class=\\"box\\" x=\\"0\\" width=\\"0\\" y=\\"299\\" height=\\"149.5\\" style=\\"fill: rgb(110, 64, 170); opacity: 0.2;\\"></rect>
           </g>
           <g class=\\"bar\\">
-            <rect x=\\"0\\" width=\\"0\\" y=\\"448.5\\" height=\\"149.5\\" style=\\"fill: rgb(175, 240, 91); opacity: 0.2;\\"></rect>
-            <rect x=\\"0\\" width=\\"0\\" y=\\"149.5\\" height=\\"149.5\\" style=\\"fill: rgb(175, 240, 91); opacity: 0.2;\\"></rect>
+            <rect class=\\"box\\" x=\\"0\\" width=\\"0\\" y=\\"448.5\\" height=\\"149.5\\" style=\\"fill: rgb(175, 240, 91); opacity: 0.2;\\"></rect>
+            <rect class=\\"box\\" x=\\"0\\" width=\\"0\\" y=\\"149.5\\" height=\\"149.5\\" style=\\"fill: rgb(175, 240, 91); opacity: 0.2;\\"></rect>
           </g>
           <g class=\\"bar\\">
-            <rect x=\\"250\\" width=\\"0\\" y=\\"448.5\\" height=\\"149.5\\" style=\\"fill: rgb(175, 240, 91); opacity: 0.2;\\"></rect>
-            <rect x=\\"250\\" width=\\"0\\" y=\\"299\\" height=\\"149.5\\" style=\\"fill: rgb(110, 64, 170); opacity: 0.2;\\"></rect>
+            <rect class=\\"box\\" x=\\"250\\" width=\\"0\\" y=\\"448.5\\" height=\\"149.5\\" style=\\"fill: rgb(175, 240, 91); opacity: 0.2;\\"></rect>
+            <rect class=\\"box\\" x=\\"250\\" width=\\"0\\" y=\\"299\\" height=\\"149.5\\" style=\\"fill: rgb(110, 64, 170); opacity: 0.2;\\"></rect>
           </g>
           <g class=\\"bar\\">
-            <rect x=\\"250\\" width=\\"0\\" y=\\"448.5\\" height=\\"149.5\\" style=\\"fill: rgb(175, 240, 91); opacity: 0.2;\\"></rect>
-            <rect x=\\"250\\" width=\\"0\\" y=\\"0\\" height=\\"149.5\\" style=\\"fill: rgb(110, 64, 170); opacity: 0.2;\\"></rect>
+            <rect class=\\"box\\" x=\\"250\\" width=\\"0\\" y=\\"448.5\\" height=\\"149.5\\" style=\\"fill: rgb(175, 240, 91); opacity: 0.2;\\"></rect>
+            <rect class=\\"box\\" x=\\"250\\" width=\\"0\\" y=\\"0\\" height=\\"149.5\\" style=\\"fill: rgb(110, 64, 170); opacity: 0.2;\\"></rect>
           </g>
           <g class=\\"bar\\">
-            <rect x=\\"250\\" width=\\"0\\" y=\\"448.5\\" height=\\"149.5\\" style=\\"fill: rgb(175, 240, 91); opacity: 0.2;\\"></rect>
-            <rect x=\\"250\\" width=\\"0\\" y=\\"149.5\\" height=\\"149.5\\" style=\\"fill: rgb(175, 240, 91); opacity: 0.2;\\"></rect>
+            <rect class=\\"box\\" x=\\"250\\" width=\\"0\\" y=\\"448.5\\" height=\\"149.5\\" style=\\"fill: rgb(175, 240, 91); opacity: 0.2;\\"></rect>
+            <rect class=\\"box\\" x=\\"250\\" width=\\"0\\" y=\\"149.5\\" height=\\"149.5\\" style=\\"fill: rgb(175, 240, 91); opacity: 0.2;\\"></rect>
           </g>
           <g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(0,
       598)\\">
@@ -1071,7 +1083,7 @@ exports[`<TimelineComponent /> R2 Tests
           <line stroke=\\"currentColor\\" x2=\\"-6\\"></line><text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">M</text>
         </g><text transform=\\"rotate(-90)\\" y=\\"6\\" dy=\\".71em\\" style=\\"text-anchor: end; color: red;\\">yColumn</text>
       </g>
-    </g><text transform=\\"translate(477,618)\\" style=\\"text-anchor: start;\\">end: Order Date</text><text transform=\\"translate(467,618)\\" style=\\"text-anchor: end;\\">start: Order Date,</text>
+    </g><text transform=\\"translate(467,618)\\" style=\\"text-anchor: middle;\\">start: Order Date, end: Order Date</text><text transform=\\"rotate(-90)\\" y=\\"-70\\" x=\\"-299\\" dy=\\"1em\\" style=\\"text-anchor: middle;\\">Region, Order Priority</text>
   </g>
 </svg>"
 `;

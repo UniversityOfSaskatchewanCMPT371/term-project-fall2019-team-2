@@ -650,7 +650,8 @@ describe('R1 Tests\n', () => {
     expect(isValidSpy).not.toThrow('Wrong file type was uploaded.');
     expect(inferTypesSpy).not.toThrow('data is empty');
 
-    expect(sortDataSpy).toThrow('The file uploaded has no dates.');
+    expect(sortDataSpy).toThrow('The file uploaded has ' +
+        'no dates of the given format.');
 
     compData = wrapper.state('data');
     expect(compData.length).toBe(3);
@@ -764,6 +765,80 @@ describe('<ParserComponent /> Unit Tests', () => {
     });
   });
 
+  describe('createNewMockFileEvent()', () => {
+    it('Should check if new mock file event is created and returned', () => {
+      const wrapper = mount(<ParserComponent prompt={'Select ' +
+    'a CSV file: '} fileType={FileType.csv}
+      onChange={function() {}}/>);
+      const instance = wrapper.instance() as ParserComponent;
+      instance.setState(() => {
+        return {
+          fileData: 'Region,Country,Item Type,Sales Channel,Order Priority,' +
+                  'Order Date,Order ID,Ship Date,' +
+            'Units Sold,Unit Price,Unit Cost,' +
+                  'Total Revenue,Total Cost,Total Profit\n' +
+                  'Sub-Saharan Africa,Chad,Office ' +
+            'Supplies,Online,L,1/27/2011,' +
+                  '292494523,2/12/2011,4484,651.21,' +
+            '524.96,2920025.64,2353920.64,' +
+                  '566105.00\n' +
+                  'Europe,Latvia,Beverages,Online,C,' +
+            '12/28/2015,361825549,1/23/2016,' +
+                  '1075,47.45,31.79,51008.75,34174.25,16834.50\n',
+          fileName: 'test.csv',
+        };
+      });
+      const testFile: File = new File(
+          ['Region,Country,Item Type,Sales Channel,Order Priority,' +
+          'Order Date,Order ID,Ship Date,' +
+          'Units Sold,Unit Price,Unit Cost,' +
+          'Total Revenue,Total Cost,Total Profit\n' +
+          'Sub-Saharan Africa,Chad,Office ' +
+          'Supplies,Online,L,1/27/2011,' +
+          '292494523,2/12/2011,4484,651.21,' +
+          '524.96,2920025.64,2353920.64,' +
+          '566105.00\n' +
+          'Europe,Latvia,Beverages,Online,C,' +
+          '12/28/2015,361825549,1/23/2016,' +
+          '1075,47.45,31.79,51008.75,34174.25,16834.50\n'],
+          'test.csv',
+          {type: '.pdf,application/pdf'},
+      );
+      instance.props.fileType.mimeName = '.pdf,application/pdf';
+      expect(instance.createNewMockFileEvent()).
+          toEqual({target: {files: [testFile]}});
+    });
+  });
+
+  describe('checkifCsvandcallParse()', () => {
+    it('Should call parse when file is a .csv and return true', () => {
+      const wrapper = mount(<ParserComponent prompt={'Select ' +
+    'a CSV file: '} fileType={FileType.csv}
+      onChange={function() {}}/>);
+      const instance = wrapper.instance() as ParserComponent;
+      instance.props.fileType.mimeName = '.csv,text/csv';
+      instance.setState(() => {
+        return {
+          fileName: '.csv',
+        };
+      });
+      expect(instance.checkifCsvandcallParse()).toBeTruthy();
+    });
+    it('Should not call parse if file ' +
+        'given is not a .csv and return false', () => {
+      const wrapper = mount(<ParserComponent prompt={'Select ' +
+          'a CSV file: '} fileType={FileType.csv}
+      onChange={function() {}}/>);
+      const instance = wrapper.instance() as ParserComponent;
+      instance.setState(() => {
+        return {
+          fileName: '.pdf',
+        };
+      });
+      expect(instance.checkifCsvandcallParse()).toBeFalsy();
+    });
+  });
+
   describe('sortData()', () => {
     const wrapper = shallow(<ParserComponent prompt={'Select ' +
       'a CSV file: '} fileType={FileType.csv}
@@ -811,7 +886,7 @@ describe('<ParserComponent /> Unit Tests', () => {
       const testArray: {id: number, name: string, job: string}[] = [];
       expect(() => {
         instance.sortData(testArray);
-      }).toThrow('The file uploaded has no dates.');
+      }).toThrow('The file uploaded has no dates of the given format.');
     });
 
     it('should sort the data by dates when given ' +
@@ -970,6 +1045,7 @@ describe('<ParserComponent /> Unit Tests', () => {
         showTimeline: false,
         formatString: 'YYYY-MM-DD',
         fileData: '',
+        fileName: '',
       };
     });
 
@@ -1020,6 +1096,7 @@ describe('<ParserComponent /> Unit Tests', () => {
         showTimeline: false,
         formatString: '',
         fileData: '',
+        fileName: '',
       };
       expect(() => {
         pc.inferTypes(data1);
@@ -1122,11 +1199,6 @@ describe('<ParserComponent /> Unit Tests', () => {
       // Call the parse method with the fake event
       await comp.instance().parse(event);
       expect(inferTypesSpy).toHaveBeenCalled();
-    });
-    it('timeline is set to true', async () => {
-      // Call the parse method with the fake event
-      await comp.instance().parse(event);
-      expect(comp.state('showTimeline')).toBeTruthy();
     });
   });
 

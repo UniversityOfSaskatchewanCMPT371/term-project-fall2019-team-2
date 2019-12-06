@@ -37,8 +37,10 @@ export default class ParserComponent extends React.Component<ParserInterface,
         showTimeline: false,
         formatString: '',
         fileData: '',
+        fileName: '',
       };
-
+      this.createNewMockFileEvent = this.createNewMockFileEvent.bind(this);
+      this.checkifCsvandcallParse = this.checkifCsvandcallParse.bind(this);
       this.isValid = this.isValid.bind(this);
       this.sortData = this.sortData.bind(this);
       this.inferTypes = this.inferTypes.bind(this);
@@ -92,13 +94,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
                       formatString: val,
                     };
                   });
-                  const mockDateFile: File = new File(
-                      [this.state.fileData],
-                      'mockFile.csv',
-                      {type: this.props.fileType.mimeName},
-                  );
-                  const fileEvent = {target: {files: [mockDateFile]}};
-                  this.parse(fileEvent);
+                  this.checkifCsvandcallParse();
                 }}>
                 <option selected value="">Select a Date Format</option>
                 <option value="X">Numeric</option>
@@ -123,6 +119,42 @@ export default class ParserComponent extends React.Component<ParserInterface,
     }
 
     /**
+     * Purpose: create a mock file event of the actual file for
+     * parse when it is recalled everytime the date format is
+     * changed with a valid .csv type file
+     * @preconditions: a file with valid file data and
+     * a valid file name and a valid file type
+     * @return {any}: a mock file event similar to the actual file event
+     */
+    createNewMockFileEvent(): any {
+      const mockDateFile: File = new File(
+          [this.state.fileData],
+          String(this.state.fileName),
+          {type: this.props.fileType.mimeName},
+      );
+      // create file event of the mockfile and return it
+      return {target: {files: [mockDateFile]}};
+    }
+
+    /**
+   * Purpose: check if file is .csv when date format
+     * is changed and call parse if it is
+     * @preconditions: the current file should have a valid name (.csv)
+     * @postconditions: parse is called if file is .csv
+     * @return{boolean}: returns true if it works otherwise returns false
+   */
+    checkifCsvandcallParse(): boolean {
+      const nameOfFile = this.state.fileName;
+      const typeOfFile = nameOfFile.substr(nameOfFile.length - 4);
+      if (typeOfFile === '.csv' && this.props.fileType.mimeName === '.csv' +
+          ',text/csv') {
+        this.parse(this.createNewMockFileEvent());
+        return true;
+      }
+      return false;
+    }
+
+    /**
      * Purpose: checks if the passed in event contains a file upload, then
      * verifies that the file type and contents are valid
      * @precondition no other parser object exists
@@ -135,6 +167,11 @@ export default class ParserComponent extends React.Component<ParserInterface,
       assert.notStrictEqual(upFile, null,
           'isValid(): File object is null');
       if (upFile !== undefined) {
+        this.setState(() => {
+          return {
+            fileName: upFile.name,
+          };
+        });
         const typeOfFile = upFile.name.substr(upFile.name.length - 4);
         if (this.props.fileType.mimeName === '.csv' +
             ',text/csv' && typeOfFile === '.csv') {
@@ -145,11 +182,14 @@ export default class ParserComponent extends React.Component<ParserInterface,
               'Wrong file type was uploaded.', 'ERROR');
           return false;
         }
+      } else {
+        this.setState(() => {
+          return {
+            fileName: '',
+          };
+        });
+        return false;
       }
-      alert('Wrong file type was uploaded.');
-      this.debugConfig.consoleLogger(this.isValid.name,
-          'Wrong file type was uploaded.', 'ERROR');
-      return false;
     }
 
     /**
@@ -222,7 +262,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
             'sortData(): this.state.data is empty (not updated)');
         return true;
       } else {
-        throw new Error('sortData(): The file uploaded has no dates.');
+        throw new Error('The file uploaded has no dates of the given format.');
       }
     }
 
@@ -405,12 +445,11 @@ export default class ParserComponent extends React.Component<ParserInterface,
       // check File obj (file being uploaded)
       assert.notStrictEqual(fileEvent.target.files[0], null,
           'parse(): fileEvent.target.files[0] is null');
-      assert.notStrictEqual(fileEvent.target.files[0], undefined,
-          'parse(): fileEvent.target.files[0] is undefined');
 
 
       this.setState(() => {
         return {
+          fileType: this.state.fileType,
           showTimeline: false,
         };
       });
@@ -420,16 +459,17 @@ export default class ParserComponent extends React.Component<ParserInterface,
         this.debugConfig.consoleLogger(this.parse.name,
             'Target file is a .csv', 'INFO');
         await this.parseCsv(fileEvent);
+        // only show timeline if there is data
+        assert.notStrictEqual(this.state.data, [],
+            'parse(): this.state.data is empty ' +
+            'but setting showTimeline to true');
+        this.setState(() => {
+          return {
+            showTimeline: true,
+          };
+        });
       }
 
-      // only show timeline if there is data
-      assert.notStrictEqual(this.state.data, [],
-          'parse(): this.state.data is empty but setting showTimeline to true');
-      this.setState(() => {
-        return {
-          showTimeline: true,
-        };
-      });
       this.childKey++;
     }
 
@@ -478,6 +518,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
                 fileType: this.state.fileType,
                 data: content,
                 fileData: fileReader.result,
+                showTimeline: false,
               };
             });
             try {

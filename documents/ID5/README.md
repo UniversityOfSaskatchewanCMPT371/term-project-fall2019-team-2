@@ -12,7 +12,7 @@
 
 ## Risk Report
 
-
+[This](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/ID5/Risk%20Analysis.pdf) is our final risk report.  It reflects on previous risks as well as risks as risks faced for this deliverable.  
 
 ## Reviews Conducted
 Every member of the group underwent a formal review throughout the course of the semester:<br/>
@@ -28,6 +28,7 @@ Kevin [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fal
 
 ## Design and Requirements Documents
 
+Design documents are located [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/ID5/As-Built%20Design%20Documents.pdf), and reflect the current as-built design of the system.  Requirements documents  are located [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/master/documents/ID5/Requirements.pdf) and reflect the most recent changes in requirements by the stakeholder.
 
 ## Meetings With Stakeholders
 
@@ -40,7 +41,15 @@ Stakeholder meetings took place every ID as required.<br/>
 
 ## Testing
 
-...
+Snap-shot tests are found [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID5/src/__tests__/__snapshots__) and the unit testing suite is located [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/master/src/__tests__).  [This](TODO GENERATE THIS LINK AFTER TEST DESIGN DOCS ARE DONE) is a link to our current test design documentation, and [this](https://docs.google.com/spreadsheets/d/1ZnNRrXKV4FqdfMf8I6ga-5IDUYAZFbtIXiw5_pEGHTY/edit#gid=0) is a link to our current test matrix.
+
+This deliverable also saw the production of a massive amount of assertions.  [Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/master/src/components/ParserComponent.tsx) is a link to some source code where almost all pre-conditions were turned into assertions.
+
+
+## Issue Tracking
+
+Issue tracking was done through GitIssues.  Initially all bugs were tracked in a spreadsheet located [here](https://docs.google.com/spreadsheets/d/11qek3kybW8FDpSQx1hFBbJkoglNe9v7t2hFg5KaAI44/edit#gid=0).  This spreadsheet was also the basis for our defect estimate seen in the continuity document.
+
 
 ## Builds
 
@@ -49,6 +58,10 @@ is now used to record errors and user feedback when an error occurs. The sourcem
 exactly what line in our code had the error.
 
 For viewing our current code climate and test coverage, refer to sonarcloud [here](https://sonarcloud.io/dashboard?id=cmpt371-team2) which is updated on every push to the repository.
+
+## Continuity 
+
+[This](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/ID5/Continuity%20Document.pdf) document outlines the future of the project, it goes over how to set the project up for development, how to get it set up for continous integration, how to set up testing, defect estimates, and known issues.  It also contains a section on what future developers might do moving forward, as well as some ideas for improving the project as a whole.
 
 ## Timelog
 

@@ -68,7 +68,6 @@ export default class TimelineComponent
     this.ttOver = this.ttOver.bind(this);
     this.ttUpdatePos = this.ttUpdatePos.bind(this);
     this.ttMove = this.ttMove.bind(this);
-    // this.ttMove = this.ttMove.bind(this);
     this.updateChart = this.updateChart.bind(this);
     this.updateBars = this.updateBars.bind(this);
     this.moveChart = this.moveChart.bind(this);
@@ -525,9 +524,6 @@ export default class TimelineComponent
    */
   changeTimelineType(e: any) {
     const val = e.target.value;
-    console.log(e.target.value);
-    console.log(val);
-    console.log(this.m.view);
     this.m.view = val;
 
     switch (this.m.view) {
@@ -577,8 +573,7 @@ export default class TimelineComponent
         'initTimeline(): this.state.data is empty');
     const elem: any = d3.select(CONSTANTS.SVG_SELECTOR);
     let newHeight = this.state.height;
-    console.log('working');
-    console.log(elem);
+
     if (elem !== null && elem.node() !== null) {
       const rect = elem.node().getBoundingClientRect();
       // this is the proper height for our timeline
@@ -666,9 +661,9 @@ export default class TimelineComponent
         domain = domain.concat(
             d3.map(this.m.csvData, (d: any) => d[this.m.yColumn2]).keys());
       }
-      console.log(this.m.yColumn2);
-
-      console.log(domain);
+      // console.log(this.m.yColumn2);
+      //
+      // console.log(domain);
       this.m.y = d3.scaleBand()
           .domain(domain)
           .range([this.m.height, 0]);
@@ -914,7 +909,6 @@ export default class TimelineComponent
   ttOver(d: any) {
     try {
       if (d3.event.buttons === 0) {
-        // console.log(d3.event);
         this.ttOverHelper(d, d3.event.x, d3.event.y);
       }
     } catch (e) {
@@ -996,7 +990,6 @@ export default class TimelineComponent
     }
     this.timelineType.applyZoom();
     this.m.numBars += additionalBars;
-    // console.log('numBars in updateChart after: ', this.m.numBars);
 
     if (d3.event !== null && d3.event.sourceEvent !== null &&
       d3.event.sourceEvent.type === 'mousemove') {
@@ -1088,11 +1081,8 @@ export default class TimelineComponent
    * @param {any} caller
    */
   dragStarted(caller: any) {
-    console.log(caller);
-    console.log('dragStarted');
     d3.select(caller).raise()
         .classed('active', true);
-    console.log(caller);
   }
 
   /**
@@ -1101,8 +1091,6 @@ export default class TimelineComponent
    * @postconditions The chart position is updated
    */
   dragged() {
-    console.log(d3.event);
-    console.log('dragged');
     this.ttUpdatePos(d3.event.sourceEvent.x, d3.event.sourceEvent.y);
 
     if (d3.event.sourceEvent.movementX > 0) {

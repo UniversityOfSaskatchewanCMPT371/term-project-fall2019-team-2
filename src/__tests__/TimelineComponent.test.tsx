@@ -238,7 +238,15 @@ describe('<TimelineComponent /> R2 Tests\n', () => {
         .simulate('change', {target: {value: 'Order Date'}});
     // Select Ship Date as Second Y Column
     wrapper.find('#x2Select').first()
-        .simulate('change', {target: {value: 'Order Date'}});
+        .simulate('change', {target: {value: 'Ship Date'}});
+    // const svgTarget: any = document.getElementById('svgtarget');
+    // let svgHTML: string = '';
+    // if (svgTarget) {
+    //   svgHTML = prettyHTML(svgTarget.innerHTML);
+    // }
+    //
+    // // Check that svg created by d3 matches snapshot
+    // expect(svgHTML).toMatchSnapshot();
   });
 });
 

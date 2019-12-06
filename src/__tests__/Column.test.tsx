@@ -18,11 +18,9 @@ describe('<Column /> Unit Tests', () => {
     it('Constructor assigns variables', () => {
       // tests for string data
       expect(columnString.primType).toBe('string');
-      expect(columnString.drawType).toBe(enumDrawType.occurrence);
       expect(columnString.key).toBe('heart attacks');
       // tests for numeric data
       expect(columnNum.primType).toBe('number');
-      expect(columnNum.drawType).toBe(enumDrawType.any);
       expect(columnNum.key).toBe('sandwiches');
     });
   });

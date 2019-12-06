@@ -6,6 +6,8 @@
 *.user
 *.userosscache
 *.sln.docstates
+sonar.bat
+sonar.sh
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

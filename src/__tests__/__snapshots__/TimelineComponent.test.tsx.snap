@@ -1517,15 +1517,15 @@ exports[`<TimelineComponent /> R3 Tests
 </circle>
 </g>
 <g class=\\"bar\\">
-<rect class=\\"pin-line\\" x=\\"648.4356150250006\\" width=\\"2\\" y=\\"0\\" height=\\"598\\">
+<rect class=\\"pin-line\\" x=\\"402.62750000000017\\" width=\\"2\\" y=\\"0\\" height=\\"598\\">
 </rect>
-<circle class=\\"pin-head\\" cx=\\"648.4356150250006\\" cy=\\"0\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+<circle class=\\"pin-head\\" cx=\\"402.62750000000017\\" cy=\\"0\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
 </circle>
 </g>
 <g class=\\"bar\\">
-<rect class=\\"pin-line\\" x=\\"648.4356150250006\\" width=\\"2\\" y=\\"598\\" height=\\"0\\">
+<rect class=\\"pin-line\\" x=\\"402.62750000000017\\" width=\\"2\\" y=\\"598\\" height=\\"0\\">
 </rect>
-<circle class=\\"pin-head\\" cx=\\"648.4356150250006\\" cy=\\"598\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+<circle class=\\"pin-head\\" cx=\\"402.62750000000017\\" cy=\\"598\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
 </circle>
 </g>
 <g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(0,
@@ -1655,15 +1655,15 @@ exports[`<TimelineComponent /> R3 Tests
 </circle>
 </g>
 <g class=\\"bar\\">
-<rect class=\\"pin-line\\" x=\\"226.09551875220143\\" width=\\"2\\" y=\\"0\\" height=\\"598\\">
+<rect class=\\"pin-line\\" x=\\"237.74751247500018\\" width=\\"2\\" y=\\"0\\" height=\\"598\\">
 </rect>
-<circle class=\\"pin-head\\" cx=\\"226.09551875220143\\" cy=\\"0\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+<circle class=\\"pin-head\\" cx=\\"237.74751247500018\\" cy=\\"0\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
 </circle>
 </g>
 <g class=\\"bar\\">
-<rect class=\\"pin-line\\" x=\\"226.09551875220143\\" width=\\"2\\" y=\\"598\\" height=\\"0\\">
+<rect class=\\"pin-line\\" x=\\"237.74751247500018\\" width=\\"2\\" y=\\"598\\" height=\\"0\\">
 </rect>
-<circle class=\\"pin-head\\" cx=\\"226.09551875220143\\" cy=\\"598\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
+<circle class=\\"pin-head\\" cx=\\"237.74751247500018\\" cy=\\"598\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
 </circle>
 </g>
 <g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(0,

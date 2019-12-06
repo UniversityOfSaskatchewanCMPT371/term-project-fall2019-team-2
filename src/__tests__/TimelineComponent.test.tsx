@@ -430,7 +430,7 @@ describe('<TimelineComponent /> R3 Tests\n', ()=>{
     // check if initial scale is 1
     expect(wrapper.instance().getScale()).toBe(1.0);
     // zoom in first so could test zoom backout
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 5; i++) {
       document.body.dispatchEvent(zoomInEventDown);
       document.body.dispatchEvent(zoomInEventUp);
     }
@@ -450,11 +450,11 @@ describe('<TimelineComponent /> R3 Tests\n', ()=>{
     expect(svgHTML).toMatchSnapshot();
 
     // zoom back out
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 5; i++) {
       document.body.dispatchEvent(zoomOutEventDown);
       document.body.dispatchEvent(zoomOutEventUp);
     }
-    expect(wrapper.instance().getScale()).toBe(0.9043820750088057);
+    expect(wrapper.instance().getScale()).toBe(0.9509900499000007);
 
     // update svg to reflect scale: do not use drawTimeline()
     wrapper.instance().updateChart();

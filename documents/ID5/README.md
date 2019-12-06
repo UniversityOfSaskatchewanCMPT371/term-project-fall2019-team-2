@@ -63,7 +63,7 @@ For viewing our current code climate and test coverage, refer to sonarcloud [her
 
 [This](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/ID5/Continuity%20Document.pdf) document outlines the future of the project, it goes over how to set the project up for development, how to get it set up for continous integration, how to set up testing, defect estimates, and known issues.  It also contains a section on what future developers might do moving forward, as well as some ideas for improving the project as a whole.
 
-## Timelog
+## Timelogs and Estimates
 
-[This](https://docs.google.com/spreadsheets/d/1NQE-0Cl15hqOMuEmQf0g8BnSgYWp-6AZVLhdm_tuwbE/edit#gid=688492208) document holds our time log information.
+[This](https://docs.google.com/spreadsheets/d/1NQE-0Cl15hqOMuEmQf0g8BnSgYWp-6AZVLhdm_tuwbE/edit#gid=688492208) document holds our time log information.  [This](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/ID5/Time%20and%20Estimations%20Compilation.pdf) document is a compilation of all of the estimates made throughout the project, as well as a summation of all individual estimates made, along with a comparison to the actual amount of time put in.
 

@@ -45,7 +45,9 @@ export default class ParserComponent extends React.Component<ParserInterface,
     }
 
     /**
-     * Waits until component mounts
+     * Waits until component mounts.
+     * This method is called by react when mounted. We simply
+     * use it to automatically load a CSV on development environments.
      */
     componentDidMount(): void {
       // Autoloads a file for local testing
@@ -261,10 +263,12 @@ export default class ParserComponent extends React.Component<ParserInterface,
     /**
      * Purpose: to instantiate an empty list of objects
      * for tracking the kinds of data in a column
+     * Pre-Conditions: None
+     * Post-Conditions: None
      * @param {number} fieldLength: the number of columns of data
      * @return {[CountTypes]}: a list of objects
      */
-    createTypeCountingObjects(fieldLength: number): CountTypes[] {
+    protected createTypeCountingObjects(fieldLength: number): CountTypes[] {
       assert(fieldLength > 0,
           'createTypeCountingObjects(): ' +
           'no data from which to create CountTypes[]');
@@ -383,8 +387,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
    * @param {string[]} fieldList: the list of fields for each column
    * @param {Column[]} list: an array of columns
    */
-    createColumn(mostComm: string, drawType: enumDrawType, indx: number,
-        fieldList: string[], list: Column[]) {
+    protected createColumn(mostComm: string, drawType: enumDrawType,
+        indx: number, fieldList: string[], list: Column[]) {
       assert.notStrictEqual(mostComm, '',
           'createColumn function has empty mostCommonType');
       assert.notStrictEqual(fieldList, [],
@@ -536,7 +540,8 @@ export class CountTypes {
 
   /**
    * finds the largest element of the fields
-   * @return {string}: a string representing the largest field
+   * @return {string}: a string representing the largest field.
+   * Defaults to 'date' if all elements is zero
    */
   largest(): string {
     if (this.numDate >= this.numIncongruent && this.numDate >= this.numNumber) {

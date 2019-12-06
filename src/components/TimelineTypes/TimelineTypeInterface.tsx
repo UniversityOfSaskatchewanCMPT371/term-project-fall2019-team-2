@@ -229,9 +229,6 @@ export abstract class TimelineType implements TimelineTypeInterface {
         this.m.csvData.length - 1 :
         dataIdxStart;
 
-      // dataIdxEnd = dataIdxEnd + this.m.barBuffer >= this.m.csvData.length ?
-      //   this.m.csvData.length - 1 :
-      //   dataIdxEnd + this.m.barBuffer;
       dataIdxEnd = dataIdxEnd + this.m.barBuffer >= this.m.csvData.length ?
         this.m.csvData.length :
         dataIdxEnd + this.m.barBuffer;

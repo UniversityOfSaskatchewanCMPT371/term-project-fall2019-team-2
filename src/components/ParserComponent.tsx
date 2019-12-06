@@ -201,24 +201,24 @@ export default class ParserComponent extends React.Component<ParserInterface,
       const keyInt = `${key}_num`;
       TimSort.sort(data, function(a: any, b: any) {
         let val: any;
-        if (!a.hasOwnProperty(keyInt)) {
-          val = moment(a[key], formatString);
-          if (val.isValid()) {
-            a[keyInt] = val.valueOf();
-          } else {
-            a[keyInt] = -1;
-          }
-        }
 
-        if (!b.hasOwnProperty(keyInt)) {
-          val = moment(b[key], formatString);
+        /**
+         * Purpose: get the unix time stamp of the date and
+         * if it is invalid return -1 to move it to the front
+         * @param{any}dateRead: the date to get the unix time stamp for
+         * @return{number}: the unix time stamp of the date or
+         * return -1 if invalid date for format picked
+         */
+        function getInt(dateRead:any): number {
+          val = moment(dateRead[key], formatString);
           if (val.isValid()) {
-            b[keyInt] = val.valueOf();
+            dateRead[keyInt] = val.valueOf();
           } else {
-            b[keyInt] = -1;
+            dateRead[keyInt] = -1;
           }
+          return dateRead[keyInt];
         }
-        return (a[keyInt] - b[keyInt]);
+        return (getInt(a) - getInt(b));
       });
 
       this.setState(() => {

@@ -12,11 +12,15 @@ import EventTimelineType
 export default class EventOccurrence extends EventTimelineType
   implements TimelineTypeInterface {
   /**
-   * Purpose: draws an element as Event with a Magnitude
+   * Purpose: draws an element as an occurrence event
    * @param {any} selection: the selection for the object to draw
    * @param {any} ttOver: tooltip over function
    * @param {any} ttMove: tooltip move function
    * @param {any} ttLeave: tooltip leave function
+   *
+   * @preconditions: Event elements exist to be rendered
+   * @postconditions: The selected components are drawn, any tooltips are also
+   * drawn
    */
   draw(selection: any, ttOver: any, ttMove: any, ttLeave: any): void {
     const bar = selection.append('g')
@@ -25,8 +29,6 @@ export default class EventOccurrence extends EventTimelineType
     if (this.m.yColumn2 !== '') {
       bar.append('rect')
           .attr('class', 'pin-line')
-          // .attr('x', (d: any, i: number) =>
-          //   (this.m.scale * this.m.barWidth * (i + this.m.dataIdx)))
           .attr('x', (d: any) =>
             (this.m.scale * this.m.timeScale(new Date(d[this.m.xColumn]))))
           .attr('width', 2)
@@ -93,6 +95,11 @@ export default class EventOccurrence extends EventTimelineType
    * @param {string} primType: the primType to compare
    * @return {boolean}: a boolean indicating if the primType is appropriate
    * for the y axis
+   *
+   * @precondition: the primType accurately represents one of the columns from
+   * the parsed csv.
+   * @postcondition: true or false, based on whether or not the primType is
+   * valid for the timeline type
    */
   checkYPrimType(primType: string): boolean {
     return (primType === 'date' ||

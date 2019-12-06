@@ -467,7 +467,7 @@ describe('R1 Tests\n', () => {
     expect(isValidSpy).not.toThrow('Wrong file type was uploaded.');
     expect(inferTypesSpy).not.toThrow('data is empty');
 
-    expect(dataIsValidSpy).toThrow('The file uploaded has no data.');
+    expect(dataIsValidSpy).toThrowError();
 
     compData = wrapper.state('data');
     expect(compData.length).toBe(3);
@@ -658,11 +658,9 @@ describe('<ParserComponent /> Unit Tests', () => {
     });
     it('should return false when given empty array', () => {
       const testArray: {}[] = [];
-      try {
-        expect(instance.dataIsValid(testArray)).toThrow('File has no data');
-      } catch (e) {
-        console.log(e);
-      }
+      expect(() => {
+        instance.dataIsValid(testArray);
+      }).toThrowError();
     });
   });
 

@@ -160,10 +160,10 @@ export default class ParserComponent extends React.Component<ParserInterface,
           'dataIsValid(): data (Array of objects) is null');
       assert.notStrictEqual(data, [],
           'dataIsValid(): data (array of objects) is empty');
-      if (data !== undefined && data.length >= 0) {
+      if (data !== undefined && data.length > 0) {
         return true;
       } else {
-        throw new Error('The file uploaded has no data.');
+        throw new Error();
       }
     }
 
@@ -195,10 +195,9 @@ export default class ParserComponent extends React.Component<ParserInterface,
    * @return {boolean}: return true once data is sorted
    */
     sortData(data: Array<object>, key:string): boolean {
-      assert.notEqual(key, false,
+      assert.notEqual(key, undefined,
           'sortData(): No valid date for selected format was found');
       const formatString = this.state.formatString;
-      const initialData = this.state.data;
       const keyInt = `${key}_num`;
       TimSort.sort(data, function(a: any, b: any) {
         let val: any;
@@ -227,7 +226,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
           data,
         };
       });
-      return this.state.data !== initialData;
+      return true;
     }
 
     /**
@@ -464,13 +463,14 @@ export default class ParserComponent extends React.Component<ParserInterface,
                 fileData: fileReader.result,
               };
             });
-            const lookForDateKeyResult = this.lookForDateKey(this.state.data);
             try {
               // shouldn't pass empty array into inferTypes or sortData :/
               assert.notStrictEqual(this.state.data, [],
                   'parseCsv(): this.state.data is empty' +
                     'but still calling inferTypes & sortData');
               if (this.dataIsValid(this.state.data)) {
+                const lookForDateKeyResult =
+                    this.lookForDateKey(this.state.data);
                 this.columnTypes = this.inferTypes(this.state.data);
                 this.sortData(this.state.data, lookForDateKeyResult);
               }

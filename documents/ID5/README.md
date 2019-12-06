@@ -20,12 +20,12 @@
 Every member of the group underwent a formal review throughout the course of the semester. It's also worth noting that not only was everyone reviewed, but everyone reviewed someone at least once. <br/>
 Camille [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/ID2FormalReview.pdf)<br/>
 Evan [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/ID2FormalReview.pdf)<br/>
-Amanda [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/riskDocReviewID4.pdf)<br/>
+Amanda [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/ID4FormalReview2.pdf)<br/>
 Mesa [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/ID1FormalReview.pdf)<br/>
 Eileen [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/ID4FormalReview.pdf)<br/>
 Braunson [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/ID3FormalReview.pdf)<br/>
 Anurag [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/ID5FormalReview.pdf)<br/>
-Kevin [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/ID5FormalReview2.pdf)<br/>
+Kevin [here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/reviews/Kevin_Formal_inspection.pdf)<br/>
 
 
 

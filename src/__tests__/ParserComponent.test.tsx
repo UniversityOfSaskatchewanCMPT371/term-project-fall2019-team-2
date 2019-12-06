@@ -829,19 +829,6 @@ describe('<ParserComponent /> Unit Tests', () => {
         fail(); // fail if error thrown
       }
     });
-    it('should throw exception when given empty data(undefined)', () => {
-      const data1 = new Array(0);
-      pc.state = {prompt: 'data1',
-        fileType: FileType.csv,
-        data: data1,
-        showTimeline: false,
-        formatString: '',
-        fileData: '',
-      };
-      expect(() => {
-        pc.inferTypes(data1);
-      }).toThrow('data is empty');
-    });
   });
 
   describe('parse()', () => {

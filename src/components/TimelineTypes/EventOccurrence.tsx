@@ -4,6 +4,7 @@ import * as d3ScaleChromatic
 import EventTimelineType
   from './EventTimelineType';
 
+
 /**
  * Purpose: to provide methods specific and relevant to drawing an
  * EventOccurrence timeline

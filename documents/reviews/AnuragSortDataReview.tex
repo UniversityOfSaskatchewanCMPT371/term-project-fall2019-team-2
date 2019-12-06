@@ -1,0 +1,66 @@
+\documentclass{article}
+
+\title{Code Review}
+\author{Anurag - SortData Refactor}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Roles}
+Author: Anurag\\
+Other Attendees: Braunson, Evan, Mesa\\
+
+\section{Objectives}
+
+
+\section{Scoring}
+    Provide a rating from 1 - 5. \\
+    1 - Work has room for improvement \\
+    3 - Work was done to an acceptable standard \\
+    5 - The work went above and beyond expectations\\
+
+\begin{tabular}{|l|c|}
+	\hline
+	Criteria & Score\\
+	\hline
+    Completeness:
+    (completed to the full scope of the requirements) & 4\\
+	\hline
+    Concise:
+    (the purpose is achieved without undue complication) & 5\\
+	\hline
+    Documentation (Including author): & 4\\
+    \hline
+    Structure/organization:
+    (does the work flow well, are components grouped logically?) & 5\\
+    \hline
+    Modularity: & 5\\
+    \hline
+    Follows code style: & 5\\
+    \hline
+\end{tabular}
+
+\section{Notes}
+    
+What was done well? Documentation was done well, pre and post-conditions for everything new.  \\
+All date string formats were tested. \\
+    
+Other notes: \\
+    
+\pagebreak
+
+\section{List of Defects}
+
+Lines 203-212 and 214-223 are basically doing the exact same thing, these should probably be abstracted into a singular function.\\ \\
+The unit tests don't intermix various date formats, so we can't be sure that the system is robust if it finds different date formats in the same column \\ \\
+Some negative testing is missing for the isValid method \\ \\
+Look for date key can get to the end of the function without returning anything. This should probably be changed to throw an error if that happens. \\ \\
+The checks if the data is sorted don't actually check that it's sorted, they just test that the data is different. \\ \\
+Line 198 allows a key to be type 'any' this should be changed to string. \\ \\
+Asserts should be used to make sure the key is never null or undefined. \\ \\
+The result of lookForDateKey should be stored
+
+
+\end{document}

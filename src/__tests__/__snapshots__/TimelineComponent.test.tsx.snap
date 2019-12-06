@@ -24,13 +24,13 @@ exports[`<TimelineComponent /> R2 Tests
                   Interval Magnitude
                 </option>
                 <option value=\\"IntervalOccurrence\\">
-                  Interval Occurrence
+                  Interval Labelled
                 </option>
                 <option value=\\"EventMagnitude\\">
                   Event Magnitude
                 </option>
                 <option value=\\"EventOccurrence\\">
-                  Event Occurrence
+                  Event Labelled
                 </option>
               </select>
             </FormControl>
@@ -42,13 +42,13 @@ exports[`<TimelineComponent /> R2 Tests
               <div className=\\"input-group-prepend\\">
                 <InputGroupText id=\\"inputGroup Prepend\\">
                   <span className=\\"input-group-text\\" id=\\"inputGroup Prepend\\">
-                    Y Column
+                    X Column
                   </span>
                 </InputGroupText>
               </div>
             </InputGroupPrepend>
-            <FormControl as=\\"select\\" id=\\"ySelect\\" value=\\"Units Sold\\" onChange={[Function: onChange]}>
-              <select value=\\"Units Sold\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"ySelect\\" className=\\"form-control\\">
+            <FormControl as=\\"select\\" id=\\"xSelect\\" value=\\"Order Date\\" onChange={[Function: onChange]}>
+              <select value=\\"Order Date\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"xSelect\\" className=\\"form-control\\">
                 <option value=\\"Order Date\\">
                   Order Date
                 </option>
@@ -92,13 +92,13 @@ exports[`<TimelineComponent /> R2 Tests
               <div className=\\"input-group-prepend\\">
                 <InputGroupText id=\\"inputGroup Prepend\\">
                   <span className=\\"input-group-text\\" id=\\"inputGroup Prepend\\">
-                    X Column
+                    Y Column
                   </span>
                 </InputGroupText>
               </div>
             </InputGroupPrepend>
-            <FormControl as=\\"select\\" id=\\"xSelect\\" value=\\"Order Date\\" onChange={[Function: onChange]}>
-              <select value=\\"Order Date\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"xSelect\\" className=\\"form-control\\">
+            <FormControl as=\\"select\\" id=\\"ySelect\\" value=\\"Units Sold\\" onChange={[Function: onChange]}>
+              <select value=\\"Units Sold\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"ySelect\\" className=\\"form-control\\">
                 <option value=\\"Order Date\\">
                   Order Date
                 </option>
@@ -250,13 +250,63 @@ exports[`<TimelineComponent /> R2 Tests
                   Interval Magnitude
                 </option>
                 <option value=\\"IntervalOccurrence\\">
-                  Interval Occurrence
+                  Interval Labelled
                 </option>
                 <option value=\\"EventMagnitude\\">
                   Event Magnitude
                 </option>
                 <option value=\\"EventOccurrence\\">
-                  Event Occurrence
+                  Event Labelled
+                </option>
+              </select>
+            </FormControl>
+          </div>
+        </InputGroup>
+        <InputGroup>
+          <div className=\\"input-group\\">
+            <InputGroupPrepend>
+              <div className=\\"input-group-prepend\\">
+                <InputGroupText id=\\"inputGroup Prepend\\">
+                  <span className=\\"input-group-text\\" id=\\"inputGroup Prepend\\">
+                    X Column
+                  </span>
+                </InputGroupText>
+              </div>
+            </InputGroupPrepend>
+            <FormControl as=\\"select\\" id=\\"xSelect\\" value=\\"Order Date\\" onChange={[Function: onChange]}>
+              <select value=\\"Order Date\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"xSelect\\" className=\\"form-control\\">
+                <option value=\\"Order Date\\">
+                  Order Date
+                </option>
+                <option value=\\"Order ID\\">
+                  Order ID
+                </option>
+                <option value=\\"Ship Date\\">
+                  Ship Date
+                </option>
+                <option value=\\"Units Sold\\">
+                  Units Sold
+                </option>
+                <option value=\\"Unit Price\\">
+                  Unit Price
+                </option>
+                <option value=\\"Unit Cost\\">
+                  Unit Cost
+                </option>
+                <option value=\\"Total Revenue\\">
+                  Total Revenue
+                </option>
+                <option value=\\"Total Cost\\">
+                  Total Cost
+                </option>
+                <option value=\\"Total Profit\\">
+                  Total Profit
+                </option>
+                <option value=\\"index\\">
+                  index
+                </option>
+                <option value=\\"Order Date_num\\">
+                  Order Date_num
                 </option>
               </select>
             </FormControl>
@@ -354,56 +404,6 @@ exports[`<TimelineComponent /> R2 Tests
                 <option value=\\"Order Priority\\">
                   Order Priority
                 </option>
-                <option value=\\"Order Date\\">
-                  Order Date
-                </option>
-                <option value=\\"Order ID\\">
-                  Order ID
-                </option>
-                <option value=\\"Ship Date\\">
-                  Ship Date
-                </option>
-                <option value=\\"Units Sold\\">
-                  Units Sold
-                </option>
-                <option value=\\"Unit Price\\">
-                  Unit Price
-                </option>
-                <option value=\\"Unit Cost\\">
-                  Unit Cost
-                </option>
-                <option value=\\"Total Revenue\\">
-                  Total Revenue
-                </option>
-                <option value=\\"Total Cost\\">
-                  Total Cost
-                </option>
-                <option value=\\"Total Profit\\">
-                  Total Profit
-                </option>
-                <option value=\\"index\\">
-                  index
-                </option>
-                <option value=\\"Order Date_num\\">
-                  Order Date_num
-                </option>
-              </select>
-            </FormControl>
-          </div>
-        </InputGroup>
-        <InputGroup>
-          <div className=\\"input-group\\">
-            <InputGroupPrepend>
-              <div className=\\"input-group-prepend\\">
-                <InputGroupText id=\\"inputGroup Prepend\\">
-                  <span className=\\"input-group-text\\" id=\\"inputGroup Prepend\\">
-                    X Column
-                  </span>
-                </InputGroupText>
-              </div>
-            </InputGroupPrepend>
-            <FormControl as=\\"select\\" id=\\"xSelect\\" value=\\"Order Date\\" onChange={[Function: onChange]}>
-              <select value=\\"Order Date\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"xSelect\\" className=\\"form-control\\">
                 <option value=\\"Order Date\\">
                   Order Date
                 </option>
@@ -548,63 +548,13 @@ exports[`<TimelineComponent /> R2 Tests
                   Interval Magnitude
                 </option>
                 <option value=\\"IntervalOccurrence\\">
-                  Interval Occurrence
+                  Interval Labelled
                 </option>
                 <option value=\\"EventMagnitude\\">
                   Event Magnitude
                 </option>
                 <option value=\\"EventOccurrence\\">
-                  Event Occurrence
-                </option>
-              </select>
-            </FormControl>
-          </div>
-        </InputGroup>
-        <InputGroup>
-          <div className=\\"input-group\\">
-            <InputGroupPrepend>
-              <div className=\\"input-group-prepend\\">
-                <InputGroupText id=\\"inputGroup Prepend\\">
-                  <span className=\\"input-group-text\\" id=\\"inputGroup Prepend\\">
-                    Y Column
-                  </span>
-                </InputGroupText>
-              </div>
-            </InputGroupPrepend>
-            <FormControl as=\\"select\\" id=\\"ySelect\\" value=\\"Region\\" onChange={[Function: onChange]}>
-              <select value=\\"Region\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"ySelect\\" className=\\"form-control\\">
-                <option value=\\"Order Date\\">
-                  Order Date
-                </option>
-                <option value=\\"Order ID\\">
-                  Order ID
-                </option>
-                <option value=\\"Ship Date\\">
-                  Ship Date
-                </option>
-                <option value=\\"Units Sold\\">
-                  Units Sold
-                </option>
-                <option value=\\"Unit Price\\">
-                  Unit Price
-                </option>
-                <option value=\\"Unit Cost\\">
-                  Unit Cost
-                </option>
-                <option value=\\"Total Revenue\\">
-                  Total Revenue
-                </option>
-                <option value=\\"Total Cost\\">
-                  Total Cost
-                </option>
-                <option value=\\"Total Profit\\">
-                  Total Profit
-                </option>
-                <option value=\\"index\\">
-                  index
-                </option>
-                <option value=\\"Order Date_num\\">
-                  Order Date_num
+                  Event Labelled
                 </option>
               </select>
             </FormControl>
@@ -669,6 +619,56 @@ exports[`<TimelineComponent /> R2 Tests
             </InputGroupPrepend>
             <FormControl as=\\"select\\" id=\\"x2Select\\" value=\\"Order Date\\" onChange={[Function: onChange]}>
               <select value=\\"Order Date\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"x2Select\\" className=\\"form-control\\">
+                <option value=\\"Order Date\\">
+                  Order Date
+                </option>
+                <option value=\\"Order ID\\">
+                  Order ID
+                </option>
+                <option value=\\"Ship Date\\">
+                  Ship Date
+                </option>
+                <option value=\\"Units Sold\\">
+                  Units Sold
+                </option>
+                <option value=\\"Unit Price\\">
+                  Unit Price
+                </option>
+                <option value=\\"Unit Cost\\">
+                  Unit Cost
+                </option>
+                <option value=\\"Total Revenue\\">
+                  Total Revenue
+                </option>
+                <option value=\\"Total Cost\\">
+                  Total Cost
+                </option>
+                <option value=\\"Total Profit\\">
+                  Total Profit
+                </option>
+                <option value=\\"index\\">
+                  index
+                </option>
+                <option value=\\"Order Date_num\\">
+                  Order Date_num
+                </option>
+              </select>
+            </FormControl>
+          </div>
+        </InputGroup>
+        <InputGroup>
+          <div className=\\"input-group\\">
+            <InputGroupPrepend>
+              <div className=\\"input-group-prepend\\">
+                <InputGroupText id=\\"inputGroup Prepend\\">
+                  <span className=\\"input-group-text\\" id=\\"inputGroup Prepend\\">
+                    Y Column
+                  </span>
+                </InputGroupText>
+              </div>
+            </InputGroupPrepend>
+            <FormControl as=\\"select\\" id=\\"ySelect\\" value=\\"Region\\" onChange={[Function: onChange]}>
+              <select value=\\"Region\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"ySelect\\" className=\\"form-control\\">
                 <option value=\\"Order Date\\">
                   Order Date
                 </option>
@@ -782,13 +782,109 @@ exports[`<TimelineComponent /> R2 Tests
                   Interval Magnitude
                 </option>
                 <option value=\\"IntervalOccurrence\\">
-                  Interval Occurrence
+                  Interval Labelled
                 </option>
                 <option value=\\"EventMagnitude\\">
                   Event Magnitude
                 </option>
                 <option value=\\"EventOccurrence\\">
-                  Event Occurrence
+                  Event Labelled
+                </option>
+              </select>
+            </FormControl>
+          </div>
+        </InputGroup>
+        <InputGroup>
+          <div className=\\"input-group\\">
+            <InputGroupPrepend>
+              <div className=\\"input-group-prepend\\">
+                <InputGroupText id=\\"inputGroup Prepend\\">
+                  <span className=\\"input-group-text\\" id=\\"inputGroup Prepend\\">
+                    Starting Range
+                  </span>
+                </InputGroupText>
+              </div>
+            </InputGroupPrepend>
+            <FormControl as=\\"select\\" id=\\"xSelect\\" value=\\"Order Date\\" onChange={[Function: onChange]}>
+              <select value=\\"Order Date\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"xSelect\\" className=\\"form-control\\">
+                <option value=\\"Order Date\\">
+                  Order Date
+                </option>
+                <option value=\\"Order ID\\">
+                  Order ID
+                </option>
+                <option value=\\"Ship Date\\">
+                  Ship Date
+                </option>
+                <option value=\\"Units Sold\\">
+                  Units Sold
+                </option>
+                <option value=\\"Unit Price\\">
+                  Unit Price
+                </option>
+                <option value=\\"Unit Cost\\">
+                  Unit Cost
+                </option>
+                <option value=\\"Total Revenue\\">
+                  Total Revenue
+                </option>
+                <option value=\\"Total Cost\\">
+                  Total Cost
+                </option>
+                <option value=\\"Total Profit\\">
+                  Total Profit
+                </option>
+                <option value=\\"index\\">
+                  index
+                </option>
+                <option value=\\"Order Date_num\\">
+                  Order Date_num
+                </option>
+              </select>
+            </FormControl>
+            <InputGroupPrepend>
+              <div className=\\"input-group-prepend\\">
+                <InputGroupText id=\\"inputGroup Prepend\\">
+                  <span className=\\"input-group-text\\" id=\\"inputGroup Prepend\\">
+                    Ending Range
+                  </span>
+                </InputGroupText>
+              </div>
+            </InputGroupPrepend>
+            <FormControl as=\\"select\\" id=\\"x2Select\\" value=\\"Order Date\\" onChange={[Function: onChange]}>
+              <select value=\\"Order Date\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"x2Select\\" className=\\"form-control\\">
+                <option value=\\"Order Date\\">
+                  Order Date
+                </option>
+                <option value=\\"Order ID\\">
+                  Order ID
+                </option>
+                <option value=\\"Ship Date\\">
+                  Ship Date
+                </option>
+                <option value=\\"Units Sold\\">
+                  Units Sold
+                </option>
+                <option value=\\"Unit Price\\">
+                  Unit Price
+                </option>
+                <option value=\\"Unit Cost\\">
+                  Unit Cost
+                </option>
+                <option value=\\"Total Revenue\\">
+                  Total Revenue
+                </option>
+                <option value=\\"Total Cost\\">
+                  Total Cost
+                </option>
+                <option value=\\"Total Profit\\">
+                  Total Profit
+                </option>
+                <option value=\\"index\\">
+                  index
+                </option>
+                <option value=\\"Order Date_num\\">
+                  Order Date_num
                 </option>
               </select>
             </FormControl>
@@ -886,102 +982,6 @@ exports[`<TimelineComponent /> R2 Tests
                 <option value=\\"Order Priority\\">
                   Order Priority
                 </option>
-                <option value=\\"Order Date\\">
-                  Order Date
-                </option>
-                <option value=\\"Order ID\\">
-                  Order ID
-                </option>
-                <option value=\\"Ship Date\\">
-                  Ship Date
-                </option>
-                <option value=\\"Units Sold\\">
-                  Units Sold
-                </option>
-                <option value=\\"Unit Price\\">
-                  Unit Price
-                </option>
-                <option value=\\"Unit Cost\\">
-                  Unit Cost
-                </option>
-                <option value=\\"Total Revenue\\">
-                  Total Revenue
-                </option>
-                <option value=\\"Total Cost\\">
-                  Total Cost
-                </option>
-                <option value=\\"Total Profit\\">
-                  Total Profit
-                </option>
-                <option value=\\"index\\">
-                  index
-                </option>
-                <option value=\\"Order Date_num\\">
-                  Order Date_num
-                </option>
-              </select>
-            </FormControl>
-          </div>
-        </InputGroup>
-        <InputGroup>
-          <div className=\\"input-group\\">
-            <InputGroupPrepend>
-              <div className=\\"input-group-prepend\\">
-                <InputGroupText id=\\"inputGroup Prepend\\">
-                  <span className=\\"input-group-text\\" id=\\"inputGroup Prepend\\">
-                    Starting Range
-                  </span>
-                </InputGroupText>
-              </div>
-            </InputGroupPrepend>
-            <FormControl as=\\"select\\" id=\\"xSelect\\" value=\\"Order Date\\" onChange={[Function: onChange]}>
-              <select value=\\"Order Date\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"xSelect\\" className=\\"form-control\\">
-                <option value=\\"Order Date\\">
-                  Order Date
-                </option>
-                <option value=\\"Order ID\\">
-                  Order ID
-                </option>
-                <option value=\\"Ship Date\\">
-                  Ship Date
-                </option>
-                <option value=\\"Units Sold\\">
-                  Units Sold
-                </option>
-                <option value=\\"Unit Price\\">
-                  Unit Price
-                </option>
-                <option value=\\"Unit Cost\\">
-                  Unit Cost
-                </option>
-                <option value=\\"Total Revenue\\">
-                  Total Revenue
-                </option>
-                <option value=\\"Total Cost\\">
-                  Total Cost
-                </option>
-                <option value=\\"Total Profit\\">
-                  Total Profit
-                </option>
-                <option value=\\"index\\">
-                  index
-                </option>
-                <option value=\\"Order Date_num\\">
-                  Order Date_num
-                </option>
-              </select>
-            </FormControl>
-            <InputGroupPrepend>
-              <div className=\\"input-group-prepend\\">
-                <InputGroupText id=\\"inputGroup Prepend\\">
-                  <span className=\\"input-group-text\\" id=\\"inputGroup Prepend\\">
-                    Ending Range
-                  </span>
-                </InputGroupText>
-              </div>
-            </InputGroupPrepend>
-            <FormControl as=\\"select\\" id=\\"x2Select\\" value=\\"Order Date\\" onChange={[Function: onChange]}>
-              <select value=\\"Order Date\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"x2Select\\" className=\\"form-control\\">
                 <option value=\\"Order Date\\">
                   Order Date
                 </option>

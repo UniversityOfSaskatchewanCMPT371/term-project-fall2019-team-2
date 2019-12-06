@@ -179,7 +179,7 @@ describe('<TimelineComponent /> R2 Tests\n', () => {
           </option>
           <option
             value="IntervalOccurrence">Interval
-            Occurrence
+            Labelled
           </option>
           <option
             value="EventMagnitude">Event
@@ -187,7 +187,7 @@ describe('<TimelineComponent /> R2 Tests\n', () => {
           </option>
           <option
             value="EventOccurrence">Event
-            Occurrence
+            Labelled
           </option>
         </select>;
 
@@ -408,7 +408,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
             </option>
             <option
               value="IntervalOccurrence">Interval
-              Occurrence
+              Labelled
             </option>
             <option
               value="EventMagnitude">Event
@@ -416,7 +416,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
             </option>
             <option
               value="EventOccurrence">Event
-              Occurrence
+              Labelled
             </option>
           </select>;
 

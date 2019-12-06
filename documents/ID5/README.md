@@ -35,6 +35,8 @@ exactly what line in our code had the error.
 
 For viewing our current code climate and test coverage, refer to sonarcloud [here](https://sonarcloud.io/dashboard?id=cmpt371-team2) which is updated on every push to the repository.
 
+Unfortunately I cannot provide a link to our internal error reporting, but I will be happy to add emails if access is wanted, or show it at the marking session.
+
 ## Timelog
 
 [This](https://docs.google.com/spreadsheets/d/1NQE-0Cl15hqOMuEmQf0g8BnSgYWp-6AZVLhdm_tuwbE/edit#gid=688492208) document holds our time log information.

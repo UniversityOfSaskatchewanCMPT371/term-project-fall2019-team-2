@@ -85,6 +85,8 @@ export default class TimelineComponent
 
   /**
    * Get the current scale data for zooming of keys
+   * @precondition none
+   * @postcondition none
    * @return {number}: The scale
    */
   getScale(): number {
@@ -93,6 +95,8 @@ export default class TimelineComponent
 
   /**
    * Get the current delta value for panning left and right
+   * @precondition: A timeline model is instantiated
+   * @postcondition: none
    * @return {number}: The deltaX
    */
   getDeltaX(): number {
@@ -102,8 +106,8 @@ export default class TimelineComponent
   /**
    * Purpose: waits until the component has properly mounted before drawing the
    * timeline
-   * @precondition: the component mounted correctly
-   * @postcondition: default x and y columns are chosen
+   * @precondition the component mounted correctly
+   * @postcondition default x and y columns are chosen
    */
   componentDidMount(): void {
     if (this.state.data.columns !== null &&
@@ -188,6 +192,11 @@ export default class TimelineComponent
 
   /**
    * Purpose: to sort data by the column passed in
+   * @Precondition The string passed in is present as the header
+   * for one of the columns
+   * The column associated with that string can be ordered
+   * @Postcondition The data is sorted by the column associated with the
+   * string passed in
    * @param {string} column
    */
   async sortData(column: string) {
@@ -234,6 +243,8 @@ export default class TimelineComponent
 
   /**
    * Purpose: used to change the selected column for the timeline
+   * @precondition At least one other column is instantiated to draw
+   * @postcondition The currently rendered column is changed
    * @param {any} e
    * @param {string} column
    */
@@ -296,6 +307,8 @@ export default class TimelineComponent
 
   /**
    * Purpose: to clear and redraw the timeline
+   * @precondition A timeline component exists and is being rendered
+   * @postcondition A timeline component is re-instantiated
    */
   resetTimeline() {
     d3.selectAll('svg').remove();
@@ -311,8 +324,8 @@ export default class TimelineComponent
 
   /**
    * Internal function that maps columns to HTML optional values
-   * Pre-Conditions: None
-   * Post-Conditions: None. This function does not change the state
+   * @preconditions: None
+   * @postconditions: None. This function does not change the state
    * of the visualization.
    * @param {Column[]} column An array of columns
    * @return {JSX.Element[]} The HTML option values for the drop downs
@@ -325,6 +338,8 @@ export default class TimelineComponent
 
   /**
    * Purpose: renders the initial html
+   * @precondition none
+   * @postcondition none
    * @return {string}: html output to the page
    */
   render() {
@@ -503,6 +518,8 @@ export default class TimelineComponent
 
   /**
    * Purpose: changes the timeline type to the one desired by the user
+   * @precondition A csv file has been uploaded
+   * @postcondition The chart position is updated with the new values
    * @param {any} e: the event to pass into the function
    */
   changeTimelineType(e: any) {
@@ -548,6 +565,8 @@ export default class TimelineComponent
 
   /**
    * Purpose: sets the initial values for rendering the actual timeline
+   * @precondition none
+   * @postcondition none
    */
   initTimeline() {
     assert.notStrictEqual(this.state.data, [],
@@ -589,34 +608,20 @@ export default class TimelineComponent
     this.m.csvData = this.state.data.arrayOfData;
 
     this.m.data = this.m.csvData.slice(0, this.m.numBars);
-
-    let xColumnVals: number[] = [];
-
-    // console.log(this.m.csvData);
-    if (this.m.xColumn !== '') {
-      // @ts-ignore
-      // eslint-disable-next-line max-len
-      xColumnVals = xColumnVals.concat(this.m.csvData.map((d: any) =>
-        Date.parse(new Date(d[this.m.xColumn]).toJSON())));
-    }
-
-    if ((this.m.view === ViewType.IntervalMagnitude ||
-      this.m.view === ViewType.IntervalOccurrence) &&
-      this.m.xColumn2 !== '') {
-      // console.log(this.m.xColumn2);
-      // @ts-ignore
-      // eslint-disable-next-line max-len
-      xColumnVals = xColumnVals.concat(this.m.csvData.map((d: any) =>
-        Date.parse(new Date(d[this.m.xColumn2]).toJSON())));
-    }
-    // @ts-ignore
-    this.m.minDate = new Date(d3.min(xColumnVals)).toJSON();
+    // ordinals = data.map((d: any) => d[xColumn]);
 
     // @ts-ignore
-    this.m.maxDate = new Date(d3.max(xColumnVals)).toJSON();
+    this.m.minDate = new Date(d3.min(
+        [d3.min(this.m.csvData, (d: any) => Date.parse(d[this.m.xColumn])),
+          d3.min(this.m.csvData, (d: any) => Date.parse(d[this.m.xColumn2]))]));
+
+    // @ts-ignore
+    this.m.maxDate = new Date(d3.max(
+        [d3.max(this.m.csvData, (d: any) => Date.parse(d[this.m.xColumn])),
+          d3.max(this.m.csvData, (d: any) => Date.parse(d[this.m.xColumn2]))]));
 
     this.m.timeScale = d3.scaleTime()
-        .domain([new Date(this.m.minDate), new Date(this.m.maxDate)])
+        .domain([this.m.minDate, this.m.maxDate])
         .range([0, 50 * this.m.csvData.length]);
 
     this.m.x = d3.scaleBand()
@@ -627,8 +632,8 @@ export default class TimelineComponent
     // variables
     console.log(this.m.x(0));
 
-    // console.log(this.m.view);
-    // console.log(ViewType[this.m.view]);
+    console.log(this.m.view);
+    console.log(ViewType[this.m.view]);
 
 
     if (ViewType[this.m.view] === ViewType.IntervalMagnitude ||
@@ -671,8 +676,9 @@ export default class TimelineComponent
   /**
    * Purpose: draws the timeline and runs the functions and event handlers for
    * said timeline
-   * @precondition : initTimeline has already been called
-   * @postcondition : the Timeline and it's axis have been drawn.
+   * @precondition initTimeline has already been called,
+   * and there exists an instance of the timeline class to draw
+   * @postcondition the Timeline and it's axis have been drawn.
    */
   drawTimeline() {
     // should only draw timeline if there is data
@@ -722,6 +728,9 @@ export default class TimelineComponent
     const axisLayer = this.svg.append('g')
         .attr('id', 'axisLayer');
 
+
+    console.log(ViewType[this.m.view] === ViewType.EventMagnitude);
+
     axisLayer.append('g')
         .style('color', 'black')
         .attr('class', 'y axis')
@@ -748,6 +757,8 @@ export default class TimelineComponent
 
   /**
    * Draw the axis labels
+   * @precondition Labels exist to be rendered
+   * @postcondition Labels are rendered to the canvas
    * @return {void}: Nothing
    */
   private drawLabels(): void {
@@ -756,6 +767,8 @@ export default class TimelineComponent
 
   /**
    * Register events on D3 elements.
+   * @precondition An keyboard/mouse event occurs
+   * @precondition The correct event is registered
    * @return {void}: Nothing
    */
   private registerEvents(): void {
@@ -838,11 +851,16 @@ export default class TimelineComponent
   /**
    * Purpose: this function exists explicitly so the core functionality of
    * ttOver cna be tested, as testing d3 events is quite difficult
+   * @precondition d, x & y are not null
+   * @postcondition none
    * @param {any} d
    * @param {number} x
    * @param {number} y
    */
   ttOverHelper(d: any, x: number, y: number) {
+    assert.notStrictEqual(d, null, 'd should not be null');
+    assert.notStrictEqual(x, null, 'x should not be null');
+    assert.notStrictEqual(y, null, 'y should not be null');
     const Tooltip = d3.select(CONSTANTS.SVG_SELECTOR)
         .append('div')
         .style('opacity', 0)
@@ -883,6 +901,9 @@ export default class TimelineComponent
    * Purpose: adds the tooltip to the canvas when the user mouses over a piece
    * of timeline data.
    * Timeline scope: all elements
+   * @precondition An element exists in the timeline that can have
+   * a tool tip rendered
+   * @postcondition The tool tip is rendered on the canvas
    * @param {any} d
    */
   ttOver(d: any) {
@@ -899,6 +920,9 @@ export default class TimelineComponent
   /**
    * Purpose: updates the position of the Tooltip
    * Timeline Scope: all elements
+   * @precondition A tooltip is currently being rendered
+   * @postcondition The tooltip has it’s x and y position updated
+   * to follow the mouse
    * @param {number} xPos: the current x position of the mouse
    * @param {number} yPos: the current y position of the mouse
    */
@@ -924,6 +948,9 @@ export default class TimelineComponent
   /**
    * Purpose: wrapper for ttUpdatePos
    * Timeline Scope: all elements
+   * @precondition A valid datum is passed into the function from the timeline
+   * @postcondition The tooltip has it’s x and y position
+   * updated to follow the mouse
    * @param {any} d: datum passed into the function
    */
   ttMove(d: any) {
@@ -934,6 +961,10 @@ export default class TimelineComponent
   /**
    * Purpose: called when the cursor moves off of a bar
    * Timeline Scope: all elements
+   * @precondition: none
+   * @postcondition: Any tooltips that exist are removed from the
+   * list of currently drawn tooltips
+
    * @param {any} d
    */
   ttLeave(d: any) {
@@ -945,6 +976,9 @@ export default class TimelineComponent
 
   /**
    * Purpose: updates the state and positioning of element on the Timeline
+   * @precondition An event occured that caused update chart
+   * to be called (d3.event is not null)
+   * @postcondition The correct event is triggered which updates the chart
    */
   updateChart() {
     const additionalBars: number = 1; // number of additional bars rendered
@@ -970,6 +1004,8 @@ export default class TimelineComponent
    * and has been replaced by the TimelineTypeInterface, it only still exists
    * because some tests rely on it and a workaround has not yet been
    * figured out.
+   * @precondition selecton should not be null
+   * @postcondition none
    * @param {any} selection: the selection for the object to draw
    */
   drawEventMagnitude(selection: any): void {
@@ -981,6 +1017,8 @@ export default class TimelineComponent
    * and has been replaced by the TimelineTypeInterface, it only still exists
    * because some tests rely on it and a workaround has not yet been
    * figured out.
+   * @precondition: selection should not be null
+   * @postcondition: none
    * @param {any} selection
    */
   drawIntervalMagnitude(selection: any): void {
@@ -989,6 +1027,8 @@ export default class TimelineComponent
 
   /**
    * Purpose: used to update which bars are being rendered to the screen
+   * @precondition A timeline type exists
+   * @postconditions The bars are updated
    */
   updateBars() {
     this.timelineType.updateBars(this.ttOver, this.ttMove, this.ttLeave);
@@ -999,6 +1039,8 @@ export default class TimelineComponent
    * Timeline. This function is old and has been replaced by the
    * TimelineTypeInterface, it only still exists because some tests rely on it
    * and a workaround has not yet been figured out.
+   * @precondition this.timelineType.getData() should not be null
+   * @postcondition none
    */
   getEventMagnitudeData() {
     this.timelineType.getData();
@@ -1009,6 +1051,8 @@ export default class TimelineComponent
    * IntervalMagnitude Timeline. This function is old and has been replaced by
    * the TimelineTypeInterface, it only still exists because some tests rely on
    * it and a workaround has not yet been figured out.
+   * @precondition this.timelineType.getData() should not be null
+   * @postcondition none
    */
   getIntervalMagnitudeData() {
     this.timelineType.getData();
@@ -1017,6 +1061,8 @@ export default class TimelineComponent
   /**
    * Purpose: called to recalculate the current chart position and data elements
    * being rendered.
+   * @precondition A timeline type is instantiated
+   * @postcondition The chart position is updated with the new values
    */
   moveChart() {
     d3.select('#barsLayer')
@@ -1030,10 +1076,9 @@ export default class TimelineComponent
 
   /**
    * @this dragStarted
+   * @precondition A timeline object exists
+   * @postcondition The drag state is set is to true
    * @param {any} caller
-   *
-   * @preconditions:
-   * @postconditions:
    */
   dragStarted(caller: any) {
     d3.select(caller).raise()
@@ -1042,10 +1087,8 @@ export default class TimelineComponent
 
   /**
    * Purpose: called when the timeline is dragged by the user
-   *
-   * @preconditions: the timeline is being dragged by the user
-   * @postconditions: the timeline is translated to the position that the user
-   * has specified
+   * @preconditons A timeline is instantiated and being rendered
+   * @postconditions The chart position is updated
    */
   dragged() {
     this.ttUpdatePos(d3.event.sourceEvent.x, d3.event.sourceEvent.y);
@@ -1064,6 +1107,8 @@ export default class TimelineComponent
 
   /**
    * @this dragEnded
+   * @preconditions: The drag state is set to true
+   * @postconditions: The drag state is set to false and the dragging stops
    * @param {any} caller
    */
   dragEnded(caller: any) {

@@ -246,9 +246,7 @@ describe('<TimelineComponent /> R2 Tests\n', () => {
     }
 
     // Check that svg created by d3 matches snapshot
-    // had to comment this out as floating point precision errors down to like
-    // 10 decimal places are slightly different on sonarcloud.
-    // expect(svgHTML).toMatchSnapshot();
+    expect(svgHTML).toMatchSnapshot();
   });
 });
 

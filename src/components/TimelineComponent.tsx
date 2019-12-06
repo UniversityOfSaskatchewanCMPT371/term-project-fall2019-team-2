@@ -661,9 +661,7 @@ export default class TimelineComponent
         domain = domain.concat(
             d3.map(this.m.csvData, (d: any) => d[this.m.yColumn2]).keys());
       }
-      // console.log(this.m.yColumn2);
-      //
-      // console.log(domain);
+
       this.m.y = d3.scaleBand()
           .domain(domain)
           .range([this.m.height, 0]);

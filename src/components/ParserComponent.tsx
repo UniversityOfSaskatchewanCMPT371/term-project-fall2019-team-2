@@ -235,7 +235,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
         }
       }
       throw new Error('No dates found');
-    };
+    }
 
     /**
    * Purpose: sorts the array of data

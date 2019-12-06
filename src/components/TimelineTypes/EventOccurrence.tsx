@@ -40,8 +40,6 @@ export default class EventOccurrence extends EventTimelineType
       // Circles
       bar.append('circle')
           .attr('class', 'pin-head')
-          // .attr('cx', (d: any, i: number) =>
-          //   (this.m.scale * this.m.barWidth * (i + this.m.dataIdx)))
           .attr('cx', (d: any) =>
             (this.m.scale * this.m.timeScale(new Date(d[this.m.xColumn]))))
           .attr('cy', (d:any) =>
@@ -57,8 +55,6 @@ export default class EventOccurrence extends EventTimelineType
     } else {
       bar.append('rect')
           .attr('class', 'pin-line')
-          // .attr('x', (d: any, i: number) =>
-          //   (this.m.scale * this.m.barWidth * (i + this.m.dataIdx)))
           .attr('x', (d: any) =>
             (this.m.scale * this.m.timeScale(new Date(d[this.m.xColumn]))))
           .attr('width', 2)

@@ -134,6 +134,7 @@ export abstract class TimelineType implements TimelineTypeInterface {
    * reflect the information from the timeline
    */
   getData(): void {
+    console.log(this.m.csvData);
     let dataIdxEnd: number = 0;
     let dataIdxStart: number = 0;
     let consecutive = true;
@@ -160,7 +161,6 @@ export abstract class TimelineType implements TimelineTypeInterface {
         d3.max([this.m.dataIdx + this.m.data.length,
           this.m.csvData.length-1]);
     }
-    // console.log(this.m.csvData);
 
     for (dataIdxEnd;
       (direction === 1 && dataIdxEnd < this.m.csvData.length) ||
@@ -169,6 +169,10 @@ export abstract class TimelineType implements TimelineTypeInterface {
       const elem: any = this.m.csvData[dataIdxEnd];
       const bounds: number[] = [];
 
+      if (elem === undefined || elem === null) {
+        continue;
+      }
+
       // get the bounds to test against for this object
       keys.forEach((key) => {
         if (!elem.hasOwnProperty(key + '_num')) {
@@ -176,6 +180,9 @@ export abstract class TimelineType implements TimelineTypeInterface {
         }
         bounds.push((this.m.scale * this.m.timeScale(elem[key + '_num'])));
       });
+
+      console.log(bounds);
+      console.log(this.m);
 
       // We can only increment dataIdx if the preceding elements have also
       // been moved off of the current screen area
@@ -199,8 +206,6 @@ export abstract class TimelineType implements TimelineTypeInterface {
         break;
       }
     }
-
-    // console.log({dataIdxStart, dataIdxEnd});
 
     if (direction === 1) {
       dataIdxStart = dataIdxStart >= this.m.csvData.length ?
@@ -240,7 +245,8 @@ export abstract class TimelineType implements TimelineTypeInterface {
    * @param {any}  ttMove
    * @param {any} ttLeave
    *
-   * @precondition
+   * @precondition: a csv has been parsed and sent to the timeline component
+   * @postcondition: the bars and x-axis ticks are drawn correctly
    */
   updateBars(ttOver: any, ttMove: any, ttLeave: any): void {
     // @ts-ignore

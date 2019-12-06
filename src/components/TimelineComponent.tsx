@@ -68,7 +68,6 @@ export default class TimelineComponent
     this.ttOver = this.ttOver.bind(this);
     this.ttUpdatePos = this.ttUpdatePos.bind(this);
     this.ttMove = this.ttMove.bind(this);
-    // this.ttMove = this.ttMove.bind(this);
     this.updateChart = this.updateChart.bind(this);
     this.updateBars = this.updateBars.bind(this);
     this.moveChart = this.moveChart.bind(this);
@@ -594,20 +593,34 @@ export default class TimelineComponent
     this.m.csvData = this.state.data.arrayOfData;
 
     this.m.data = this.m.csvData.slice(0, this.m.numBars);
-    // ordinals = data.map((d: any) => d[xColumn]);
+
+    let xColumnVals: number[] = [];
+
+    console.log(this.m.csvData);
+    if (this.m.xColumn !== '') {
+      // @ts-ignore
+      // eslint-disable-next-line max-len
+      xColumnVals = xColumnVals.concat(this.m.csvData.map((d: any) =>
+        Date.parse(new Date(d[this.m.xColumn]).toJSON())));
+    }
+
+    if ((this.m.view === ViewType.IntervalMagnitude ||
+      this.m.view === ViewType.IntervalOccurrence) &&
+      this.m.xColumn2 !== '') {
+      console.log(this.m.xColumn2);
+      // @ts-ignore
+      // eslint-disable-next-line max-len
+      xColumnVals = xColumnVals.concat(this.m.csvData.map((d: any) =>
+        Date.parse(new Date(d[this.m.xColumn2]).toJSON())));
+    }
+    // @ts-ignore
+    this.m.minDate = new Date(d3.min(xColumnVals)).toJSON();
 
     // @ts-ignore
-    this.m.minDate = new Date(d3.min(
-        [d3.min(this.m.csvData, (d: any) => Date.parse(d[this.m.xColumn])),
-          d3.min(this.m.csvData, (d: any) => Date.parse(d[this.m.xColumn2]))]));
-
-    // @ts-ignore
-    this.m.maxDate = new Date(d3.max(
-        [d3.max(this.m.csvData, (d: any) => Date.parse(d[this.m.xColumn])),
-          d3.max(this.m.csvData, (d: any) => Date.parse(d[this.m.xColumn2]))]));
+    this.m.maxDate = new Date(d3.max(xColumnVals)).toJSON();
 
     this.m.timeScale = d3.scaleTime()
-        .domain([this.m.minDate, this.m.maxDate])
+        .domain([new Date(this.m.minDate), new Date(this.m.maxDate)])
         .range([0, 50 * this.m.csvData.length]);
 
     this.m.x = d3.scaleBand()
@@ -951,7 +964,6 @@ export default class TimelineComponent
     }
     this.timelineType.applyZoom();
     this.m.numBars += additionalBars;
-    // console.log('numBars in updateChart after: ', this.m.numBars);
 
     if (d3.event !== null && d3.event.sourceEvent !== null &&
       d3.event.sourceEvent.type === 'mousemove') {
@@ -1038,6 +1050,10 @@ export default class TimelineComponent
 
   /**
    * Purpose: called when the timeline is dragged by the user
+   *
+   * @preconditions: the timeline is being dragged by the user
+   * @postconditions: the timeline is translated to the position that the user
+   * has specified
    */
   dragged() {
     console.log(d3.event);

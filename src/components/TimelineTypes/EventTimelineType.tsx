@@ -16,7 +16,7 @@ export default abstract class EventTimelineType extends TimelineType
     const bar = d3.selectAll('.bar');
     const scale = this.m.scale;
     const timeScale = this.m.timeScale;
-    const key = this.m.xColumn + '_num';
+    const key = `${this.m.xColumn}_num`;
 
     d3.select('#barsLayer');
 
@@ -35,20 +35,9 @@ export default abstract class EventTimelineType extends TimelineType
         .attr('transform', (d: any) =>
           `translate(${this.m.scale * this.m.timeScale(d[key])},
           ${this.m.height})`);
-
-
-    // const from = ((this.m.width + this.m.deltaX) / 2);
-    // const to = ((((this.m.deltaX + this.m.width) / 2)) * this.m.scale);
-    //
-    // console.log({to, from});
-    // d3.select('#barsLayer')
-    //     .attr('transform', `translate(${100},10)`);
-    // d3.select('#barsLayer')
-    //     .attr('transform', `translate(${(to-from)},0)`);
   }
 
   abstract draw(selection: any, ttOver: any, ttMove: any, ttLeave: any): void;
-
 
   abstract checkYPrimType(primType: string): boolean;
 

@@ -14,7 +14,6 @@ export default abstract class IntervalTimelineType extends TimelineType
    * handles zooming
    */
   applyZoom(): void {
-    // console.log(this.m.csvData);
     const bar = d3.selectAll('.bar');
     const scale = this.m.scale;
     const timeScale = this.m.timeScale;
@@ -27,10 +26,6 @@ export default abstract class IntervalTimelineType extends TimelineType
           .attr('x', (d: any) =>
             scale * timeScale(new Date(d[keyInt1])))
           .attr('width', (d: any) => {
-            // console.log((scale * (timeScale(new Date(d[keyInt2])) -
-            // timeScale(new Date(d[keyInt1])))));
-            // console.log(d);
-
             return (scale * (timeScale(new Date(d[keyInt2])) -
               timeScale(new Date(d[keyInt1]))));
           });

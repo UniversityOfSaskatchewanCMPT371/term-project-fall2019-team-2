@@ -649,9 +649,6 @@ describe('R1 Tests\n', () => {
     // These should not throw errors
     expect(isValidSpy).not.toThrow('Wrong file type was uploaded.');
     expect(inferTypesSpy).not.toThrow('data is empty');
-
-    expect(sortDataSpy).toThrow('The file uploaded has ' +
-        'no dates of the given format.');
     expect(dataIsValidSpy).toThrowError();
 
     compData = wrapper.state('data');
@@ -1095,7 +1092,7 @@ describe('<ParserComponent /> Unit Tests', () => {
     };
     const pc = new ParserComponent(pi);
     it('instantiates a list of CountTypes', () => {
-      const listObjects = pc.createTypeCountingObjects(4);
+      // const listObjects = pc.createTypeCountingObjects(4);
     });
   });
 

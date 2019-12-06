@@ -1,5 +1,9 @@
 # Incremental Deliverable 5 Readme
 
+## Continuity Plan
+
+Details for continuing the project have be found [here](TODO!). TODO:
+
 ## Source Code
 
 [Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID5/src) is the link to the current source code for the project, and [Here](https://dev.braunson.me/) is a link to the current development build of the software.
@@ -34,6 +38,8 @@ is now used to record errors and user feedback when an error occurs. The sourcem
 exactly what line in our code had the error.
 
 For viewing our current code climate and test coverage, refer to sonarcloud [here](https://sonarcloud.io/dashboard?id=cmpt371-team2) which is updated on every push to the repository.
+
+Unfortunately I cannot provide a link to our internal error reporting, but I will be happy to add emails if access is wanted, or show it at the marking session.
 
 ## Timelog
 

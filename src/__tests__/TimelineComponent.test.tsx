@@ -147,61 +147,98 @@ describe('<TimelineComponent /> R2 Tests\n', () => {
         <TimelineComponent
           data={data}
         />);
+  });
+
+  beforeEach(()=> {
+    // need to do this so that d3 works properly with jest/enzyme
+    wrapper = mount(
+        <TimelineComponent
+          data={data}
+        />);
+    document.body.innerHTML = wrapper.html();
+    wrapper = mount(
+        <TimelineComponent
+          data={data}
+        />);
+  });
+
+  afterEach(() => {
     // initialize & draw the timeline (updates html)
     wrapper.instance().resetTimeline();
 
     // Check that rendered TimelineComponent HTML matches snapshot
     // This doesn't include the html created by d3
     expect(wrapper.debug()).toMatchSnapshot();
-  });
 
-  it('T2.1 Snapshot Test\n', () => {
     // This just makes the snapshot more readable
     const svgTarget: any = document.getElementById('svgtarget');
     let svgHTML: string = '';
     if (svgTarget) {
-      svgHTML = prettyHTML(svgTarget.innerHTML);
+      svgHTML = pretty(svgTarget.innerHTML);
     }
 
     // Check that svg created by d3 matches snapshot
     expect(svgHTML).toMatchSnapshot();
   });
 
+  it('T2.1 Snapshot Test\n', () => {
+    // choose Event Magnitude from timeline type dropdown
+    wrapper.find('#timelineTypeSelect').first()
+        .simulate('change', {target: {value: 'EventMagnitude'}});
+    // choose Units Sold as first Y Column selection
+    wrapper.find('#ySelect').first()
+        .simulate('change', {target: {value: 'Units Sold'}});
+    // select Order Date for the x axis
+    wrapper.find('#xSelect').first()
+        .simulate('change', {target: {value: 'Order Date'}});
+  });
+
   it('T2.4 Snapshot Test\n', () => {
-    const select: any =
-        // @ts-ignore
-        <select
-          id="timelineTypeSelect"
-          className="form-control">
-          <option
-            value="IntervalMagnitude">Interval
-            Magnitude
-          </option>
-          <option
-            value="IntervalOccurrence">Interval
-            Occurrence
-          </option>
-          <option
-            value="EventMagnitude">Event
-            Magnitude
-          </option>
-          <option
-            value="EventOccurrence">Event
-            Occurrence
-          </option>
-        </select>;
+    // choose Event Occurrence from timeline type dropdown
+    wrapper.find('#timelineTypeSelect').first()
+        .simulate('change', {target: {value: 'EventOccurrence'}});
+    // choose Units Sold as first Y Column selection
+    wrapper.find('#ySelect').first()
+        .simulate('change', {target: {value: 'Units Sold'}});
+    // select Sales Channel for the Second Y Column
+    wrapper.find('#y2Select').first()
+        .simulate('change', {target: {value: 'Sales Channel'}});
+    // select Order Date for the x axis
+    wrapper.find('#xSelect').first()
+        .simulate('change', {target: {value: 'Order Date'}});
+  });
 
-    // make sure select has rendered as expected
-    expect(wrapper.containsMatchingElement(select)).toBeTruthy();
+  it('T2.6 Snapshot Test\n', () => {
+    // choose Interval Magnitude from timeline type dropdown
+    wrapper.find('#timelineTypeSelect').first()
+        .simulate('change', {target: {value: 'IntervalMagnitude'}});
+    // choose Unit Price as First Y Column
+    wrapper.find('#ySelect').first()
+        .simulate('change', {target: {value: 'Region'}});
+    // Select Order Date as First X Column
+    wrapper.find('#xSelect').first()
+        .simulate('change', {target: {value: 'Order Date'}});
+    // Select Ship Date as Second Y Column
+    wrapper.find('#x2Select').first()
+        .simulate('change', {target: {value: 'Order Date'}});
+  });
 
-    const svgTarget: any = document.getElementById('svgtarget');
-    let svgHTML: string = '';
-    if (svgTarget) {
-      svgHTML = prettyHTML(svgTarget.innerHTML);
-    }
-
-    // Check that svg created by d3 matches snapshot
-    expect(svgHTML).toMatchSnapshot();
+  it('T2.7 Snapshot Test\n', () => {
+    // choose Interval Occurrence from timeline type dropdown
+    wrapper.find('#timelineTypeSelect').first()
+        .simulate('change', {target: {value: 'IntervalOccurrence'}});
+    // choose Region as First Y Column
+    wrapper.find('#ySelect').first()
+        .simulate('change', {target: {value: 'Region'}});
+    // Select Order Priority as Second Y Column
+    wrapper.find('#y2Select').first()
+        .simulate('change', {target: {value: 'Order Priority'}});
+    // Select Order Date as First X Column
+    wrapper.find('#xSelect').first()
+        .simulate('change', {target: {value: 'Order Date'}});
+    // Select Ship Date as Second Y Column
+    wrapper.find('#x2Select').first()
+        .simulate('change', {target: {value: 'Order Date'}});
   });
 });
 
@@ -347,8 +384,6 @@ describe('<TimelineComponent /> Unit Tests', () => {
     // Create spies
     drawTimelineSpy =
         jest.spyOn(TimelineComponent.prototype, 'drawTimeline');
-    // toggleTimelineSpy =
-    //     jest.spyOn(TimelineComponent.prototype, 'toggleTimeline');
     initTimelineSpy =
         jest.spyOn(TimelineComponent.prototype, 'initTimeline');
     updateBarsSpy =
@@ -405,7 +440,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
             </option>
             <option
               value="IntervalOccurrence">Interval
-              Occurrence
+              Labelled
             </option>
             <option
               value="EventMagnitude">Event
@@ -413,7 +448,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
             </option>
             <option
               value="EventOccurrence">Event
-              Occurrence
+              Labelled
             </option>
           </select>;
 
@@ -509,6 +544,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
 
     it('timeline drawer does not zoom out too far', () => {
       wrapper.instance().drawTimeline();
+      console.log(pretty(wrapper.html()));
       const event = new KeyboardEvent('keydown', {'key': 's'});
       document.body.dispatchEvent(event);
 
@@ -517,8 +553,13 @@ describe('<TimelineComponent /> Unit Tests', () => {
     });
 
     it('timeline drawer does not pan too far left', () => {
+      wrapper.update();
+      wrapper.instance().initTimeline();
       wrapper.instance().drawTimeline();
+      wrapper.instance().updateChart();
+
       const event = new KeyboardEvent('keydown', {'key': 'ArrowLeft'});
+
       document.body.dispatchEvent(event);
 
       // Should stay at 0 (the min)
@@ -529,9 +570,6 @@ describe('<TimelineComponent /> Unit Tests', () => {
   describe('getIntervalMagnitudeData()', () => {
     it('checks that getIntervalMagnitudeData is called when needed ',
         () => {
-          // const button = wrapper.find('button');
-          // button.simulate('click');
-
           const select = wrapper.find('#timelineTypeSelect').first();
           select.simulate('change',
               {target: {value: 'IntervalMagnitude'}});
@@ -566,7 +604,6 @@ describe('<TimelineComponent /> Unit Tests', () => {
           expect(ttOverHelperSpy).toHaveBeenCalled();
 
           expect(!d3.selectAll('.tooltip').empty()).toEqual(true);
-
           wrapper.instance().ttUpdatePos(100, 100);
           expect(ttUpdatePosSpy).toHaveBeenCalled();
         });

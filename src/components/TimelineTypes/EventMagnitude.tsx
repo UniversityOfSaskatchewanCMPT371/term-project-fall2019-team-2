@@ -14,6 +14,10 @@ export default class EventMagnitude extends EventTimelineType
    * @param {any} ttOver: tooltip over function
    * @param {any} ttMove: tooltip move function
    * @param {any} ttLeave: tooltip leave function
+   *
+   * @preconditions: Event elements exist to be rendered
+   * @postconditions: The selected components are drawn, any tooltips are also
+   * drawn
    */
   draw(selection: any, ttOver: any, ttMove: any, ttLeave: any): void {
     const bar = selection.append('g')
@@ -49,6 +53,11 @@ export default class EventMagnitude extends EventTimelineType
    * @param {string} primType: the primType to compare
    * @return {boolean}: a boolean indicating if the primType is appropriate
    * for the y axis
+   *
+   * @precondition: the primType accurately represents one of the columns from
+   * the parsed csv.
+   * @postcondition: true or false, based on whether or not the primType is
+   * valid for the timeline type
    */
   checkYPrimType(primType: string): boolean {
     return (primType === 'date' ||

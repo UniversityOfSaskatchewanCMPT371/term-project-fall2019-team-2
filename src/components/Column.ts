@@ -21,24 +21,6 @@ export default class Column {
       this.key = key;
       this.primType = primType;
     }
-
-    /**
-     * Purpose: renders a column of data to the timeline
-     * @precondition A .csv file has been uploaded and there exists
-     * data for a column to be created from
-     * @postcondition A column class is created
-     */
-    public Show(): void {
-    }
-
-    /**
-     * Purpose: causes the column to be rendered at a new scale
-     * @param {number} newScale: a float which is the new scaling factor
-     * @precondition The column is populated with data
-     * @postcondition The y scale of the column is changed
-     */
-    public Rescale(newScale: number): void {
-    }
 }
 
 /**

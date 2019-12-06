@@ -1,5 +1,9 @@
 # Incremental Deliverable 5 Readme
 
+## Continuity Plan
+
+Details for continuing the project have be found [here](TODO!). TODO:
+
 ## Source Code
 
 [Here](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/tree/ID5/src) is the link to the current source code for the project, and [Here](https://dev.braunson.me/) is a link to the current development build of the software.
@@ -64,6 +68,8 @@ For viewing our current code climate and test coverage, refer to sonarcloud [her
 ## Continuity 
 
 [This](https://github.com/UniversityOfSaskatchewanCMPT371/term-project-fall2019-team-2/blob/ID5/documents/ID5/Continuity%20Document.pdf) document outlines the future of the project, it goes over how to set the project up for development, how to get it set up for continous integration, how to set up testing, defect estimates, and known issues.  It also contains a section on what future developers might do moving forward, as well as some ideas for improving the project as a whole.
+
+Unfortunately I cannot provide a link to our internal error reporting, but I will be happy to add emails if access is wanted, or show it at the marking session.
 
 ## Timelogs and Estimates
 

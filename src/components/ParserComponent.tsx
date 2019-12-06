@@ -2,12 +2,9 @@ import React from 'react';
 import ParserInterface, {ParserState} from './ParserInterface';
 import Column, {enumDrawType} from './Column';
 import moment from 'moment';
-import * as d3
-  from 'd3';
-import TimelineComponent
-  from './TimelineComponent';
-import Data
-  from './Data';
+import * as d3 from 'd3';
+import TimelineComponent from './TimelineComponent';
+import Data from './Data';
 import * as TimSort from 'timsort';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {loadTestCsv} from './Utilities';
@@ -36,9 +33,13 @@ export default class ParserComponent extends React.Component<ParserInterface,
         showTimeline: false,
         formatString: '',
         fileData: '',
+        fileName: '',
       };
-
+      this.createNewMockFileEvent = this.createNewMockFileEvent.bind(this);
+      this.checkifCsvandcallParse = this.checkifCsvandcallParse.bind(this);
       this.isValid = this.isValid.bind(this);
+      this.dataIsValid = this.dataIsValid.bind(this);
+      this.lookForDateKey = this.lookForDateKey.bind(this);
       this.sortData = this.sortData.bind(this);
       this.inferTypes = this.inferTypes.bind(this);
       this.parseCsv = this.parseCsv.bind(this);
@@ -46,7 +47,9 @@ export default class ParserComponent extends React.Component<ParserInterface,
     }
 
     /**
-     * Waits until component mounts
+     * Waits until component mounts.
+     * This method is called by react when mounted. We simply
+     * use it to automatically load a CSV on development environments.
      */
     componentDidMount(): void {
       // Autoloads a file for local testing
@@ -60,6 +63,10 @@ export default class ParserComponent extends React.Component<ParserInterface,
 
     /**
      * Purpose: renders the HTML for this component
+     * @precondition none
+     * @postcondition
+     *  Inputs: None
+     *  Outputs: None
      * @return {string}: valid HTML
      */
     render() {
@@ -92,13 +99,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
                       formatString: val,
                     };
                   });
-                  const mockDateFile: File = new File(
-                      [this.state.fileData],
-                      'mockFile.csv',
-                      {type: this.props.fileType.mimeName},
-                  );
-                  const fileEvent = {target: {files: [mockDateFile]}};
-                  this.parse(fileEvent);
+                  this.checkifCsvandcallParse();
                 }}>
                 <option selected value="">Select a Date Format</option>
                 <option value="X">Numeric</option>
@@ -106,7 +107,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
                 <option value="DD-MM-YYYY">DD-MM-YYYY</option>
                 <option value="DD-MMMM-YYYY">DD-MMMM-YYYY</option>
                 <option value="MMMM-DD-YYYY">MMMM-DD-YYYY</option>
-                <option value="MMM-DD-YYYY">MMMM-DD-YYYY</option>
+                <option value="MMM-DD-YYYY">MMM-DD-YYYY</option>
                 <option value="DD-MM-YY">DD-MM-YY</option>
                 <option value="MM-DD-YY">MM-DD-YY</option>
               </select>
@@ -123,6 +124,42 @@ export default class ParserComponent extends React.Component<ParserInterface,
     }
 
     /**
+     * Purpose: create a mock file event of the actual file for
+     * parse when it is recalled everytime the date format is
+     * changed with a valid .csv type file
+     * @preconditions: a file with valid file data and
+     * a valid file name and a valid file type
+     * @return {any}: a mock file event similar to the actual file event
+     */
+    createNewMockFileEvent(): any {
+      const mockDateFile: File = new File(
+          [this.state.fileData],
+          String(this.state.fileName),
+          {type: this.props.fileType.mimeName},
+      );
+      // create file event of the mockfile and return it
+      return {target: {files: [mockDateFile]}};
+    }
+
+    /**
+   * Purpose: check if file is .csv when date format
+     * is changed and call parse if it is
+     * @preconditions: the current file should have a valid name (.csv)
+     * @postconditions: parse is called if file is .csv
+     * @return{boolean}: returns true if it works otherwise returns false
+   */
+    checkifCsvandcallParse(): boolean {
+      const nameOfFile = this.state.fileName;
+      const typeOfFile = nameOfFile.substr(nameOfFile.length - 4);
+      if (typeOfFile === '.csv' && this.props.fileType.mimeName === '.csv' +
+          ',text/csv') {
+        this.parse(this.createNewMockFileEvent());
+        return true;
+      }
+      return false;
+    }
+
+    /**
      * Purpose: checks if the passed in event contains a file upload, then
      * verifies that the file type and contents are valid
      * @precondition no other parser object exists
@@ -135,6 +172,13 @@ export default class ParserComponent extends React.Component<ParserInterface,
       assert.notStrictEqual(upFile, null,
           'isValid(): File object is null');
       if (upFile !== undefined) {
+        // change the state fileName to be the same as the uploaded file
+        this.setState(() => {
+          return {
+            fileName: upFile.name,
+          };
+        });
+        // return true if the file meets the criteria and return false if not
         const typeOfFile = upFile.name.substr(upFile.name.length - 4);
         if (this.props.fileType.mimeName === '.csv' +
             ',text/csv' && typeOfFile === '.csv') {
@@ -143,89 +187,109 @@ export default class ParserComponent extends React.Component<ParserInterface,
           alert('Wrong file type was uploaded.');
           return false;
         }
+      } else {
+        // if the filename is undefined change it
+        // to an empty string and return false
+        this.setState(() => {
+          return {
+            fileName: '',
+          };
+        });
+        return false;
       }
-      alert('Wrong file type was uploaded.');
-      return false;
     }
 
     /**
-     * Purpose: sorts the array of data
-     * @precondition dates must contain year month and date,
-     *    if data does not contain year in some
-     *    dates but does in some it will sort lexicographically.
-     *    a csv has been uploaded, and the data is stored in an array.
-     * @postcondition the data stored in the array is sorted by some date column
-     * @param {Array} data: the array of data to sort
-     * @return {boolean}: array of sorted data
-     */
-    sortData(data: Array<object>): boolean {
+   * purpose: check if data is undefined and has more than 0 rows
+   * @precondition a csv has been uploaded and its data is stored in an array
+   * @param {Array} data: the array of data to be checked
+   * @return {boolean}: return true if the data is not undefined
+     * and contains more than 0 rows otherwise return false
+   */
+    dataIsValid(data: Array<object>): boolean {
       assert.notStrictEqual(data, null,
-          'sortData(): data (Array of objects) is null');
+          'dataIsValid(): data (Array of objects) is null');
       assert.notStrictEqual(data, [],
-          'sortData(): data (array of objects) is empty');
-
-      let doneTheWork = false;
-      /* loop goes through each key and saves the 1 with a date in first row */
+          'dataIsValid(): data (array of objects) is empty');
       if (data !== undefined && data.length > 0) {
-        assert.notStrictEqual(data[0], null,
-            'sortData(): data[0] is null');
-        for (const [key, value] of Object.entries(data[0])) {
-          if (!doneTheWork) {
-            const date1 = moment(String(value), this.state.formatString);
-            if (moment(date1, this.state.formatString).isValid()) {
-              doneTheWork = true;
-              const formatString = this.state.formatString;
-
-              const keyInt = `${key}_num`;
-
-              TimSort.sort(data, function(a: any, b: any) {
-                let val: any;
-                if (!a.hasOwnProperty(keyInt)) {
-                  val = moment(a[key], formatString);
-                  if (val.isValid()) {
-                    a[keyInt] = val.valueOf();
-                  } else {
-                    a[keyInt] = -1;
-                  }
-                }
-
-                if (!b.hasOwnProperty(keyInt)) {
-                  val = moment(b[key], formatString);
-                  if (val.isValid()) {
-                    b[keyInt] = val.valueOf();
-                  } else {
-                    b[keyInt] = -1;
-                  }
-                }
-                return (a[keyInt] - b[keyInt]);
-              });
-
-              this.setState(() => {
-                return {
-                  data,
-                };
-              });
-            }
-          }
-        }
-      }
-      if (doneTheWork) {
-        // state should be updated
-        assert.notStrictEqual(this.state.data, [],
-            'sortData(): this.state.data is empty (not updated)');
         return true;
       } else {
-        throw new Error('The file uploaded has no dates.');
+        throw new Error();
       }
+    }
+
+    /**
+     * purpose: looks for the column that has a valid date in the first row
+     * @precondition a csv has been uploaded and its data is stored in an array
+     * @param {Array} data: the array of data to be checked
+     * @return {any}: return the column name of the first row
+     * that contains the valid date of given date format
+   */
+    lookForDateKey(data: Array<object>): any {
+      assert.notStrictEqual(data[0], null,
+          'sortData(): data[0] is null');
+      for (const [key, value] of Object.entries(data[0])) {
+        const date1 = moment(String(value), this.state.formatString);
+        if (moment(date1, this.state.formatString).isValid()) {
+          return key;
+        }
+      }
+      throw new Error('No dates found');
+    }
+
+    /**
+   * Purpose: sorts the array of data
+   * @precondition data contains a column of valid numbers that
+     * can be interpreted as a date in the selected date format
+   * @postcondition the data stored in the array is sorted by some date column
+   * @param {Array} data: the array of data to sort
+     * @param {any} key: the column name by which dates must be sorted
+   * @return {boolean}: return true once data is sorted
+   */
+    sortData(data: Array<object>, key:string): boolean {
+      assert.notStrictEqual(key, undefined,
+          'sortData(): No valid date for selected format was found');
+      const formatString = this.state.formatString;
+      const keyInt = `${key}_num`;
+      TimSort.sort(data, function(a: any, b: any) {
+        let val: any;
+
+        /**
+         * Purpose: get the unix time stamp of the date and
+         * if it is invalid return -1 to move it to the front
+         * @param{any}dateRead: the date to get the unix time stamp for
+         * @return{number}: the unix time stamp of the date or
+         * return -1 if invalid date for format picked
+         */
+        function getInt(dateRead:any): number {
+          val = moment(dateRead[key], formatString);
+          if (val.isValid()) {
+            dateRead[keyInt] = val.valueOf();
+          } else {
+            dateRead[keyInt] = -1;
+          }
+          return dateRead[keyInt];
+        }
+        return (getInt(a) - getInt(b));
+      });
+
+      this.setState(() => {
+        return {
+          data,
+        };
+      });
+      return true;
     }
 
     /**
      * Purpose: to instantiate an empty list of objects
      * for tracking the kinds of data in a column
+     * @precondition: none
+     * @postcondition: none
      * @param {number} fieldLength: the number of columns of data
      * @return {[CountTypes]}: a list of objects
      */
-    createTypeCountingObjects(fieldLength: number): CountTypes[] {
+    protected createTypeCountingObjects(fieldLength: number): CountTypes[] {
       assert(fieldLength > 0,
           'createTypeCountingObjects(): ' +
           'no data from which to create CountTypes[]');
@@ -240,14 +304,14 @@ export default class ParserComponent extends React.Component<ParserInterface,
     }
 
     /**
-   * goes through data, checks what the most common type of data is in the colum
-   * and returns a list of each and how many types were found
-   * @precondition: listFields is not empty
-   * @postcondition: creates a non-empty list of CountTypes
-   * @param {Array} listFields a list of the keys for each column
-   * @return {CountTypes[]} a list of how many and which kinds of types were
-   * found
-   */
+    * goes through data, checks what the most common type of data is
+     * in the column and returns a list of each and how many types were found
+    * @precondition: listFields is not empty
+    * @postcondition: creates a non-empty list of CountTypes
+    * @param {Array} listFields a list of the keys for each column
+    * @return {CountTypes[]} a list of how many and which kinds of types were
+    * found
+    */
     private inferTypesHelper(listFields: any): CountTypes[] {
       assert.notStrictEqual(listFields, null,
           'inferTypesHelper(): listFields is null');
@@ -255,7 +319,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
           'inferTypesHelper(): listFields is empty');
       // instantiate objects to track the types of data
       const typesForEachCol =
-          this.createTypeCountingObjects(listFields.length);
+        this.createTypeCountingObjects(listFields.length);
       // check half the values to find if the data is consistent
       [0, Math.floor(this.state.data.length / 2)].forEach((element) => {
         const row: object = this.state.data[element];
@@ -305,7 +369,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
       return typesForEachCol;
     }
 
-    /**
+  /**
    * Purpose: attempts to infer the types of the data in each of the columns
    * of the csv data
    * @precondition An array of sorted data exists for types to be inferred
@@ -404,11 +468,10 @@ export default class ParserComponent extends React.Component<ParserInterface,
       // check File obj (file being uploaded)
       assert.notStrictEqual(fileEvent.target.files[0], null,
           'parse(): fileEvent.target.files[0] is null');
-      assert.notStrictEqual(fileEvent.target.files[0], undefined,
-          'parse(): fileEvent.target.files[0] is undefined');
 
       this.setState(() => {
         return {
+          fileType: this.state.fileType,
           showTimeline: false,
         };
       });
@@ -416,16 +479,17 @@ export default class ParserComponent extends React.Component<ParserInterface,
       const temp: File = fileEvent.target.files[0];
       if (this.isValid(temp)) {
         await this.parseCsv(fileEvent);
+        // only show timeline if there is data
+        assert.notStrictEqual(this.state.data, [],
+            'parse(): this.state.data is empty ' +
+            'but setting showTimeline to true');
+        this.setState(() => {
+          return {
+            showTimeline: true,
+          };
+        });
       }
 
-      // only show timeline if there is data
-      assert.notStrictEqual(this.state.data, [],
-          'parse(): this.state.data is empty but setting showTimeline to true');
-      this.setState(() => {
-        return {
-          showTimeline: true,
-        };
-      });
       this.childKey++;
     }
 
@@ -474,15 +538,20 @@ export default class ParserComponent extends React.Component<ParserInterface,
                 fileType: this.state.fileType,
                 data: content,
                 fileData: fileReader.result,
+                showTimeline: false,
               };
             });
             try {
               // shouldn't pass empty array into inferTypes or sortData :/
               assert.notStrictEqual(this.state.data, [],
                   'parseCsv(): this.state.data is empty' +
-              'but still calling inferTypes & sortData');
-              this.columnTypes = this.inferTypes(this.state.data);
-              this.sortData(this.state.data);
+                    'but still calling inferTypes & sortData');
+              if (this.dataIsValid(this.state.data)) {
+                const lookForDateKeyResult =
+                    this.lookForDateKey(this.state.data);
+                this.columnTypes = this.inferTypes(this.state.data);
+                this.sortData(this.state.data, lookForDateKeyResult);
+              }
             } catch (e) {
               alert(e.toString());
               console.log(e.toString());
@@ -517,7 +586,10 @@ export class CountTypes {
 
   /**
    * finds the largest element of the fields
-   * @return {string}: a string representing the largest field
+   * @precondition: none
+   * @postcondition: none
+   * @return {string}: a string representing the largest field.
+   * Defaults to 'date' if all elements is zero
    */
   largest(): string {
     if (this.numDate >= this.numIncongruent && this.numDate >= this.numNumber) {

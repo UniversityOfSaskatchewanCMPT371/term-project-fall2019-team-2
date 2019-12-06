@@ -147,66 +147,106 @@ describe('<TimelineComponent /> R2 Tests\n', () => {
         <TimelineComponent
           data={data}
         />);
+  });
+
+  beforeEach(()=> {
+    // need to do this so that d3 works properly with jest/enzyme
+    wrapper = mount(
+        <TimelineComponent
+          data={data}
+        />);
+    document.body.innerHTML = wrapper.html();
+    wrapper = mount(
+        <TimelineComponent
+          data={data}
+        />);
+  });
+
+  afterEach(() => {
     // initialize & draw the timeline (updates html)
     wrapper.instance().resetTimeline();
 
     // Check that rendered TimelineComponent HTML matches snapshot
     // This doesn't include the html created by d3
     expect(wrapper.debug()).toMatchSnapshot();
-  });
 
-  it('T2.1 Snapshot Test\n', () => {
     // This just makes the snapshot more readable
     const svgTarget: any = document.getElementById('svgtarget');
     let svgHTML: string = '';
     if (svgTarget) {
-      svgHTML = prettyHTML(svgTarget.innerHTML);
+      svgHTML = pretty(svgTarget.innerHTML);
     }
 
     // Check that svg created by d3 matches snapshot
     expect(svgHTML).toMatchSnapshot();
   });
 
+  it('T2.1 Snapshot Test\n', () => {
+    // choose Event Magnitude from timeline type dropdown
+    wrapper.find('#timelineTypeSelect').first()
+        .simulate('change', {target: {value: 'EventMagnitude'}});
+    // choose Units Sold as first Y Column selection
+    wrapper.find('#ySelect').first()
+        .simulate('change', {target: {value: 'Units Sold'}});
+    // select Order Date for the x axis
+    wrapper.find('#xSelect').first()
+        .simulate('change', {target: {value: 'Order Date'}});
+  });
+
   it('T2.4 Snapshot Test\n', () => {
-    const select: any =
-        // @ts-ignore
-        <select
-          id="timelineTypeSelect"
-          className="form-control">
-          <option
-            value="IntervalMagnitude">Interval
-            Magnitude
-          </option>
-          <option
-            value="IntervalOccurrence">Interval
-            Occurrence
-          </option>
-          <option
-            value="EventMagnitude">Event
-            Magnitude
-          </option>
-          <option
-            value="EventOccurrence">Event
-            Occurrence
-          </option>
-        </select>;
+    // choose Event Occurrence from timeline type dropdown
+    wrapper.find('#timelineTypeSelect').first()
+        .simulate('change', {target: {value: 'EventOccurrence'}});
+    // choose Units Sold as first Y Column selection
+    wrapper.find('#ySelect').first()
+        .simulate('change', {target: {value: 'Units Sold'}});
+    // select Sales Channel for the Second Y Column
+    wrapper.find('#y2Select').first()
+        .simulate('change', {target: {value: 'Sales Channel'}});
+    // select Order Date for the x axis
+    wrapper.find('#xSelect').first()
+        .simulate('change', {target: {value: 'Order Date'}});
+  });
 
-    // make sure select has rendered as expected
-    expect(wrapper.containsMatchingElement(select)).toBeTruthy();
+  it('T2.6 Snapshot Test\n', () => {
+    // choose Interval Magnitude from timeline type dropdown
+    wrapper.find('#timelineTypeSelect').first()
+        .simulate('change', {target: {value: 'IntervalMagnitude'}});
+    // choose Unit Price as First Y Column
+    wrapper.find('#ySelect').first()
+        .simulate('change', {target: {value: 'Region'}});
+    // Select Order Date as First X Column
+    wrapper.find('#xSelect').first()
+        .simulate('change', {target: {value: 'Order Date'}});
+    // Select Ship Date as Second Y Column
+    wrapper.find('#x2Select').first()
+        .simulate('change', {target: {value: 'Order Date'}});
+  });
 
-    const svgTarget: any = document.getElementById('svgtarget');
-    let svgHTML: string = '';
-    if (svgTarget) {
-      svgHTML = prettyHTML(svgTarget.innerHTML);
-    }
-
-    console.log(pretty(document.body.innerHTML));
-    console.log(svgHTML);
-    console.log(window.innerWidth);
-    console.log(window.innerHeight);
-
-    // Check that svg created by d3 matches snapshot
-    expect(svgHTML).toMatchSnapshot();
+  it('T2.7 Snapshot Test\n', () => {
+    // choose Interval Occurrence from timeline type dropdown
+    wrapper.find('#timelineTypeSelect').first()
+        .simulate('change', {target: {value: 'IntervalOccurrence'}});
+    // choose Region as First Y Column
+    wrapper.find('#ySelect').first()
+        .simulate('change', {target: {value: 'Region'}});
+    // Select Order Priority as Second Y Column
+    wrapper.find('#y2Select').first()
+        .simulate('change', {target: {value: 'Order Priority'}});
+    // Select Order Date as First X Column
+    wrapper.find('#xSelect').first()
+        .simulate('change', {target: {value: 'Order Date'}});
+    // Select Ship Date as Second Y Column
+    wrapper.find('#x2Select').first()
+        .simulate('change', {target: {value: 'Ship Date'}});
+    // const svgTarget: any = document.getElementById('svgtarget');
+    // let svgHTML: string = '';
+    // if (svgTarget) {
+    //   svgHTML = prettyHTML(svgTarget.innerHTML);
+    // }
+    //
+    // // Check that svg created by d3 matches snapshot
+    // expect(svgHTML).toMatchSnapshot();
   });
 });
 
@@ -408,7 +448,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
             </option>
             <option
               value="IntervalOccurrence">Interval
-              Occurrence
+              Labelled
             </option>
             <option
               value="EventMagnitude">Event
@@ -416,7 +456,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
             </option>
             <option
               value="EventOccurrence">Event
-              Occurrence
+              Labelled
             </option>
           </select>;
 

@@ -22,22 +22,33 @@ export abstract class TimelineType implements TimelineTypeInterface {
   public m: TimelineModel;
 
   /**
-   * Purpose: applies zooming
+   * Purpose: modify the representation of the timeline when a zoom is fired
+   *
+   * @preconditions: A timeline is being rendered
+   * @postconditions: The zoom factor is changed if possible
    */
   abstract applyZoom(): void;
 
   /**
-   * Purpose
-   * @param {any} selection
-   * @param {any} ttOver
-   * @param {any} ttMove
-   * @param {any} ttLeave
+   * Purpose: draws an element on the timeline
+   * @param {any} selection: the selection for the object to draw
+   * @param {any} ttOver: tooltip over function
+   * @param {any} ttMove: tooltip move function
+   * @param {any} ttLeave: tooltip leave function
+   *
+   * @preconditions: Event elements exist to be rendered
+   * @postconditions: The selected components are drawn, any tooltips are also
+   * drawn
    */
   abstract draw(selection: any, ttOver: any, ttMove: any, ttLeave: any): void;
 
   /**
    * Purpose: draws the initial axis labels when the timeline is first rendered
    * @param {any} svg: the SVG element
+   *
+   * @preconditions: A timeline is instantiated and has valid tags to be
+   * rendered
+   * @postconditions: Labels are drawn for every point of data being rendered
    */
   drawLabels(svg: any): void {
     let xString: string;
@@ -85,6 +96,11 @@ export abstract class TimelineType implements TimelineTypeInterface {
    * @param {number[]} args: values to compare to the left bound of the
    * timeline
    * @return {boolean}: true if all of the args are less than the right bound
+   *
+   * @preconditions: the timeline has been correctly initalized with an
+   * appropriate value for deltaX and width
+   * @postconditions: a boolean is returned representing if the values are
+   * within the bounds.
    */
   outsideLeftBound(...args: number[]): boolean {
     const lBound: number = -this.m.deltaX;
@@ -107,6 +123,11 @@ export abstract class TimelineType implements TimelineTypeInterface {
    * @param {number[]} args: values to compare to the right bound of the
    * timeline
    * @return {boolean}: true if all of the args are greater than the right bound
+   *
+   * @preconditions: the timeline has been correctly initalized with an
+   * appropriate value for deltaX and width
+   * @postconditions: a boolean is returned representing if the values are
+   * within the bounds.
    */
   outsideRightBound(...args: number[]): boolean {
     const rBound: number = -this.m.deltaX + this.m.width;
@@ -160,7 +181,6 @@ export abstract class TimelineType implements TimelineTypeInterface {
         d3.max([this.m.dataIdx + this.m.data.length,
           this.m.csvData.length-1]);
     }
-    // console.log(this.m.csvData);
 
     for (dataIdxEnd;
       (direction === 1 && dataIdxEnd < this.m.csvData.length) ||
@@ -169,10 +189,14 @@ export abstract class TimelineType implements TimelineTypeInterface {
       const elem: any = this.m.csvData[dataIdxEnd];
       const bounds: number[] = [];
 
+      if (elem === undefined || elem === null) {
+        continue;
+      }
+
       // get the bounds to test against for this object
       keys.forEach((key) => {
         if (!elem.hasOwnProperty(key + '_num')) {
-          elem[key + '_num'] = Date.parse(elem[key]);
+          elem[key + '_num'] = Date.parse(new Date(elem[key]).toJSON());
         }
         bounds.push((this.m.scale * this.m.timeScale(elem[key + '_num'])));
       });
@@ -200,22 +224,23 @@ export abstract class TimelineType implements TimelineTypeInterface {
       }
     }
 
-    // console.log({dataIdxStart, dataIdxEnd});
-
     if (direction === 1) {
       dataIdxStart = dataIdxStart >= this.m.csvData.length ?
         this.m.csvData.length - 1 :
         dataIdxStart;
 
+      // dataIdxEnd = dataIdxEnd + this.m.barBuffer >= this.m.csvData.length ?
+      //   this.m.csvData.length - 1 :
+      //   dataIdxEnd + this.m.barBuffer;
       dataIdxEnd = dataIdxEnd + this.m.barBuffer >= this.m.csvData.length ?
-        this.m.csvData.length - 1 :
+        this.m.csvData.length :
         dataIdxEnd + this.m.barBuffer;
 
       this.m.data = this.m.csvData.slice(dataIdxStart, dataIdxEnd);
       this.m.dataIdx = dataIdxStart;
     } else if (direction === -1) {
       dataIdxStart = dataIdxStart + this.m.barBuffer >= this.m.csvData.length ?
-        this.m.csvData.length - 1 :
+        this.m.csvData.length :
         dataIdxStart + this.m.barBuffer;
 
       dataIdxEnd = dataIdxEnd >= this.m.csvData.length ?
@@ -231,6 +256,9 @@ export abstract class TimelineType implements TimelineTypeInterface {
    * Purpose: gets the translation for an x-axis tick
    * @param {any} datum: the datum to draw the x-axis tick for
    * @return {string}: the translation string
+   *
+   * @precondition: a csv has been parsed and sent to the timeline component
+   * @postcondition: the bars and x-axis ticks are drawn correctly
    */
   abstract getTickTranslate(datum: any): string;
 
@@ -240,7 +268,8 @@ export abstract class TimelineType implements TimelineTypeInterface {
    * @param {any}  ttMove
    * @param {any} ttLeave
    *
-   * @precondition
+   * @precondition: a csv has been parsed and sent to the timeline component
+   * @postcondition: the bars and x-axis ticks are drawn correctly
    */
   updateBars(ttOver: any, ttMove: any, ttLeave: any): void {
     // @ts-ignore
@@ -296,6 +325,11 @@ export abstract class TimelineType implements TimelineTypeInterface {
   /**
    * Purpose: determines which columns are appropriate for the y axis
    * @param {string} primType: the primType to compare
+   *
+   * @precondition: the primType accurately represents one of the columns from
+   * the parsed csv.
+   * @postcondition: true or false, based on whether or not the primType is
+   * valid for the timeline type
    */
   abstract checkYPrimType(primType: string): boolean;
 
@@ -317,6 +351,10 @@ export abstract class TimelineType implements TimelineTypeInterface {
   /**
    * Purpose: updates the list of x and y axis columns to be relevant to the
    * type of timeline being drawn.
+   *
+   * @preconditions: A timeline component exists and has data that can be
+   * rendered
+   * @postconditions: The correct drawing method is set
    */
   updateColumns(): void {
     const cols = this.m.columns;

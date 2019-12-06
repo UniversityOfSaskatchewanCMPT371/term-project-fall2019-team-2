@@ -973,7 +973,8 @@ export default class TimelineComponent
     // recover the new scale
     if (d3.event !== null) {
       this.m.scale = d3.event.transform.k;
-      ConsoleLogComponent.consoleLogger(this.updateChart.name, d3.event, 'INFO');
+      ConsoleLogComponent.consoleLogger(this.updateChart.name,
+          d3.event, 'INFO');
     } else {
       ConsoleLogComponent.consoleLogger(this.updateChart.name,
           'd3.event was null', 'ERROR');

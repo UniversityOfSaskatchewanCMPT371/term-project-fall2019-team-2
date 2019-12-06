@@ -245,7 +245,7 @@ describe('<TimelineComponent /> R2 Tests\n', () => {
       svgHTML = prettyHTML(svgTarget.innerHTML);
     }
 
-    // console.log(pretty(document.body.innerHTML));
+    console.log(pretty(document.body.innerHTML));
     // console.log(svgHTML);
     // console.log(window.innerWidth);
     // console.log(window.innerHeight);

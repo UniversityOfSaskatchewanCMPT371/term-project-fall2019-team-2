@@ -775,26 +775,26 @@ exports[`<TimelineComponent /> R2 Tests
 <g id=\\"barsLayer\\">
 <g class=\\"plot\\" id=\\"bars\\">
 <g class=\\"bar\\">
-<rect class=\\"box\\" x=\\"249.9828853473595\\" width=\\"-249.94908067958855\\" y=\\"0\\" height=\\"598\\" style=\\"fill: rgb(110, 64, 170); opacity: 0.2;\\">
+<rect class=\\"box\\" x=\\"0\\" width=\\"-3651097.7746672453\\" y=\\"0\\" height=\\"598\\" style=\\"fill: rgb(110, 64, 170); opacity: 0.2;\\">
 </rect>
 </g>
 <g class=\\"bar\\">
-<rect class=\\"box\\" x=\\"249.9828853473595\\" width=\\"-249.87825144321658\\" y=\\"0\\" height=\\"598\\" style=\\"fill: rgb(110, 64, 170); opacity: 0.2;\\">
+<rect class=\\"box\\" x=\\"0\\" width=\\"-3650063.1460677083\\" y=\\"0\\" height=\\"598\\" style=\\"fill: rgb(110, 64, 170); opacity: 0.2;\\">
 </rect>
 </g>
 <g class=\\"bar\\">
-<rect class=\\"box\\" x=\\"250\\" width=\\"-249.8867589791694\\" y=\\"0\\" height=\\"598\\" style=\\"fill: rgb(110, 64, 170); opacity: 0.2;\\">
+<rect class=\\"box\\" x=\\"250\\" width=\\"-3650187.418761574\\" y=\\"0\\" height=\\"598\\" style=\\"fill: rgb(110, 64, 170); opacity: 0.2;\\">
 </rect>
 </g>
 <g class=\\"bar\\">
-<rect class=\\"box\\" x=\\"250\\" width=\\"-250\\" y=\\"0\\" height=\\"598\\" style=\\"fill: rgb(110, 64, 170); opacity: 0.2;\\">
+<rect class=\\"box\\" x=\\"250\\" width=\\"-3651841.5718315975\\" y=\\"0\\" height=\\"598\\" style=\\"fill: rgb(110, 64, 170); opacity: 0.2;\\">
 </rect>
 </g>
 <g class=\\"bar\\">
-<rect class=\\"box\\" x=\\"250\\" width=\\"-249.92876535375675\\" y=\\"0\\" height=\\"598\\" style=\\"fill: rgb(110, 64, 170); opacity: 0.2;\\">
+<rect class=\\"box\\" x=\\"250\\" width=\\"-3650801.0212615742\\" y=\\"0\\" height=\\"598\\" style=\\"fill: rgb(110, 64, 170); opacity: 0.2;\\">
 </rect>
 </g>
-<g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(249.9828853473595,
+<g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(0,
       598)\\">
 <line stroke=\\"blue\\" y2=\\"6\\">
 </line>

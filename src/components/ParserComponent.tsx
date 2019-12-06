@@ -38,6 +38,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
       this.createNewMockFileEvent = this.createNewMockFileEvent.bind(this);
       this.checkifCsvandcallParse = this.checkifCsvandcallParse.bind(this);
       this.isValid = this.isValid.bind(this);
+      this.dataIsValid = this.dataIsValid.bind(this);
+      this.lookForDateKey = this.lookForDateKey.bind(this);
       this.sortData = this.sortData.bind(this);
       this.inferTypes = this.inferTypes.bind(this);
       this.parseCsv = this.parseCsv.bind(this);
@@ -101,7 +103,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
                 <option value="DD-MM-YYYY">DD-MM-YYYY</option>
                 <option value="DD-MMMM-YYYY">DD-MMMM-YYYY</option>
                 <option value="MMMM-DD-YYYY">MMMM-DD-YYYY</option>
-                <option value="MMM-DD-YYYY">MMMM-DD-YYYY</option>
+                <option value="MMM-DD-YYYY">MMM-DD-YYYY</option>
                 <option value="DD-MM-YY">DD-MM-YY</option>
                 <option value="MM-DD-YY">MM-DD-YY</option>
               </select>
@@ -166,11 +168,13 @@ export default class ParserComponent extends React.Component<ParserInterface,
       assert.notStrictEqual(upFile, null,
           'isValid(): File object is null');
       if (upFile !== undefined) {
+        // change the state fileName to be the same as the uploaded file
         this.setState(() => {
           return {
             fileName: upFile.name,
           };
         });
+        // return true if the file meets the criteria and return false if not
         const typeOfFile = upFile.name.substr(upFile.name.length - 4);
         if (this.props.fileType.mimeName === '.csv' +
             ',text/csv' && typeOfFile === '.csv') {
@@ -180,6 +184,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
           return false;
         }
       } else {
+        // if the filename is undefined change it
+        // to an empty string and return false
         this.setState(() => {
           return {
             fileName: '',
@@ -190,74 +196,84 @@ export default class ParserComponent extends React.Component<ParserInterface,
     }
 
     /**
-     * Purpose: sorts the array of data
-     * @precondition dates must contain year month and date,
-     *    if data does not contain year in some
-     *    dates but does in some it will sort lexicographically.
-     *    a csv has been uploaded, and the data is stored in an array.
-     * @postcondition the data stored in the array is sorted by some date column
-     * @param {Array} data: the array of data to sort
-     * @return {boolean}: array of sorted data
-     */
-    sortData(data: Array<object>): boolean {
+   * purpose: check if data is undefined and has more than 0 rows
+   * @precondition a csv has been uploaded and its data is stored in an array
+   * @param {Array} data: the array of data to be checked
+   * @return {boolean}: return true if the data is not undefined
+     * and contains more than 0 rows otherwise return false
+   */
+    dataIsValid(data: Array<object>): boolean {
       assert.notStrictEqual(data, null,
-          'sortData(): data (Array of objects) is null');
+          'dataIsValid(): data (Array of objects) is null');
       assert.notStrictEqual(data, [],
-          'sortData(): data (array of objects) is empty');
-
-      let doneTheWork = false;
-      /* loop goes through each key and saves the 1 with a date in first row */
+          'dataIsValid(): data (array of objects) is empty');
       if (data !== undefined && data.length > 0) {
-        assert.notStrictEqual(data[0], null,
-            'sortData(): data[0] is null');
-        for (const [key, value] of Object.entries(data[0])) {
-          if (!doneTheWork) {
-            const date1 = moment(String(value), this.state.formatString);
-            if (moment(date1, this.state.formatString).isValid()) {
-              doneTheWork = true;
-              const formatString = this.state.formatString;
-
-              const keyInt = `${key}_num`;
-
-              TimSort.sort(data, function(a: any, b: any) {
-                let val: any;
-                if (!a.hasOwnProperty(keyInt)) {
-                  val = moment(a[key], formatString);
-                  if (val.isValid()) {
-                    a[keyInt] = val.valueOf();
-                  } else {
-                    a[keyInt] = -1;
-                  }
-                }
-
-                if (!b.hasOwnProperty(keyInt)) {
-                  val = moment(b[key], formatString);
-                  if (val.isValid()) {
-                    b[keyInt] = val.valueOf();
-                  } else {
-                    b[keyInt] = -1;
-                  }
-                }
-                return (a[keyInt] - b[keyInt]);
-              });
-
-              this.setState(() => {
-                return {
-                  data,
-                };
-              });
-            }
-          }
-        }
-      }
-      if (doneTheWork) {
-        // state should be updated
-        assert.notStrictEqual(this.state.data, [],
-            'sortData(): this.state.data is empty (not updated)');
         return true;
       } else {
-        throw new Error('The file uploaded has no dates of the given format.');
+        throw new Error();
       }
+    }
+
+    /**
+     * purpose: looks for the column that has a valid date in the first row
+     * @precondition a csv has been uploaded and its data is stored in an array
+     * @param {Array} data: the array of data to be checked
+     * @return {any}: return the column name of the first row
+     * that contains the valid date of given date format
+   */
+    lookForDateKey(data: Array<object>): any {
+      assert.notStrictEqual(data[0], null,
+          'sortData(): data[0] is null');
+      for (const [key, value] of Object.entries(data[0])) {
+        const date1 = moment(String(value), this.state.formatString);
+        if (moment(date1, this.state.formatString).isValid()) {
+          return key;
+        }
+      }
+    };
+
+    /**
+   * Purpose: sorts the array of data
+   * @precondition data contains a column of valid numbers that
+     * can be interpreted as a date in the selected date format
+   * @postcondition the data stored in the array is sorted by some date column
+   * @param {Array} data: the array of data to sort
+     * @param {any} key: the column name by which dates must be sorted
+   * @return {boolean}: return true once data is sorted
+   */
+    sortData(data: Array<object>, key:string): boolean {
+      assert.notEqual(key, undefined,
+          'sortData(): No valid date for selected format was found');
+      const formatString = this.state.formatString;
+      const keyInt = `${key}_num`;
+      TimSort.sort(data, function(a: any, b: any) {
+        let val: any;
+
+        /**
+         * Purpose: get the unix time stamp of the date and
+         * if it is invalid return -1 to move it to the front
+         * @param{any}dateRead: the date to get the unix time stamp for
+         * @return{number}: the unix time stamp of the date or
+         * return -1 if invalid date for format picked
+         */
+        function getInt(dateRead:any): number {
+          val = moment(dateRead[key], formatString);
+          if (val.isValid()) {
+            dateRead[keyInt] = val.valueOf();
+          } else {
+            dateRead[keyInt] = -1;
+          }
+          return dateRead[keyInt];
+        }
+        return (getInt(a) - getInt(b));
+      });
+
+      this.setState(() => {
+        return {
+          data,
+        };
+      });
+      return true;
     }
 
     /**
@@ -503,9 +519,13 @@ export default class ParserComponent extends React.Component<ParserInterface,
               // shouldn't pass empty array into inferTypes or sortData :/
               assert.notStrictEqual(this.state.data, [],
                   'parseCsv(): this.state.data is empty' +
-              'but still calling inferTypes & sortData');
-              this.columnTypes = this.inferTypes(this.state.data);
-              this.sortData(this.state.data);
+                    'but still calling inferTypes & sortData');
+              if (this.dataIsValid(this.state.data)) {
+                const lookForDateKeyResult =
+                    this.lookForDateKey(this.state.data);
+                this.columnTypes = this.inferTypes(this.state.data);
+                this.sortData(this.state.data, lookForDateKeyResult);
+              }
             } catch (e) {
               alert(e.toString());
               console.log(e.toString());

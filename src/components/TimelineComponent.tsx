@@ -475,19 +475,19 @@ export default class TimelineComponent
                   Interval Magnitude
                 </option>
                 <option value={ViewType.IntervalOccurrence}>
-                  Interval Occurrence
+                  Interval Labelled
                 </option>
                 <option value={ViewType.EventMagnitude}>
                   Event Magnitude
                 </option>
                 <option value={ViewType.EventOccurrence}>
-                  Event Occurrence
+                  Event Labelled
                 </option>
               </Form.Control>
             </InputGroup>
 
-            {yDropdowns}
             {xDropdowns}
+            {yDropdowns}
           </div>
           <div style={{marginTop: '10px'}}
             id='svgtarget'>

@@ -24,13 +24,13 @@ exports[`<TimelineComponent /> R2 Tests
                   Interval Magnitude
                 </option>
                 <option value=\\"IntervalOccurrence\\">
-                  Interval Occurrence
+                  Interval Labelled
                 </option>
                 <option value=\\"EventMagnitude\\">
                   Event Magnitude
                 </option>
                 <option value=\\"EventOccurrence\\">
-                  Event Occurrence
+                  Event Labelled
                 </option>
               </select>
             </FormControl>
@@ -42,15 +42,21 @@ exports[`<TimelineComponent /> R2 Tests
               <div className=\\"input-group-prepend\\">
                 <InputGroupText id=\\"inputGroup Prepend\\">
                   <span className=\\"input-group-text\\" id=\\"inputGroup Prepend\\">
-                    Y Column
+                    X Column
                   </span>
                 </InputGroupText>
               </div>
             </InputGroupPrepend>
-            <FormControl as=\\"select\\" id=\\"ySelect\\" value=\\"Order ID\\" onChange={[Function: onChange]}>
-              <select value=\\"Order ID\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"ySelect\\" className=\\"form-control\\">
+            <FormControl as=\\"select\\" id=\\"xSelect\\" value=\\"Order Date\\" onChange={[Function: onChange]}>
+              <select value=\\"Order Date\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"xSelect\\" className=\\"form-control\\">
+                <option value=\\"Order Date\\">
+                  Order Date
+                </option>
                 <option value=\\"Order ID\\">
                   Order ID
+                </option>
+                <option value=\\"Ship Date\\">
+                  Ship Date
                 </option>
                 <option value=\\"Units Sold\\">
                   Units Sold
@@ -86,13 +92,13 @@ exports[`<TimelineComponent /> R2 Tests
               <div className=\\"input-group-prepend\\">
                 <InputGroupText id=\\"inputGroup Prepend\\">
                   <span className=\\"input-group-text\\" id=\\"inputGroup Prepend\\">
-                    X Column
+                    Y Column
                   </span>
                 </InputGroupText>
               </div>
             </InputGroupPrepend>
-            <FormControl as=\\"select\\" id=\\"xSelect\\" value=\\"Order Date\\" onChange={[Function: onChange]}>
-              <select value=\\"Order Date\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"xSelect\\" className=\\"form-control\\">
+            <FormControl as=\\"select\\" id=\\"ySelect\\" value=\\"Units Sold\\" onChange={[Function: onChange]}>
+              <select value=\\"Units Sold\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"ySelect\\" className=\\"form-control\\">
                 <option value=\\"Order Date\\">
                   Order Date
                 </option>
@@ -141,145 +147,83 @@ exports[`<TimelineComponent /> R2 Tests
  T2.1 Snapshot Test
  2`] = `
 "<svg width=\\"934\\" height=\\"768\\">
-<g transform=\\"translate(70, 0)\\">
-<rect width=\\"934\\" height=\\"598\\" style=\\"fill: none;\\">
-</rect>
-<defs>
-<clipPath id=\\"barsBox\\">
-<rect width=\\"934\\" height=\\"768\\" x=\\"0\\" y=\\"0\\">
-</rect>
-</clipPath>
-</defs>
-<g clip-path=\\"url(#barsBox)\\">
-<g id=\\"barsLayer\\">
-<g class=\\"plot\\" id=\\"bars\\">
-<g class=\\"bar\\">
-<rect class=\\"pin-line\\" x=\\"0\\" width=\\"2\\" y=\\"419.4852605640208\\" height=\\"178.5147394359792\\">
-</rect>
-<circle class=\\"pin-head\\" cx=\\"0\\" cy=\\"419.4852605640208\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
-</circle>
-</g>
-<g class=\\"bar\\">
-<rect class=\\"pin-line\\" x=\\"0\\" width=\\"2\\" y=\\"45.45221988871617\\" height=\\"552.5477801112838\\">
-</rect>
-<circle class=\\"pin-head\\" cx=\\"0\\" cy=\\"45.45221988871617\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
-</circle>
-</g>
-<g class=\\"bar\\">
-<rect class=\\"pin-line\\" x=\\"250\\" width=\\"2\\" y=\\"0\\" height=\\"598\\">
-</rect>
-<circle class=\\"pin-head\\" cx=\\"250\\" cy=\\"0\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
-</circle>
-</g>
-<g class=\\"bar\\">
-<rect class=\\"pin-line\\" x=\\"250\\" width=\\"2\\" y=\\"598\\" height=\\"0\\">
-</rect>
-<circle class=\\"pin-head\\" cx=\\"250\\" cy=\\"598\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
-</circle>
-</g>
-<g class=\\"bar\\">
-<rect class=\\"pin-line\\" x=\\"250\\" width=\\"2\\" y=\\"221.82608227113172\\" height=\\"376.1739177288683\\">
-</rect>
-<circle class=\\"pin-head\\" cx=\\"250\\" cy=\\"221.82608227113172\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
-</circle>
-</g>
-<g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(0,
+  <g transform=\\"translate(70, 0)\\">
+    <rect width=\\"934\\" height=\\"598\\" style=\\"fill: none;\\"></rect>
+    <defs>
+      <clipPath id=\\"barsBox\\">
+        <rect width=\\"934\\" height=\\"768\\" x=\\"0\\" y=\\"0\\"></rect>
+      </clipPath>
+    </defs>
+    <g clip-path=\\"url(#barsBox)\\">
+      <g id=\\"barsLayer\\">
+        <g class=\\"plot\\" id=\\"bars\\">
+          <g class=\\"bar\\">
+            <rect class=\\"pin-line\\" x=\\"0\\" width=\\"2\\" y=\\"247.38657190948192\\" height=\\"350.6134280905181\\"></rect>
+            <circle class=\\"pin-head\\" cx=\\"0\\" cy=\\"247.38657190948192\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\"></circle>
+          </g>
+          <g class=\\"bar\\">
+            <rect class=\\"pin-line\\" x=\\"0\\" width=\\"2\\" y=\\"0\\" height=\\"598\\"></rect>
+            <circle class=\\"pin-head\\" cx=\\"0\\" cy=\\"0\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\"></circle>
+          </g>
+          <g class=\\"bar\\">
+            <rect class=\\"pin-line\\" x=\\"250\\" width=\\"2\\" y=\\"198.84870020572288\\" height=\\"399.1512997942771\\"></rect>
+            <circle class=\\"pin-head\\" cx=\\"250\\" cy=\\"198.84870020572288\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\"></circle>
+          </g>
+          <g class=\\"bar\\">
+            <rect class=\\"pin-line\\" x=\\"250\\" width=\\"2\\" y=\\"358.2184402468674\\" height=\\"239.78155975313263\\"></rect>
+            <circle class=\\"pin-head\\" cx=\\"250\\" cy=\\"358.2184402468674\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\"></circle>
+          </g>
+          <g class=\\"bar\\">
+            <rect class=\\"pin-line\\" x=\\"250\\" width=\\"2\\" y=\\"598\\" height=\\"0\\"></rect>
+            <circle class=\\"pin-head\\" cx=\\"250\\" cy=\\"598\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\"></circle>
+          </g>
+          <g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(0,
     598)\\">
-<line stroke=\\"blue\\" y2=\\"6\\">
-</line>
-<text style=\\"text-anchor: end; font-size: 1rem;\\" dx=\\"-.8em\\" dy=\\".15em\\" transform=\\"rotate(-90)\\">1/1/2010
-</text>
-</g>
-</g>
-</g>
-</g>
-<g id=\\"axisLayer\\">
-<g style=\\"color: black;\\" class=\\"y axis\\" fill=\\"none\\" font-size=\\"10\\" font-family=\\"sans-serif\\" text-anchor=\\"end\\">
-<path class=\\"domain\\" stroke=\\"currentColor\\" d=\\"M-6,598.5H0.5V0.5H-6\\">
-</path>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,583.3875042617942)\\">
-<line stroke=\\"currentColor\\" x2=\\"-6\\">
-</line>
-<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">350,000,000
-</text>
-</g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,531.0850872294376)\\">
-<line stroke=\\"currentColor\\" x2=\\"-6\\">
-</line>
-<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">400,000,000
-</text>
-</g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,478.78267019708096)\\">
-<line stroke=\\"currentColor\\" x2=\\"-6\\">
-</line>
-<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">450,000,000
-</text>
-</g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,426.48025316472433)\\">
-<line stroke=\\"currentColor\\" x2=\\"-6\\">
-</line>
-<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">500,000,000
-</text>
-</g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,374.1778361323677)\\">
-<line stroke=\\"currentColor\\" x2=\\"-6\\">
-</line>
-<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">550,000,000
-</text>
-</g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,321.87541910001113)\\">
-<line stroke=\\"currentColor\\" x2=\\"-6\\">
-</line>
-<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">600,000,000
-</text>
-</g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,269.5730020676545)\\">
-<line stroke=\\"currentColor\\" x2=\\"-6\\">
-</line>
-<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">650,000,000
-</text>
-</g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,217.27058503529787)\\">
-<line stroke=\\"currentColor\\" x2=\\"-6\\">
-</line>
-<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">700,000,000
-</text>
-</g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,164.96816800294124)\\">
-<line stroke=\\"currentColor\\" x2=\\"-6\\">
-</line>
-<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">750,000,000
-</text>
-</g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,112.66575097058455)\\">
-<line stroke=\\"currentColor\\" x2=\\"-6\\">
-</line>
-<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">800,000,000
-</text>
-</g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,60.36333393822804)\\">
-<line stroke=\\"currentColor\\" x2=\\"-6\\">
-</line>
-<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">850,000,000
-</text>
-</g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,8.060916905871295)\\">
-<line stroke=\\"currentColor\\" x2=\\"-6\\">
-</line>
-<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">900,000,000
-</text>
-</g>
-<text transform=\\"rotate(-90)\\" y=\\"6\\" dy=\\".71em\\" style=\\"text-anchor: end; color: red;\\">yColumn
-</text>
-</g>
-</g>
-<text transform=\\"translate(467,618)\\" style=\\"text-anchor: middle;\\">Order Date
-</text>
-<text transform=\\"rotate(-90)\\" y=\\"-70\\" x=\\"-299\\" dy=\\"1em\\" style=\\"text-anchor: middle;\\">Order ID
-</text>
-</g>
-</svg>
-"
+            <line stroke=\\"blue\\" y2=\\"6\\"></line><text style=\\"text-anchor: end; font-size: 1rem;\\" dx=\\"-.8em\\" dy=\\".15em\\" transform=\\"rotate(-90)\\">1/1/2010</text>
+          </g>
+        </g>
+      </g>
+    </g>
+    <g id=\\"axisLayer\\">
+      <g style=\\"color: black;\\" class=\\"y axis\\" fill=\\"none\\" font-size=\\"10\\" font-family=\\"sans-serif\\" text-anchor=\\"end\\">
+        <path class=\\"domain\\" stroke=\\"currentColor\\" d=\\"M-6,598.5H0.5V0.5H-6\\"></path>
+        <g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,568.7509818589864)\\">
+          <line stroke=\\"currentColor\\" x2=\\"-6\\"></line><text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">4,500</text>
+        </g>
+        <g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,512.8317748270058)\\">
+          <line stroke=\\"currentColor\\" x2=\\"-6\\"></line><text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">5,000</text>
+        </g>
+        <g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,456.9125677950252)\\">
+          <line stroke=\\"currentColor\\" x2=\\"-6\\"></line><text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">5,500</text>
+        </g>
+        <g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,400.99336076304473)\\">
+          <line stroke=\\"currentColor\\" x2=\\"-6\\"></line><text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">6,000</text>
+        </g>
+        <g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,345.07415373106414)\\">
+          <line stroke=\\"currentColor\\" x2=\\"-6\\"></line><text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">6,500</text>
+        </g>
+        <g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,289.1549466990836)\\">
+          <line stroke=\\"currentColor\\" x2=\\"-6\\"></line><text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">7,000</text>
+        </g>
+        <g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,233.23573966710308)\\">
+          <line stroke=\\"currentColor\\" x2=\\"-6\\"></line><text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">7,500</text>
+        </g>
+        <g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,177.31653263512248)\\">
+          <line stroke=\\"currentColor\\" x2=\\"-6\\"></line><text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">8,000</text>
+        </g>
+        <g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,121.39732560314195)\\">
+          <line stroke=\\"currentColor\\" x2=\\"-6\\"></line><text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">8,500</text>
+        </g>
+        <g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,65.47811857116142)\\">
+          <line stroke=\\"currentColor\\" x2=\\"-6\\"></line><text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">9,000</text>
+        </g>
+        <g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,9.558911539180826)\\">
+          <line stroke=\\"currentColor\\" x2=\\"-6\\"></line><text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">9,500</text>
+        </g><text transform=\\"rotate(-90)\\" y=\\"6\\" dy=\\".71em\\" style=\\"text-anchor: end; color: red;\\">yColumn</text>
+      </g>
+    </g><text transform=\\"translate(467,618)\\" style=\\"text-anchor: middle;\\">Order Date</text><text transform=\\"rotate(-90)\\" y=\\"-70\\" x=\\"-299\\" dy=\\"1em\\" style=\\"text-anchor: middle;\\">Units Sold</text>
+  </g>
+</svg>"
 `;
 
 exports[`<TimelineComponent /> R2 Tests
@@ -300,63 +244,19 @@ exports[`<TimelineComponent /> R2 Tests
                 </InputGroupText>
               </div>
             </InputGroupPrepend>
-            <FormControl as=\\"select\\" id=\\"timelineTypeSelect\\" value=\\"EventMagnitude\\" onChange={[Function: onChange]}>
-              <select value=\\"EventMagnitude\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"timelineTypeSelect\\" className=\\"form-control\\">
+            <FormControl as=\\"select\\" id=\\"timelineTypeSelect\\" value=\\"EventOccurrence\\" onChange={[Function: onChange]}>
+              <select value=\\"EventOccurrence\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"timelineTypeSelect\\" className=\\"form-control\\">
                 <option value=\\"IntervalMagnitude\\">
                   Interval Magnitude
                 </option>
                 <option value=\\"IntervalOccurrence\\">
-                  Interval Occurrence
+                  Interval Labelled
                 </option>
                 <option value=\\"EventMagnitude\\">
                   Event Magnitude
                 </option>
                 <option value=\\"EventOccurrence\\">
-                  Event Occurrence
-                </option>
-              </select>
-            </FormControl>
-          </div>
-        </InputGroup>
-        <InputGroup>
-          <div className=\\"input-group\\">
-            <InputGroupPrepend>
-              <div className=\\"input-group-prepend\\">
-                <InputGroupText id=\\"inputGroup Prepend\\">
-                  <span className=\\"input-group-text\\" id=\\"inputGroup Prepend\\">
-                    Y Column
-                  </span>
-                </InputGroupText>
-              </div>
-            </InputGroupPrepend>
-            <FormControl as=\\"select\\" id=\\"ySelect\\" value=\\"Order ID\\" onChange={[Function: onChange]}>
-              <select value=\\"Order ID\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"ySelect\\" className=\\"form-control\\">
-                <option value=\\"Order ID\\">
-                  Order ID
-                </option>
-                <option value=\\"Units Sold\\">
-                  Units Sold
-                </option>
-                <option value=\\"Unit Price\\">
-                  Unit Price
-                </option>
-                <option value=\\"Unit Cost\\">
-                  Unit Cost
-                </option>
-                <option value=\\"Total Revenue\\">
-                  Total Revenue
-                </option>
-                <option value=\\"Total Cost\\">
-                  Total Cost
-                </option>
-                <option value=\\"Total Profit\\">
-                  Total Profit
-                </option>
-                <option value=\\"index\\">
-                  index
-                </option>
-                <option value=\\"Order Date_num\\">
-                  Order Date_num
+                  Event Labelled
                 </option>
               </select>
             </FormControl>
@@ -412,6 +312,135 @@ exports[`<TimelineComponent /> R2 Tests
             </FormControl>
           </div>
         </InputGroup>
+        <InputGroup>
+          <div className=\\"input-group\\">
+            <InputGroupPrepend>
+              <div className=\\"input-group-prepend\\">
+                <InputGroupText id=\\"inputGroup Prepend\\">
+                  <span className=\\"input-group-text\\" id=\\"inputGroup Prepend\\">
+                    First Y Column
+                  </span>
+                </InputGroupText>
+              </div>
+            </InputGroupPrepend>
+            <FormControl as=\\"select\\" id=\\"ySelect\\" value=\\"Units Sold\\" onChange={[Function: onChange]}>
+              <select value=\\"Units Sold\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"ySelect\\" className=\\"form-control\\">
+                <option value=\\"Region\\">
+                  Region
+                </option>
+                <option value=\\"Country\\">
+                  Country
+                </option>
+                <option value=\\"Item Type\\">
+                  Item Type
+                </option>
+                <option value=\\"Sales Channel\\">
+                  Sales Channel
+                </option>
+                <option value=\\"Order Priority\\">
+                  Order Priority
+                </option>
+                <option value=\\"Order Date\\">
+                  Order Date
+                </option>
+                <option value=\\"Order ID\\">
+                  Order ID
+                </option>
+                <option value=\\"Ship Date\\">
+                  Ship Date
+                </option>
+                <option value=\\"Units Sold\\">
+                  Units Sold
+                </option>
+                <option value=\\"Unit Price\\">
+                  Unit Price
+                </option>
+                <option value=\\"Unit Cost\\">
+                  Unit Cost
+                </option>
+                <option value=\\"Total Revenue\\">
+                  Total Revenue
+                </option>
+                <option value=\\"Total Cost\\">
+                  Total Cost
+                </option>
+                <option value=\\"Total Profit\\">
+                  Total Profit
+                </option>
+                <option value=\\"index\\">
+                  index
+                </option>
+                <option value=\\"Order Date_num\\">
+                  Order Date_num
+                </option>
+              </select>
+            </FormControl>
+            <InputGroupPrepend>
+              <div className=\\"input-group-prepend\\">
+                <InputGroupText id=\\"inputGroup Prepend\\">
+                  <span className=\\"input-group-text\\" id=\\"inputGroup Prepend\\">
+                    Second Y Column
+                  </span>
+                </InputGroupText>
+              </div>
+            </InputGroupPrepend>
+            <FormControl as=\\"select\\" id=\\"y2Select\\" value=\\"Sales Channel\\" onChange={[Function: onChange]}>
+              <select value=\\"Sales Channel\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"y2Select\\" className=\\"form-control\\">
+                <option value=\\"\\">
+                  Select another Column
+                </option>
+                <option value=\\"Region\\">
+                  Region
+                </option>
+                <option value=\\"Country\\">
+                  Country
+                </option>
+                <option value=\\"Item Type\\">
+                  Item Type
+                </option>
+                <option value=\\"Sales Channel\\">
+                  Sales Channel
+                </option>
+                <option value=\\"Order Priority\\">
+                  Order Priority
+                </option>
+                <option value=\\"Order Date\\">
+                  Order Date
+                </option>
+                <option value=\\"Order ID\\">
+                  Order ID
+                </option>
+                <option value=\\"Ship Date\\">
+                  Ship Date
+                </option>
+                <option value=\\"Units Sold\\">
+                  Units Sold
+                </option>
+                <option value=\\"Unit Price\\">
+                  Unit Price
+                </option>
+                <option value=\\"Unit Cost\\">
+                  Unit Cost
+                </option>
+                <option value=\\"Total Revenue\\">
+                  Total Revenue
+                </option>
+                <option value=\\"Total Cost\\">
+                  Total Cost
+                </option>
+                <option value=\\"Total Profit\\">
+                  Total Profit
+                </option>
+                <option value=\\"index\\">
+                  index
+                </option>
+                <option value=\\"Order Date_num\\">
+                  Order Date_num
+                </option>
+              </select>
+            </FormControl>
+          </div>
+        </InputGroup>
       </div>
       <div style={{...}} id=\\"svgtarget\\" />
     </div>
@@ -423,143 +452,638 @@ exports[`<TimelineComponent /> R2 Tests
  T2.4 Snapshot Test
  2`] = `
 "<svg width=\\"934\\" height=\\"768\\">
-<g transform=\\"translate(70, 0)\\">
-<rect width=\\"934\\" height=\\"598\\" style=\\"fill: none;\\">
-</rect>
-<defs>
-<clipPath id=\\"barsBox\\">
-<rect width=\\"934\\" height=\\"768\\" x=\\"0\\" y=\\"0\\">
-</rect>
-</clipPath>
-</defs>
-<g clip-path=\\"url(#barsBox)\\">
-<g id=\\"barsLayer\\">
-<g class=\\"plot\\" id=\\"bars\\">
-<g class=\\"bar\\">
-<rect class=\\"pin-line\\" x=\\"0\\" width=\\"2\\" y=\\"419.4852605640208\\" height=\\"178.5147394359792\\">
-</rect>
-<circle class=\\"pin-head\\" cx=\\"0\\" cy=\\"419.4852605640208\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
-</circle>
-</g>
-<g class=\\"bar\\">
-<rect class=\\"pin-line\\" x=\\"0\\" width=\\"2\\" y=\\"45.45221988871617\\" height=\\"552.5477801112838\\">
-</rect>
-<circle class=\\"pin-head\\" cx=\\"0\\" cy=\\"45.45221988871617\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
-</circle>
-</g>
-<g class=\\"bar\\">
-<rect class=\\"pin-line\\" x=\\"250\\" width=\\"2\\" y=\\"0\\" height=\\"598\\">
-</rect>
-<circle class=\\"pin-head\\" cx=\\"250\\" cy=\\"0\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
-</circle>
-</g>
-<g class=\\"bar\\">
-<rect class=\\"pin-line\\" x=\\"250\\" width=\\"2\\" y=\\"598\\" height=\\"0\\">
-</rect>
-<circle class=\\"pin-head\\" cx=\\"250\\" cy=\\"598\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
-</circle>
-</g>
-<g class=\\"bar\\">
-<rect class=\\"pin-line\\" x=\\"250\\" width=\\"2\\" y=\\"221.82608227113172\\" height=\\"376.1739177288683\\">
-</rect>
-<circle class=\\"pin-head\\" cx=\\"250\\" cy=\\"221.82608227113172\\" r=\\"5\\" style=\\"fill: #69b3a2;\\" stroke=\\"black\\">
-</circle>
-</g>
-<g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(0,
+  <g transform=\\"translate(70, 0)\\">
+    <rect width=\\"934\\" height=\\"598\\" style=\\"fill: none;\\"></rect>
+    <defs>
+      <clipPath id=\\"barsBox\\">
+        <rect width=\\"934\\" height=\\"768\\" x=\\"0\\" y=\\"0\\"></rect>
+      </clipPath>
+    </defs>
+    <g clip-path=\\"url(#barsBox)\\">
+      <g id=\\"barsLayer\\">
+        <g class=\\"plot\\" id=\\"bars\\">
+          <g class=\\"bar\\">
+            <rect class=\\"pin-line\\" x=\\"0\\" width=\\"2\\" y=\\"128.14285714285714\\" height=\\"469.8571428571429\\"></rect>
+            <circle class=\\"pin-head\\" cx=\\"0\\" cy=\\"128.14285714285714\\" r=\\"5\\" style=\\"fill: rgb(210, 201, 52);\\" stroke=\\"black\\"></circle>
+            <circle class=\\"pin-head\\" cx=\\"0\\" cy=\\"555.2857142857142\\" r=\\"5\\" style=\\"fill: rgb(107, 247, 92);\\" stroke=\\"black\\"></circle>
+          </g>
+          <g class=\\"bar\\">
+            <rect class=\\"pin-line\\" x=\\"0\\" width=\\"2\\" y=\\"128.14285714285714\\" height=\\"469.8571428571429\\"></rect>
+            <circle class=\\"pin-head\\" cx=\\"0\\" cy=\\"128.14285714285714\\" r=\\"5\\" style=\\"fill: rgb(210, 201, 52);\\" stroke=\\"black\\"></circle>
+            <circle class=\\"pin-head\\" cx=\\"0\\" cy=\\"469.8571428571429\\" r=\\"5\\" style=\\"fill: rgb(223, 64, 161);\\" stroke=\\"black\\"></circle>
+          </g>
+          <g class=\\"bar\\">
+            <rect class=\\"pin-line\\" x=\\"250\\" width=\\"2\\" y=\\"128.14285714285714\\" height=\\"469.8571428571429\\"></rect>
+            <circle class=\\"pin-head\\" cx=\\"250\\" cy=\\"128.14285714285714\\" r=\\"5\\" style=\\"fill: rgb(210, 201, 52);\\" stroke=\\"black\\"></circle>
+            <circle class=\\"pin-head\\" cx=\\"250\\" cy=\\"384.42857142857144\\" r=\\"5\\" style=\\"fill: rgb(27, 217, 172);\\" stroke=\\"black\\"></circle>
+          </g>
+          <g class=\\"bar\\">
+            <rect class=\\"pin-line\\" x=\\"250\\" width=\\"2\\" y=\\"42.714285714285715\\" height=\\"555.2857142857143\\"></rect>
+            <circle class=\\"pin-head\\" cx=\\"250\\" cy=\\"42.714285714285715\\" r=\\"5\\" style=\\"fill: rgb(110, 64, 170);\\" stroke=\\"black\\"></circle>
+            <circle class=\\"pin-head\\" cx=\\"250\\" cy=\\"299\\" r=\\"5\\" style=\\"fill: rgb(255, 112, 78);\\" stroke=\\"black\\"></circle>
+          </g>
+          <g class=\\"bar\\">
+            <rect class=\\"pin-line\\" x=\\"250\\" width=\\"2\\" y=\\"42.714285714285715\\" height=\\"555.2857142857143\\"></rect>
+            <circle class=\\"pin-head\\" cx=\\"250\\" cy=\\"42.714285714285715\\" r=\\"5\\" style=\\"fill: rgb(110, 64, 170);\\" stroke=\\"black\\"></circle>
+            <circle class=\\"pin-head\\" cx=\\"250\\" cy=\\"213.57142857142858\\" r=\\"5\\" style=\\"fill: rgb(57, 136, 225);\\" stroke=\\"black\\"></circle>
+          </g>
+          <g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(0,
     598)\\">
-<line stroke=\\"blue\\" y2=\\"6\\">
-</line>
-<text style=\\"text-anchor: end; font-size: 1rem;\\" dx=\\"-.8em\\" dy=\\".15em\\" transform=\\"rotate(-90)\\">1/1/2010
-</text>
-</g>
-</g>
-</g>
-</g>
-<g id=\\"axisLayer\\">
-<g style=\\"color: black;\\" class=\\"y axis\\" fill=\\"none\\" font-size=\\"10\\" font-family=\\"sans-serif\\" text-anchor=\\"end\\">
-<path class=\\"domain\\" stroke=\\"currentColor\\" d=\\"M-6,598.5H0.5V0.5H-6\\">
-</path>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,583.3875042617942)\\">
-<line stroke=\\"currentColor\\" x2=\\"-6\\">
-</line>
-<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">350,000,000
-</text>
-</g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,531.0850872294376)\\">
-<line stroke=\\"currentColor\\" x2=\\"-6\\">
-</line>
-<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">400,000,000
-</text>
-</g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,478.78267019708096)\\">
-<line stroke=\\"currentColor\\" x2=\\"-6\\">
-</line>
-<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">450,000,000
-</text>
-</g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,426.48025316472433)\\">
-<line stroke=\\"currentColor\\" x2=\\"-6\\">
-</line>
-<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">500,000,000
-</text>
-</g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,374.1778361323677)\\">
-<line stroke=\\"currentColor\\" x2=\\"-6\\">
-</line>
-<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">550,000,000
-</text>
-</g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,321.87541910001113)\\">
-<line stroke=\\"currentColor\\" x2=\\"-6\\">
-</line>
-<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">600,000,000
-</text>
-</g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,269.5730020676545)\\">
-<line stroke=\\"currentColor\\" x2=\\"-6\\">
-</line>
-<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">650,000,000
-</text>
-</g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,217.27058503529787)\\">
-<line stroke=\\"currentColor\\" x2=\\"-6\\">
-</line>
-<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">700,000,000
-</text>
-</g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,164.96816800294124)\\">
-<line stroke=\\"currentColor\\" x2=\\"-6\\">
-</line>
-<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">750,000,000
-</text>
-</g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,112.66575097058455)\\">
-<line stroke=\\"currentColor\\" x2=\\"-6\\">
-</line>
-<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">800,000,000
-</text>
-</g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,60.36333393822804)\\">
-<line stroke=\\"currentColor\\" x2=\\"-6\\">
-</line>
-<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">850,000,000
-</text>
-</g>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,8.060916905871295)\\">
-<line stroke=\\"currentColor\\" x2=\\"-6\\">
-</line>
-<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">900,000,000
-</text>
-</g>
-<text transform=\\"rotate(-90)\\" y=\\"6\\" dy=\\".71em\\" style=\\"text-anchor: end; color: red;\\">yColumn
-</text>
-</g>
-</g>
-<text transform=\\"translate(467,618)\\" style=\\"text-anchor: middle;\\">Order Date
-</text>
-<text transform=\\"rotate(-90)\\" y=\\"-70\\" x=\\"-299\\" dy=\\"1em\\" style=\\"text-anchor: middle;\\">Order ID
-</text>
-</g>
-</svg>
-"
+            <line stroke=\\"blue\\" y2=\\"6\\"></line><text style=\\"text-anchor: end; font-size: 1rem;\\" dx=\\"-.8em\\" dy=\\".15em\\" transform=\\"rotate(-90)\\">1/1/2010</text>
+          </g>
+        </g>
+      </g>
+    </g>
+    <g id=\\"axisLayer\\">
+      <g style=\\"color: black;\\" class=\\"y axis\\" fill=\\"none\\" font-size=\\"10\\" font-family=\\"sans-serif\\" text-anchor=\\"end\\">
+        <path class=\\"domain\\" stroke=\\"currentColor\\" d=\\"M-6,598.5H0.5V0.5H-6\\"></path>
+        <g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,555.2857142857142)\\">
+          <line stroke=\\"currentColor\\" x2=\\"-6\\"></line><text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">7369</text>
+        </g>
+        <g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,469.8571428571429)\\">
+          <line stroke=\\"currentColor\\" x2=\\"-6\\"></line><text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">9581</text>
+        </g>
+        <g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,384.42857142857144)\\">
+          <line stroke=\\"currentColor\\" x2=\\"-6\\"></line><text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">7803</text>
+        </g>
+        <g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,299)\\">
+          <line stroke=\\"currentColor\\" x2=\\"-6\\"></line><text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">6378</text>
+        </g>
+        <g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,213.57142857142858)\\">
+          <line stroke=\\"currentColor\\" x2=\\"-6\\"></line><text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">4234</text>
+        </g>
+        <g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,128.14285714285714)\\">
+          <line stroke=\\"currentColor\\" x2=\\"-6\\"></line><text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">Online</text>
+        </g>
+        <g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,42.714285714285715)\\">
+          <line stroke=\\"currentColor\\" x2=\\"-6\\"></line><text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">Offline</text>
+        </g><text transform=\\"rotate(-90)\\" y=\\"6\\" dy=\\".71em\\" style=\\"text-anchor: end; color: red;\\">yColumn</text>
+      </g>
+    </g><text transform=\\"translate(467,618)\\" style=\\"text-anchor: middle;\\">Order Date</text><text transform=\\"rotate(-90)\\" y=\\"-70\\" x=\\"-299\\" dy=\\"1em\\" style=\\"text-anchor: middle;\\">Units Sold, Sales Channel</text>
+  </g>
+</svg>"
+`;
+
+exports[`<TimelineComponent /> R2 Tests
+ T2.6 Snapshot Test
+ 1`] = `
+"<TimelineComponent data={{...}}>
+  <div id=\\"timelineComponentDiv\\">
+    <div>
+      <div>
+        <InputGroup>
+          <div className=\\"input-group\\">
+            <InputGroupPrepend>
+              <div className=\\"input-group-prepend\\">
+                <InputGroupText id=\\"inputGroup Prepend\\">
+                  <span className=\\"input-group-text\\" id=\\"inputGroup Prepend\\">
+                    Timeline Type
+                  </span>
+                </InputGroupText>
+              </div>
+            </InputGroupPrepend>
+            <FormControl as=\\"select\\" id=\\"timelineTypeSelect\\" value=\\"IntervalMagnitude\\" onChange={[Function: onChange]}>
+              <select value=\\"IntervalMagnitude\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"timelineTypeSelect\\" className=\\"form-control\\">
+                <option value=\\"IntervalMagnitude\\">
+                  Interval Magnitude
+                </option>
+                <option value=\\"IntervalOccurrence\\">
+                  Interval Labelled
+                </option>
+                <option value=\\"EventMagnitude\\">
+                  Event Magnitude
+                </option>
+                <option value=\\"EventOccurrence\\">
+                  Event Labelled
+                </option>
+              </select>
+            </FormControl>
+          </div>
+        </InputGroup>
+        <InputGroup>
+          <div className=\\"input-group\\">
+            <InputGroupPrepend>
+              <div className=\\"input-group-prepend\\">
+                <InputGroupText id=\\"inputGroup Prepend\\">
+                  <span className=\\"input-group-text\\" id=\\"inputGroup Prepend\\">
+                    Starting Range
+                  </span>
+                </InputGroupText>
+              </div>
+            </InputGroupPrepend>
+            <FormControl as=\\"select\\" id=\\"xSelect\\" value=\\"Order Date\\" onChange={[Function: onChange]}>
+              <select value=\\"Order Date\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"xSelect\\" className=\\"form-control\\">
+                <option value=\\"Order Date\\">
+                  Order Date
+                </option>
+                <option value=\\"Order ID\\">
+                  Order ID
+                </option>
+                <option value=\\"Ship Date\\">
+                  Ship Date
+                </option>
+                <option value=\\"Units Sold\\">
+                  Units Sold
+                </option>
+                <option value=\\"Unit Price\\">
+                  Unit Price
+                </option>
+                <option value=\\"Unit Cost\\">
+                  Unit Cost
+                </option>
+                <option value=\\"Total Revenue\\">
+                  Total Revenue
+                </option>
+                <option value=\\"Total Cost\\">
+                  Total Cost
+                </option>
+                <option value=\\"Total Profit\\">
+                  Total Profit
+                </option>
+                <option value=\\"index\\">
+                  index
+                </option>
+                <option value=\\"Order Date_num\\">
+                  Order Date_num
+                </option>
+              </select>
+            </FormControl>
+            <InputGroupPrepend>
+              <div className=\\"input-group-prepend\\">
+                <InputGroupText id=\\"inputGroup Prepend\\">
+                  <span className=\\"input-group-text\\" id=\\"inputGroup Prepend\\">
+                    Ending Range
+                  </span>
+                </InputGroupText>
+              </div>
+            </InputGroupPrepend>
+            <FormControl as=\\"select\\" id=\\"x2Select\\" value=\\"Order Date\\" onChange={[Function: onChange]}>
+              <select value=\\"Order Date\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"x2Select\\" className=\\"form-control\\">
+                <option value=\\"Order Date\\">
+                  Order Date
+                </option>
+                <option value=\\"Order ID\\">
+                  Order ID
+                </option>
+                <option value=\\"Ship Date\\">
+                  Ship Date
+                </option>
+                <option value=\\"Units Sold\\">
+                  Units Sold
+                </option>
+                <option value=\\"Unit Price\\">
+                  Unit Price
+                </option>
+                <option value=\\"Unit Cost\\">
+                  Unit Cost
+                </option>
+                <option value=\\"Total Revenue\\">
+                  Total Revenue
+                </option>
+                <option value=\\"Total Cost\\">
+                  Total Cost
+                </option>
+                <option value=\\"Total Profit\\">
+                  Total Profit
+                </option>
+                <option value=\\"index\\">
+                  index
+                </option>
+                <option value=\\"Order Date_num\\">
+                  Order Date_num
+                </option>
+              </select>
+            </FormControl>
+          </div>
+        </InputGroup>
+        <InputGroup>
+          <div className=\\"input-group\\">
+            <InputGroupPrepend>
+              <div className=\\"input-group-prepend\\">
+                <InputGroupText id=\\"inputGroup Prepend\\">
+                  <span className=\\"input-group-text\\" id=\\"inputGroup Prepend\\">
+                    Y Column
+                  </span>
+                </InputGroupText>
+              </div>
+            </InputGroupPrepend>
+            <FormControl as=\\"select\\" id=\\"ySelect\\" value=\\"Region\\" onChange={[Function: onChange]}>
+              <select value=\\"Region\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"ySelect\\" className=\\"form-control\\">
+                <option value=\\"Order Date\\">
+                  Order Date
+                </option>
+                <option value=\\"Order ID\\">
+                  Order ID
+                </option>
+                <option value=\\"Ship Date\\">
+                  Ship Date
+                </option>
+                <option value=\\"Units Sold\\">
+                  Units Sold
+                </option>
+                <option value=\\"Unit Price\\">
+                  Unit Price
+                </option>
+                <option value=\\"Unit Cost\\">
+                  Unit Cost
+                </option>
+                <option value=\\"Total Revenue\\">
+                  Total Revenue
+                </option>
+                <option value=\\"Total Cost\\">
+                  Total Cost
+                </option>
+                <option value=\\"Total Profit\\">
+                  Total Profit
+                </option>
+                <option value=\\"index\\">
+                  index
+                </option>
+                <option value=\\"Order Date_num\\">
+                  Order Date_num
+                </option>
+              </select>
+            </FormControl>
+          </div>
+        </InputGroup>
+      </div>
+      <div style={{...}} id=\\"svgtarget\\" />
+    </div>
+  </div>
+</TimelineComponent>"
+`;
+
+exports[`<TimelineComponent /> R2 Tests
+ T2.6 Snapshot Test
+ 2`] = `
+"<svg width=\\"934\\" height=\\"768\\">
+  <g transform=\\"translate(70, 0)\\">
+    <rect width=\\"934\\" height=\\"598\\" style=\\"fill: none;\\"></rect>
+    <defs>
+      <clipPath id=\\"barsBox\\">
+        <rect width=\\"934\\" height=\\"768\\" x=\\"0\\" y=\\"0\\"></rect>
+      </clipPath>
+    </defs>
+    <g clip-path=\\"url(#barsBox)\\">
+      <g id=\\"barsLayer\\">
+        <g class=\\"plot\\" id=\\"bars\\">
+          <g class=\\"bar\\">
+            <rect class=\\"box\\" x=\\"0\\" width=\\"0\\" height=\\"NaN\\" style=\\"fill: #61a3a9; opacity: 0.2;\\"></rect>
+          </g>
+          <g class=\\"bar\\">
+            <rect class=\\"box\\" x=\\"0\\" width=\\"0\\" height=\\"NaN\\" style=\\"fill: #61a3a9; opacity: 0.2;\\"></rect>
+          </g>
+          <g class=\\"bar\\">
+            <rect class=\\"box\\" x=\\"250\\" width=\\"0\\" height=\\"NaN\\" style=\\"fill: #61a3a9; opacity: 0.2;\\"></rect>
+          </g>
+          <g class=\\"bar\\">
+            <rect class=\\"box\\" x=\\"250\\" width=\\"0\\" height=\\"NaN\\" style=\\"fill: #61a3a9; opacity: 0.2;\\"></rect>
+          </g>
+          <g class=\\"bar\\">
+            <rect class=\\"box\\" x=\\"250\\" width=\\"0\\" height=\\"NaN\\" style=\\"fill: #61a3a9; opacity: 0.2;\\"></rect>
+          </g>
+          <g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(0,
+      598)\\">
+            <line stroke=\\"blue\\" y2=\\"6\\"></line><text style=\\"text-anchor: end; font-size: 1rem;\\" dx=\\"-.8em\\" dy=\\".15em\\" transform=\\"rotate(-90)\\">1/1/2010</text>
+          </g>
+        </g>
+      </g>
+    </g>
+    <g id=\\"axisLayer\\">
+      <g style=\\"color: black;\\" class=\\"y axis\\" fill=\\"none\\" font-size=\\"10\\" font-family=\\"sans-serif\\" text-anchor=\\"end\\">
+        <path class=\\"domain\\" stroke=\\"currentColor\\" d=\\"M-6,598.5H0.5V0.5H-6\\"></path><text transform=\\"rotate(-90)\\" y=\\"6\\" dy=\\".71em\\" style=\\"text-anchor: end; color: red;\\">yColumn</text>
+      </g>
+    </g><text transform=\\"translate(467,618)\\" style=\\"text-anchor: middle;\\">start: Order Date, end: Order Date</text><text transform=\\"rotate(-90)\\" y=\\"-70\\" x=\\"-299\\" dy=\\"1em\\" style=\\"text-anchor: middle;\\">Region</text>
+  </g>
+</svg>"
+`;
+
+exports[`<TimelineComponent /> R2 Tests
+ T2.7 Snapshot Test
+ 1`] = `
+"<TimelineComponent data={{...}}>
+  <div id=\\"timelineComponentDiv\\">
+    <div>
+      <div>
+        <InputGroup>
+          <div className=\\"input-group\\">
+            <InputGroupPrepend>
+              <div className=\\"input-group-prepend\\">
+                <InputGroupText id=\\"inputGroup Prepend\\">
+                  <span className=\\"input-group-text\\" id=\\"inputGroup Prepend\\">
+                    Timeline Type
+                  </span>
+                </InputGroupText>
+              </div>
+            </InputGroupPrepend>
+            <FormControl as=\\"select\\" id=\\"timelineTypeSelect\\" value=\\"IntervalOccurrence\\" onChange={[Function: onChange]}>
+              <select value=\\"IntervalOccurrence\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"timelineTypeSelect\\" className=\\"form-control\\">
+                <option value=\\"IntervalMagnitude\\">
+                  Interval Magnitude
+                </option>
+                <option value=\\"IntervalOccurrence\\">
+                  Interval Labelled
+                </option>
+                <option value=\\"EventMagnitude\\">
+                  Event Magnitude
+                </option>
+                <option value=\\"EventOccurrence\\">
+                  Event Labelled
+                </option>
+              </select>
+            </FormControl>
+          </div>
+        </InputGroup>
+        <InputGroup>
+          <div className=\\"input-group\\">
+            <InputGroupPrepend>
+              <div className=\\"input-group-prepend\\">
+                <InputGroupText id=\\"inputGroup Prepend\\">
+                  <span className=\\"input-group-text\\" id=\\"inputGroup Prepend\\">
+                    Starting Range
+                  </span>
+                </InputGroupText>
+              </div>
+            </InputGroupPrepend>
+            <FormControl as=\\"select\\" id=\\"xSelect\\" value=\\"Order Date\\" onChange={[Function: onChange]}>
+              <select value=\\"Order Date\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"xSelect\\" className=\\"form-control\\">
+                <option value=\\"Order Date\\">
+                  Order Date
+                </option>
+                <option value=\\"Order ID\\">
+                  Order ID
+                </option>
+                <option value=\\"Ship Date\\">
+                  Ship Date
+                </option>
+                <option value=\\"Units Sold\\">
+                  Units Sold
+                </option>
+                <option value=\\"Unit Price\\">
+                  Unit Price
+                </option>
+                <option value=\\"Unit Cost\\">
+                  Unit Cost
+                </option>
+                <option value=\\"Total Revenue\\">
+                  Total Revenue
+                </option>
+                <option value=\\"Total Cost\\">
+                  Total Cost
+                </option>
+                <option value=\\"Total Profit\\">
+                  Total Profit
+                </option>
+                <option value=\\"index\\">
+                  index
+                </option>
+                <option value=\\"Order Date_num\\">
+                  Order Date_num
+                </option>
+              </select>
+            </FormControl>
+            <InputGroupPrepend>
+              <div className=\\"input-group-prepend\\">
+                <InputGroupText id=\\"inputGroup Prepend\\">
+                  <span className=\\"input-group-text\\" id=\\"inputGroup Prepend\\">
+                    Ending Range
+                  </span>
+                </InputGroupText>
+              </div>
+            </InputGroupPrepend>
+            <FormControl as=\\"select\\" id=\\"x2Select\\" value=\\"Order Date\\" onChange={[Function: onChange]}>
+              <select value=\\"Order Date\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"x2Select\\" className=\\"form-control\\">
+                <option value=\\"Order Date\\">
+                  Order Date
+                </option>
+                <option value=\\"Order ID\\">
+                  Order ID
+                </option>
+                <option value=\\"Ship Date\\">
+                  Ship Date
+                </option>
+                <option value=\\"Units Sold\\">
+                  Units Sold
+                </option>
+                <option value=\\"Unit Price\\">
+                  Unit Price
+                </option>
+                <option value=\\"Unit Cost\\">
+                  Unit Cost
+                </option>
+                <option value=\\"Total Revenue\\">
+                  Total Revenue
+                </option>
+                <option value=\\"Total Cost\\">
+                  Total Cost
+                </option>
+                <option value=\\"Total Profit\\">
+                  Total Profit
+                </option>
+                <option value=\\"index\\">
+                  index
+                </option>
+                <option value=\\"Order Date_num\\">
+                  Order Date_num
+                </option>
+              </select>
+            </FormControl>
+          </div>
+        </InputGroup>
+        <InputGroup>
+          <div className=\\"input-group\\">
+            <InputGroupPrepend>
+              <div className=\\"input-group-prepend\\">
+                <InputGroupText id=\\"inputGroup Prepend\\">
+                  <span className=\\"input-group-text\\" id=\\"inputGroup Prepend\\">
+                    First Y Column
+                  </span>
+                </InputGroupText>
+              </div>
+            </InputGroupPrepend>
+            <FormControl as=\\"select\\" id=\\"ySelect\\" value=\\"Region\\" onChange={[Function: onChange]}>
+              <select value=\\"Region\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"ySelect\\" className=\\"form-control\\">
+                <option value=\\"Region\\">
+                  Region
+                </option>
+                <option value=\\"Country\\">
+                  Country
+                </option>
+                <option value=\\"Item Type\\">
+                  Item Type
+                </option>
+                <option value=\\"Sales Channel\\">
+                  Sales Channel
+                </option>
+                <option value=\\"Order Priority\\">
+                  Order Priority
+                </option>
+                <option value=\\"Order Date\\">
+                  Order Date
+                </option>
+                <option value=\\"Order ID\\">
+                  Order ID
+                </option>
+                <option value=\\"Ship Date\\">
+                  Ship Date
+                </option>
+                <option value=\\"Units Sold\\">
+                  Units Sold
+                </option>
+                <option value=\\"Unit Price\\">
+                  Unit Price
+                </option>
+                <option value=\\"Unit Cost\\">
+                  Unit Cost
+                </option>
+                <option value=\\"Total Revenue\\">
+                  Total Revenue
+                </option>
+                <option value=\\"Total Cost\\">
+                  Total Cost
+                </option>
+                <option value=\\"Total Profit\\">
+                  Total Profit
+                </option>
+                <option value=\\"index\\">
+                  index
+                </option>
+                <option value=\\"Order Date_num\\">
+                  Order Date_num
+                </option>
+              </select>
+            </FormControl>
+            <InputGroupPrepend>
+              <div className=\\"input-group-prepend\\">
+                <InputGroupText id=\\"inputGroup Prepend\\">
+                  <span className=\\"input-group-text\\" id=\\"inputGroup Prepend\\">
+                    Second Y Column
+                  </span>
+                </InputGroupText>
+              </div>
+            </InputGroupPrepend>
+            <FormControl as=\\"select\\" id=\\"y2Select\\" value=\\"Order Priority\\" onChange={[Function: onChange]}>
+              <select value=\\"Order Priority\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"y2Select\\" className=\\"form-control\\">
+                <option value=\\"\\">
+                  Select another Column
+                </option>
+                <option value=\\"Region\\">
+                  Region
+                </option>
+                <option value=\\"Country\\">
+                  Country
+                </option>
+                <option value=\\"Item Type\\">
+                  Item Type
+                </option>
+                <option value=\\"Sales Channel\\">
+                  Sales Channel
+                </option>
+                <option value=\\"Order Priority\\">
+                  Order Priority
+                </option>
+                <option value=\\"Order Date\\">
+                  Order Date
+                </option>
+                <option value=\\"Order ID\\">
+                  Order ID
+                </option>
+                <option value=\\"Ship Date\\">
+                  Ship Date
+                </option>
+                <option value=\\"Units Sold\\">
+                  Units Sold
+                </option>
+                <option value=\\"Unit Price\\">
+                  Unit Price
+                </option>
+                <option value=\\"Unit Cost\\">
+                  Unit Cost
+                </option>
+                <option value=\\"Total Revenue\\">
+                  Total Revenue
+                </option>
+                <option value=\\"Total Cost\\">
+                  Total Cost
+                </option>
+                <option value=\\"Total Profit\\">
+                  Total Profit
+                </option>
+                <option value=\\"index\\">
+                  index
+                </option>
+                <option value=\\"Order Date_num\\">
+                  Order Date_num
+                </option>
+              </select>
+            </FormControl>
+          </div>
+        </InputGroup>
+      </div>
+      <div style={{...}} id=\\"svgtarget\\" />
+    </div>
+  </div>
+</TimelineComponent>"
+`;
+
+exports[`<TimelineComponent /> R2 Tests
+ T2.7 Snapshot Test
+ 2`] = `
+"<svg width=\\"934\\" height=\\"768\\">
+  <g transform=\\"translate(70, 0)\\">
+    <rect width=\\"934\\" height=\\"598\\" style=\\"fill: none;\\"></rect>
+    <defs>
+      <clipPath id=\\"barsBox\\">
+        <rect width=\\"934\\" height=\\"768\\" x=\\"0\\" y=\\"0\\"></rect>
+      </clipPath>
+    </defs>
+    <g clip-path=\\"url(#barsBox)\\">
+      <g id=\\"barsLayer\\">
+        <g class=\\"plot\\" id=\\"bars\\">
+          <g class=\\"bar\\">
+            <rect class=\\"box\\" x=\\"0\\" width=\\"0\\" y=\\"448.5\\" height=\\"149.5\\" style=\\"fill: rgb(175, 240, 91); opacity: 0.2;\\"></rect>
+            <rect class=\\"box\\" x=\\"0\\" width=\\"0\\" y=\\"299\\" height=\\"149.5\\" style=\\"fill: rgb(110, 64, 170); opacity: 0.2;\\"></rect>
+          </g>
+          <g class=\\"bar\\">
+            <rect class=\\"box\\" x=\\"0\\" width=\\"0\\" y=\\"448.5\\" height=\\"149.5\\" style=\\"fill: rgb(175, 240, 91); opacity: 0.2;\\"></rect>
+            <rect class=\\"box\\" x=\\"0\\" width=\\"0\\" y=\\"149.5\\" height=\\"149.5\\" style=\\"fill: rgb(175, 240, 91); opacity: 0.2;\\"></rect>
+          </g>
+          <g class=\\"bar\\">
+            <rect class=\\"box\\" x=\\"250\\" width=\\"0\\" y=\\"448.5\\" height=\\"149.5\\" style=\\"fill: rgb(175, 240, 91); opacity: 0.2;\\"></rect>
+            <rect class=\\"box\\" x=\\"250\\" width=\\"0\\" y=\\"299\\" height=\\"149.5\\" style=\\"fill: rgb(110, 64, 170); opacity: 0.2;\\"></rect>
+          </g>
+          <g class=\\"bar\\">
+            <rect class=\\"box\\" x=\\"250\\" width=\\"0\\" y=\\"448.5\\" height=\\"149.5\\" style=\\"fill: rgb(175, 240, 91); opacity: 0.2;\\"></rect>
+            <rect class=\\"box\\" x=\\"250\\" width=\\"0\\" y=\\"0\\" height=\\"149.5\\" style=\\"fill: rgb(110, 64, 170); opacity: 0.2;\\"></rect>
+          </g>
+          <g class=\\"bar\\">
+            <rect class=\\"box\\" x=\\"250\\" width=\\"0\\" y=\\"448.5\\" height=\\"149.5\\" style=\\"fill: rgb(175, 240, 91); opacity: 0.2;\\"></rect>
+            <rect class=\\"box\\" x=\\"250\\" width=\\"0\\" y=\\"149.5\\" height=\\"149.5\\" style=\\"fill: rgb(175, 240, 91); opacity: 0.2;\\"></rect>
+          </g>
+          <g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(0,
+      598)\\">
+            <line stroke=\\"blue\\" y2=\\"6\\"></line><text style=\\"text-anchor: end; font-size: 1rem;\\" dx=\\"-.8em\\" dy=\\".15em\\" transform=\\"rotate(-90)\\">1/1/2010</text>
+          </g>
+        </g>
+      </g>
+    </g>
+    <g id=\\"axisLayer\\">
+      <g style=\\"color: black;\\" class=\\"y axis\\" fill=\\"none\\" font-size=\\"10\\" font-family=\\"sans-serif\\" text-anchor=\\"end\\">
+        <path class=\\"domain\\" stroke=\\"currentColor\\" d=\\"M-6,598.5H0.5V0.5H-6\\"></path>
+        <g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,523.25)\\">
+          <line stroke=\\"currentColor\\" x2=\\"-6\\"></line><text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">North America</text>
+        </g>
+        <g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,373.75)\\">
+          <line stroke=\\"currentColor\\" x2=\\"-6\\"></line><text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">H</text>
+        </g>
+        <g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,224.25)\\">
+          <line stroke=\\"currentColor\\" x2=\\"-6\\"></line><text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">C</text>
+        </g>
+        <g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,74.75)\\">
+          <line stroke=\\"currentColor\\" x2=\\"-6\\"></line><text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">M</text>
+        </g><text transform=\\"rotate(-90)\\" y=\\"6\\" dy=\\".71em\\" style=\\"text-anchor: end; color: red;\\">yColumn</text>
+      </g>
+    </g><text transform=\\"translate(467,618)\\" style=\\"text-anchor: middle;\\">start: Order Date, end: Order Date</text><text transform=\\"rotate(-90)\\" y=\\"-70\\" x=\\"-299\\" dy=\\"1em\\" style=\\"text-anchor: middle;\\">Region, Order Priority</text>
+  </g>
+</svg>"
 `;

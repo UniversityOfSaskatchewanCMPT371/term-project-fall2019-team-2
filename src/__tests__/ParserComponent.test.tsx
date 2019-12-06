@@ -343,9 +343,8 @@ describe('R1 Tests\n', () => {
 
   describe('T1.3: .csv with different valid date formats accepted\n', () => {
     // replaces afterEach() -> was behaving weirdly with async()
-    const expectHelper = async (fEvent: object) => {
+    const expectHelper = async (fEvent: any)=> {
       await wrapper.instance().parse(fEvent);
-
       // data should be updated to contain csv info
       compData = wrapper.state('data');
 
@@ -356,7 +355,12 @@ describe('R1 Tests\n', () => {
 
       // onChange should be called once
       expect(onChangeMock).toHaveBeenCalledTimes(1);
-      expect(compData.length).toBe(9);
+      if (fEvent.target.files[0].name === 'sorted.csv') {
+        expect(compData.length).toBe(4);
+      } else {
+        expect(compData.length).toBe(9);
+      }
+
       // spies that should have been called
       expect(parseSpy).toHaveBeenCalledTimes(1);
       expect(parseCsvSpy).toHaveBeenCalledTimes(1);
@@ -383,48 +387,227 @@ describe('R1 Tests\n', () => {
         await expectHelper(fileEvent);
       });
 
-      it('DD-MM-YYYY', async () => {
+      it('DD-MM-YYYY', () => {
+        wrapper.setState({'formatString': 'DD-MM-YYYY'});
         const ddmmyyyyFile: File = new File(
             ['Date,SomeNum,SomeString\n' +
             '01-01-1989,5,efg\n' +
             '01-01-1990,1,hij\n' +
-            '01-01-1991,4,abcd\n' +
-            '01-02-2000,5,efg\n' +
-            '01-04-2000,1,hij\n' +
-            '01-07-2000,4,abcd\n' +
-            '11-01-2000,5,efg\n' +
-            '15-01-2000,1,hij\n' +
-            '21-01-2000,4,abcd\n' +
-            ''],
-            'test.csv',
+            '01-02-1990,4,abcd\n' +
+            '05-02-1990,5,efg\n'
+            ],
+            'sorted.csv',
             {type: '.csv,text/csv'},
         );
         fileEvent = {target: {files: [ddmmyyyyFile]}};
       });
+
+      it('MM-DD-YYYY', () => {
+        wrapper.setState({'formatString': 'MM-DD-YYYY'});
+        const mmddyyyyFile: File = new File([
+          'Date,SomeNum,SomeString\n' +
+          '01-01-1989,5,efg\n' +
+          '01-01-1990,1,hij\n' +
+          '02-01-1990,4,abcd\n' +
+          '02-05-1990,5,efg\n'
+        ],
+        'sorted.csv',
+        {type: '.csv,text/csv'},
+        );
+        fileEvent = {target: {files: [mmddyyyyFile]}};
+      });
+
+      it('DD-MMMM-YYYY', () => {
+        wrapper.setState({'formatString': 'DD-MMMM-YYYY'});
+        const ddmmmmyyyyFile: File = new File([
+          'Date,SomeNum,SomeString\n' +
+          '01-January-1989,5,efg\n' +
+          '01-January-1990,1,hij\n' +
+          '02-February-1990,4,abcd\n' +
+          '05-February-1990,5,efg\n'
+        ],
+        'sorted.csv',
+        {type: '.csv,text/csv'},
+        );
+        fileEvent= {target: {files: [ddmmmmyyyyFile]}};
+      });
+
+      it('MMMM-DD-YYYY', () => {
+        wrapper.setState({'formatString': 'MMMM-DD-YYYY'});
+        const mmmmddyyyyFile: File = new File([
+          'Date,SomeNum,SomeString\n' +
+          '01-January-1989,5,efg\n' +
+          '01-January-1990,1,hij\n' +
+          '02-February-1990,4,abcd\n' +
+          '05-February-1990,5,efg\n'
+        ],
+        'sorted.csv',
+        {type: '.csv,text/csv'},
+        );
+        fileEvent = {target: {files: [mmmmddyyyyFile]}};
+      });
+
+      it('DD-MM-YY', () => {
+        wrapper.setState({'formatString': 'DD-MM-YY'});
+        const ddmmyyFile: File = new File(
+            ['Date,SomeNum,SomeString\n' +
+            '01-01-89,5,efg\n' +
+            '01-01-90,1,hij\n' +
+            '01-02-90,4,abcd\n' +
+            '05-02-90,5,efg\n'
+            ],
+            'sorted.csv',
+            {type: '.csv,text/csv'},
+        );
+        fileEvent = {target: {files: [ddmmyyFile]}};
+      });
+
+      it('MM-DD-YY', () => {
+        wrapper.setState({'formatString': 'MM-DD-YY'});
+        const mmddyyFile: File = new File([
+          'Date,SomeNum,SomeString\n' +
+          '01-01-89,5,efg\n' +
+          '01-01-90,1,hij\n' +
+          '02-01-90,4,abcd\n' +
+          '02-05-90,5,efg\n'
+        ],
+        'sorted.csv',
+        {type: '.csv,text/csv'},
+        );
+        fileEvent = {target: {files: [mmddyyFile]}};
+      });
     });
 
-    it('should parse .csv with unsorted dates & sort data by date\n',
-        async () => {
-          initTest();
-          const unsortedDateFile: File = new File(
-              // This tests DD-MM-YYYY format
-              ['Date,SomeNum,SomeString\n' +
-              '01-07-2000,4,abcd\n' +
-              '01-02-2000,5,efg\n' +
-              '01-04-2000,1,hij\n' +
-              '21-01-2000,4,abcd\n' +
-              '11-01-2000,5,efg\n' +
-              '15-01-2000,1,hij\n' +
-              '01-01-1991,4,abcd\n' +
-              '01-01-1989,5,efg\n' +
-              '01-01-1990,1,hij\n' +
-              ''],
-              'test.csv',
-              {type: '.csv,text/csv'},
-          );
-          fileEvent = {target: {files: [unsortedDateFile]}};
+    describe('should parse .csv with unsorted dates & sort data by date\n',
+        () => {
+          beforeEach(() => {
+            initTest();
+          });
+          afterEach(async () => {
+            await expectHelper(fileEvent);
+          });
 
-          await expectHelper(fileEvent);
+          it('DD-MM-YYYY', () => {
+            wrapper.setState({'formatString': 'DD-MM-YYYY'});
+            const ddmmyyyyFile: File = new File(
+                ['Date,SomeNum,SomeString\n' +
+                '01-07-2000,9,abcd\n' +
+                '01-02-2000,7,efg\n' +
+                '01-04-2000,8,hij\n' +
+                '21-01-2000,6,abcd\n' +
+                '11-01-2000,4,efg\n' +
+                '15-01-2000,5,hij\n' +
+                '01-01-1991,3,abcd\n' +
+                '01-01-1989,1,efg\n' +
+                '01-01-1990,2,hij\n'
+                ],
+                'unsorted.csv',
+                {type: '.csv,text/csv'},
+            );
+            fileEvent = {target: {files: [ddmmyyyyFile]}};
+          });
+
+          it('MM-DD-YYYY', () => {
+            wrapper.setState({'formatString': 'MM-DD-YYYY'});
+            const mmddyyyyFile: File = new File(
+                ['Date,SomeNum,SomeString\n' +
+                '07-01-2000,9,abcd\n' +
+                '02-01-2000,7,efg\n' +
+                '04-01-2000,8,hij\n' +
+                '01-21-2000,6,abcd\n' +
+                '01-11-2000,4,efg\n' +
+                '01-15-2000,5,hij\n' +
+                '01-01-1991,3,abcd\n' +
+                '01-01-1989,1,efg\n' +
+                '01-01-1990,2,hij\n'
+                ],
+                'unsorted.csv',
+                {type: '.csv,text/csv'},
+            );
+            fileEvent = {target: {files: [mmddyyyyFile]}};
+          });
+
+          it('DD-MMMM-YYYY', () => {
+            wrapper.setState({'formatString': 'DD-MMMM-YYYY'});
+            const ddmmmmyyyyFile: File = new File(
+                // This tests DD-MM-YYYY format
+                ['Date,SomeNum,SomeString\n' +
+                '01-July-2000,9,abcd\n' +
+                '01-February-2000,7,efg\n' +
+                '01-April-2000,8,hij\n' +
+                '21-January-2000,6,abcd\n' +
+                '11-January-2000,4,efg\n' +
+                '15-January-2000,5,hij\n' +
+                '01-January-1991,3,abcd\n' +
+                '01-January-1989,1,efg\n' +
+                '01-January-1990,2,hij\n'
+                ],
+                'unsorted.csv',
+                {type: '.csv,text/csv'},
+            );
+            fileEvent = {target: {files: [ddmmmmyyyyFile]}};
+          });
+
+          it('MMMM-DD-YYYY', () => {
+            wrapper.setState({'formatString': 'MMMM-DD-YYYY'});
+            const mmmmddyyyyFile: File = new File(
+                ['Date,SomeNum,SomeString\n' +
+                'July-01-2000,9,abcd\n' +
+                'February-01-2000,7,efg\n' +
+                'April-01-2000,8,hij\n' +
+                'January-21-2000,6,abcd\n' +
+                'January-11-2000,4,efg\n' +
+                'January-15-2000,5,hij\n' +
+                'January-01-1991,3,abcd\n' +
+                'January-01-1989,1,efg\n' +
+                'January-01-1990,2,hij\n'
+                ],
+                'unsorted.csv',
+                {type: '.csv,text/csv'},
+            );
+            fileEvent = {target: {files: [mmmmddyyyyFile]}};
+          });
+
+          it('DD-MM-YY', () => {
+            wrapper.setState({'formatString': 'DD-MM-YY'});
+            const ddmmyyFile: File = new File(
+                // This tests DD-MM-YYYY format
+                ['Date,SomeNum,SomeString\n' +
+                '01-07-00,9,abcd\n' +
+                '01-02-00,7,efg\n' +
+                '01-04-00,8,hij\n' +
+                '21-01-00,6,abcd\n' +
+                '11-01-00,4,efg\n' +
+                '15-01-00,5,hij\n' +
+                '01-01-91,3,abcd\n' +
+                '01-01-89,1,efg\n' +
+                '01-01-90,2,hij\n'
+                ],
+                'unsorted.csv',
+                {type: '.csv,text/csv'},
+            );
+            fileEvent = {target: {files: [ddmmyyFile]}};
+          });
+
+          it('MM-DD-YY', () => {
+            wrapper.setState({'formatString': 'MM-DD-YYYY'});
+            const mmddyyFile: File = new File(
+                ['Date,SomeNum,SomeString\n' +
+                '07-01-00,9,abcd\n' +
+                '02-01-00,7,efg\n' +
+                '04-01-00,8,hij\n' +
+                '01-21-00,6,abcd\n' +
+                '01-11-00,4,efg\n' +
+                '01-15-00,5,hij\n' +
+                '01-01-91,3,abcd\n' +
+                '01-01-89,1,efg\n' +
+                '01-01-90,2,hij\n'
+                ],
+                'unsorted.csv',
+                {type: '.csv,text/csv'},
+            );
+            fileEvent = {target: {files: [mmddyyFile]}};
+          });
         });
   });
 
@@ -467,7 +650,8 @@ describe('R1 Tests\n', () => {
     expect(isValidSpy).not.toThrow('Wrong file type was uploaded.');
     expect(inferTypesSpy).not.toThrow('data is empty');
 
-    expect(sortDataSpy).toThrow('The file uploaded has no dates.');
+    expect(sortDataSpy).toThrow('The file uploaded has ' +
+        'no dates of the given format.');
 
     compData = wrapper.state('data');
     expect(compData.length).toBe(3);
@@ -581,6 +765,80 @@ describe('<ParserComponent /> Unit Tests', () => {
     });
   });
 
+  describe('createNewMockFileEvent()', () => {
+    it('Should check if new mock file event is created and returned', () => {
+      const wrapper = mount(<ParserComponent prompt={'Select ' +
+    'a CSV file: '} fileType={FileType.csv}
+      onChange={function() {}}/>);
+      const instance = wrapper.instance() as ParserComponent;
+      instance.setState(() => {
+        return {
+          fileData: 'Region,Country,Item Type,Sales Channel,Order Priority,' +
+                  'Order Date,Order ID,Ship Date,' +
+            'Units Sold,Unit Price,Unit Cost,' +
+                  'Total Revenue,Total Cost,Total Profit\n' +
+                  'Sub-Saharan Africa,Chad,Office ' +
+            'Supplies,Online,L,1/27/2011,' +
+                  '292494523,2/12/2011,4484,651.21,' +
+            '524.96,2920025.64,2353920.64,' +
+                  '566105.00\n' +
+                  'Europe,Latvia,Beverages,Online,C,' +
+            '12/28/2015,361825549,1/23/2016,' +
+                  '1075,47.45,31.79,51008.75,34174.25,16834.50\n',
+          fileName: 'test.csv',
+        };
+      });
+      const testFile: File = new File(
+          ['Region,Country,Item Type,Sales Channel,Order Priority,' +
+          'Order Date,Order ID,Ship Date,' +
+          'Units Sold,Unit Price,Unit Cost,' +
+          'Total Revenue,Total Cost,Total Profit\n' +
+          'Sub-Saharan Africa,Chad,Office ' +
+          'Supplies,Online,L,1/27/2011,' +
+          '292494523,2/12/2011,4484,651.21,' +
+          '524.96,2920025.64,2353920.64,' +
+          '566105.00\n' +
+          'Europe,Latvia,Beverages,Online,C,' +
+          '12/28/2015,361825549,1/23/2016,' +
+          '1075,47.45,31.79,51008.75,34174.25,16834.50\n'],
+          'test.csv',
+          {type: '.pdf,application/pdf'},
+      );
+      instance.props.fileType.mimeName = '.pdf,application/pdf';
+      expect(instance.createNewMockFileEvent()).
+          toEqual({target: {files: [testFile]}});
+    });
+  });
+
+  describe('checkifCsvandcallParse()', () => {
+    it('Should call parse when file is a .csv and return true', () => {
+      const wrapper = mount(<ParserComponent prompt={'Select ' +
+    'a CSV file: '} fileType={FileType.csv}
+      onChange={function() {}}/>);
+      const instance = wrapper.instance() as ParserComponent;
+      instance.props.fileType.mimeName = '.csv,text/csv';
+      instance.setState(() => {
+        return {
+          fileName: '.csv',
+        };
+      });
+      expect(instance.checkifCsvandcallParse()).toBeTruthy();
+    });
+    it('Should not call parse if file ' +
+        'given is not a .csv and return false', () => {
+      const wrapper = mount(<ParserComponent prompt={'Select ' +
+          'a CSV file: '} fileType={FileType.csv}
+      onChange={function() {}}/>);
+      const instance = wrapper.instance() as ParserComponent;
+      instance.setState(() => {
+        return {
+          fileName: '.pdf',
+        };
+      });
+      expect(instance.checkifCsvandcallParse()).toBeFalsy();
+    });
+  });
+
   describe('sortData()', () => {
     const wrapper = shallow(<ParserComponent prompt={'Select ' +
       'a CSV file: '} fileType={FileType.csv}
@@ -628,7 +886,7 @@ describe('<ParserComponent /> Unit Tests', () => {
       const testArray: {id: number, name: string, job: string}[] = [];
       expect(() => {
         instance.sortData(testArray);
-      }).toThrow('The file uploaded has no dates.');
+      }).toThrow('The file uploaded has no dates of the given format.');
     });
 
     it('should sort the data by dates when given ' +
@@ -787,6 +1045,7 @@ describe('<ParserComponent /> Unit Tests', () => {
         showTimeline: false,
         formatString: 'YYYY-MM-DD',
         fileData: '',
+        fileName: '',
       };
     });
 
@@ -837,6 +1096,7 @@ describe('<ParserComponent /> Unit Tests', () => {
         showTimeline: false,
         formatString: '',
         fileData: '',
+        fileName: '',
       };
       expect(() => {
         pc.inferTypes(data1);
@@ -939,11 +1199,6 @@ describe('<ParserComponent /> Unit Tests', () => {
       // Call the parse method with the fake event
       await comp.instance().parse(event);
       expect(inferTypesSpy).toHaveBeenCalled();
-    });
-    it('timeline is set to true', async () => {
-      // Call the parse method with the fake event
-      await comp.instance().parse(event);
-      expect(comp.state('showTimeline')).toBeTruthy();
     });
   });
 

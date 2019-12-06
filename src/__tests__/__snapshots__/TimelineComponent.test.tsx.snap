@@ -761,75 +761,6 @@ exports[`<TimelineComponent /> R2 Tests
 exports[`<TimelineComponent /> R2 Tests
  T2.7 Snapshot Test
  1`] = `
-"<svg width=\\"934\\" height=\\"768\\">
-<g transform=\\"translate(70, 0)\\">
-<rect width=\\"934\\" height=\\"598\\" style=\\"fill: none;\\">
-</rect>
-<defs>
-<clipPath id=\\"barsBox\\">
-<rect width=\\"934\\" height=\\"768\\" x=\\"0\\" y=\\"0\\">
-</rect>
-</clipPath>
-</defs>
-<g clip-path=\\"url(#barsBox)\\">
-<g id=\\"barsLayer\\">
-<g class=\\"plot\\" id=\\"bars\\">
-<g class=\\"bar\\">
-<rect class=\\"box\\" x=\\"0\\" width=\\"-3651097.7746672453\\" y=\\"0\\" height=\\"598\\" style=\\"fill: rgb(110, 64, 170); opacity: 0.2;\\">
-</rect>
-</g>
-<g class=\\"bar\\">
-<rect class=\\"box\\" x=\\"0\\" width=\\"-3650063.1460677083\\" y=\\"0\\" height=\\"598\\" style=\\"fill: rgb(110, 64, 170); opacity: 0.2;\\">
-</rect>
-</g>
-<g class=\\"bar\\">
-<rect class=\\"box\\" x=\\"250\\" width=\\"-3650187.418761574\\" y=\\"0\\" height=\\"598\\" style=\\"fill: rgb(110, 64, 170); opacity: 0.2;\\">
-</rect>
-</g>
-<g class=\\"bar\\">
-<rect class=\\"box\\" x=\\"250\\" width=\\"-3651841.5718315975\\" y=\\"0\\" height=\\"598\\" style=\\"fill: rgb(110, 64, 170); opacity: 0.2;\\">
-</rect>
-</g>
-<g class=\\"bar\\">
-<rect class=\\"box\\" x=\\"250\\" width=\\"-3650801.0212615742\\" y=\\"0\\" height=\\"598\\" style=\\"fill: rgb(110, 64, 170); opacity: 0.2;\\">
-</rect>
-</g>
-<g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(0,
-      598)\\">
-<line stroke=\\"blue\\" y2=\\"6\\">
-</line>
-<text style=\\"text-anchor: end; font-size: 1rem;\\" dx=\\"-.8em\\" dy=\\".15em\\" transform=\\"rotate(-90)\\">1/1/2010
-</text>
-</g>
-</g>
-</g>
-</g>
-<g id=\\"axisLayer\\">
-<g style=\\"color: black;\\" class=\\"y axis\\" fill=\\"none\\" font-size=\\"10\\" font-family=\\"sans-serif\\" text-anchor=\\"end\\">
-<path class=\\"domain\\" stroke=\\"currentColor\\" d=\\"M-6,598.5H0.5V0.5H-6\\">
-</path>
-<g class=\\"tick\\" opacity=\\"1\\" transform=\\"translate(0,299)\\">
-<line stroke=\\"currentColor\\" x2=\\"-6\\">
-</line>
-<text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">North America
-</text>
-</g>
-<text transform=\\"rotate(-90)\\" y=\\"6\\" dy=\\".71em\\" style=\\"text-anchor: end; color: red;\\">yColumn
-</text>
-</g>
-</g>
-<text transform=\\"translate(467,618)\\" style=\\"text-anchor: middle;\\">start: Order Date, end: Order ID
-</text>
-<text transform=\\"rotate(-90)\\" y=\\"-70\\" x=\\"-299\\" dy=\\"1em\\" style=\\"text-anchor: middle;\\">Region
-</text>
-</g>
-</svg>
-"
-`;
-
-exports[`<TimelineComponent /> R2 Tests
- T2.7 Snapshot Test
- 2`] = `
 "<TimelineComponent data={{...}}>
   <div id=\\"timelineComponentDiv\\">
     <div>
@@ -920,8 +851,8 @@ exports[`<TimelineComponent /> R2 Tests
                 </InputGroupText>
               </div>
             </InputGroupPrepend>
-            <FormControl as=\\"select\\" id=\\"x2Select\\" value=\\"Order Date\\" onChange={[Function: onChange]}>
-              <select value=\\"Order Date\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"x2Select\\" className=\\"form-control\\">
+            <FormControl as=\\"select\\" id=\\"x2Select\\" value=\\"Ship Date\\" onChange={[Function: onChange]}>
+              <select value=\\"Ship Date\\" onChange={[Function: onChange]} type={[undefined]} readOnly={[undefined]} id=\\"x2Select\\" className=\\"form-control\\">
                 <option value=\\"Order Date\\">
                   Order Date
                 </option>
@@ -1097,7 +1028,7 @@ exports[`<TimelineComponent /> R2 Tests
 
 exports[`<TimelineComponent /> R2 Tests
  T2.7 Snapshot Test
- 3`] = `
+ 2`] = `
 "<svg width=\\"934\\" height=\\"768\\">
   <g transform=\\"translate(70, 0)\\">
     <rect width=\\"934\\" height=\\"598\\" style=\\"fill: none;\\"></rect>
@@ -1110,24 +1041,24 @@ exports[`<TimelineComponent /> R2 Tests
       <g id=\\"barsLayer\\">
         <g class=\\"plot\\" id=\\"bars\\">
           <g class=\\"bar\\">
-            <rect class=\\"box\\" x=\\"0\\" width=\\"0\\" y=\\"448.5\\" height=\\"149.5\\" style=\\"fill: rgb(175, 240, 91); opacity: 0.2;\\"></rect>
-            <rect class=\\"box\\" x=\\"0\\" width=\\"0\\" y=\\"299\\" height=\\"149.5\\" style=\\"fill: rgb(110, 64, 170); opacity: 0.2;\\"></rect>
+            <rect class=\\"box\\" x=\\"0\\" width=\\"166.66666666666666\\" y=\\"448.5\\" height=\\"149.5\\" style=\\"fill: rgb(175, 240, 91); opacity: 0.2;\\"></rect>
+            <rect class=\\"box\\" x=\\"0\\" width=\\"166.66666666666666\\" y=\\"299\\" height=\\"149.5\\" style=\\"fill: rgb(110, 64, 170); opacity: 0.2;\\"></rect>
           </g>
           <g class=\\"bar\\">
-            <rect class=\\"box\\" x=\\"0\\" width=\\"0\\" y=\\"448.5\\" height=\\"149.5\\" style=\\"fill: rgb(175, 240, 91); opacity: 0.2;\\"></rect>
-            <rect class=\\"box\\" x=\\"0\\" width=\\"0\\" y=\\"149.5\\" height=\\"149.5\\" style=\\"fill: rgb(175, 240, 91); opacity: 0.2;\\"></rect>
+            <rect class=\\"box\\" x=\\"0\\" width=\\"196.078431372549\\" y=\\"448.5\\" height=\\"149.5\\" style=\\"fill: rgb(175, 240, 91); opacity: 0.2;\\"></rect>
+            <rect class=\\"box\\" x=\\"0\\" width=\\"196.078431372549\\" y=\\"149.5\\" height=\\"149.5\\" style=\\"fill: rgb(175, 240, 91); opacity: 0.2;\\"></rect>
           </g>
           <g class=\\"bar\\">
-            <rect class=\\"box\\" x=\\"250\\" width=\\"0\\" y=\\"448.5\\" height=\\"149.5\\" style=\\"fill: rgb(175, 240, 91); opacity: 0.2;\\"></rect>
-            <rect class=\\"box\\" x=\\"250\\" width=\\"0\\" y=\\"299\\" height=\\"149.5\\" style=\\"fill: rgb(110, 64, 170); opacity: 0.2;\\"></rect>
+            <rect class=\\"box\\" x=\\"4.901960784313726\\" width=\\"245.09803921568627\\" y=\\"448.5\\" height=\\"149.5\\" style=\\"fill: rgb(175, 240, 91); opacity: 0.2;\\"></rect>
+            <rect class=\\"box\\" x=\\"4.901960784313726\\" width=\\"245.09803921568627\\" y=\\"299\\" height=\\"149.5\\" style=\\"fill: rgb(110, 64, 170); opacity: 0.2;\\"></rect>
           </g>
           <g class=\\"bar\\">
-            <rect class=\\"box\\" x=\\"250\\" width=\\"0\\" y=\\"448.5\\" height=\\"149.5\\" style=\\"fill: rgb(175, 240, 91); opacity: 0.2;\\"></rect>
-            <rect class=\\"box\\" x=\\"250\\" width=\\"0\\" y=\\"0\\" height=\\"149.5\\" style=\\"fill: rgb(110, 64, 170); opacity: 0.2;\\"></rect>
+            <rect class=\\"box\\" x=\\"4.901960784313726\\" width=\\"200.98039215686273\\" y=\\"448.5\\" height=\\"149.5\\" style=\\"fill: rgb(175, 240, 91); opacity: 0.2;\\"></rect>
+            <rect class=\\"box\\" x=\\"4.901960784313726\\" width=\\"200.98039215686273\\" y=\\"0\\" height=\\"149.5\\" style=\\"fill: rgb(110, 64, 170); opacity: 0.2;\\"></rect>
           </g>
           <g class=\\"bar\\">
-            <rect class=\\"box\\" x=\\"250\\" width=\\"0\\" y=\\"448.5\\" height=\\"149.5\\" style=\\"fill: rgb(175, 240, 91); opacity: 0.2;\\"></rect>
-            <rect class=\\"box\\" x=\\"250\\" width=\\"0\\" y=\\"149.5\\" height=\\"149.5\\" style=\\"fill: rgb(175, 240, 91); opacity: 0.2;\\"></rect>
+            <rect class=\\"box\\" x=\\"4.901960784313726\\" width=\\"98.0392156862745\\" y=\\"448.5\\" height=\\"149.5\\" style=\\"fill: rgb(175, 240, 91); opacity: 0.2;\\"></rect>
+            <rect class=\\"box\\" x=\\"4.901960784313726\\" width=\\"98.0392156862745\\" y=\\"149.5\\" height=\\"149.5\\" style=\\"fill: rgb(175, 240, 91); opacity: 0.2;\\"></rect>
           </g>
           <g class=\\"xtick\\" opacity=\\"1\\" transform=\\"translate(0,
       598)\\">
@@ -1152,7 +1083,7 @@ exports[`<TimelineComponent /> R2 Tests
           <line stroke=\\"currentColor\\" x2=\\"-6\\"></line><text fill=\\"currentColor\\" x=\\"-9\\" dy=\\"0.32em\\">M</text>
         </g><text transform=\\"rotate(-90)\\" y=\\"6\\" dy=\\".71em\\" style=\\"text-anchor: end; color: red;\\">yColumn</text>
       </g>
-    </g><text transform=\\"translate(467,618)\\" style=\\"text-anchor: middle;\\">start: Order Date, end: Order Date</text><text transform=\\"rotate(-90)\\" y=\\"-70\\" x=\\"-299\\" dy=\\"1em\\" style=\\"text-anchor: middle;\\">Region, Order Priority</text>
+    </g><text transform=\\"translate(467,618)\\" style=\\"text-anchor: middle;\\">start: Order Date, end: Ship Date</text><text transform=\\"rotate(-90)\\" y=\\"-70\\" x=\\"-299\\" dy=\\"1em\\" style=\\"text-anchor: middle;\\">Region, Order Priority</text>
   </g>
 </svg>"
 `;

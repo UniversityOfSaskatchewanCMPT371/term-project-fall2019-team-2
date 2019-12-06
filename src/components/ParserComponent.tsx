@@ -10,6 +10,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {loadTestCsv} from './Utilities';
 
 import {strict as assert} from 'assert';
+import * as sentry from '@sentry/browser';
+import ConsoleLogComponent from './ConsoleLogComponent';
+
 
 /**
  * Purpose: react component responsible for receiving and parsing file data
@@ -53,7 +56,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
       // Autoloads a file for local testing
       if (process.env.NODE_ENV === 'development') {
         loadTestCsv().then((res) => {
-          console.log(res);
           this.parse(res);
         });
       }
@@ -177,6 +179,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
           return true;
         } else {
           alert('Wrong file type was uploaded.');
+          ConsoleLogComponent.consoleLogger(this.isValid.name,
+              'Wrong file type was uploaded.', 'ERROR');
           return false;
         }
       } else {
@@ -204,7 +208,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
           'sortData(): data (Array of objects) is null');
       assert.notStrictEqual(data, [],
           'sortData(): data (array of objects) is empty');
-
       let doneTheWork = false;
       /* loop goes through each key and saves the 1 with a date in first row */
       if (data !== undefined && data.length > 0) {
@@ -218,28 +221,32 @@ export default class ParserComponent extends React.Component<ParserInterface,
               const formatString = this.state.formatString;
 
               const keyInt = `${key}_num`;
-
-              TimSort.sort(data, function(a: any, b: any) {
-                let val: any;
-                if (!a.hasOwnProperty(keyInt)) {
-                  val = moment(a[key], formatString);
-                  if (val.isValid()) {
-                    a[keyInt] = val.valueOf();
-                  } else {
-                    a[keyInt] = -1;
+              try {
+                TimSort.sort(data, function(a: any, b: any) {
+                  let val: any;
+                  if (!a.hasOwnProperty(keyInt)) {
+                    val = moment(a[key], formatString);
+                    if (val.isValid()) {
+                      a[keyInt] = val.valueOf();
+                    } else {
+                      a[keyInt] = -1;
+                    }
                   }
-                }
 
-                if (!b.hasOwnProperty(keyInt)) {
-                  val = moment(b[key], formatString);
-                  if (val.isValid()) {
-                    b[keyInt] = val.valueOf();
-                  } else {
-                    b[keyInt] = -1;
+                  if (!b.hasOwnProperty(keyInt)) {
+                    val = moment(b[key], formatString);
+                    if (val.isValid()) {
+                      b[keyInt] = val.valueOf();
+                    } else {
+                      b[keyInt] = -1;
+                    }
                   }
-                }
-                return (a[keyInt] - b[keyInt]);
-              });
+                  return (a[keyInt] - b[keyInt]);
+                });
+              } catch (err) {
+                // catch error
+                sentry.captureEvent(err);
+              }
 
               this.setState(() => {
                 return {
@@ -327,18 +334,26 @@ export default class ParserComponent extends React.Component<ParserInterface,
               if (typeof val === 'string') {
                 const date = moment(val);
                 const isValid = date.isValid();
+                ConsoleLogComponent.consoleLogger(this.inferTypes.name,
+                    date + 'is valid', 'INFO');
                 if (isValid) {
                   curColTypes['numDate'] += 1;
                 } else {
+                  ConsoleLogComponent.consoleLogger(this.inferTypes.name,
+                      val + 'is not a valid date', 'WARN');
                   throw val;
                 }
               } else {
+                ConsoleLogComponent.consoleLogger(this.inferTypes.name,
+                    val + 'is not a string', 'WARN');
                 throw val;
               }
             } catch {
               // @ts-ignore
               const type = typeof row[listFields[i]];
               if (type !== 'string' && type !== 'number') {
+                ConsoleLogComponent.consoleLogger(this.inferTypes.name,
+                    'incongruent type:' + curColTypes, 'INFO');
                 curColTypes['numIncongruent'] += 1;
               }
               // logs all the types that are seen
@@ -347,6 +362,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
               } else {
                 curColTypes['numNumber'] += 1;
               }
+              ConsoleLogComponent.consoleLogger(this.inferTypes.name,
+                  'curColTypes:' + curColTypes, 'INFO');
             }
           }
         });
@@ -357,6 +374,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
           const mostCommonType = element.largest();
           if (mostCommonType === 'string') {
             // create a Column object with occurrence data
+            ConsoleLogComponent.consoleLogger(this.inferTypes.name,
+                'most common type is string', 'INFO');
             this.createColumn(mostCommonType, enumDrawType.occurrence, indx,
                 listFields, arrayOfColumns);
             indx++;
@@ -395,9 +414,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
           'createColumn function has an empty fieldList');
       assert(indx < fieldList.length,
           'createColumn function has too large of an index');
-      const newCol: any = new Column(mostComm, drawType,
+      list[indx] = new Column(mostComm, drawType,
           fieldList[indx]);
-      list[indx] = newCol;
     }
 
     /**
@@ -408,6 +426,10 @@ export default class ParserComponent extends React.Component<ParserInterface,
      * @param {Object} fileEvent: the event passed into this component
      */
     async parse(fileEvent: any) {
+      // indicate where the message started parsing
+      ConsoleLogComponent.consoleLogger(this.parse.name,
+          'This is the beginning of parsing csv file', 'INFO');
+
       // fileEvent is an object containing target files
       assert.notStrictEqual(fileEvent, undefined,
           'parse(): fileEvent is undefined');
@@ -427,6 +449,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
       assert.notStrictEqual(fileEvent.target.files[0], null,
           'parse(): fileEvent.target.files[0] is null');
 
+
       this.setState(() => {
         return {
           fileType: this.state.fileType,
@@ -436,6 +459,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
 
       const temp: File = fileEvent.target.files[0];
       if (this.isValid(temp)) {
+        ConsoleLogComponent.consoleLogger(this.parse.name,
+            'Target file is a .csv', 'INFO');
         await this.parseCsv(fileEvent);
         // only show timeline if there is data
         assert.notStrictEqual(this.state.data, [],
@@ -508,7 +533,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
               this.sortData(this.state.data);
             } catch (e) {
               alert(e.toString());
-              console.log(e.toString());
+              ConsoleLogComponent.consoleLogger(this.parseCsv.name,
+                  e.toString(), 'ERROR');
             }
           }
           resolver(true);

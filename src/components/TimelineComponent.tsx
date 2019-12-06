@@ -16,7 +16,10 @@ import EventOccurrence
   from './TimelineTypes/EventOccurrence';
 import CONSTANTS from '../constants';
 import IntervalOccurrence from './TimelineTypes/IntervalOccurrence';
+import * as sentry from '@sentry/browser';
 import Column from './Column';
+import ConsoleLogComponent from './ConsoleLogComponent';
+
 
 /**
  * Purpose: an enum to differentiate the data being drawn
@@ -33,6 +36,8 @@ export enum ViewType {
  */
 export default class TimelineComponent
   extends React.Component<TimelineInterface, TimelineState> {
+  private debugConfig = new ConsoleLogComponent();
+
   public m = new TimelineModel();
   // @ts-ignore
   public timelineType: TimelineTypeInterface;
@@ -195,42 +200,48 @@ export default class TimelineComponent
     assert.notStrictEqual(this.state.data, [],
         'TimelineComp - sortData(): this.state.data is empty');
     const cols = this.state.data.columns;
-    if (cols !== null && cols !== undefined) {
-      assert.notStrictEqual(cols, [],
-          'TimelineComp - sortData(): cols (array) is empty');
-      const col = cols.find((elem) => {
-        return elem.key === column;
-      });
+    try {
+      if (cols !== null && cols !== undefined) {
+        assert.notStrictEqual(cols, [],
+            'TimelineComp - sortData(): cols (array) is empty');
+        const col = cols.find((elem) => {
+          return elem.key === column;
+        });
 
-      if (col !== null && col !== undefined) {
-        const data = this.state.data;
-        if (col.primType === 'date') {
-          const keyInt = `${column}_num`;
-          TimSort.sort(data.arrayOfData, function(a: any, b: any) {
-            if (!a.hasOwnProperty(keyInt)) {
-              a[keyInt] = Date.parse(a[column]);
-            }
-            if (!b.hasOwnProperty(keyInt)) {
-              b[keyInt] = Date.parse(b[column]);
-            }
-            return (a[keyInt] - b[keyInt]);
-          });
-        } else {
-          TimSort.sort(data.arrayOfData, function(a: any, b: any) {
-            return (a[column] - b[column]);
+        if (col !== null && col !== undefined) {
+          const data = this.state.data;
+          if (col.primType === 'date') {
+            const keyInt = `${column}_num`;
+            TimSort.sort(data.arrayOfData, function(a: any, b: any) {
+              if (!a.hasOwnProperty(keyInt)) {
+                a[keyInt] = Date.parse(a[column]);
+              }
+              if (!b.hasOwnProperty(keyInt)) {
+                b[keyInt] = Date.parse(b[column]);
+              }
+              return (a[keyInt] - b[keyInt]);
+            });
+          } else {
+            TimSort.sort(data.arrayOfData, function(a: any, b: any) {
+              return (a[column] - b[column]);
+            });
+          }
+
+          // there should still be data after being sorted
+          assert.notStrictEqual(data, [],
+              'TimelineComp - sortData(): data is empty');
+          this.setState(() => {
+            return {
+              data,
+            };
           });
         }
-
-        // there should still be data after being sorted
-        assert.notStrictEqual(data, [],
-            'TimelineComp - sortData(): data is empty');
-        this.setState(() => {
-          return {
-            data,
-          };
-        });
       }
+    } catch (err) {
+      sentry.captureEvent(err);
     }
+    ConsoleLogComponent.consoleLogger(this.sortData.name,
+        'this.state.data has no columns', 'ERROR');
   }
 
   /**
@@ -299,6 +310,8 @@ export default class TimelineComponent
    * Purpose: to clear and redraw the timeline
    */
   resetTimeline() {
+    ConsoleLogComponent.consoleLogger(this.resetTimeline.name,
+        'Timeline has been resetted', 'INFO');
     d3.selectAll('svg').remove();
     // make sure svg removed
     assert(d3.selectAll('svg').empty(),
@@ -508,9 +521,10 @@ export default class TimelineComponent
    */
   changeTimelineType(e: any) {
     const val = e.target.value;
-    console.log(e.target.value);
-    console.log(val);
-    console.log(this.m.view);
+    ConsoleLogComponent.consoleLogger(this.changeTimelineType.name,
+        'val'+e.target.value, 'INFO');
+    ConsoleLogComponent.consoleLogger(this.changeTimelineType.name,
+        'this.m.value: '+this.m.view+e.target.value, 'INFO');
     this.m.view = val;
 
     switch (this.m.view) {
@@ -558,8 +572,9 @@ export default class TimelineComponent
         'initTimeline(): this.state.data is empty');
     const elem: any = d3.select(CONSTANTS.SVG_SELECTOR);
     let newHeight = this.state.height;
-    console.log('working');
-    console.log(elem);
+    ConsoleLogComponent.consoleLogger(this.initTimeline.name,
+        'working', 'INFO');
+    ConsoleLogComponent.consoleLogger(this.initTimeline.name, elem, 'INFO');
     if (elem !== null && elem.node() !== null) {
       const rect = elem.node().getBoundingClientRect();
       // this is the proper height for our timeline
@@ -584,6 +599,14 @@ export default class TimelineComponent
         (this.m.marginBottom + this.m.marginTop);
 
     this.m.width = this.m.fullWidth - (this.m.marginLeft + this.m.marginRight);
+
+    // console log for instance variables
+    ConsoleLogComponent.consoleLogger(this.initTimeline.name,
+        'this.m.fullHeight: '+ this.m.fullHeight+
+      '\nthis.m.fullWidth: '+this.m.fullWidth +
+      '\nthis.m.view: '+this.m.view +
+      '\nthis.m.height: '+this.m.height+
+      '\nthis.m.width: '+this.m.width, 'INFO');
 
     this.m.numBars = Math.floor(this.m.width / this.m.barWidth) +
       this.m.barBuffer;// small pixel buffer to ensure smooth transitions
@@ -618,9 +641,10 @@ export default class TimelineComponent
     // variables
     console.log(this.m.x(0));
 
-    console.log(this.m.view);
-    console.log(ViewType[this.m.view]);
-
+    ConsoleLogComponent.consoleLogger(this.initTimeline.name,
+        this.m.view, 'INFO');
+    ConsoleLogComponent.consoleLogger(this.initTimeline.name,
+        ViewType[this.m.view], 'INFO');
 
     if (ViewType[this.m.view] === ViewType.IntervalMagnitude ||
         ViewType[this.m.view] === ViewType.EventMagnitude) {
@@ -647,9 +671,11 @@ export default class TimelineComponent
         domain = domain.concat(
             d3.map(this.m.csvData, (d: any) => d[this.m.yColumn2]).keys());
       }
-      console.log(this.m.yColumn2);
+      ConsoleLogComponent.consoleLogger(this.initTimeline.name,
+          this.m.yColumn2, 'INFO');
 
-      console.log(domain);
+      ConsoleLogComponent.consoleLogger(this.initTimeline.name,
+          domain, 'INFO');
       this.m.y = d3.scaleBand()
           .domain(domain)
           .range([this.m.height, 0]);
@@ -713,8 +739,8 @@ export default class TimelineComponent
     const axisLayer = this.svg.append('g')
         .attr('id', 'axisLayer');
 
-
-    console.log(ViewType[this.m.view] === ViewType.EventMagnitude);
+    ConsoleLogComponent.consoleLogger(this.drawTimeline.name,
+        ViewType[this.m.view] === ViewType.EventMagnitude, 'INFO');
 
     axisLayer.append('g')
         .style('color', 'black')
@@ -869,7 +895,8 @@ export default class TimelineComponent
       Tooltip.style('opacity', 1);
     } else {
       Tooltip.remove();
-      console.warn('Error adding Tooltip to the DOM');
+      ConsoleLogComponent.consoleLogger(this.ttOverHelper.name,
+          'Error adding Tooltip to the DOM', 'WARN');
     }
   }
 
@@ -886,7 +913,7 @@ export default class TimelineComponent
         this.ttOverHelper(d, d3.event.x, d3.event.y);
       }
     } catch (e) {
-      console.log(e);
+      sentry.captureEvent(e);
       throw (e);
     }
   }
@@ -946,8 +973,11 @@ export default class TimelineComponent
     // recover the new scale
     if (d3.event !== null) {
       this.m.scale = d3.event.transform.k;
+      ConsoleLogComponent.consoleLogger(this.updateChart.name,
+          d3.event, 'INFO');
     } else {
-      console.warn('d3.event was null');
+      ConsoleLogComponent.consoleLogger(this.updateChart.name,
+          'd3.event was null', 'ERROR');
     }
     this.timelineType.applyZoom();
     this.m.numBars += additionalBars;

@@ -20,58 +20,58 @@ jobs:
         os: [ubuntu-latest, windows-latest, macOS-latest]
 
     steps:
-    - uses: actions/checkout@v1
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: npm install, lint, build, and test
-      if: matrix.os == 'macos-latest'
-      run: |
-        npm install
-        npm run lint
-        npm run build
-        npm run test
-      env:
-        CI: true
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: npm install, lint, build, and test
+        if: matrix.os == 'macos-latest'
+        run: |
+          npm install
+          npm run lint
+          npm run build
+          npm run test
+        env:
+          CI: true
 
-    # Use the winter!
-    - name: npm install, wint, build, and test
-      if: matrix.os == 'windows-latest'
-      shell: cmd
-      run: |
-        npm install
-        npm run wint
-        npm run build
-        set CI=true&&npm run test
-      env:
-        CI: true
+      # Use the winter!
+      - name: npm install, wint, build, and test
+        if: matrix.os == 'windows-latest'
+        shell: cmd
+        run: |
+          npm install
+          npm run wint
+          npm run build
+          set CI=true&&npm run test
+        env:
+          CI: true
 
-    # Smoke tests only run on Ubuntu
-    - name: npm install, lint, build, test, and smoke test
-      if: matrix.os == 'ubuntu-latest'
-      run: |
-        npm install
-        npm run lint
-        npm run build
-        npm run test
-        docker run -e START_XVFB=false -p 4444:4444 --shm-size=2g -v $(pwd):/mnt selenium/standalone-chrome:3.141.59-xenon /bin/bash -c "bash /mnt/scripts/setup-builder.sh"
-      env:
-        CI: true
+      # Smoke tests only run on Ubuntu
+      - name: npm install, lint, build, test, and smoke test
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          npm install
+          npm run lint
+          npm run build
+          npm run test
+          docker run -e START_XVFB=false -p 4444:4444 --shm-size=2g -v $(pwd):/mnt selenium/standalone-chrome:3.141.59-xenon /bin/bash -c "bash /mnt/scripts/setup-builder.sh"
+        env:
+          CI: true
 
-    # Upload source maps
-    - name: Upload source maps
-      env:
-        SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-        SENTRY_ORG: cmpt371
-        SENTRY_PROJECT: team2
-      if: matrix.os == 'ubuntu-latest' && matrix.node-version == '10.x' && (github.ref == 'refs/heads/master' || contains(github.ref, 'tags/') || github.ref == 'refs/heads/develop')
-      run: |
-        export RELEASE_VERSION=$(git rev-parse --short HEAD)
-        curl -L -o sentry-cli https://github.com/getsentry/sentry-cli/releases/download/1.49.0/sentry-cli-Linux-x86_64
-        chmod +x sentry-cli
-        ./sentry-cli releases new $RELEASE_VERSION
-        ./sentry-cli releases files $RELEASE_VERSION upload-sourcemaps --ext ts --ext map build/static/js
-        ./sentry-cli releases files $RELEASE_VERSION upload-sourcemaps --ext ts --ext map src
-        ./sentry-cli releases set-commits --auto $RELEASE_VERSION
-        ./sentry-cli releases finalize $RELEASE_VERSION
+      # Upload source maps
+      - name: Upload source maps
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: cmpt371
+          SENTRY_PROJECT: team2
+        if: matrix.os == 'ubuntu-latest' && matrix.node-version == '10.x' && (github.ref == 'refs/heads/master' || contains(github.ref, 'tags/') || github.ref == 'refs/heads/develop')
+        run: |
+          export RELEASE_VERSION=$(git rev-parse --short HEAD)
+          curl -L -o sentry-cli https://github.com/getsentry/sentry-cli/releases/download/1.49.0/sentry-cli-Linux-x86_64
+          chmod +x sentry-cli
+          ./sentry-cli releases new $RELEASE_VERSION
+          ./sentry-cli releases files $RELEASE_VERSION upload-sourcemaps --ext ts --ext map build/static/js
+          ./sentry-cli releases files $RELEASE_VERSION upload-sourcemaps --ext ts --ext map src
+          ./sentry-cli releases set-commits --auto $RELEASE_VERSION
+          ./sentry-cli releases finalize $RELEASE_VERSION

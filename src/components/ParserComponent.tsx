@@ -2,15 +2,13 @@ import React from 'react';
 import ParserInterface, {ParserState} from './ParserInterface';
 import Column, {enumDrawType} from './Column';
 import moment from 'moment';
-import * as d3
-  from 'd3';
-import TimelineComponent
-  from './TimelineComponent';
-import Data
-  from './Data';
+import * as d3 from 'd3';
+import TimelineComponent from './TimelineComponent';
+import Data from './Data';
 import * as TimSort from 'timsort';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {loadTestCsv} from './Utilities';
+
 import {strict as assert} from 'assert';
 
 /**
@@ -35,8 +33,10 @@ export default class ParserComponent extends React.Component<ParserInterface,
         showTimeline: false,
         formatString: '',
         fileData: '',
+        fileName: '',
       };
-
+      this.createNewMockFileEvent = this.createNewMockFileEvent.bind(this);
+      this.checkifCsvandcallParse = this.checkifCsvandcallParse.bind(this);
       this.isValid = this.isValid.bind(this);
       this.sortData = this.sortData.bind(this);
       this.inferTypes = this.inferTypes.bind(this);
@@ -45,7 +45,9 @@ export default class ParserComponent extends React.Component<ParserInterface,
     }
 
     /**
-     * Waits until component mounts
+     * Waits until component mounts.
+     * This method is called by react when mounted. We simply
+     * use it to automatically load a CSV on development environments.
      */
     componentDidMount(): void {
       // Autoloads a file for local testing
@@ -91,13 +93,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
                       formatString: val,
                     };
                   });
-                  const mockDateFile: File = new File(
-                      [this.state.fileData],
-                      'mockFile.csv',
-                      {type: this.props.fileType.mimeName},
-                  );
-                  const fileEvent = {target: {files: [mockDateFile]}};
-                  this.parse(fileEvent);
+                  this.checkifCsvandcallParse();
                 }}>
                 <option selected value="">Select a Date Format</option>
                 <option value="X">Numeric</option>
@@ -122,6 +118,42 @@ export default class ParserComponent extends React.Component<ParserInterface,
     }
 
     /**
+     * Purpose: create a mock file event of the actual file for
+     * parse when it is recalled everytime the date format is
+     * changed with a valid .csv type file
+     * @preconditions: a file with valid file data and
+     * a valid file name and a valid file type
+     * @return {any}: a mock file event similar to the actual file event
+     */
+    createNewMockFileEvent(): any {
+      const mockDateFile: File = new File(
+          [this.state.fileData],
+          String(this.state.fileName),
+          {type: this.props.fileType.mimeName},
+      );
+      // create file event of the mockfile and return it
+      return {target: {files: [mockDateFile]}};
+    }
+
+    /**
+   * Purpose: check if file is .csv when date format
+     * is changed and call parse if it is
+     * @preconditions: the current file should have a valid name (.csv)
+     * @postconditions: parse is called if file is .csv
+     * @return{boolean}: returns true if it works otherwise returns false
+   */
+    checkifCsvandcallParse(): boolean {
+      const nameOfFile = this.state.fileName;
+      const typeOfFile = nameOfFile.substr(nameOfFile.length - 4);
+      if (typeOfFile === '.csv' && this.props.fileType.mimeName === '.csv' +
+          ',text/csv') {
+        this.parse(this.createNewMockFileEvent());
+        return true;
+      }
+      return false;
+    }
+
+    /**
      * Purpose: checks if the passed in event contains a file upload, then
      * verifies that the file type and contents are valid
      * @precondition no other parser object exists
@@ -134,6 +166,11 @@ export default class ParserComponent extends React.Component<ParserInterface,
       assert.notStrictEqual(upFile, null,
           'isValid(): File object is null');
       if (upFile !== undefined) {
+        this.setState(() => {
+          return {
+            fileName: upFile.name,
+          };
+        });
         const typeOfFile = upFile.name.substr(upFile.name.length - 4);
         if (this.props.fileType.mimeName === '.csv' +
             ',text/csv' && typeOfFile === '.csv') {
@@ -142,9 +179,14 @@ export default class ParserComponent extends React.Component<ParserInterface,
           alert('Wrong file type was uploaded.');
           return false;
         }
+      } else {
+        this.setState(() => {
+          return {
+            fileName: '',
+          };
+        });
+        return false;
       }
-      alert('Wrong file type was uploaded.');
-      return false;
     }
 
     /**
@@ -214,17 +256,19 @@ export default class ParserComponent extends React.Component<ParserInterface,
             'sortData(): this.state.data is empty (not updated)');
         return true;
       } else {
-        throw new Error('The file uploaded has no dates.');
+        throw new Error('The file uploaded has no dates of the given format.');
       }
     }
 
     /**
      * Purpose: to instantiate an empty list of objects
      * for tracking the kinds of data in a column
+     * Pre-Conditions: None
+     * Post-Conditions: None
      * @param {number} fieldLength: the number of columns of data
      * @return {[CountTypes]}: a list of objects
      */
-    createTypeCountingObjects(fieldLength: number): CountTypes[] {
+    protected createTypeCountingObjects(fieldLength: number): CountTypes[] {
       assert(fieldLength > 0,
           'createTypeCountingObjects(): ' +
           'no data from which to create CountTypes[]');
@@ -343,8 +387,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
    * @param {string[]} fieldList: the list of fields for each column
    * @param {Column[]} list: an array of columns
    */
-    createColumn(mostComm: string, drawType: enumDrawType, indx: number,
-        fieldList: string[], list: Column[]) {
+    protected createColumn(mostComm: string, drawType: enumDrawType,
+        indx: number, fieldList: string[], list: Column[]) {
       assert.notStrictEqual(mostComm, '',
           'createColumn function has empty mostCommonType');
       assert.notStrictEqual(fieldList, [],
@@ -382,11 +426,10 @@ export default class ParserComponent extends React.Component<ParserInterface,
       // check File obj (file being uploaded)
       assert.notStrictEqual(fileEvent.target.files[0], null,
           'parse(): fileEvent.target.files[0] is null');
-      assert.notStrictEqual(fileEvent.target.files[0], undefined,
-          'parse(): fileEvent.target.files[0] is undefined');
 
       this.setState(() => {
         return {
+          fileType: this.state.fileType,
           showTimeline: false,
         };
       });
@@ -394,16 +437,17 @@ export default class ParserComponent extends React.Component<ParserInterface,
       const temp: File = fileEvent.target.files[0];
       if (this.isValid(temp)) {
         await this.parseCsv(fileEvent);
+        // only show timeline if there is data
+        assert.notStrictEqual(this.state.data, [],
+            'parse(): this.state.data is empty ' +
+            'but setting showTimeline to true');
+        this.setState(() => {
+          return {
+            showTimeline: true,
+          };
+        });
       }
 
-      // only show timeline if there is data
-      assert.notStrictEqual(this.state.data, [],
-          'parse(): this.state.data is empty but setting showTimeline to true');
-      this.setState(() => {
-        return {
-          showTimeline: true,
-        };
-      });
       this.childKey++;
     }
 
@@ -452,6 +496,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
                 fileType: this.state.fileType,
                 data: content,
                 fileData: fileReader.result,
+                showTimeline: false,
               };
             });
             try {
@@ -495,7 +540,8 @@ export class CountTypes {
 
   /**
    * finds the largest element of the fields
-   * @return {string}: a string representing the largest field
+   * @return {string}: a string representing the largest field.
+   * Defaults to 'date' if all elements is zero
    */
   largest(): string {
     if (this.numDate >= this.numIncongruent && this.numDate >= this.numNumber) {

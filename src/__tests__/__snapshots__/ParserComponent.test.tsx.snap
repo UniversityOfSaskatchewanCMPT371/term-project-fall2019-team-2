@@ -3,12 +3,12 @@
 exports[`R1 Tests
  T1.3: .csv with different valid date formats accepted
  should parse .csv with sorted dates
- 1`] = `
+ DD-MM-YY 1`] = `
 Object {
-  "Date": "04/04/1995",
+  "Date": "01-01-89",
   "Date_num": Any<Number>,
-  "SomeNum": 4,
-  "SomeString": "abcd",
+  "SomeNum": 5,
+  "SomeString": "efg",
   "index": 0,
 }
 `;
@@ -16,12 +16,12 @@ Object {
 exports[`R1 Tests
  T1.3: .csv with different valid date formats accepted
  should parse .csv with sorted dates
- 2`] = `
+ DD-MM-YY 2`] = `
 Object {
-  "Date": "06-07-1996",
+  "Date": "01-01-90",
   "Date_num": Any<Number>,
-  "SomeNum": 5,
-  "SomeString": "efg",
+  "SomeNum": 1,
+  "SomeString": "hij",
   "index": 1,
 }
 `;
@@ -29,24 +29,375 @@ Object {
 exports[`R1 Tests
  T1.3: .csv with different valid date formats accepted
  should parse .csv with sorted dates
- 3`] = `
+ DD-MM-YY 3`] = `
 Object {
-  "Date": "November 5 1997",
+  "Date": "01-02-90",
   "Date_num": Any<Number>,
-  "SomeNum": 1,
-  "SomeString": "hij",
+  "SomeNum": 4,
+  "SomeString": "abcd",
   "index": 2,
 }
 `;
 
 exports[`R1 Tests
  T1.3: .csv with different valid date formats accepted
- should parse .csv with unsorted dates & sort data by date
- 1`] = `
+ should parse .csv with sorted dates
+ DD-MM-YY 4`] = `
 Object {
-  "Date": "04-04-1993",
+  "Date": "05-02-90",
   "Date_num": Any<Number>,
   "SomeNum": 5,
+  "SomeString": "efg",
+  "index": 3,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with sorted dates
+ DD-MM-YYYY 1`] = `
+Object {
+  "Date": "01-01-1989",
+  "Date_num": Any<Number>,
+  "SomeNum": 5,
+  "SomeString": "efg",
+  "index": 0,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with sorted dates
+ DD-MM-YYYY 2`] = `
+Object {
+  "Date": "01-01-1990",
+  "Date_num": Any<Number>,
+  "SomeNum": 1,
+  "SomeString": "hij",
+  "index": 1,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with sorted dates
+ DD-MM-YYYY 3`] = `
+Object {
+  "Date": "01-02-1990",
+  "Date_num": Any<Number>,
+  "SomeNum": 4,
+  "SomeString": "abcd",
+  "index": 2,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with sorted dates
+ DD-MM-YYYY 4`] = `
+Object {
+  "Date": "05-02-1990",
+  "Date_num": Any<Number>,
+  "SomeNum": 5,
+  "SomeString": "efg",
+  "index": 3,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with sorted dates
+ DD-MMMM-YYYY 1`] = `
+Object {
+  "Date": "01-January-1989",
+  "Date_num": Any<Number>,
+  "SomeNum": 5,
+  "SomeString": "efg",
+  "index": 0,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with sorted dates
+ DD-MMMM-YYYY 2`] = `
+Object {
+  "Date": "01-January-1990",
+  "Date_num": Any<Number>,
+  "SomeNum": 1,
+  "SomeString": "hij",
+  "index": 1,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with sorted dates
+ DD-MMMM-YYYY 3`] = `
+Object {
+  "Date": "02-February-1990",
+  "Date_num": Any<Number>,
+  "SomeNum": 4,
+  "SomeString": "abcd",
+  "index": 2,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with sorted dates
+ DD-MMMM-YYYY 4`] = `
+Object {
+  "Date": "05-February-1990",
+  "Date_num": Any<Number>,
+  "SomeNum": 5,
+  "SomeString": "efg",
+  "index": 3,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with sorted dates
+ MM-DD-YY 1`] = `
+Object {
+  "Date": "01-01-89",
+  "Date_num": Any<Number>,
+  "SomeNum": 5,
+  "SomeString": "efg",
+  "index": 0,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with sorted dates
+ MM-DD-YY 2`] = `
+Object {
+  "Date": "01-01-90",
+  "Date_num": Any<Number>,
+  "SomeNum": 1,
+  "SomeString": "hij",
+  "index": 1,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with sorted dates
+ MM-DD-YY 3`] = `
+Object {
+  "Date": "02-01-90",
+  "Date_num": Any<Number>,
+  "SomeNum": 4,
+  "SomeString": "abcd",
+  "index": 2,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with sorted dates
+ MM-DD-YY 4`] = `
+Object {
+  "Date": "02-05-90",
+  "Date_num": Any<Number>,
+  "SomeNum": 5,
+  "SomeString": "efg",
+  "index": 3,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with sorted dates
+ MM-DD-YYYY 1`] = `
+Object {
+  "Date": "01-01-1989",
+  "Date_num": Any<Number>,
+  "SomeNum": 5,
+  "SomeString": "efg",
+  "index": 0,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with sorted dates
+ MM-DD-YYYY 2`] = `
+Object {
+  "Date": "01-01-1990",
+  "Date_num": Any<Number>,
+  "SomeNum": 1,
+  "SomeString": "hij",
+  "index": 1,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with sorted dates
+ MM-DD-YYYY 3`] = `
+Object {
+  "Date": "02-01-1990",
+  "Date_num": Any<Number>,
+  "SomeNum": 4,
+  "SomeString": "abcd",
+  "index": 2,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with sorted dates
+ MM-DD-YYYY 4`] = `
+Object {
+  "Date": "02-05-1990",
+  "Date_num": Any<Number>,
+  "SomeNum": 5,
+  "SomeString": "efg",
+  "index": 3,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with sorted dates
+ MMMM-DD-YYYY 1`] = `
+Object {
+  "Date": "01-January-1989",
+  "Date_num": Any<Number>,
+  "SomeNum": 5,
+  "SomeString": "efg",
+  "index": 0,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with sorted dates
+ MMMM-DD-YYYY 2`] = `
+Object {
+  "Date": "01-January-1990",
+  "Date_num": Any<Number>,
+  "SomeNum": 1,
+  "SomeString": "hij",
+  "index": 1,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with sorted dates
+ MMMM-DD-YYYY 3`] = `
+Object {
+  "Date": "02-February-1990",
+  "Date_num": Any<Number>,
+  "SomeNum": 4,
+  "SomeString": "abcd",
+  "index": 2,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with sorted dates
+ MMMM-DD-YYYY 4`] = `
+Object {
+  "Date": "05-February-1990",
+  "Date_num": Any<Number>,
+  "SomeNum": 5,
+  "SomeString": "efg",
+  "index": 3,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ DD-MM-YY 1`] = `
+Object {
+  "Date": "01-01-89",
+  "Date_num": Any<Number>,
+  "SomeNum": 1,
+  "SomeString": "efg",
+  "index": 7,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ DD-MM-YY 2`] = `
+Object {
+  "Date": "01-01-90",
+  "Date_num": Any<Number>,
+  "SomeNum": 2,
+  "SomeString": "hij",
+  "index": 8,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ DD-MM-YY 3`] = `
+Object {
+  "Date": "01-01-91",
+  "Date_num": Any<Number>,
+  "SomeNum": 3,
+  "SomeString": "abcd",
+  "index": 6,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ DD-MM-YY 4`] = `
+Object {
+  "Date": "11-01-00",
+  "Date_num": Any<Number>,
+  "SomeNum": 4,
+  "SomeString": "efg",
+  "index": 4,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ DD-MM-YY 5`] = `
+Object {
+  "Date": "15-01-00",
+  "Date_num": Any<Number>,
+  "SomeNum": 5,
+  "SomeString": "hij",
+  "index": 5,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ DD-MM-YY 6`] = `
+Object {
+  "Date": "21-01-00",
+  "Date_num": Any<Number>,
+  "SomeNum": 6,
+  "SomeString": "abcd",
+  "index": 3,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ DD-MM-YY 7`] = `
+Object {
+  "Date": "01-02-00",
+  "Date_num": Any<Number>,
+  "SomeNum": 7,
   "SomeString": "efg",
   "index": 1,
 }
@@ -55,11 +406,11 @@ Object {
 exports[`R1 Tests
  T1.3: .csv with different valid date formats accepted
  should parse .csv with unsorted dates & sort data by date
- 2`] = `
+ DD-MM-YY 8`] = `
 Object {
-  "Date": "04-04-1995",
+  "Date": "01-04-00",
   "Date_num": Any<Number>,
-  "SomeNum": 1,
+  "SomeNum": 8,
   "SomeString": "hij",
   "index": 2,
 }
@@ -68,11 +419,596 @@ Object {
 exports[`R1 Tests
  T1.3: .csv with different valid date formats accepted
  should parse .csv with unsorted dates & sort data by date
- 3`] = `
+ DD-MM-YY 9`] = `
 Object {
-  "Date": "04-04-1997",
+  "Date": "01-07-00",
+  "Date_num": Any<Number>,
+  "SomeNum": 9,
+  "SomeString": "abcd",
+  "index": 0,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ DD-MM-YYYY 1`] = `
+Object {
+  "Date": "01-01-1989",
+  "Date_num": Any<Number>,
+  "SomeNum": 1,
+  "SomeString": "efg",
+  "index": 7,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ DD-MM-YYYY 2`] = `
+Object {
+  "Date": "01-01-1990",
+  "Date_num": Any<Number>,
+  "SomeNum": 2,
+  "SomeString": "hij",
+  "index": 8,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ DD-MM-YYYY 3`] = `
+Object {
+  "Date": "01-01-1991",
+  "Date_num": Any<Number>,
+  "SomeNum": 3,
+  "SomeString": "abcd",
+  "index": 6,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ DD-MM-YYYY 4`] = `
+Object {
+  "Date": "11-01-2000",
   "Date_num": Any<Number>,
   "SomeNum": 4,
+  "SomeString": "efg",
+  "index": 4,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ DD-MM-YYYY 5`] = `
+Object {
+  "Date": "15-01-2000",
+  "Date_num": Any<Number>,
+  "SomeNum": 5,
+  "SomeString": "hij",
+  "index": 5,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ DD-MM-YYYY 6`] = `
+Object {
+  "Date": "21-01-2000",
+  "Date_num": Any<Number>,
+  "SomeNum": 6,
+  "SomeString": "abcd",
+  "index": 3,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ DD-MM-YYYY 7`] = `
+Object {
+  "Date": "01-02-2000",
+  "Date_num": Any<Number>,
+  "SomeNum": 7,
+  "SomeString": "efg",
+  "index": 1,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ DD-MM-YYYY 8`] = `
+Object {
+  "Date": "01-04-2000",
+  "Date_num": Any<Number>,
+  "SomeNum": 8,
+  "SomeString": "hij",
+  "index": 2,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ DD-MM-YYYY 9`] = `
+Object {
+  "Date": "01-07-2000",
+  "Date_num": Any<Number>,
+  "SomeNum": 9,
+  "SomeString": "abcd",
+  "index": 0,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ DD-MMMM-YYYY 1`] = `
+Object {
+  "Date": "01-January-1989",
+  "Date_num": Any<Number>,
+  "SomeNum": 1,
+  "SomeString": "efg",
+  "index": 7,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ DD-MMMM-YYYY 2`] = `
+Object {
+  "Date": "01-January-1990",
+  "Date_num": Any<Number>,
+  "SomeNum": 2,
+  "SomeString": "hij",
+  "index": 8,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ DD-MMMM-YYYY 3`] = `
+Object {
+  "Date": "01-January-1991",
+  "Date_num": Any<Number>,
+  "SomeNum": 3,
+  "SomeString": "abcd",
+  "index": 6,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ DD-MMMM-YYYY 4`] = `
+Object {
+  "Date": "11-January-2000",
+  "Date_num": Any<Number>,
+  "SomeNum": 4,
+  "SomeString": "efg",
+  "index": 4,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ DD-MMMM-YYYY 5`] = `
+Object {
+  "Date": "15-January-2000",
+  "Date_num": Any<Number>,
+  "SomeNum": 5,
+  "SomeString": "hij",
+  "index": 5,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ DD-MMMM-YYYY 6`] = `
+Object {
+  "Date": "21-January-2000",
+  "Date_num": Any<Number>,
+  "SomeNum": 6,
+  "SomeString": "abcd",
+  "index": 3,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ DD-MMMM-YYYY 7`] = `
+Object {
+  "Date": "01-February-2000",
+  "Date_num": Any<Number>,
+  "SomeNum": 7,
+  "SomeString": "efg",
+  "index": 1,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ DD-MMMM-YYYY 8`] = `
+Object {
+  "Date": "01-April-2000",
+  "Date_num": Any<Number>,
+  "SomeNum": 8,
+  "SomeString": "hij",
+  "index": 2,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ DD-MMMM-YYYY 9`] = `
+Object {
+  "Date": "01-July-2000",
+  "Date_num": Any<Number>,
+  "SomeNum": 9,
+  "SomeString": "abcd",
+  "index": 0,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ MM-DD-YY 1`] = `
+Object {
+  "Date": "01-01-89",
+  "Date_num": Any<Number>,
+  "SomeNum": 1,
+  "SomeString": "efg",
+  "index": 7,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ MM-DD-YY 2`] = `
+Object {
+  "Date": "01-01-90",
+  "Date_num": Any<Number>,
+  "SomeNum": 2,
+  "SomeString": "hij",
+  "index": 8,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ MM-DD-YY 3`] = `
+Object {
+  "Date": "01-01-91",
+  "Date_num": Any<Number>,
+  "SomeNum": 3,
+  "SomeString": "abcd",
+  "index": 6,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ MM-DD-YY 4`] = `
+Object {
+  "Date": "01-11-00",
+  "Date_num": Any<Number>,
+  "SomeNum": 4,
+  "SomeString": "efg",
+  "index": 4,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ MM-DD-YY 5`] = `
+Object {
+  "Date": "01-15-00",
+  "Date_num": Any<Number>,
+  "SomeNum": 5,
+  "SomeString": "hij",
+  "index": 5,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ MM-DD-YY 6`] = `
+Object {
+  "Date": "01-21-00",
+  "Date_num": Any<Number>,
+  "SomeNum": 6,
+  "SomeString": "abcd",
+  "index": 3,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ MM-DD-YY 7`] = `
+Object {
+  "Date": "02-01-00",
+  "Date_num": Any<Number>,
+  "SomeNum": 7,
+  "SomeString": "efg",
+  "index": 1,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ MM-DD-YY 8`] = `
+Object {
+  "Date": "04-01-00",
+  "Date_num": Any<Number>,
+  "SomeNum": 8,
+  "SomeString": "hij",
+  "index": 2,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ MM-DD-YY 9`] = `
+Object {
+  "Date": "07-01-00",
+  "Date_num": Any<Number>,
+  "SomeNum": 9,
+  "SomeString": "abcd",
+  "index": 0,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ MM-DD-YYYY 1`] = `
+Object {
+  "Date": "01-01-1989",
+  "Date_num": Any<Number>,
+  "SomeNum": 1,
+  "SomeString": "efg",
+  "index": 7,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ MM-DD-YYYY 2`] = `
+Object {
+  "Date": "01-01-1990",
+  "Date_num": Any<Number>,
+  "SomeNum": 2,
+  "SomeString": "hij",
+  "index": 8,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ MM-DD-YYYY 3`] = `
+Object {
+  "Date": "01-01-1991",
+  "Date_num": Any<Number>,
+  "SomeNum": 3,
+  "SomeString": "abcd",
+  "index": 6,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ MM-DD-YYYY 4`] = `
+Object {
+  "Date": "01-11-2000",
+  "Date_num": Any<Number>,
+  "SomeNum": 4,
+  "SomeString": "efg",
+  "index": 4,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ MM-DD-YYYY 5`] = `
+Object {
+  "Date": "01-15-2000",
+  "Date_num": Any<Number>,
+  "SomeNum": 5,
+  "SomeString": "hij",
+  "index": 5,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ MM-DD-YYYY 6`] = `
+Object {
+  "Date": "01-21-2000",
+  "Date_num": Any<Number>,
+  "SomeNum": 6,
+  "SomeString": "abcd",
+  "index": 3,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ MM-DD-YYYY 7`] = `
+Object {
+  "Date": "02-01-2000",
+  "Date_num": Any<Number>,
+  "SomeNum": 7,
+  "SomeString": "efg",
+  "index": 1,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ MM-DD-YYYY 8`] = `
+Object {
+  "Date": "04-01-2000",
+  "Date_num": Any<Number>,
+  "SomeNum": 8,
+  "SomeString": "hij",
+  "index": 2,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ MM-DD-YYYY 9`] = `
+Object {
+  "Date": "07-01-2000",
+  "Date_num": Any<Number>,
+  "SomeNum": 9,
+  "SomeString": "abcd",
+  "index": 0,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ MMMM-DD-YYYY 1`] = `
+Object {
+  "Date": "January-01-1989",
+  "Date_num": Any<Number>,
+  "SomeNum": 1,
+  "SomeString": "efg",
+  "index": 7,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ MMMM-DD-YYYY 2`] = `
+Object {
+  "Date": "January-01-1990",
+  "Date_num": Any<Number>,
+  "SomeNum": 2,
+  "SomeString": "hij",
+  "index": 8,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ MMMM-DD-YYYY 3`] = `
+Object {
+  "Date": "January-01-1991",
+  "Date_num": Any<Number>,
+  "SomeNum": 3,
+  "SomeString": "abcd",
+  "index": 6,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ MMMM-DD-YYYY 4`] = `
+Object {
+  "Date": "January-11-2000",
+  "Date_num": Any<Number>,
+  "SomeNum": 4,
+  "SomeString": "efg",
+  "index": 4,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ MMMM-DD-YYYY 5`] = `
+Object {
+  "Date": "January-15-2000",
+  "Date_num": Any<Number>,
+  "SomeNum": 5,
+  "SomeString": "hij",
+  "index": 5,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ MMMM-DD-YYYY 6`] = `
+Object {
+  "Date": "January-21-2000",
+  "Date_num": Any<Number>,
+  "SomeNum": 6,
+  "SomeString": "abcd",
+  "index": 3,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ MMMM-DD-YYYY 7`] = `
+Object {
+  "Date": "February-01-2000",
+  "Date_num": Any<Number>,
+  "SomeNum": 7,
+  "SomeString": "efg",
+  "index": 1,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ MMMM-DD-YYYY 8`] = `
+Object {
+  "Date": "April-01-2000",
+  "Date_num": Any<Number>,
+  "SomeNum": 8,
+  "SomeString": "hij",
+  "index": 2,
+}
+`;
+
+exports[`R1 Tests
+ T1.3: .csv with different valid date formats accepted
+ should parse .csv with unsorted dates & sort data by date
+ MMMM-DD-YYYY 9`] = `
+Object {
+  "Date": "July-01-2000",
+  "Date_num": Any<Number>,
+  "SomeNum": 9,
   "SomeString": "abcd",
   "index": 0,
 }

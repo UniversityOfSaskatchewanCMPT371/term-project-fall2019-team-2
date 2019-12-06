@@ -240,7 +240,7 @@ export default class TimelineComponent
     } catch (err) {
       sentry.captureEvent(err);
     }
-    this.debugConfig.consoleLogger(this.sortData.name,
+    ConsoleLogComponent.consoleLogger(this.sortData.name,
         'this.state.data has no columns', 'ERROR');
   }
 
@@ -310,7 +310,7 @@ export default class TimelineComponent
    * Purpose: to clear and redraw the timeline
    */
   resetTimeline() {
-    this.debugConfig.consoleLogger(this.resetTimeline.name,
+    ConsoleLogComponent.consoleLogger(this.resetTimeline.name,
         'Timeline has been resetted', 'INFO');
     d3.selectAll('svg').remove();
     // make sure svg removed
@@ -521,9 +521,9 @@ export default class TimelineComponent
    */
   changeTimelineType(e: any) {
     const val = e.target.value;
-    this.debugConfig.consoleLogger(this.changeTimelineType.name,
+    ConsoleLogComponent.consoleLogger(this.changeTimelineType.name,
         'val'+e.target.value, 'INFO');
-    this.debugConfig.consoleLogger(this.changeTimelineType.name,
+    ConsoleLogComponent.consoleLogger(this.changeTimelineType.name,
         'this.m.value: '+this.m.view+e.target.value, 'INFO');
     this.m.view = val;
 
@@ -572,8 +572,9 @@ export default class TimelineComponent
         'initTimeline(): this.state.data is empty');
     const elem: any = d3.select(CONSTANTS.SVG_SELECTOR);
     let newHeight = this.state.height;
-    this.debugConfig.consoleLogger(this.initTimeline.name, 'working', 'INFO');
-    this.debugConfig.consoleLogger(this.initTimeline.name, elem, 'INFO');
+    ConsoleLogComponent.consoleLogger(this.initTimeline.name,
+        'working', 'INFO');
+    ConsoleLogComponent.consoleLogger(this.initTimeline.name, elem, 'INFO');
     if (elem !== null && elem.node() !== null) {
       const rect = elem.node().getBoundingClientRect();
       // this is the proper height for our timeline
@@ -600,7 +601,7 @@ export default class TimelineComponent
     this.m.width = this.m.fullWidth - (this.m.marginLeft + this.m.marginRight);
 
     // console log for instance variables
-    this.debugConfig.consoleLogger(this.initTimeline.name,
+    ConsoleLogComponent.consoleLogger(this.initTimeline.name,
         'this.m.fullHeight: '+ this.m.fullHeight+
       '\nthis.m.fullWidth: '+this.m.fullWidth +
       '\nthis.m.view: '+this.m.view +
@@ -640,8 +641,9 @@ export default class TimelineComponent
     // variables
     console.log(this.m.x(0));
 
-    this.debugConfig.consoleLogger(this.initTimeline.name, this.m.view, 'INFO');
-    this.debugConfig.consoleLogger(this.initTimeline.name,
+    ConsoleLogComponent.consoleLogger(this.initTimeline.name,
+        this.m.view, 'INFO');
+    ConsoleLogComponent.consoleLogger(this.initTimeline.name,
         ViewType[this.m.view], 'INFO');
 
     if (ViewType[this.m.view] === ViewType.IntervalMagnitude ||
@@ -669,10 +671,10 @@ export default class TimelineComponent
         domain = domain.concat(
             d3.map(this.m.csvData, (d: any) => d[this.m.yColumn2]).keys());
       }
-      this.debugConfig.consoleLogger(this.initTimeline.name,
+      ConsoleLogComponent.consoleLogger(this.initTimeline.name,
           this.m.yColumn2, 'INFO');
 
-      this.debugConfig.consoleLogger(this.initTimeline.name,
+      ConsoleLogComponent.consoleLogger(this.initTimeline.name,
           domain, 'INFO');
       this.m.y = d3.scaleBand()
           .domain(domain)
@@ -737,7 +739,7 @@ export default class TimelineComponent
     const axisLayer = this.svg.append('g')
         .attr('id', 'axisLayer');
 
-    this.debugConfig.consoleLogger(this.drawTimeline.name,
+    ConsoleLogComponent.consoleLogger(this.drawTimeline.name,
         ViewType[this.m.view] === ViewType.EventMagnitude, 'INFO');
 
     axisLayer.append('g')
@@ -893,7 +895,7 @@ export default class TimelineComponent
       Tooltip.style('opacity', 1);
     } else {
       Tooltip.remove();
-      this.debugConfig.consoleLogger(this.ttOverHelper.name,
+      ConsoleLogComponent.consoleLogger(this.ttOverHelper.name,
           'Error adding Tooltip to the DOM', 'WARN');
     }
   }
@@ -971,9 +973,9 @@ export default class TimelineComponent
     // recover the new scale
     if (d3.event !== null) {
       this.m.scale = d3.event.transform.k;
-      this.debugConfig.consoleLogger(this.updateChart.name, d3.event, 'INFO');
+      ConsoleLogComponent.consoleLogger(this.updateChart.name, d3.event, 'INFO');
     } else {
-      this.debugConfig.consoleLogger(this.updateChart.name,
+      ConsoleLogComponent.consoleLogger(this.updateChart.name,
           'd3.event was null', 'ERROR');
     }
     this.timelineType.applyZoom();

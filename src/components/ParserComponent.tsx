@@ -21,7 +21,6 @@ export default class ParserComponent extends React.Component<ParserInterface,
   ParserState> {
     private columnTypes?: Array<Column>;
     private childKey = 0;
-    private debugConfig = new ConsoleLogComponent();
 
     /**
      * Purpose: ParserComponent constructor
@@ -178,7 +177,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
           return true;
         } else {
           alert('Wrong file type was uploaded.');
-          this.debugConfig.consoleLogger(this.isValid.name,
+          ConsoleLogComponent.consoleLogger(this.isValid.name,
               'Wrong file type was uploaded.', 'ERROR');
           return false;
         }
@@ -331,17 +330,17 @@ export default class ParserComponent extends React.Component<ParserInterface,
               if (typeof val === 'string') {
                 const date = moment(val);
                 const isValid = date.isValid();
-                this.debugConfig.consoleLogger(this.inferTypes.name,
+                ConsoleLogComponent.consoleLogger(this.inferTypes.name,
                     date + 'is valid', 'INFO');
                 if (isValid) {
                   curColTypes['numDate'] += 1;
                 } else {
-                  this.debugConfig.consoleLogger(this.inferTypes.name,
+                  ConsoleLogComponent.consoleLogger(this.inferTypes.name,
                       val + 'is not a valid date', 'WARN');
                   throw val;
                 }
               } else {
-                this.debugConfig.consoleLogger(this.inferTypes.name,
+                ConsoleLogComponent.consoleLogger(this.inferTypes.name,
                     val + 'is not a string', 'WARN');
                 throw val;
               }
@@ -349,7 +348,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
               // @ts-ignore
               const type = typeof row[listFields[i]];
               if (type !== 'string' && type !== 'number') {
-                this.debugConfig.consoleLogger(this.inferTypes.name,
+                ConsoleLogComponent.consoleLogger(this.inferTypes.name,
                     'incongruent type:' + curColTypes, 'INFO');
                 curColTypes['numIncongruent'] += 1;
               }
@@ -359,7 +358,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
               } else {
                 curColTypes['numNumber'] += 1;
               }
-              this.debugConfig.consoleLogger(this.inferTypes.name,
+              ConsoleLogComponent.consoleLogger(this.inferTypes.name,
                   'curColTypes:' + curColTypes, 'INFO');
             }
           }
@@ -371,7 +370,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
           const mostCommonType = element.largest();
           if (mostCommonType === 'string') {
             // create a Column object with occurrence data
-            this.debugConfig.consoleLogger(this.inferTypes.name,
+            ConsoleLogComponent.consoleLogger(this.inferTypes.name,
                 'most common type is string', 'INFO');
             this.createColumn(mostCommonType, enumDrawType.occurrence, indx,
                 listFields, arrayOfColumns);
@@ -424,7 +423,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
      */
     async parse(fileEvent: any) {
       // indicate where the message started parsing
-      this.debugConfig.consoleLogger(this.parse.name,
+      ConsoleLogComponent.consoleLogger(this.parse.name,
           'This is the beginning of parsing csv file', 'INFO');
 
       // fileEvent is an object containing target files
@@ -456,7 +455,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
 
       const temp: File = fileEvent.target.files[0];
       if (this.isValid(temp)) {
-        this.debugConfig.consoleLogger(this.parse.name,
+        ConsoleLogComponent.consoleLogger(this.parse.name,
             'Target file is a .csv', 'INFO');
         await this.parseCsv(fileEvent);
         // only show timeline if there is data
@@ -530,7 +529,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
               this.sortData(this.state.data);
             } catch (e) {
               alert(e.toString());
-              this.debugConfig.consoleLogger(this.parseCsv.name,
+              ConsoleLogComponent.consoleLogger(this.parseCsv.name,
                   e.toString(), 'ERROR');
             }
           }

@@ -24,13 +24,13 @@ exports[`<TimelineComponent /> R2 Tests
                   Interval Magnitude
                 </option>
                 <option value=\\"IntervalOccurrence\\">
-                  Interval Occurrence
+                  Interval Labelled
                 </option>
                 <option value=\\"EventMagnitude\\">
                   Event Magnitude
                 </option>
                 <option value=\\"EventOccurrence\\">
-                  Event Occurrence
+                  Event Labelled
                 </option>
               </select>
             </FormControl>
@@ -306,13 +306,13 @@ exports[`<TimelineComponent /> R2 Tests
                   Interval Magnitude
                 </option>
                 <option value=\\"IntervalOccurrence\\">
-                  Interval Occurrence
+                  Interval Labelled
                 </option>
                 <option value=\\"EventMagnitude\\">
                   Event Magnitude
                 </option>
                 <option value=\\"EventOccurrence\\">
-                  Event Occurrence
+                  Event Labelled
                 </option>
               </select>
             </FormControl>

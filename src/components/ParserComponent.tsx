@@ -11,6 +11,7 @@ import Data
 import * as TimSort from 'timsort';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {loadTestCsv} from './Utilities';
+
 import {strict as assert} from 'assert';
 
 /**
@@ -239,110 +240,131 @@ export default class ParserComponent extends React.Component<ParserInterface,
     }
 
     /**
-     * Purpose: attempts to infer the types of the data in each of the columns
-     * of the csv data
-     * @precondition An array of sorted data exists for types to be inferred
-     * from
-     * @postcondition The array is transformed into an array of type Column,
-     * and the default behavior for the data is inferred and set
-     * @param {Array} data: the array of pre-sorted valid data
-     * @return {Array}: a list of objects of type Column
-     */
-    inferTypes(data: Array<object>): Array<Column> | undefined {
-      // data should contain something (according to the precondition)
+   * goes through data, checks what the most common type of data is in the colum
+   * and returns a list of each and how many types were found
+   * @precondition: listFields is not empty
+   * @postcondition: creates a non-empty list of CountTypes
+   * @param {Array} listFields a list of the keys for each column
+   * @return {CountTypes[]} a list of how many and which kinds of types were
+   * found
+   */
+    private inferTypesHelper(listFields: any): CountTypes[] {
+      assert.notStrictEqual(listFields, null,
+          'inferTypesHelper(): listFields is null');
+      assert(listFields.length > 0,
+          'inferTypesHelper(): listFields is empty');
+      // instantiate objects to track the types of data
+      const typesForEachCol =
+          this.createTypeCountingObjects(listFields.length);
+      // check half the values to find if the data is consistent
+      [0, Math.floor(this.state.data.length / 2)].forEach((element) => {
+        const row: object = this.state.data[element];
+        assert.notStrictEqual(row, null,
+            'inferTypes(): row object is null');
+
+        // look at each field and categorize
+        for (let i = 0; i < listFields.length; i++) {
+          const curColTypes = typesForEachCol[i];
+          try {
+            // each field in listFields could be a different type
+            // typescript hates this and so it must be ignored
+            // @ts-ignore
+            const val = row[listFields[i]];
+            assert.notStrictEqual(val, undefined,
+                'inferTypes(): value in field is undefined');
+
+            if (typeof val === 'string') {
+              const date = moment(val);
+              const isValid = date.isValid();
+              if (isValid) {
+                curColTypes['numDate'] += 1;
+              } else {
+                throw val;
+              }
+            } else {
+              throw val;
+            }
+          } catch {
+            // listFields contains different types, typescript does not play
+            // well with this notion thus must be ignored
+            // @ts-ignore
+            const type = typeof row[listFields[i]];
+            if (type !== 'string' && type !== 'number') {
+              curColTypes['numIncongruent'] += 1;
+            }
+            // logs all the types that are seen
+            if (type === 'string') {
+              curColTypes['numString'] += 1;
+            } else {
+              curColTypes['numNumber'] += 1;
+            }
+          }
+        }
+      });
+      assert.notStrictEqual(typesForEachCol, []);
+      return typesForEachCol;
+    }
+
+    /**
+   * Purpose: attempts to infer the types of the data in each of the columns
+   * of the csv data
+   * @precondition An array of sorted data exists for types to be inferred
+   * from
+   * @postcondition The array is transformed into an array of type Column,
+   * and the default behavior for the data is inferred and set
+   * @param {Array} data: the array of pre-sorted valid data
+   * @return {Array}: a list of objects of type Column
+   */
+    inferTypes(data: Array<object>): Array<Column> {
+    // data should contain something (according to the precondition)
       assert.notStrictEqual(data, undefined,
           'inferTypes(): data (array of objects) is undefined');
       assert.notStrictEqual(data, null,
           'inferTypes(): data (array of objects) is null');
       assert.notStrictEqual(data, [], 'data (array of objects) is empty');
-
-      if (this.state.data.length > 0) {
-        assert.notStrictEqual(this.state.data[0], null,
-            'inferTypes(): this.state.data[0] is null');
-        const listFields = Object.keys(this.state.data[0]);
-        assert.notStrictEqual(listFields, null,
-            'inferTypes(): listFields is null');
-        assert(listFields.length > 0,
-            'inferTypes(): listFields is empty');
-        // instantiate objects to track the types of data
-        const typesForEachCol =
-            this.createTypeCountingObjects(listFields.length);
-        // check half the values to find if the data is consistent
-        [0, Math.floor(this.state.data.length / 2)].forEach((element) => {
-          const row: object = this.state.data[element];
-          assert.notStrictEqual(row, null,
-              'inferTypes(): row object is null');
-          // look at each field and categorize
-          for (let i = 0; i < listFields.length; i++) {
-            const curColTypes = typesForEachCol[i];
-            try {
-              // @ts-ignore
-              const val = row[listFields[i]];
-              assert.notStrictEqual(val, undefined,
-                  'inferTypes(): value in field is undefined');
-              if (typeof val === 'string') {
-                const date = moment(val);
-                const isValid = date.isValid();
-                if (isValid) {
-                  curColTypes['numDate'] += 1;
-                } else {
-                  throw val;
-                }
-              } else {
-                throw val;
-              }
-            } catch {
-              // @ts-ignore
-              const type = typeof row[listFields[i]];
-              if (type !== 'string' && type !== 'number') {
-                curColTypes['numIncongruent'] += 1;
-              }
-              // logs all the types that are seen
-              if (type === 'string') {
-                curColTypes['numString'] += 1;
-              } else {
-                curColTypes['numNumber'] += 1;
-              }
-            }
-          }
-        });
-        let indx = 0;
-        const arrayOfColumns = new Array<Column>(listFields.length);
-        typesForEachCol.forEach((element) => {
-          // checks the most common type and uses that
-          const mostCommonType = element.largest();
-          if (mostCommonType === 'string') {
-            // create a Column object with occurrence data
-            this.createColumn(mostCommonType, enumDrawType.occurrence, indx,
-                listFields, arrayOfColumns);
-            indx++;
-          } else if (mostCommonType === 'date' || mostCommonType === 'number') {
-            // create a Column with date data
-            this.createColumn(mostCommonType, enumDrawType.any, indx,
-                listFields, arrayOfColumns);
-            indx++;
-          }
+      assert.notStrictEqual(this.state.data[0], null,
+          'inferTypes(): this.state.data[0] is null');
+      const listFields = Object.keys(this.state.data[0]);
+      assert.notStrictEqual(listFields, null,
+          'inferTypes(): listFields is null');
+      assert(listFields.length > 0,
+          'inferTypes(): listFields is empty');
+      const typesForEachCol = this.inferTypesHelper(listFields);
+      let indx = 0;
+      const arrayOfColumns = new Array<Column>(listFields.length);
+      typesForEachCol.forEach((element) => {
+        // checks the most common type and uses that
+        const mostCommonType = element.largest();
+        if (mostCommonType === 'string') {
+          // create a Column object with occurrence data
+          this.createColumn(mostCommonType, enumDrawType.occurrence, indx,
+              listFields, arrayOfColumns);
+          indx++;
+        } else if (mostCommonType === 'date' || mostCommonType === 'number') {
+          // create a Column with date data
+          this.createColumn(mostCommonType, enumDrawType.any, indx,
+              listFields, arrayOfColumns);
+          indx++;
         }
-        );
-        // if there is data then arrayOfColumns shouldn't be empty
-        assert.notStrictEqual(arrayOfColumns, [],
-            'inferTypes(): arrayOfColumns is empty after parsing data');
-        return arrayOfColumns;
-      } else {
-        throw new Error('data is empty');
       }
+      );
+      // if there is data then arrayOfColumns shouldn't be empty
+      assert.notStrictEqual(arrayOfColumns, [],
+          'inferTypes(): arrayOfColumns is empty after parsing data');
+      return arrayOfColumns;
     }
 
+
     /**
-   * Precondition: all of the parameters are defined
-   * Postcondition: list parameter has a new element appended to it
-   * creates a new column using the parameters and appends it to a lst
-   * @param {string} mostComm: the most common type of that column
-   * @param {enumDrawType} drawType: the type that the column is labeled as
-   * @param {number} indx: the index of the list parameter being appended to
-   * @param {string[]} fieldList: the list of fields for each column
-   * @param {Column[]} list: an array of columns
-   */
+ * Precondition: all of the parameters are defined
+ * Postcondition: list parameter has a new element appended to it
+ * creates a new column using the parameters and appends it to a lst
+ * @param {string} mostComm: the most common type of that column
+ * @param {enumDrawType} drawType: the type that the column is labeled as
+ * @param {number} indx: the index of the list parameter being appended to
+ * @param {string[]} fieldList: the list of fields for each column
+ * @param {Column[]} list: an array of columns
+ */
     createColumn(mostComm: string, drawType: enumDrawType, indx: number,
         fieldList: string[], list: Column[]) {
       assert.notStrictEqual(mostComm, '',

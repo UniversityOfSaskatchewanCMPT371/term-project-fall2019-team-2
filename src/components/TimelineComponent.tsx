@@ -68,7 +68,7 @@ export default class TimelineComponent
     this.ttOver = this.ttOver.bind(this);
     this.ttUpdatePos = this.ttUpdatePos.bind(this);
     this.ttMove = this.ttMove.bind(this);
-    this.ttMove = this.ttMove.bind(this);
+    // this.ttMove = this.ttMove.bind(this);
     this.updateChart = this.updateChart.bind(this);
     this.updateBars = this.updateBars.bind(this);
     this.moveChart = this.moveChart.bind(this);
@@ -603,7 +603,7 @@ export default class TimelineComponent
 
     // @ts-ignore
     this.m.maxDate = new Date(d3.max(
-        [d3.min(this.m.csvData, (d: any) => Date.parse(d[this.m.xColumn])),
+        [d3.max(this.m.csvData, (d: any) => Date.parse(d[this.m.xColumn])),
           d3.max(this.m.csvData, (d: any) => Date.parse(d[this.m.xColumn2]))]));
 
     this.m.timeScale = d3.scaleTime()
@@ -611,8 +611,6 @@ export default class TimelineComponent
         .range([0, 50 * this.m.csvData.length]);
 
     this.m.x = d3.scaleBand()
-    // may need this in the future for spacing so leaving in
-    // .padding(1)
         .domain(this.m.data.map((d: any) => d[this.m.xColumn]))
         .range([0, this.m.width]).round(true);
 
@@ -672,7 +670,7 @@ export default class TimelineComponent
     assert.notStrictEqual(this.state.data, [],
         'drawTimeline(): this.state.data is empty');
     this.zoom = d3.zoom()
-        .scaleExtent([1, 20]) // zoom range
+        .scaleExtent([0.5, 20]) // zoom range
         .translateExtent(this.m.extent)
         .extent(this.m.extent)
         .on('zoom', this.updateChart);
@@ -769,16 +767,14 @@ export default class TimelineComponent
       // moveChart depending on operation
       if (op === '-' || op === 's') {
         // Zoom out
-        const identity = d3.zoomIdentity
-            .scale(Math.max(this.m.scaleMin,
-                this.m.scale * this.m.scaleZoomOut));
-
+        const lowerRange: number = Math.max(
+            this.m.scaleMin, this.m.scale * this.m.scaleZoomOut);
+        const identity = d3.zoomIdentity.scale(lowerRange);
         this.svg.transition().ease(d3.easeLinear).duration(300)
             .call(this.zoom.transform, identity);
         // Ensure the new scale is saved with a limit on the minimum
         //  zoomed out scope
-        this.m.scale = Math.max(this.m.scaleMin,
-            this.m.scale * this.m.scaleZoomOut);
+        this.m.scale = lowerRange;
       } else if (op === '+' || op === 'w') {
         // Zoom In
         const identity = d3.zoomIdentity
@@ -792,7 +788,6 @@ export default class TimelineComponent
         // Pan Left
         this.m.deltaX = Math.min(0, this.m.deltaX + this.m.deltaPan);
         this.m.deltaXDirection = -1;
-        // console.log(deltaX);
         this.moveChart();
       } else if (op === 'ArrowRight') {
         this.m.deltaXDirection = 1;
@@ -947,15 +942,16 @@ export default class TimelineComponent
    * Purpose: updates the state and positioning of element on the Timeline
    */
   updateChart() {
+    const additionalBars: number = 1; // number of additional bars rendered
     // recover the new scale
     if (d3.event !== null) {
       this.m.scale = d3.event.transform.k;
-      console.log(d3.event);
     } else {
       console.warn('d3.event was null');
     }
-
     this.timelineType.applyZoom();
+    this.m.numBars += additionalBars;
+    // console.log('numBars in updateChart after: ', this.m.numBars);
 
     if (d3.event !== null && d3.event.sourceEvent !== null &&
       d3.event.sourceEvent.type === 'mousemove') {
@@ -1033,14 +1029,19 @@ export default class TimelineComponent
    * @param {any} caller
    */
   dragStarted(caller: any) {
+    console.log(caller);
+    console.log('dragStarted');
     d3.select(caller).raise()
         .classed('active', true);
+    console.log(caller);
   }
 
   /**
    * Purpose: called when the timeline is dragged by the user
    */
   dragged() {
+    console.log(d3.event);
+    console.log('dragged');
     this.ttUpdatePos(d3.event.sourceEvent.x, d3.event.sourceEvent.y);
 
     if (d3.event.sourceEvent.movementX > 0) {
@@ -1060,6 +1061,19 @@ export default class TimelineComponent
    * @param {any} caller
    */
   dragEnded(caller: any) {
+    const hoveredBars: any = d3.selectAll('.bar:hover');
+
+    // if nothing is being hovered over, remove the tooltip
+    if (hoveredBars.empty()) {
+      d3.selectAll('.tooltip').remove();
+    } else {
+      // make sure the tooltip is up to date.
+      hoveredBars.each((d: any) => {
+        this.ttOverHelper(d, d3.event.x, d3.event.y);
+      });
+    }
+
+
     d3.select(caller).classed('active', false);
   }
 }

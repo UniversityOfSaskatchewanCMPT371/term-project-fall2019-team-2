@@ -200,10 +200,10 @@ describe('<TimelineComponent /> R2 Tests\n', () => {
       svgHTML = prettyHTML(svgTarget.innerHTML);
     }
 
-    console.log(pretty(document.body.innerHTML));
-    console.log(svgHTML);
-    console.log(window.innerWidth);
-    console.log(window.innerHeight);
+    // console.log(pretty(document.body.innerHTML));
+    // console.log(svgHTML);
+    // console.log(window.innerWidth);
+    // console.log(window.innerHeight);
 
     // Check that svg created by d3 matches snapshot
     expect(svgHTML).toMatchSnapshot();
@@ -396,7 +396,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
 
   describe('<TimelineComponent /> renders correctly', () => {
     it('checks that the timeline component renders correctly', () => {
-      console.log(pretty(wrapper.html()));
+      // console.log(pretty(wrapper.html()));
       const select: any =
           // @ts-ignore
           <select
@@ -512,7 +512,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
 
     it('timeline drawer does not zoom out too far', () => {
       wrapper.instance().drawTimeline();
-      console.log(pretty(wrapper.html()));
+      // console.log(pretty(wrapper.html()));
       const event = new KeyboardEvent('keydown', {'key': 's'});
       document.body.dispatchEvent(event);
 

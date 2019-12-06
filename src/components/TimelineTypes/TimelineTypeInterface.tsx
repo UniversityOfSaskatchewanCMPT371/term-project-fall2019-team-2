@@ -134,7 +134,6 @@ export abstract class TimelineType implements TimelineTypeInterface {
    * reflect the information from the timeline
    */
   getData(): void {
-    console.log(this.m.csvData);
     let dataIdxEnd: number = 0;
     let dataIdxStart: number = 0;
     let consecutive = true;
@@ -180,9 +179,6 @@ export abstract class TimelineType implements TimelineTypeInterface {
         }
         bounds.push((this.m.scale * this.m.timeScale(elem[key + '_num'])));
       });
-
-      console.log(bounds);
-      console.log(this.m);
 
       // We can only increment dataIdx if the preceding elements have also
       // been moved off of the current screen area

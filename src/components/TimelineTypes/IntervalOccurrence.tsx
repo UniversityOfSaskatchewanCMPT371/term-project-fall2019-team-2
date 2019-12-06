@@ -65,7 +65,6 @@ export default class IntervalOccurrence extends IntervalTimelineType
           .on('mousemove', ttMove)
           .on('mouseleave', ttLeave);
     }
-    console.log(this.m.csvData);
   }
 
   /**

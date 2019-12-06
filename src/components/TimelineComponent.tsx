@@ -507,9 +507,6 @@ export default class TimelineComponent
    */
   changeTimelineType(e: any) {
     const val = e.target.value;
-    console.log(e.target.value);
-    console.log(val);
-    console.log(this.m.view);
     this.m.view = val;
 
     switch (this.m.view) {
@@ -557,8 +554,7 @@ export default class TimelineComponent
         'initTimeline(): this.state.data is empty');
     const elem: any = d3.select(CONSTANTS.SVG_SELECTOR);
     let newHeight = this.state.height;
-    console.log('working');
-    console.log(elem);
+
     if (elem !== null && elem.node() !== null) {
       const rect = elem.node().getBoundingClientRect();
       // this is the proper height for our timeline
@@ -596,7 +592,7 @@ export default class TimelineComponent
 
     let xColumnVals: number[] = [];
 
-    console.log(this.m.csvData);
+    // console.log(this.m.csvData);
     if (this.m.xColumn !== '') {
       // @ts-ignore
       // eslint-disable-next-line max-len
@@ -607,7 +603,7 @@ export default class TimelineComponent
     if ((this.m.view === ViewType.IntervalMagnitude ||
       this.m.view === ViewType.IntervalOccurrence) &&
       this.m.xColumn2 !== '') {
-      console.log(this.m.xColumn2);
+      // console.log(this.m.xColumn2);
       // @ts-ignore
       // eslint-disable-next-line max-len
       xColumnVals = xColumnVals.concat(this.m.csvData.map((d: any) =>
@@ -631,8 +627,8 @@ export default class TimelineComponent
     // variables
     console.log(this.m.x(0));
 
-    console.log(this.m.view);
-    console.log(ViewType[this.m.view]);
+    // console.log(this.m.view);
+    // console.log(ViewType[this.m.view]);
 
 
     if (ViewType[this.m.view] === ViewType.IntervalMagnitude ||
@@ -660,9 +656,9 @@ export default class TimelineComponent
         domain = domain.concat(
             d3.map(this.m.csvData, (d: any) => d[this.m.yColumn2]).keys());
       }
-      console.log(this.m.yColumn2);
-
-      console.log(domain);
+      // console.log(this.m.yColumn2);
+      //
+      // console.log(domain);
       this.m.y = d3.scaleBand()
           .domain(domain)
           .range([this.m.height, 0]);
@@ -725,9 +721,6 @@ export default class TimelineComponent
 
     const axisLayer = this.svg.append('g')
         .attr('id', 'axisLayer');
-
-
-    console.log(ViewType[this.m.view] === ViewType.EventMagnitude);
 
     axisLayer.append('g')
         .style('color', 'black')
@@ -895,7 +888,6 @@ export default class TimelineComponent
   ttOver(d: any) {
     try {
       if (d3.event.buttons === 0) {
-        // console.log(d3.event);
         this.ttOverHelper(d, d3.event.x, d3.event.y);
       }
     } catch (e) {
@@ -1039,13 +1031,13 @@ export default class TimelineComponent
   /**
    * @this dragStarted
    * @param {any} caller
+   *
+   * @preconditions:
+   * @postconditions:
    */
   dragStarted(caller: any) {
-    console.log(caller);
-    console.log('dragStarted');
     d3.select(caller).raise()
         .classed('active', true);
-    console.log(caller);
   }
 
   /**
@@ -1056,8 +1048,6 @@ export default class TimelineComponent
    * has specified
    */
   dragged() {
-    console.log(d3.event);
-    console.log('dragged');
     this.ttUpdatePos(d3.event.sourceEvent.x, d3.event.sourceEvent.y);
 
     if (d3.event.sourceEvent.movementX > 0) {

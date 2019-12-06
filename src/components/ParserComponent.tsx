@@ -369,7 +369,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
       return typesForEachCol;
     }
 
-  /**
+    /**
    * Purpose: attempts to infer the types of the data in each of the columns
    * of the csv data
    * @precondition An array of sorted data exists for types to be inferred

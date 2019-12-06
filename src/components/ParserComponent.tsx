@@ -63,6 +63,10 @@ export default class ParserComponent extends React.Component<ParserInterface,
 
     /**
      * Purpose: renders the HTML for this component
+     * @precondition none
+     * @postcondition
+     *  Inputs: None
+     *  Outputs: None
      * @return {string}: valid HTML
      */
     render() {
@@ -230,8 +234,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
           return key;
         }
       }
-      throw new Error('No dates found');
-    }
+    };
 
     /**
    * Purpose: sorts the array of data
@@ -243,7 +246,7 @@ export default class ParserComponent extends React.Component<ParserInterface,
    * @return {boolean}: return true once data is sorted
    */
     sortData(data: Array<object>, key:string): boolean {
-      assert.notStrictEqual(key, undefined,
+      assert.notEqual(key, undefined,
           'sortData(): No valid date for selected format was found');
       const formatString = this.state.formatString;
       const keyInt = `${key}_num`;
@@ -280,8 +283,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
     /**
      * Purpose: to instantiate an empty list of objects
      * for tracking the kinds of data in a column
-     * Pre-Conditions: None
-     * Post-Conditions: None
+     * @precondition: none
+     * @postcondition: none
      * @param {number} fieldLength: the number of columns of data
      * @return {[CountTypes]}: a list of objects
      */
@@ -581,6 +584,8 @@ export class CountTypes {
 
   /**
    * finds the largest element of the fields
+   * @precondition: none
+   * @postcondition: none
    * @return {string}: a string representing the largest field.
    * Defaults to 'date' if all elements is zero
    */

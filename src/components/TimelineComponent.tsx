@@ -753,19 +753,26 @@ export default class TimelineComponent
    * @return {void}: Nothing
    */
   private registerEvents(): void {
-    let currKey: string = '';
+    const validInput: Map<string, string> = new Map<string, string>([
+      ['+', 'zoomIn'],
+      ['w', 'zoomIn'],
+      ['-', 'zoomOut'],
+      ['s', 'zoomOut'],
+      ['ArrowLeft', 'panLeft'],
+      ['ArrowRight', 'panRight']
+    ]);
     let movingTimeout: number = -1;
 
-    const startMoving = (op: string) => {
+    const startMoving = (op: string | undefined) => {
       if (movingTimeout === -1) {
         loop(op);
       }
     };
 
     // helper() that loops until key is released
-    const loop = (op: string) => {
+    const loop = (op: string | undefined) => {
       // moveChart depending on operation
-      if (op === '-' || op === 's') {
+      if (op === 'zoomOut') {
         // Zoom out
         const lowerRange: number = Math.max(
             this.m.scaleMin, this.m.scale * this.m.scaleZoomOut);
@@ -775,7 +782,7 @@ export default class TimelineComponent
         // Ensure the new scale is saved with a limit on the minimum
         //  zoomed out scope
         this.m.scale = lowerRange;
-      } else if (op === '+' || op === 'w') {
+      } else if (op === 'zoomIn') {
         // Zoom In
         const identity = d3.zoomIdentity
             .scale(this.m.scale * this.m.scaleZoomIn);
@@ -784,40 +791,25 @@ export default class TimelineComponent
             .call(this.zoom.transform, identity);
         // Ensure the new scale is saved
         this.m.scale = this.m.scale * this.m.scaleZoomIn;
-      } else if (op === 'ArrowLeft') {
+      } else if (op === 'panLeft') {
         // Pan Left
         this.m.deltaX = Math.min(0, this.m.deltaX + this.m.deltaPan);
         this.m.deltaXDirection = -1;
         this.moveChart();
-      } else if (op === 'ArrowRight') {
+      } else if (op === 'panRight') {
         this.m.deltaXDirection = 1;
         // Pan Right
         this.m.deltaX -= this.m.deltaPan;
         this.moveChart();
       }
-      movingTimeout = setTimeout(loop, 25, op);
+      movingTimeout = setTimeout(loop, 10, op);
     };
 
     // Handle keypresses
     d3.select('body')
         .on('keydown', () => {
-          if (currKey === '') {
-            if (d3.event.key === '-' || d3.event.key === 's') {
-            // zoom out
-              currKey = d3.event.key;
-            } else if (d3.event.key === '+' || d3.event.key === 'w') {
-            // Zoom in
-              currKey = d3.event.key;
-            } else if (d3.event.key === 'ArrowLeft') {
-            // Pan left
-              currKey = d3.event.key;
-            } else if (d3.event.key === 'ArrowRight') {
-            // Pan right
-              currKey = d3.event.key;
-            }
-            if (currKey !== '') {
-              startMoving(currKey);
-            }
+          if (validInput.get(d3.event.key)) {
+            startMoving(validInput.get(d3.event.key));
           }
         });
 
@@ -825,7 +817,6 @@ export default class TimelineComponent
         .on('keyup', () => {
           clearTimeout(movingTimeout);
           movingTimeout = -1;
-          currKey = '';
         });
   }
 

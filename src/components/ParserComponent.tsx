@@ -63,6 +63,10 @@ export default class ParserComponent extends React.Component<ParserInterface,
 
     /**
      * Purpose: renders the HTML for this component
+     * @precondition none
+     * @postcondition
+     *  Inputs: None
+     *  Outputs: None
      * @return {string}: valid HTML
      */
     render() {
@@ -279,8 +283,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
     /**
      * Purpose: to instantiate an empty list of objects
      * for tracking the kinds of data in a column
-     * Pre-Conditions: None
-     * Post-Conditions: None
+     * @precondition: none
+     * @postcondition: none
      * @param {number} fieldLength: the number of columns of data
      * @return {[CountTypes]}: a list of objects
      */
@@ -394,8 +398,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
     }
 
     /**
-   * Precondition: all of the parameters are defined
-   * Postcondition: list parameter has a new element appended to it
+   * @precondition all of the parameters are defined
+   * @postcondition list parameter has a new element appended to it
    * creates a new column using the parameters and appends it to a lst
    * @param {string} mostComm: the most common type of that column
    * @param {enumDrawType} drawType: the type that the column is labeled as
@@ -560,6 +564,8 @@ export class CountTypes {
 
   /**
    * finds the largest element of the fields
+   * @precondition: none
+   * @postcondition: none
    * @return {string}: a string representing the largest field.
    * Defaults to 'date' if all elements is zero
    */

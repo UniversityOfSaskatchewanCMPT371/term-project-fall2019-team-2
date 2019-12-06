@@ -61,7 +61,9 @@ export default class ParserComponent extends React.Component<ParserInterface,
     /**
      * Purpose: renders the HTML for this component
      * @precondition: none
-     * @postcondition: none
+     * @postcondition:
+     *  Inputs: None
+     *  Outputs: None
      * @return {string}: valid HTML
      */
     render() {
@@ -224,6 +226,8 @@ export default class ParserComponent extends React.Component<ParserInterface,
     /**
      * Purpose: to instantiate an empty list of objects
      * for tracking the kinds of data in a column
+     * @precondition: none
+     * @postcondition: none
      * @param {number} fieldLength: the number of columns of data
      * @return {[CountTypes]}: a list of objects
      */

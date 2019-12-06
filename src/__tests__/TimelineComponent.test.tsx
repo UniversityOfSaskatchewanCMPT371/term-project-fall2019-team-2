@@ -171,6 +171,7 @@ describe('<TimelineComponent /> R2 Tests\n', () => {
     expect(wrapper.debug()).toMatchSnapshot();
 
     // This just makes the snapshot more readable
+    // since it originally print in 1 huge line
     const svgTarget: any = document.getElementById('svgtarget');
     let svgHTML: string = '';
     if (svgTarget) {
@@ -250,6 +251,233 @@ describe('<TimelineComponent /> R2 Tests\n', () => {
   });
 });
 
+describe('<TimelineComponent /> R3 Tests\n', ()=>{
+  const data = new Data('path/to/file', [
+    {
+      'Region': 'North America',
+      'Country': 'Central African Republic',
+      'Item Type': 'Vegetables',
+      'Sales Channel': 'Online',
+      'Order Priority': 'H',
+      'Order Date': '1/1/2010',
+      'Order ID': 506209075,
+      'Ship Date': '2/4/2010',
+      'Units Sold': 7369,
+      'Unit Price': 154.06,
+      'Unit Cost': 90.93,
+      'Total Revenue': 1135268.14,
+      'Total Cost': 670063.17,
+      'Total Profit': 465204.97,
+      'index': 4535,
+      'Order Date_num': 1262325600000
+    },
+    {
+      'Region': 'North America',
+      'Country': 'China',
+      'Item Type': 'Cereal',
+      'Sales Channel': 'Online',
+      'Order Priority': 'C',
+      'Order Date': '1/1/2010',
+      'Order ID': 863776719,
+      'Ship Date': '2/10/2010',
+      'Units Sold': 9581,
+      'Unit Price': 205.7,
+      'Unit Cost': 117.11,
+      'Total Revenue': 1970811.7,
+      'Total Cost': 1122030.91,
+      'Total Profit': 848780.79,
+      'index': 5104,
+      'Order Date_num': 1262325600000
+    },
+    {
+      'Region': 'North America',
+      'Country': 'Sweden',
+      'Item Type': 'Clothes',
+      'Sales Channel': 'Online',
+      'Order Priority': 'H',
+      'Order Date': '1/2/2010',
+      'Order ID': 907228076,
+      'Ship Date': '2/21/2010',
+      'Units Sold': 7803,
+      'Unit Price': 109.28,
+      'Unit Cost': 35.84,
+      'Total Revenue': 852711.84,
+      'Total Cost': 279659.52,
+      'Total Profit': 573052.32,
+      'index': 4193,
+      'Order Date_num': 1262412000000
+    },
+    {
+      'Region': 'North America',
+      'Country': 'Equatorial Guinea',
+      'Item Type': 'Snacks',
+      'Sales Channel': 'Offline',
+      'Order Priority': 'M',
+      'Order Date': '1/2/2010',
+      'Order ID': 335552775,
+      'Ship Date': '2/12/2010',
+      'Units Sold': 6378,
+      'Unit Price': 152.58,
+      'Unit Cost': 97.44,
+      'Total Revenue': 973155.24,
+      'Total Cost': 621472.32,
+      'Total Profit': 351682.92,
+      'index': 7005,
+      'Order Date_num': 1262412000000
+    },
+    {
+      'Region': 'North America',
+      'Country': 'Mongolia',
+      'Item Type': 'Cosmetics',
+      'Sales Channel': 'Offline',
+      'Order Priority': 'C',
+      'Order Date': '1/2/2010',
+      'Order ID': 695167052,
+      'Ship Date': '1/22/2010',
+      'Units Sold': 4234,
+      'Unit Price': 437.2,
+      'Unit Cost': 263.33,
+      'Total Revenue': 1851104.8,
+      'Total Cost': 1114939.22,
+      'Total Profit': 736165.58,
+      'index': 9127,
+      'Order Date_num': 1262412000000
+    }],
+  [
+    new Column('string', 1, 'Region', 1),
+    new Column('string', 1, 'Country', 1),
+    new Column('string', 1, 'Item Type', 1),
+    new Column('string', 1, 'Sales Channel', 1),
+    new Column('string', 1, 'Order Priority', 1),
+    new Column('date', 2, 'Order Date', 1),
+    new Column('number', 2, 'Order ID', 1),
+    new Column('date', 2, 'Ship Date', 1),
+    new Column('number', 2, 'Units Sold', 1),
+    new Column('number', 2, 'Unit Price', 1),
+    new Column('number', 2, 'Unit Cost', 1),
+    new Column('number', 2, 'Total Revenue', 1),
+    new Column('number', 2, 'Total Cost', 1),
+    new Column('number', 2, 'Total Profit', 1),
+    new Column('number', 2, 'index', 1),
+    new Column('number', 2, 'Order Date_num', 1)]);
+
+  // helper function to make innerHTML more readable
+  const prettyHTML = (htmlString: string) => {
+    const lines: Array<string> = htmlString.split(/(?=<)/g);
+    let tempString: string = '';
+    for (let i: number = 0; i < lines.length; i++) {
+      tempString += (lines[i] + '\n');
+    }
+    return tempString;
+  };
+
+  let wrapper: any;
+
+  beforeEach(() => {
+    // need to do this so that d3 works properly with jest/enzyme
+    wrapper = mount(
+        <TimelineComponent
+          data={data}
+        />);
+    document.body.innerHTML = wrapper.html();
+    wrapper = mount(
+        <TimelineComponent
+          data={data}
+        />);
+    // initialize & draw the timeline (updates html)
+    wrapper.instance().resetTimeline();
+
+    // Check that rendered TimelineComponent HTML matches snapshot
+    // This doesn't include the html created by d3
+    expect(wrapper.debug()).toMatchSnapshot();
+
+    // check d3 svgs match the snapshot
+    const svgTarget: any = document.getElementById('barsLayer');
+    let svgHTML: string = '';
+    if (svgTarget) {
+      svgHTML = prettyHTML(svgTarget.innerHTML);
+    }
+    // Check that svg created by d3 matches snapshot
+    expect(svgHTML).toMatchSnapshot();
+  });
+  // zoom in events for keydown & keyup
+  const zoomInEventDown = new KeyboardEvent('keydown', {'key': '+'});
+  const zoomInEventUp = new KeyboardEvent('keyup', {'key': '+'});
+  // zoom out events for keydown & keyup
+  const zoomOutEventDown = new KeyboardEvent('keydown', {'key': '-'});
+  const zoomOutEventUp = new KeyboardEvent('keyup', {'key': '-'});
+
+
+  it('T3.3 Snapshot Test\n', async () => {
+    expect(wrapper.instance().getScale()).toBe(1.0);
+
+    // check scale for zoomInEventDown and zoomInEventUp separately
+    for (let i = 0; i < 5; i++) {
+      document.body.dispatchEvent(zoomInEventDown);
+      document.body.dispatchEvent(zoomInEventUp);
+    }
+    const tempScaleEventDown = wrapper.instance().getScale();
+    console.log(tempScaleEventDown);
+    expect(tempScaleEventDown).toBeGreaterThan(1.0);
+
+    // update svg to reflect scale: do not use drawTimeline()
+    wrapper.instance().updateChart();
+
+    // find d3 svg element
+    const svgTarget: any = document.getElementById('barsLayer');
+    let svgHTML: string = '';
+    if (svgTarget) {
+      svgHTML = prettyHTML(svgTarget.innerHTML);
+    }
+
+    // Check that svg created by d3 matches snapshot
+    expect(svgHTML).toMatchSnapshot();
+  });
+
+  it('T3.4 Snapshot test', ()=>{
+    // check if initial scale is 1
+    expect(wrapper.instance().getScale()).toBe(1.0);
+    // zoom in first so could test zoom backout
+    for (let i = 0; i < 5; i++) {
+      document.body.dispatchEvent(zoomInEventDown);
+      document.body.dispatchEvent(zoomInEventUp);
+    }
+    expect(wrapper.instance().getScale()).toBeGreaterThan(1.0);
+
+    // update svg to reflect scale: do not use drawTimeline()
+    wrapper.instance().updateChart();
+
+    // find d3 svg element
+    let svgTarget: any = document.getElementById('svgtarget');
+    let svgHTML: string = '';
+    if (svgTarget) {
+      svgHTML = prettyHTML(svgTarget.innerHTML);
+    }
+
+    // Check that svg created by d3 matches snapshot
+    expect(svgHTML).toMatchSnapshot();
+
+    // zoom back out
+    for (let i = 0; i < 5; i++) {
+      document.body.dispatchEvent(zoomOutEventDown);
+      document.body.dispatchEvent(zoomOutEventUp);
+    }
+    expect(wrapper.instance().getScale()).toBe(0.9509900499000007);
+
+    // update svg to reflect scale: do not use drawTimeline()
+    wrapper.instance().updateChart();
+
+    // find d3 svg element
+    svgTarget = document.getElementById('svgtarget');
+    svgHTML = '';
+    if (svgTarget) {
+      svgHTML = prettyHTML(svgTarget.innerHTML);
+    }
+
+    // Check that svg created by d3 matches snapshot
+    expect(svgHTML).toMatchSnapshot();
+  });
+});
 
 // To be used by developers
 describe('<TimelineComponent /> Unit Tests', () => {
@@ -421,7 +649,7 @@ describe('<TimelineComponent /> Unit Tests', () => {
     // functions have something to manipulate.
     document.body.innerHTML = wrapper.html();
 
-    // Unforuntately, the wrapper must be mounted again so that the test cases
+    // Unfortunately, the wrapper must be mounted again so that the test cases
     // will have a blank slate to work with.
     wrapper = mount(
         <TimelineComponent
